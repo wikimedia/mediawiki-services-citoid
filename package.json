@@ -6,7 +6,9 @@
 		"async" : "latest",
 		"cheerio" : "latest",
 		"express" : "latest",
-		"request" : "latest"
+		"request" : "latest",
+		"xmldom" : "latest",
+		"xpath" : "latest"
 	},
 	"repository": {
 		"type": "git",

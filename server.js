@@ -14,7 +14,7 @@ var zotero_url = 'http://localhost:1969/web' //assumes zotero already started
 
 /*testing below*/
 //test_url = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
-test_sessionid = "abc123"
+var test_sessionid = "abc123";
 
 /*methods*/
 //var convert_response = function(service_name, callback){
@@ -27,6 +27,7 @@ test_sessionid = "abc123"
 
 //}
 
+
 //CiteFromID (CFID) service
 var cfid = express();
 
@@ -38,7 +39,7 @@ cfid.all('*', function(req, res, next) {
  });
 
 // parse application/json
-//cfid.use(bodyParser.json())
+cfid.use(bodyParser.json())
 
 /*URL for VE requests*/
 cfid.post('/ve', function(req, res){

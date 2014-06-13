@@ -26,12 +26,22 @@ var zotero_request  = function(requested_url, sessionid, callback){
 	});
 };
 
-/*testing below*/
-test_url = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
-test_sessionid = "abc123"
+/*Test URL in main function*/
+var main = function(){
+    test_url = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
+	test_sessionid = "abc123"
 
-zotero_request(test_url, test_sessionid, function(body){
-	console.log(body);
+	zotero_request(test_url, test_sessionid, function(body){
+		console.log(body);
+	});
+}
 
-});
+if (require.main === module) {
+    main();
+}
+
+/*Exports*/
+module.exports = {
+	zotero_request: zotero_request
+};
 

@@ -7,15 +7,15 @@
 
 var request = require('request');
 
-var zotero_url = 'http://localhost:1969/web' //assumes zotero already started
+var zoteroURL = 'http://localhost:1969/web'; //assumes zotero already started
 
-var zotero_request  = function(requested_url, sessionid, callback){
+var zoteroRequest  = function(requestedURL, sessionID, callback){
 	var options = {
-		url: zotero_url,
+		url: zoteroURL,
 		method: 'POST',
 		json: {
-			"url": requested_url,
-			"sessionid": sessionid
+			"url": requestedURL,
+			"sessionid": sessionID
 		}
 	};
 
@@ -28,10 +28,10 @@ var zotero_request  = function(requested_url, sessionid, callback){
 
 /*Test URL in main function*/
 var main = function(){
-    test_url = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
-	test_sessionid = "abc123"
+    testURL = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
+	testSessionID = "abc123"
 
-	zotero_request(test_url, test_sessionid, function(body){
+	zoteroRequest(testURL, testSessionID, function(body){
 		console.log(body);
 	});
 }
@@ -42,6 +42,6 @@ if (require.main === module) {
 
 /*Exports*/
 module.exports = {
-	zotero_request: zotero_request
+	zoteroRequest: zoteroRequest
 };
 

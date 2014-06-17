@@ -13,31 +13,24 @@ var port = '1970';
 
 var zoteroURL = 'http://localhost:1969/web'; //assumes zotero already started
 
-/*testing below*/
-//test_url = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
+/*testing variables*/
 var testSessionID = "abc123";
 
-var convertZoteroReponse = function(){
-//do something!!!
-
-}
-
-
 //CiteFromID (CFID) service
-var cfid = express();
+var citoid = express();
 
 //SECURITY WARNING: FOR TESTING PURPOSES, ALLOWS ALL REQUEST ORIGINS
-cfid.all('*', function(req, res, next) {
+citoid.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
  });
 
 // parse application/json
-cfid.use(bodyParser.json())
+citoid.use(bodyParser.json())
 
 /*URL for VE requests*/
-cfid.post('/ve', function(req, res){
+citoid.post('/ve', function(req, res){
 
 	//Retrieve query params from request
 	var requestedURL = req.body.url;
@@ -50,9 +43,9 @@ cfid.post('/ve', function(req, res){
 	});
 });
 
-cfid.listen(port);
+citoid.listen(port);
 
 console.log('Server running on http://localhost:'+port);
 
 /*Exports*/
-exports = module.exports = cfid;
+exports = module.exports = citoid;

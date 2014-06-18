@@ -1,6 +1,6 @@
 [gerrit]
 host=gerrit.wikimedia.org
 port=29418
-project=mediawiki/services/cite-from-id.git
+project=mediawiki/services/citoid.git
 defaultbranch=master
 defaultrebase=0

@@ -1,18 +1,17 @@
 {
-	"name" : "cite-from-id",
-	"description" : "Converts identifiers such as URL or DOI into citations",
+	"name" : "citoid",
+	"description" : "Converts search terms such as URL or title into citations",
 	"version" : "0.0.0",
 	"dependencies" : {
 		"async" : "latest",
+		"bluebird" : "latest",
 		"body-parser" : "latest",
 		"cheerio" : "latest",
 		"express" : "latest",
-		"request" : "latest",
-		"xmldom" : "latest",
-		"xpath" : "latest"
+		"request" : "latest"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gerrit.wikimedia.org/r/p/mediawiki/services/cite-from-id"
+		"url": "https://gerrit.wikimedia.org/r/p/mediawiki/services/citoid"
 	}
 }

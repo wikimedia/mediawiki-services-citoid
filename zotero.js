@@ -6,6 +6,8 @@
  */
 
 var request = require('request');
+var Promise = require('bluebird');
+var async = require('async');
 
 var zoteroURL = 'http://localhost:1969/web'; //assumes zotero already started
 
@@ -21,8 +23,13 @@ var zoteroRequest  = function(requestedURL, sessionID, callback){
 
 	request(options, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-			callback(modifyBody(body));
+			//modify body if response is okay
+			callback(error, response, modifyBody(body));
 		}
+		else {
+			callback(error, response, body);
+		}
+		
 	});
 };
 
@@ -47,18 +54,25 @@ var modifyBody = function(body){
 	}
 
 	delete body[0].creators; //remove creators field
-	//body[0] += newCreators; //append new creator fields to end of body
-	//console.log(body);
 	return body;
 }
 
 /*Test server fcns*/
 var testServer = function(){
-    testURL = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229"
+    //testURL = "http://www.tandfonline.com/doi/abs/10.1080/15424060903167229" //URL that works with Zotero
+	testURL = "http://books.google.co.uk/books?hl=en&lr=&id=7lueAgAAQBAJ&oi=fnd&pg=PR5&dq=mediawiki&ots=-Z0o2LCgao&sig=IGHnyWEiNiNvPyXeyCuOcdvi15s#v=onepage&q=mediawiki&f=false" //url that doesn't work with zotero
 	testSessionID = "abc123"
 
-	zoteroRequest(testURL, testSessionID, function(body){
-		console.log(modifyBody(body));
+	zoteroRequest(testURL, testSessionID, function(error, response, body){
+		if (response) {
+			if (!error && response.statusCode == 200) {
+				console.log(body);
+			}
+			else if(response.statusCode == 501){
+				console.log(body);
+			}
+		}
+		else {console.log("Server at "+zoteroURL+" does not appear to be running.")}
 	});
 }
 

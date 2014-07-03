@@ -54,8 +54,10 @@ citoid.post('/ve', function(req, res){
 
 	res.type('application/json');
 
+	var zoteroURLWeb = util.format(zoteroURL, 'web');
+
 	//Request from Zotero and set response
-	zoteroRequest(requestedURL, testSessionID, function(error, response, body){
+	zoteroRequest(zoteroURLWeb, requestedURL, testSessionID, function(error, response, body){
 
 		if (response) {
 			if (!error && response.statusCode == 200) {

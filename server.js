@@ -2,16 +2,28 @@
 /**
  * https://www.mediawiki.org/wiki/cite-from-id
  */
-
+/*external modules*/
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
-var zoteroRequest = require('./zotero.js').zoteroRequest;
 var urlParse = require('url');
+var util = require('util');
 
-var port = '1970';
+/*internal modules*/
+var zoteroRequest = require('./zotero.js').zoteroRequest;
 
-var zoteroURL = 'http://localhost:1969/web'; 
+/* import local settings*/
+var CitoidConfig = require('./localsettings.js').CitoidConfig;
+var citoidPort = CitoidConfig.citoidPort;
+var citoidInterface = CitoidConfig.citoidInterface;
+var zoteroPort = CitoidConfig.zoteroPort;
+var zoteroInterface = CitoidConfig.zoteroInterface;
+var wskey = CitoidConfig.wskey;
+var debug = CitoidConfig.debug;
+var allowCORS = CitoidConfig.allowCORS;
+
+//url base which allows further formatting by adding a single endpoint, i.e. 'web'
+var zoteroURL = util.format('http://%s:%s/%s', zoteroInterface, zoteroPort.toString()); 
 
 //Value of WorldCat API key. 
 //If false, doesn't use any WorldCat functions
@@ -20,13 +32,14 @@ var wskey = false;
 /*testing variables*/
 var testSessionID = "abc123";
 
-//CiteFromID (CFID) service
+//Init citoid webserver
 var citoid = express();
 
-//SECURITY WARNING: FOR TESTING PURPOSES, ALLOWS ALL REQUEST ORIGINS
+//SECURITY WARNING: ALLOWS ALL REQUEST ORIGINS
+//change allowCORS in localsettings.js
 citoid.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Origin", allowCORS);
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   next();
  });
 
@@ -65,9 +78,9 @@ citoid.post('/ve', function(req, res){
 	});
 });
 
-citoid.listen(port);
+citoid.listen(citoidPort);
 
-console.log('Server running on http://localhost:'+port);
+console.log('Server running on http://localhost:'+citoidPort);
 
 /*Exports*/
 exports = module.exports = citoid;

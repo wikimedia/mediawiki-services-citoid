@@ -1,30 +1,31 @@
 #!/usr/bin/env node
 /**
  * https://www.mediawiki.org/wiki/citoid
- * 
- *
  */
 
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
-var cheerio = require('cheerio');
 var request = require('request');
 
 //Currently picks out contents of <title> tag only
 //returns list of json obj (i.e. body)
 var scrapeXpath = function(url, callback){
+	var json = { title : "", url: url};
 	request(
 		{
 			url: url, 
 			headers: {'user-agent': 'Mozilla/5.0'},
-			//followRedirect: false
+			//followRedirect: false 
 		}, function(url, response, html){
-		var doc = new dom().parseFromString(html);
-		var titleValue = xpath.select("//title/text()", doc).toString();
-		var json = { title : ""};
-		json.title = titleValue;
-		var body = [json];
-		callback(body);
+			var doc = new dom().parseFromString(html);
+			var titleValue = '';
+			try {
+				titleValue = xpath.select("//title/text()", doc).toString();
+			}
+			catch (e){}
+			json.title = titleValue;
+			var body = [json];
+			callback(body);
 	});
 }
 
@@ -38,4 +39,6 @@ if (require.main === module) {
 	});
 }
 
-exports = module.exports = scrape;
+module.exports = {
+	scrape: scrape
+};

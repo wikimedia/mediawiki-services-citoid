@@ -9,7 +9,6 @@
 		"cheerio" : "latest",
 		"express" : "latest",
 		"request" : "latest",
-		"unshorten" : "latest",
 		"xmldom" : "latest",
 		"xpath" : "latest"
 	},

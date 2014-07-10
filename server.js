@@ -8,7 +8,7 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var urlParse = require('url');
 var util = require('util');
-var unshorten = require('unshorten');
+var unshorten = require('./unshorten.js');
 
 /*internal modules*/	
 var zoteroRequest = require('./zotero.js').zoteroRequest;

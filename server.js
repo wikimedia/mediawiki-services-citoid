@@ -47,14 +47,15 @@ citoid.all('*', function(req, res, next) {
  });
 
 // parse application/json
-citoid.use(bodyParser.json())
+citoid.use(bodyParser.json());
 
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
 
 	//Retrieve query params from request
-	var requestedURL = req.body.url;
-	var zoteroURLWeb = util.format(zoteroURL, 'web');
+	var requestedURL = req.body.url,
+		zoteroURLWeb = util.format(zoteroURL, 'web');
+
 	res.type('application/json');
 
 	//parse URL. should come out the same as it goes in if formatted properly
@@ -62,10 +63,10 @@ citoid.post('/url', function(req, res){
 		var parsedURL = urlParse.parse(requestedURL);
 		//defaults to http if no protocol specified.
 		if (!parsedURL.protocol){
-			//can't set directly due to node url library bug :(
-			requestedURL = 'http://'+ urlParse.format(parsedURL);
+			parsedURL.protocol = 'http:';
+			parsedURL.slashes = true;
 		}
-		else {requestedURL = urlParse.format(parsedURL);}
+		requestedURL = urlParse.format(parsedURL);
 	}
 	catch (e){
 		console.log(e); 
@@ -112,7 +113,7 @@ citoid.post('/url', function(req, res){
 		}
 		else {
 			//no response
-			var message = "Server at "+zoteroURL+" does not appear to be running.";
+			var message = "No response from Zotero server.";
 			res.statusCode = 500;
 			res.json("Internal server error");
 			console.log(message);

@@ -6,6 +6,7 @@
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var request = require('request');
+var urlParse = require('url');
 
 
 /**
@@ -16,15 +17,23 @@ var request = require('request');
  */
 
 var scrapeXpath = function(url, callback){
-	var json = { title : "", url: url};
 	request(
 		{
 			url: url, 
 			headers: {'user-agent': 'Mozilla/5.0'},
-			//followRedirect: false 
-		}, function(url, response, html){
-			var doc, 
-				titleValue = '';
+			followAllRedirects: true 
+		}, function(error, response, html){
+
+			var doc, body, titleValue,
+				json = {itemType: 'webpage'};
+
+			if (error || !response) {
+				json['url'] = url;
+				json['title'] = url;
+				body = [json];
+				callback(body);
+				return;
+			}
 
 			try{
 				doc = new dom().parseFromString(html);
@@ -40,8 +49,20 @@ var scrapeXpath = function(url, callback){
 				console.log(e);
 			}
 
-			json.title = titleValue;
-			var body = [json];
+			parsedUrl = response.request.uri ? response.request.uri : urlParse.parse(url);
+			json['url'] = url;
+
+			d = new Date();
+			json['accessDate'] = d.toDateString();
+
+			json['title'] = titleValue ? titleValue : url;
+
+			if (titleValue && parsedUrl && parsedUrl.hostname) {
+				json['publicationTitle'] = parsedUrl.hostname;
+			}
+
+			body = [json];
+
 			callback(body);
 	});
 };

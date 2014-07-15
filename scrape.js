@@ -3,10 +3,10 @@
  * https://www.mediawiki.org/wiki/citoid
  */
 
-var xpath = require('xpath'),
-	dom = require('xmldom').DOMParser,
-	urlParse = require('url');
-	request = require('request');
+var xpath = require('xpath');
+var dom = require('xmldom').DOMParser;
+var request = require('request');
+
 
 /**
  * Currently picks out contents of <title> tag only
@@ -16,51 +16,31 @@ var xpath = require('xpath'),
  */
 
 var scrapeXpath = function(url, callback){
-	var body,
-		json = {
-			itemType: 'webpage',
-		};
-
-
+	var json = { title : "", url: url};
 	request(
 		{
 			url: url, 
 			headers: {'user-agent': 'Mozilla/5.0'},
 			//followRedirect: false 
-		}, function(error, response, html){
-
-			//case for there being no response from the server
-			//usually in the case of malformed url
-			if (error || !response) {
-				json['url'] = url;
-				json['title'] = url;
-				body = [json];
-				callback(body);
-				return;
-			}
-
-			var d,
-				parsedUrl = response.request.uri ? response.request.uri : urlParse.parse(url);
-
-			json['url'] = urlParse.format(parsedUrl);
+		}, function(url, response, html){
+			var doc, 
+				titleValue = '';
 
 			try{
-				var doc = new dom().parseFromString(html);
-				json['title'] = xpath.select('//title/text()', doc).toString();
+				doc = new dom().parseFromString(html);
 			}
 			catch (e){
-				json['title'] = parsedUrl.pathname ? (parsedUrl.hostname.toString() + parsedUrl.pathname.toString()) : parsedUrl.hostname.toString();
+				console.log(e);
 			}
 
-			//only set pub title if doc sucessfully parsed
-			//b/c otherwise full url is in the title field anyway
-			if (doc) {
-				json['publicationTitle'] = parsedUrl.hostname;
+			try {
+				titleValue = xpath.select("//title/text()", doc).toString();
+			}
+			catch (e){
+				console.log(e);
 			}
 
-			d = new Date();
-			json['accessDate'] = d.toDateString();	
-
+			json.title = titleValue;
 			var body = [json];
 			callback(body);
 	});

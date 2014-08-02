@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * https://www.mediawiki.org/wiki/citoid
+ * https://www.mediawiki.org/wiki/cite-from-id
  */
 /*external modules*/
 var express = require('express');
@@ -47,7 +47,7 @@ citoid.all('*', function(req, res, next) {
  });
 
 // parse application/json
-citoid.use(bodyParser.json());
+citoid.use(bodyParser.json())
 
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
@@ -62,6 +62,7 @@ citoid.post('/url', function(req, res){
 		var parsedURL = urlParse.parse(requestedURL);
 		//defaults to http if no protocol specified.
 		if (!parsedURL.protocol){
+			//can't set directly due to node url library bug :(
 			requestedURL = 'http://'+ urlParse.format(parsedURL);
 		}
 		else {requestedURL = urlParse.format(parsedURL);}
@@ -72,23 +73,20 @@ citoid.post('/url', function(req, res){
 
 	//Request from Zotero and set response
 	zoteroRequest(zoteroURLWeb, requestedURL, testSessionID, function(error, response, body){
-		console.log("Request made for: " + requestedURL);
+
 		if (response) {
 			if (!error) {
 				//501 indicates no translator availabe
 				//this is common- can indicate shortened url
 				//or a website not specified in the translators
-				if (~[500, 501].indexOf(response.statusCode)){
+				if ((response.statusCode == 501)||(response.statusCode == 500)){
 					//try again with unshortened url
-					//we don't do this initially because many sites
-					//will redirect this fcn to a log-in screen
 					unshorten(requestedURL, function(expandedURL) {
 						zoteroRequest(zoteroURLWeb, expandedURL, testSessionID, 
 							function(error, response, body){
 							if (response){
-								//if still no translator, or translation fails,
-								//send to naive scraper
-								if (~[500, 501].indexOf(response.statusCode)){
+								//if still no translator, send to naive scraper
+								if (response.statusCode == 501){
 									scrape(requestedURL, function(body){
 										res.statusCode = 200;
 										res.json(body);

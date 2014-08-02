@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * https://www.mediawiki.org/wiki/citoid
+ * https://www.mediawiki.org/wiki/cite-from-id
 * 
 * Supplies methods to send requests to a Zotero server
  */
@@ -33,46 +33,27 @@ var zoteroRequest  = function(zoteroURL, requestedURL, sessionID, callback){
 
 /*Currently replaces creators obj list with flat set of fields*/
 var modifyBody = function(body){
-	var citation, zotCreators,
-		creatorTypeCount = {};
+	var creatorTypeCount = {};
+	var zotCreators = body[0].creators;
 
-	//hack
-	//in most cases body will be a list, but in some will be a list of lists
-	if (!(body[0] instanceof Array)){
-		citation = body[0];
-	}
-	else if (!(body[0][0] instanceof Array)){
-		citation = body[0][0];
-	}
-	else {
-		return body;
-	}
-
-	if (citation.creators) {
-		zotCreators = citation.creators;
-
-		for (z in zotCreators){
-			console.log(z);
-			console.log(zotCreators[z]);
-			creatorFieldName = zotCreators[z].creatorType;
-			if (creatorTypeCount[creatorFieldName]){
-				creatorTypeCount[creatorFieldName] += 1;
-			}
-			else {
-				creatorTypeCount[creatorFieldName] = 1;
-			}
-			//Appends number to name, i.e. author -> author1
-			creatorFieldName += (parseInt(creatorTypeCount[creatorFieldName])); 
-
-			citation[creatorFieldName + "-first"] = zotCreators[z].firstName;
-			citation[creatorFieldName + "-last"] = zotCreators[z].lastName;
+	for (z in zotCreators){
+		creatorFieldName = zotCreators[z].creatorType;
+		if (creatorTypeCount[creatorFieldName]){
+			creatorTypeCount[creatorFieldName] += 1;
 		}
+		else {
+			creatorTypeCount[creatorFieldName] = 1;
+		}
+		//Appends number to name, i.e. author -> author1
+		creatorFieldName += (parseInt(creatorTypeCount[creatorFieldName])); 
 
-		//delete citation.creators; //remove creators field
+		body[0][creatorFieldName + "-first"] = zotCreators[z].firstName;
+		body[0][creatorFieldName + "-last"] = zotCreators[z].lastName;
 	}
 
-	return citation;
-};
+	delete body[0].creators; //remove creators field
+	return body;
+}
 
 /*Test server fcns*/
 var testServer = function(){
@@ -91,9 +72,9 @@ var testServer = function(){
 				console.log(body);
 			}
 		}
-		else {console.log("Server at "+zoteroURL+" does not appear to be running.")};
+		else {console.log("Server at "+zoteroURL+" does not appear to be running.")}
 	});
-};
+}
 
 /*Test response alterations without having to use server*/
 var testJSON = function(){
@@ -102,7 +83,7 @@ var testJSON = function(){
 	console.log(JSON.stringify(sampleJSON));
 	console.log("after:");
 	console.log(JSON.stringify(modifyBody(sampleJSON)));
-};
+}
 
 /*Test methods in main */
 if (require.main === module) {

@@ -24,13 +24,8 @@ var wskey = CitoidConfig.wskey;
 var debug = CitoidConfig.debug;
 var allowCORS = CitoidConfig.allowCORS;
 
-
 //url base which allows further formatting by adding a single endpoint, i.e. 'web'
 var zoteroURL = util.format('http://%s:%s/%s', zoteroInterface, zoteroPort.toString()); 
-
-//Value of WorldCat API key. 
-//If false, doesn't use any WorldCat functions
-var wskey = false; 
 
 /*testing variables*/
 var testSessionID = "abc123";
@@ -52,12 +47,11 @@ citoid.use(bodyParser.json());
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
 
-	//Retrieve query params from request
-	var requestedURL = req.body.url;
-	var zoteroURLWeb = util.format(zoteroURL, 'web');
+	var requestedURL = req.body.url,
+		zoteroURLWeb = util.format(zoteroURL, 'web');
+
 	res.type('application/json');
 
-	//parse URL. should come out the same as it goes in if formatted properly
 	try {
 		var parsedURL = urlParse.parse(requestedURL);
 		//defaults to http if no protocol specified.
@@ -109,7 +103,8 @@ citoid.post('/url', function(req, res){
 			}
 			else {
 				res.statusCode = 500;
-				res.json("internal server error");
+				res.json("Internal server error");
+				console.log(error);
 			}
 		}
 		else {

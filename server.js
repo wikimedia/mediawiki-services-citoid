@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * https://www.mediawiki.org/wiki/cite-from-id
+ * https://www.mediawiki.org/wiki/citoid
  */
 /*external modules*/
 var express = require('express');
@@ -24,13 +24,8 @@ var wskey = CitoidConfig.wskey;
 var debug = CitoidConfig.debug;
 var allowCORS = CitoidConfig.allowCORS;
 
-
 //url base which allows further formatting by adding a single endpoint, i.e. 'web'
 var zoteroURL = util.format('http://%s:%s/%s', zoteroInterface, zoteroPort.toString()); 
-
-//Value of WorldCat API key. 
-//If false, doesn't use any WorldCat functions
-var wskey = false; 
 
 /*testing variables*/
 var testSessionID = "abc123";
@@ -47,22 +42,20 @@ citoid.all('*', function(req, res, next) {
  });
 
 // parse application/json
-citoid.use(bodyParser.json())
+citoid.use(bodyParser.json());
 
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
 
-	//Retrieve query params from request
-	var requestedURL = req.body.url;
-	var zoteroURLWeb = util.format(zoteroURL, 'web');
+	var requestedURL = req.body.url,
+		zoteroURLWeb = util.format(zoteroURL, 'web');
+
 	res.type('application/json');
 
-	//parse URL. should come out the same as it goes in if formatted properly
 	try {
 		var parsedURL = urlParse.parse(requestedURL);
 		//defaults to http if no protocol specified.
 		if (!parsedURL.protocol){
-			//can't set directly due to node url library bug :(
 			requestedURL = 'http://'+ urlParse.format(parsedURL);
 		}
 		else {requestedURL = urlParse.format(parsedURL);}
@@ -73,20 +66,23 @@ citoid.post('/url', function(req, res){
 
 	//Request from Zotero and set response
 	zoteroRequest(zoteroURLWeb, requestedURL, testSessionID, function(error, response, body){
-
+		console.log("Request made for: " + requestedURL);
 		if (response) {
 			if (!error) {
 				//501 indicates no translator availabe
 				//this is common- can indicate shortened url
 				//or a website not specified in the translators
-				if ((response.statusCode == 501)||(response.statusCode == 500)){
+				if (~[500, 501].indexOf(response.statusCode)){
 					//try again with unshortened url
+					//we don't do this initially because many sites
+					//will redirect this fcn to a log-in screen
 					unshorten(requestedURL, function(expandedURL) {
 						zoteroRequest(zoteroURLWeb, expandedURL, testSessionID, 
 							function(error, response, body){
 							if (response){
-								//if still no translator, send to naive scraper
-								if (response.statusCode == 501){
+								//if still no translator, or translation fails,
+								//send to naive scraper
+								if (~[500, 501].indexOf(response.statusCode)){
 									scrape(requestedURL, function(body){
 										res.statusCode = 200;
 										res.json(body);
@@ -107,7 +103,8 @@ citoid.post('/url', function(req, res){
 			}
 			else {
 				res.statusCode = 500;
-				res.json("internal server error");
+				res.json("Internal server error");
+				console.log(error);
 			}
 		}
 		else {

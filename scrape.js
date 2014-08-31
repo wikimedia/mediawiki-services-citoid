@@ -3,10 +3,9 @@
  * https://www.mediawiki.org/wiki/citoid
  */
 
-var xpath = require('xpath');
-var dom = require('xmldom').DOMParser;
 var request = require('request');
 var urlParse = require('url');
+var cheerio = require('cheerio');
 
 
 /**
@@ -16,7 +15,26 @@ var urlParse = require('url');
  * @param  {Function} callback callback function
  */
 
-var scrapeXpath = function(url, callback){
+var scrape = function(url, callback){
+
+	var $;
+
+	function getTitle() {
+
+		var title;
+
+		// Try to get title from itemprop="heading"
+		title = $('*[itemprop~="headline"]').first().text();
+		if (title) { return title; }
+
+		// Try to get title from <title> tag
+		title = $('title').first().text();
+		if (title) { return title; }
+
+		// Default
+		return url;
+	}
+
 	request(
 		{
 			url: url, 
@@ -24,50 +42,35 @@ var scrapeXpath = function(url, callback){
 			followAllRedirects: true 
 		}, function(error, response, html){
 
-			var doc, body, titleValue,
-				json = {itemType: 'webpage'};
+			var json = {itemType: 'webpage', url: url, title: url};
 
 			if (error || !response) {
-				json['url'] = url;
-				json['title'] = url;
-				body = [json];
-				callback(body);
+				callback([json]);
 				return;
 			}
 
 			try{
-				doc = new dom().parseFromString(html);
+				$ = cheerio.load(html);
 			}
 			catch (e){
-				console.log(e);
+				console.log('Could not load document: ' + e);
+				callback([json]);
 			}
 
-			try {
-				titleValue = xpath.select("//title/text()", doc).toString();
-			}
-			catch (e){
-				console.log(e);
-			}
+			json.title = getTitle();
 
-			parsedUrl = response.request.uri ? response.request.uri : urlParse.parse(url);
-			json['url'] = url;
+			// Access date on format YYYY-MM-DD
+			json.accessDate = (new Date()).toISOString().substring(0, 10);
 
-			d = new Date();
-			json['accessDate'] = d.toDateString();
+			var parsedUrl = response.request.uri ? response.request.uri : urlParse.parse(url);
 
-			json['title'] = titleValue ? titleValue : url;
-
-			if (titleValue && parsedUrl && parsedUrl.hostname) {
-				json['publicationTitle'] = parsedUrl.hostname;
+			if (json.title && parsedUrl && parsedUrl.hostname) {
+				json.publicationTitle = parsedUrl.hostname;
 			}
 
-			body = [json];
-
-			callback(body);
+			callback([json]);
 	});
 };
-
-var scrape = scrapeXpath;
 
 if (require.main === module) {
 	var sampleUrl = 'http://example.com';

@@ -47,11 +47,18 @@ citoid.use(bodyParser.json());
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
 
-	var requestedURL = req.body.url,
+	var format = req.body.format,
+		requestedURL = req.body.url,
 		zoteroURLWeb = util.format(zoteroURL, 'web');
+
+	//temp backwards compatibility
+	if (!format){
+		format = 'mwDeprecated';
+	}
 
 	res.type('application/json');
 
+	//TODO: fix for async error catching
 	try {
 		var parsedURL = urlParse.parse(requestedURL);
 		//defaults to http if no protocol specified.
@@ -64,8 +71,11 @@ citoid.post('/url', function(req, res){
 		console.log(e); 
 	}
 
+	//make things work with new format for now..
+	//format = 'mediawiki';
+
 	//Request from Zotero and set response
-	zoteroRequest(zoteroURLWeb, requestedURL, testSessionID, function(error, response, body){
+	zoteroRequest(zoteroURLWeb, requestedURL, testSessionID, format, function(error, response, body){
 		console.log("Request made for: " + requestedURL);
 		if (response) {
 			if (!error) {
@@ -77,7 +87,7 @@ citoid.post('/url', function(req, res){
 					//we don't do this initially because many sites
 					//will redirect this fcn to a log-in screen
 					unshorten(requestedURL, function(expandedURL) {
-						zoteroRequest(zoteroURLWeb, expandedURL, testSessionID, 
+						zoteroRequest(zoteroURLWeb, expandedURL, testSessionID, format,
 							function(error, response, body){
 							if (response){
 								//if still no translator, or translation fails,

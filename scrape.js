@@ -9,7 +9,7 @@ var cheerio = require('cheerio');
 
 
 /**
- * Currently picks out contents of <title> tag only
+ * Currently scrapes title only
  * callback runs on list of json objs (var body)
  * @param  {String}   url      url to scrape
  * @param  {Function} callback callback function
@@ -45,6 +45,7 @@ var scrape = function(url, callback){
 			var json = {itemType: 'webpage', url: url, title: url};
 
 			if (error || !response) {
+				console.log(error);
 				callback([json]);
 				return;
 			}

@@ -31,13 +31,14 @@ var zoteroRequest  = function(zoteroURL, requestedURL, sessionID, format, callba
 
 /*Converts Zotero body into appropriate format*/
 var modifyBody = function(url, format, body){
-	var convert,
-		formatFcns = {
+	console.log(format);
+	var formatFcns = {
 		'mwDeprecated':convertToMWDeprecated,
 		'mediawiki':convertToMediawiki,
 		'zotero':convertToZotero
-		};
-
+		},
+		convert = formatFcns[format];
+		
 	//if format is not available, use zotero as default- may want to switch to returning error instead
 	if (convert){
 		return convert(url, body);

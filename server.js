@@ -41,8 +41,13 @@ citoid.all('*', function(req, res, next) {
   next();
  });
 
-// parse application/json
 citoid.use(bodyParser.json());
+
+/*Landing page*/
+citoid.get('/', function(req, res){
+	res.setHeader("Content-Type", "text/html");
+	res.send('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Citoid service</title></head><body><h1><a href="https://www.mediawiki.org/wiki/Citoid" target="_blank">Citoid Documentation</a></h1></body></html>');
+});
 
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){

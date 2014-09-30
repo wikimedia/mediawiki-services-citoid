@@ -8,9 +8,11 @@
 		"body-parser" : "latest",
 		"cheerio" : "latest",
 		"express" : "latest",
+		"path": "latest",
 		"request" : "latest",
 		"xmldom" : "latest",
-		"xpath" : "latest"
+		"xpath" : "latest",
+		"yargs": "latest"
 	},
 	"repository": {
 		"type": "git",

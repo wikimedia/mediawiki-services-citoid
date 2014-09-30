@@ -8,14 +8,23 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var urlParse = require('url');
 var util = require('util');
+var path = require('path');
 var unshorten = require('./unshorten.js');
+var opts = require('yargs')
+	.usage('Usage: $0 [-c configfile|--config=configfile]')
+	.default({
+		c: __dirname + '/localsettings.js'
+	})
+	.alias( 'c', 'config' );
+var argv = opts.argv;
 
 /*internal modules*/	
 var zoteroRequest = require('./zotero.js').zoteroRequest;
 var scrape = require('./scrape.js').scrape;
 
 /* import local settings*/
-var CitoidConfig = require('./localsettings.js').CitoidConfig;
+var settingsFile = path.resolve(process.cwd(), argv.c);
+var CitoidConfig = require(settingsFile).CitoidConfig;
 var citoidPort = CitoidConfig.citoidPort;
 var citoidInterface = CitoidConfig.citoidInterface;
 var zoteroPort = CitoidConfig.zoteroPort;

@@ -51,6 +51,7 @@ citoid.all('*', function(req, res, next) {
  });
 
 citoid.use(bodyParser.json());
+citoid.use(bodyParser.urlencoded({extended: false}));
 
 /*Landing page*/
 citoid.get('/', function(req, res){

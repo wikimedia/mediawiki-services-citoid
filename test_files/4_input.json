@@ -1,0 +1,47 @@
+[
+    [
+        {
+            "itemKey": "RNW2N68C",
+            "itemVersion": 0,
+            "itemType": "journalArticle",
+            "creators": [
+                {
+                    "firstName": "Ribhi",
+                    "lastName": "Hazin",
+                    "creatorType": "author"
+                },
+                {
+                    "firstName": "Tarek I. Abu-Rajab",
+                    "lastName": "Tamimi",
+                    "creatorType": "author"
+                },
+                {
+                    "firstName": "Jamil Y.",
+                    "lastName": "Abuzetun",
+                    "creatorType": "author"
+                },
+                {
+                    "firstName": "Nizar N.",
+                    "lastName": "Zein",
+                    "creatorType": "author"
+                }
+            ],
+            "tags": [],
+            "title": "Recognizing and treating cutaneous signs of liver disease",
+            "date": "10/01/2009",
+            "DOI": "10.3949/ccjm.76A.08113",
+            "language": "en",
+            "publicationTitle": "Cleveland Clinic Journal of Medicine",
+            "journalAbbreviation": "Cleveland Clinic Journal of Medicine",
+            "volume": "76",
+            "issue": "10",
+            "url": "http://www.ccjm.org/content/76/10/599",
+            "pages": "599-606",
+            "ISSN": "0891-1150, 1939-2869",
+            "extra": "PMID: 19797460",
+            "libraryCatalog": "www.ccjm.org",
+            "accessDate": "CURRENT_TIMESTAMP",
+            "abstractNote": "Cutaneous changes may be the first clue that a patient has liver disease. Recognizing these signs is crucial to diagnosing liver conditions early. Here we describe the spectrum of skin manifestations that may be found in various liver diseases.\nKey points\nPruritus due to liver disease is particularly resistant to therapy. Cholestyramine (Questran) 4 g/day, gradually increased to 24 g/day, is one option. If the pruritus does not respond or the patient cannot tolerate cholestyramine, rifampin (Rifadin) can be tried.\nSpider angiomas, Bier spots, and “paper-money” skin are all superficial vascular problems that may be related to liver disease.\nCutaneous lesions often accompany alcoholic cirrhosis and have been detected in up to 43% of people with chronic alcoholism. The combination of spider angiomas, palmar erythema, and Dupuytren contracture is common in alcoholic cirrhosis.\nAlthough porphyria cutanea tarda is associated with liver disease in general, recent studies show that patients with hepatitis C are at particularly high risk."
+        }
+    ]
+]

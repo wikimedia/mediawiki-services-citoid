@@ -6,6 +6,7 @@
 		"async" : "latest",
 		"bluebird" : "latest",
 		"body-parser" : "latest",
+		"bunyan" : "latest",
 		"cheerio" : "latest",
 		"express" : "latest",
 		"path": "latest",

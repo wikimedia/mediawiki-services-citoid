@@ -8,9 +8,6 @@
 
 var CitoidConfig = {
 
-	//Set your WorldCat API key here
-	wskey : false,
-
 	// Enable debug mode (prints extra debugging messages)
 	debug : true,
 

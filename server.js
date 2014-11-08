@@ -48,7 +48,6 @@ citoid.all('*', function(req, res, next) {
 
 citoid.use(bodyParser.json());
 citoid.use(bodyParser.urlencoded({extended: false}));
-//citoid.use(bunyan());
 citoid.use(express.static('api')); //cache api pages
 
 /*Landing page*/
@@ -76,6 +75,8 @@ citoid.get('/', function(req, res){
 /*Endpoint for retrieving citations in JSON format from a URL*/
 citoid.post('/url', function(req, res){
 
+	res.type('application/json');
+
 	var opts, parsedURL,
 		format = req.body.format,
 		requestedURL = req.body.url,
@@ -87,8 +88,6 @@ citoid.post('/url', function(req, res){
 	if (!format){
 	 	format = 'mwDeprecated';
 	}
-
-	res.type('application/json');
 
 	parsedURL = urlParse.parse(requestedURL);
 	//defaults to http if no protocol specified.
@@ -117,6 +116,9 @@ citoid.post('/url', function(req, res){
 
 /**Endpoint for retrieving citations based on search term (URL,DOI)*/
 citoid.get('/api', function(req, res){
+
+	res.type('application/json');
+
 	var opts, dSearch,
 		format = req.query.format,
 		search = req.query.search;

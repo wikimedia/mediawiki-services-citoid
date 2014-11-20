@@ -112,6 +112,7 @@ citoid.post('/url', function(req, res){
 			res.send(body);
 		}
 	});
+
 });
 
 /**Endpoint for retrieving citations based on search term (URL,DOI)*/
@@ -137,13 +138,13 @@ citoid.get('/api', function(req, res){
 
 		dSearch = decodeURIComponent(search); //decode urlencoded search string
 
+		opts = {
+			zoteroURL:zoteroURL,
+			sessionID:"123abc",
+			format:format
+		};
+
 		distinguish(dSearch, function(extractedID, runnerFunction){
-			opts = {
-				zoteroURL:zoteroURL,
-				sessionID:"123abc",
-				format:format,
-				identifier:extractedID
-			};
 
 			runnerFunction(extractedID, opts, function(error, responseCode, body){
 				if (!error){

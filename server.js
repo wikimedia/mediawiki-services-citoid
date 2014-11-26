@@ -17,7 +17,9 @@ var opts = require('yargs')
 	})
 	.alias( 'c', 'config' );
 var argv = opts.argv;
+var crypto = require('crypto');
 
+/*Local modules*/
 var distinguish = require('./lib/distinguish.js').distinguish;
 var requestFromURL = require('./lib/requests.js').requestFromURL;
 
@@ -80,7 +82,7 @@ citoid.post('/url', function(req, res){
 	var opts, parsedURL,
 		format = req.body.format,
 		requestedURL = req.body.url,
-		sessionID = "123abc";
+		sessionID = crypto.randomBytes(20).toString('hex');
 
 	log.info(req);
 
@@ -138,9 +140,11 @@ citoid.get('/api', function(req, res){
 
 		dSearch = decodeURIComponent(search); //decode urlencoded search string
 
+		sessionID = crypto.randomBytes(20).toString('hex'); //required zotero- not terribly important for this to be secure
+
 		opts = {
 			zoteroURL:zoteroURL,
-			sessionID:"123abc",
+			sessionID:sessionID,
 			format:format
 		};
 
@@ -152,7 +156,7 @@ citoid.get('/api', function(req, res){
 					res.send(body);
 				}
 				else {
-					res.statusCode = 520; //Server at requested location not available
+					res.statusCode = 520; //TODO: Server at requested location not available, not valid for non-urls
 					res.send(body);
 				}
 			});

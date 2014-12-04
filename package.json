@@ -1,19 +1,19 @@
 {
 	"name" : "citoid",
-	"description" : "Converts search terms such as URL or title into citations",
 	"version" : "0.0.0",
+	"description" : "Converts search terms such as URL or title into citations.",
 	"dependencies" : {
-		"async" : "latest",
-		"bluebird" : "latest",
-		"body-parser" : "latest",
-		"bunyan" : "latest",
-		"cheerio" : "latest",
-		"express" : "latest",
-		"path": "latest",
-		"request" : "latest",
-		"xmldom" : "latest",
-		"xpath" : "latest",
-		"yargs": "latest"
+		"async" : "0.9.0",
+		"bluebird" : "2.3.11",
+		"body-parser" : "1.10.0",
+		"bunyan" : "1.2.3",
+		"cheerio" : "0.18.0",
+		"express" : "4.10.4",
+		"path": "0.4.9",
+		"request" : "2.49.0",
+		"xmldom" : "0.1.19",
+		"xpath" : "0.0.7",
+		"yargs": "1.3.3"
 	},
 	"repository": {
 		"type": "git",

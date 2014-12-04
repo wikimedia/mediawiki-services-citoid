@@ -17,6 +17,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gerrit.wikimedia.org/r/p/mediawiki/services/citoid"
+		"url": "https://gerrit.wikimedia.org/r/mediawiki/services/citoid"
 	}
 }

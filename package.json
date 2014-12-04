@@ -18,5 +18,22 @@
 	"repository": {
 		"type": "git",
 		"url": "https://gerrit.wikimedia.org/r/mediawiki/services/citoid"
-	}
+	},
+	"contributors": [
+	{
+		"name": "Marielle Volz",
+		"email": "marielle.volz@gmail.com"
+	},
+	{
+		"name": "Danny Wu",
+		"email": "utf8snowman@gmail.com"
+	},
+	{
+		"name": "Geoffrey Mon",
+		"email": "geofbot@gmail.com"
+	},
+	{
+		"name": "Dan Michael O. Heggø",
+		"email": "danmichaelo@gmail.com"
+	}]
 }

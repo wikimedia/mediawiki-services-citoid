@@ -91,30 +91,36 @@ citoid.post('/url', function(req, res){
 	 	format = 'mwDeprecated';
 	}
 
-	parsedURL = urlParse.parse(requestedURL);
-	//defaults to http if no protocol specified.
-	if (!parsedURL.protocol){
-		requestedURL = 'http://'+ urlParse.format(parsedURL);
-	}
-	else {requestedURL = urlParse.format(parsedURL);}
-
 	opts = {
 		zoteroURL:zoteroURL,
 		sessionID: sessionID,
 		format: format
 	};
 
-	requestFromURL(requestedURL, opts, function(error, responseCode, body){
-		if (!error){
-			res.statusCode = responseCode;
-			res.send(body);
-		}
-		else {
-			res.statusCode = 520;
-			res.send(body);
-		}
-	});
+	if (!requestedURL){
+		res.statusCode = 400;
+		res.setHeader("Content-Type", "text/plain");
+		res.send('"url" is a required parameter');
+	} else {
 
+		parsedURL = urlParse.parse(requestedURL);
+		//defaults to http if no protocol specified.
+		if (!parsedURL.protocol){
+			requestedURL = 'http://'+ urlParse.format(parsedURL);
+		}
+		else {requestedURL = urlParse.format(parsedURL);}
+
+		requestFromURL(requestedURL, opts, function(error, responseCode, body){
+			if (!error){
+				res.statusCode = responseCode;
+				res.send(body);
+			}
+			else {
+				res.statusCode = 520;
+				res.send(body);
+			}
+		});
+	}
 });
 
 /**Endpoint for retrieving citations based on search term (URL,DOI)*/

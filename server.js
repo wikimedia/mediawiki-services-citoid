@@ -3,45 +3,45 @@
  * https://www.mediawiki.org/wiki/citoid
  */
 
-/*external modules*/
-var bodyParser = require('body-parser');
-var bunyan = require('bunyan');
-var express = require('express');
-var path = require('path');
-var urlParse = require('url');
-var util = require('util');
-var opts = require('yargs')
+/* Import External Modules */
+var bodyParser = require('body-parser'),
+	bunyan = require('bunyan'),
+	crypto = require('crypto'),
+	express = require('express'),
+	path = require('path'),
+	urlParse = require('url'),
+	util = require('util'),
+	opts = require('yargs')
 	.usage('Usage: $0 [-c configfile|--config=configfile]')
 	.default({
 		c: __dirname + '/localsettings.js'
 	})
-	.alias( 'c', 'config' );
-var argv = opts.argv;
-var crypto = require('crypto');
+	.alias( 'c', 'config' ),
+	argv = opts.argv;
 
-/*Local modules*/
-var distinguish = require('./lib/distinguish.js').distinguish;
-var requestFromURL = require('./lib/requests.js').requestFromURL;
+/* Import Local Modules */
+var distinguish = require('./lib/distinguish.js').distinguish,
+	requestFromURL = require('./lib/requests.js').requestFromURL;
 
-/* import local settings*/
-var settingsFile = path.resolve(process.cwd(), argv.c);
-var CitoidConfig = require(settingsFile).CitoidConfig;
-var citoidPort = CitoidConfig.citoidPort;
-var citoidInterface = CitoidConfig.citoidInterface;
-var zoteroPort = CitoidConfig.zoteroPort;
-var zoteroInterface = CitoidConfig.zoteroInterface;
-var debug = CitoidConfig.debug;
-var allowCORS = CitoidConfig.allowCORS;
+/* Import Local Settings */
+var settingsFile = path.resolve(process.cwd(), argv.c),
+	CitoidConfig = require(settingsFile).CitoidConfig,
+	citoidPort = CitoidConfig.citoidPort,
+	citoidInterface = CitoidConfig.citoidInterface,
+	zoteroPort = CitoidConfig.zoteroPort,
+	zoteroInterface = CitoidConfig.zoteroInterface,
+	debug = CitoidConfig.debug,
+	allowCORS = CitoidConfig.allowCORS;
 
-//url base which allows further formatting by adding a single endpoint, i.e. 'web'
+// URL base which allows further formatting by adding a single endpoint, i.e. 'web'
 var zoteroURL = util.format('http://%s:%s/%s', zoteroInterface, zoteroPort.toString());
 
-//Init citoid webserver
+// Init citoid webserver
 var citoid = express();
 var log = bunyan.createLogger({name: "citoid"});
 
-//SECURITY WARNING: ALLOWS ALL REQUEST ORIGINS
-//change allowCORS in localsettings.js
+// SECURITY WARNING: ALLOWS ALL REQUEST ORIGINS
+// change allowCORS in localsettings.js
 citoid.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", allowCORS);
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
@@ -52,8 +52,8 @@ citoid.use(bodyParser.json());
 citoid.use(bodyParser.urlencoded({extended: false}));
 citoid.use(express.static('api')); //cache api pages
 
-/*Landing page*/
-/*jshint multistr: true */
+/* Landing Page */
+/* jshint multistr: true */
 citoid.get('/', function(req, res){
 	res.setHeader("Content-Type", "text/html");
 	res.send('<!DOCTYPE html>\
@@ -74,7 +74,7 @@ citoid.get('/', function(req, res){
 	');
 });
 
-/*Endpoint for retrieving citations in JSON format from a URL*/
+/* Endpoint for retrieving citations in JSON format from a URL */
 citoid.post('/url', function(req, res){
 
 	res.type('application/json');
@@ -123,7 +123,7 @@ citoid.post('/url', function(req, res){
 	}
 });
 
-/**Endpoint for retrieving citations based on search term (URL,DOI)*/
+/* Endpoint for retrieving citations based on search term (URL, DOI) */
 citoid.get('/api', function(req, res){
 
 	res.type('application/json');
@@ -174,5 +174,5 @@ citoid.listen(citoidPort);
 
 log.info('Server started on http://localhost:'+citoidPort);
 
-/*Exports*/
+/* Exports */
 exports = module.exports = citoid;

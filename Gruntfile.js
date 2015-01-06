@@ -13,7 +13,8 @@ module.exports = function( grunt ) {
 			all: [
 				'*.js',
 				'localsettings.js.sample',
-				'lib/*.js'
+				'lib/*.js',
+				'lib/translators/*.js'
 			]
 		}
 	});

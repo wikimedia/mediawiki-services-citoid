@@ -111,14 +111,8 @@ citoid.post('/url', function(req, res){
 		else {requestedURL = urlParse.format(parsedURL);}
 
 		requestFromURL(requestedURL, opts, function(error, responseCode, body){
-			if (!error){
-				res.statusCode = responseCode;
-				res.send(body);
-			}
-			else {
-				res.statusCode = 520;
-				res.send(body);
-			}
+			res.statusCode = responseCode;
+			res.send(body);
 		});
 	}
 });
@@ -157,14 +151,8 @@ citoid.get('/api', function(req, res){
 		distinguish(dSearch, function(extractedID, runnerFunction){
 
 			runnerFunction(extractedID, opts, function(error, responseCode, body){
-				if (!error){
-					res.statusCode = responseCode;
-					res.send(body);
-				}
-				else {
-					res.statusCode = 520; //TODO: Server at requested location not available, not valid for non-urls
-					res.send(body);
-				}
+				res.statusCode = responseCode;
+				res.send(body);
 			});
 		});
 	}

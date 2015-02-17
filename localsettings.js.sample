@@ -8,9 +8,6 @@
 
 var CitoidConfig = {
 
-	// Enable debug mode (prints extra debugging messages)
-	debug : true,
-
 	// Allow cross-domain requests to the API (default '*')
 	// Sets Access-Control-Allow-Origin header
 	// enable:

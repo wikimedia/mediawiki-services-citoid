@@ -1,0 +1,33 @@
+{
+	// Enforcing
+	"bitwise": true,
+	"eqeqeq": true,
+	"freeze": true,
+	"noarg": true,
+	"nonew": true,
+	"undef": true,
+	"unused": true,
+
+	"curly": true,
+	"newcap": true,
+	"noempty": true,
+	"immed": true,
+
+	// Relaxing
+	"laxbreak": true,
+	"sub": true,
+	"boss": true,
+	"eqnull": true,
+	"multistr": true,
+	"loopfunc": true,
+
+	// Invalid options (?)
+	"regexp": false,
+	"trailing": true,
+	"smarttabs": true,
+	"nomen": false,
+
+	// Environment
+	"node": true,
+	"esnext": true
+}

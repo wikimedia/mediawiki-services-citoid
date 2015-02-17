@@ -30,7 +30,6 @@ var settingsFile = path.resolve(process.cwd(), argv.c),
 	citoidInterface = CitoidConfig.citoidInterface,
 	zoteroPort = CitoidConfig.zoteroPort,
 	zoteroInterface = CitoidConfig.zoteroInterface,
-	debug = CitoidConfig.debug,
 	allowCORS = CitoidConfig.allowCORS;
 
 // URL base which allows further formatting by adding a single endpoint, i.e. 'web'
@@ -53,7 +52,6 @@ citoid.use(bodyParser.urlencoded({extended: false}));
 citoid.use(express.static('api')); //cache api pages
 
 /* Landing Page */
-/* jshint multistr: true */
 citoid.get('/', function(req, res){
 	res.setHeader("Content-Type", "text/html");
 	res.send('<!DOCTYPE html>\
@@ -122,7 +120,7 @@ citoid.get('/api', function(req, res){
 
 	res.type('application/json');
 
-	var opts, dSearch,
+	var opts, dSearch, sessionID,
 		format = req.query.format,
 		search = req.query.search;
 
@@ -158,9 +156,9 @@ citoid.get('/api', function(req, res){
 	}
 });
 
-citoid.listen(citoidPort);
+citoid.listen(citoidPort, citoidInterface);
 
-log.info('Server started on http://localhost:'+citoidPort);
+log.info('Server started on ' + citoidInterface + ':' + citoidPort);
 
 /* Exports */
 exports = module.exports = citoid;

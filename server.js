@@ -6,11 +6,8 @@
 /* Import External Modules */
 var bodyParser = require('body-parser'),
 	bunyan = require('bunyan'),
-	crypto = require('crypto'),
 	express = require('express'),
 	path = require('path'),
-	urlParse = require('url'),
-	util = require('util'),
 	opts = require('yargs')
 	.usage('Usage: $0 [-c configfile|--config=configfile]')
 	.default({
@@ -20,39 +17,36 @@ var bodyParser = require('body-parser'),
 	argv = opts.argv;
 
 /* Import Local Modules */
-var distinguish = require('./lib/distinguish.js').distinguish,
-	requestFromURL = require('./lib/requests.js').requestFromURL;
+var CitoidService  = require('./lib/CitoidService.js').CitoidService;
 
 /* Import Local Settings */
 var settingsFile = path.resolve(process.cwd(), argv.c),
 	CitoidConfig = require(settingsFile).CitoidConfig,
 	citoidPort = CitoidConfig.citoidPort,
 	citoidInterface = CitoidConfig.citoidInterface,
-	zoteroPort = CitoidConfig.zoteroPort,
-	zoteroInterface = CitoidConfig.zoteroInterface,
 	allowCORS = CitoidConfig.allowCORS;
 
-// URL base which allows further formatting by adding a single endpoint, i.e. 'web'
-var zoteroURL = util.format('http://%s:%s/%s', zoteroInterface, zoteroPort.toString());
-
 // Init citoid webserver
-var citoid = express();
+var app = express();
 var log = bunyan.createLogger({name: "citoid"});
+
+// Init citoid service object
+var citoidService  = new CitoidService(CitoidConfig, log);
 
 // SECURITY WARNING: ALLOWS ALL REQUEST ORIGINS
 // change allowCORS in localsettings.js
-citoid.all('*', function(req, res, next) {
+app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", allowCORS);
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   next();
  });
 
-citoid.use(bodyParser.json());
-citoid.use(bodyParser.urlencoded({extended: false}));
-citoid.use(express.static('api')); //cache api pages
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static('api')); //cache api pages
 
 /* Landing Page */
-citoid.get('/', function(req, res){
+app.get('/', function(req, res){
 	res.setHeader("Content-Type", "text/html");
 	res.send('<!DOCTYPE html>\
 <html>\
@@ -73,14 +67,12 @@ citoid.get('/', function(req, res){
 });
 
 /* Endpoint for retrieving citations in JSON format from a URL */
-citoid.post('/url', function(req, res){
+app.post('/url', function(req, res){
 
 	res.type('application/json');
 
-	var opts, parsedURL,
-		format = req.body.format,
-		requestedURL = req.body.url,
-		sessionID = crypto.randomBytes(20).toString('hex');
+	var format = req.body.format,
+		requestedURL = req.body.url;
 
 	log.info(req);
 
@@ -89,26 +81,12 @@ citoid.post('/url', function(req, res){
 	 	format = 'mwDeprecated';
 	}
 
-	opts = {
-		zoteroURL:zoteroURL,
-		sessionID: sessionID,
-		format: format
-	};
-
 	if (!requestedURL){
 		res.statusCode = 400;
 		res.setHeader("Content-Type", "text/plain");
 		res.send('"url" is a required parameter');
 	} else {
-
-		parsedURL = urlParse.parse(requestedURL);
-		//defaults to http if no protocol specified.
-		if (!parsedURL.protocol){
-			requestedURL = 'http://'+ urlParse.format(parsedURL);
-		}
-		else {requestedURL = urlParse.format(parsedURL);}
-
-		requestFromURL(requestedURL, opts, function(error, responseCode, body){
+		citoidService.request(requestedURL, format, function(error, responseCode, body){
 			res.statusCode = responseCode;
 			res.send(body);
 		});
@@ -116,11 +94,11 @@ citoid.post('/url', function(req, res){
 });
 
 /* Endpoint for retrieving citations based on search term (URL, DOI) */
-citoid.get('/api', function(req, res){
+app.get('/api', function(req, res){
 
 	res.type('application/json');
 
-	var opts, dSearch, sessionID,
+	var dSearch,
 		format = req.query.format,
 		search = req.query.search;
 
@@ -135,30 +113,18 @@ citoid.get('/api', function(req, res){
 		res.setHeader("Content-Type", "text/plain");
 		res.send("No 'format' value specified\nOptions are 'mediawiki','zotero'");
 	} else {
-
 		dSearch = decodeURIComponent(search); //decode urlencoded search string
 
-		sessionID = crypto.randomBytes(20).toString('hex'); //required zotero- not terribly important for this to be secure
-
-		opts = {
-			zoteroURL:zoteroURL,
-			sessionID:sessionID,
-			format:format
-		};
-
-		distinguish(dSearch, function(extractedID, runnerFunction){
-
-			runnerFunction(extractedID, opts, function(error, responseCode, body){
-				res.statusCode = responseCode;
-				res.send(body);
-			});
+		citoidService.request(dSearch, format, function(error, responseCode, body){
+			res.statusCode = responseCode;
+			res.send(body);
 		});
 	}
 });
 
-citoid.listen(citoidPort, citoidInterface);
+app.listen(citoidPort, citoidInterface);
 
 log.info('Server started on ' + citoidInterface + ':' + citoidPort);
 
 /* Exports */
-exports = module.exports = citoid;
+exports = module.exports = app;

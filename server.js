@@ -17,7 +17,7 @@ var bodyParser = require('body-parser'),
 	argv = opts.argv;
 
 /* Import Local Modules */
-var CitoidService  = require('./lib/CitoidService.js').CitoidService;
+var CitoidService  = require('./lib/CitoidService.js');
 
 /* Import Local Settings */
 var settingsFile = path.resolve(process.cwd(), argv.c),

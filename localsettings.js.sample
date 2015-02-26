@@ -21,7 +21,10 @@ var CitoidConfig = {
 	citoidPort : 1970,
 	citoidInterface : 'localhost',
 
-	//Settings for Zotero server
+	// userAgent string for lib/Scraper.js
+	userAgent : null,
+
+	// Settings for Zotero server
 	zoteroPort : 1969,
 	zoteroInterface : 'localhost',
 };

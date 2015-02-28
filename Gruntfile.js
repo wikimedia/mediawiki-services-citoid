@@ -2,6 +2,7 @@ module.exports = function( grunt ) {
 
 	// These plugins provide necessary tasks.
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-simple-mocha');
 
 	// Project configuration.
 	grunt.initConfig({
@@ -16,11 +17,22 @@ module.exports = function( grunt ) {
 				'lib/*.js',
 				'lib/translators/*.js'
 			]
+		},
+		simplemocha: {
+			options: {
+				globals: ['describe', 'its'],
+				timeout: 3000,
+				ignoreLeaks: false,
+				ui: 'bdd',
+				reporter: 'tap'
+			},
+			all: { src: ['test/*.js'] }
 		}
 	});
 
 	// Default task.
-	grunt.registerTask( 'test', [ 'jshint:all' ] );
-	grunt.registerTask( 'default', 'test' );
+	grunt.registerTask('test', ['jshint:all']);
+	grunt.registerTask('withzotero', ['simplemocha']);
+	grunt.registerTask('default', 'test');
 
 };

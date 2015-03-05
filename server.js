@@ -71,7 +71,9 @@ app.post('/url', function(req, res){
 
 	res.type('application/json');
 
-	var format = req.body.format,
+	var opts,
+		acceptLanguage = req.headers['accept-language'],
+		format = req.body.format,
 		requestedURL = req.body.url;
 
 	log.info(req);
@@ -86,7 +88,12 @@ app.post('/url', function(req, res){
 		res.setHeader("Content-Type", "text/plain");
 		res.send('"url" is a required parameter');
 	} else {
-		citoidService.request(requestedURL, format, function(error, responseCode, body){
+		opts = {
+			search : requestedURL,
+			format: format,
+			acceptLanguage : acceptLanguage
+		};
+		citoidService.request(opts, function(error, responseCode, body){
 			res.statusCode = responseCode;
 			res.send(body);
 		});
@@ -98,7 +105,8 @@ app.get('/api', function(req, res){
 
 	res.type('application/json');
 
-	var dSearch,
+	var dSearch, opts,
+		acceptLanguage = req.headers['accept-language'],
 		format = req.query.format,
 		search = req.query.search;
 
@@ -114,8 +122,12 @@ app.get('/api', function(req, res){
 		res.send("No 'format' value specified\nOptions are 'mediawiki','zotero'");
 	} else {
 		dSearch = decodeURIComponent(search); //decode urlencoded search string
-
-		citoidService.request(dSearch, format, function(error, responseCode, body){
+		opts = {
+			search : dSearch,
+			format: format,
+			acceptLanguage : acceptLanguage
+		};
+		citoidService.request(opts, function(error, responseCode, body){
 			res.statusCode = responseCode;
 			res.send(body);
 		});

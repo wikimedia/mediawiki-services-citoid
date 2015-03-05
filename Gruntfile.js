@@ -15,7 +15,8 @@ module.exports = function( grunt ) {
 				'*.js',
 				'localsettings.js.sample',
 				'lib/*.js',
-				'lib/translators/*.js'
+				'lib/translators/*.js',
+				'test/*.js'
 			]
 		},
 		simplemocha: {

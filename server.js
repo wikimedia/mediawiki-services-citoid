@@ -21,17 +21,26 @@ var CitoidService  = require('./lib/CitoidService.js');
 
 /* Import Local Settings */
 var settingsFile = path.resolve(process.cwd(), argv.c),
-	CitoidConfig = require(settingsFile).CitoidConfig,
-	citoidPort = CitoidConfig.citoidPort,
-	citoidInterface = CitoidConfig.citoidInterface,
-	allowCORS = CitoidConfig.allowCORS;
+	citoidConfig = require(settingsFile),
+	citoidPort = citoidConfig.citoidPort,
+	citoidInterface = citoidConfig.citoidInterface,
+	allowCORS = citoidConfig.allowCORS;
+
+// Set outgoing proxy
+if (citoidConfig.proxy) {
+	process.env.HTTP_PROXY = citoidConfig.proxy;
+	if (!citoidConfig.zoteroUseProxy) {
+		// Don't use proxy for accessing Zotero unless specified in settings
+		process.env.NO_PROXY = citoidConfig.zoteroInterface;
+	}
+}
 
 // Init citoid webserver
 var app = express();
 var log = bunyan.createLogger({name: "citoid"});
 
 // Init citoid service object
-var citoidService  = new CitoidService(CitoidConfig, log);
+var citoidService  = new CitoidService(citoidConfig, log);
 
 // SECURITY WARNING: ALLOWS ALL REQUEST ORIGINS
 // change allowCORS in localsettings.js

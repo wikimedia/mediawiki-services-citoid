@@ -13,25 +13,27 @@ var CitoidConfig = {
 	// enable:
 	allowCORS : '*',
 	// disable:
-	//allowCORS = false;
+	//allowCORS : false,
 	// restrict:
-	//allowCORS = 'some.domain.org';
+	//allowCORS : 'some.domain.org',
+
+	// Set proxy for outgoing requests
+	// proxy : '127.0.0.1',
 
 	// Allow override of port/interface:
 	citoidPort : 1970,
-	citoidInterface : 'localhost',
+	citoidInterface : '0.0.0.0',
 
 	// userAgent string for lib/Scraper.js
 	userAgent : null,
 
 	// Settings for Zotero server
 	zoteroPort : 1969,
-	zoteroInterface : 'localhost',
+	zoteroInterface : '127.0.0.1',
+	// Whether or not the outbound proxy should be used to access Zotero
+	zoteroUseProxy : false,
 };
 
 /*Exports*/
-module.exports = {
-	CitoidConfig: CitoidConfig
-};
-
+module.exports = CitoidConfig;
 

@@ -22,7 +22,7 @@ module.exports = function( grunt ) {
 		simplemocha: {
 			options: {
 				globals: ['describe', 'its'],
-				timeout: 3000,
+				timeout: 20000,
 				ignoreLeaks: false,
 				ui: 'bdd',
 				reporter: 'tap'
@@ -33,7 +33,7 @@ module.exports = function( grunt ) {
 
 	// Default task.
 	grunt.registerTask('test', ['jshint:all']);
-	grunt.registerTask('withzotero', ['simplemocha']);
+	grunt.registerTask('all', ['jshint:all', 'simplemocha']);
 	grunt.registerTask('default', 'test');
 
 };

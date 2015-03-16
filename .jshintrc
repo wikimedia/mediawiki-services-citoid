@@ -28,6 +28,10 @@
 	"nomen": false,
 
 	// Environment
-	"node": true,
+	"globals":{
+		"require": true,
+		"module": true,
+		"global": true
+	},
 	"esnext": true
 }

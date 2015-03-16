@@ -32,6 +32,12 @@ var CitoidConfig = {
 	zoteroInterface : '127.0.0.1',
 	// Whether or not the outbound proxy should be used to access Zotero
 	zoteroUseProxy : false,
+
+	// Settings for StatsD client
+	//statsd : {
+	//	host: 'statsd.server',
+	//	port: 8125,
+	//}
 };
 
 /*Exports*/

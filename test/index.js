@@ -37,6 +37,34 @@ try {
 
 citoidService = new CitoidService(citoidConfig, log);
 
+describe('pmid', function() {
+
+	var opts = {
+		search : '23555203',
+		format : 'mediawiki',
+		acceptLanguage : 'en'
+	},
+		expectedTitle = 'Viral Phylodynamics';
+
+	it('should scrape info successfully', function(done) {
+		citoidService.request(opts, function(error, responseCode, citation){
+			if (error) {throw error;}
+			if (responseCode !== 200){
+				throw new Error('Not successful: Response code is' + responseCode);
+			}
+			if (!citation) {throw new Error ('Empty body');}
+			if (citation[0].title !== expectedTitle){
+				throw new Error('Expected title is: ' + expectedTitle +
+					";\nGot: " + citation[0].title);
+			}
+			if (!citation[0].itemType){
+				throw new Error('Missing itemType');
+			}
+			done();
+		});
+	});
+});
+
 describe('200', function() {
 
 	var opts = {

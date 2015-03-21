@@ -206,7 +206,6 @@ describe('doi', function() {
 	});
 });
 
-
 describe('websiteTitle', function() {
 
 	var opts = {
@@ -232,23 +231,24 @@ describe('websiteTitle', function() {
 		});
 	});
 });
-describe('scrape open graph', function() {
+
+describe('invalid language code', function() {
 
 	var opts = {
-		search : 'http://www.pbs.org/newshour/making-sense/care-peoples-kids/',
+		search : 'http://www.ncbi.nlm.nih.gov/pubmed/23555203',
 		format : 'mediawiki',
 		acceptLanguage : 'en'
 		};
 
-	it('should correctly scrape open graph data', function(done) {
+	it('should delete invalid language code', function(done) {
 		citoidService.request(opts, function(error, responseCode, citation){
 			if (error) {throw error;}
 			if (responseCode !== 200){
 				throw new Error('Should respond 200: Response code is ' + responseCode);
 			}
 			if (!citation) {throw new Error ('Empty body');}
-			if (!citation[0].language){
-				throw new Error('Should contain language code');
+			if (citation[0].language){
+				throw new Error('Should not contain language code');
 			}
 			done();
 		});

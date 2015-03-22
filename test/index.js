@@ -206,6 +206,32 @@ describe('doi', function() {
 	});
 });
 
+
+describe('websiteTitle', function() {
+
+	var opts = {
+		search : 'http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/',
+		format : 'mediawiki',
+		acceptLanguage : 'en'
+		};
+
+	it('should contain a websiteTitle and a publicationTitle', function(done) {
+		citoidService.request(opts, function(error, responseCode, citation){
+			if (error) {throw error;}
+			if (responseCode !== 200){
+				throw new Error('Should respond 200: Response code is ' + responseCode);
+			}
+			if (!citation) {throw new Error ('Empty body');}
+			if (!citation[0].publicationTitle){
+				throw new Error('Should contain field publicationTitle');
+			}
+			if (!citation[0].websiteTitle){
+				throw new Error('Should contain field websiteTitle');
+			}
+			done();
+		});
+	});
+});
 describe('scrape open graph', function() {
 
 	var opts = {

@@ -205,3 +205,26 @@ describe('doi', function() {
 		});
 	});
 });
+
+describe('scrape open graph', function() {
+
+	var opts = {
+		search : 'http://www.pbs.org/newshour/making-sense/care-peoples-kids/',
+		format : 'mediawiki',
+		acceptLanguage : 'en'
+		};
+
+	it('should correctly scrape open graph data', function(done) {
+		citoidService.request(opts, function(error, responseCode, citation){
+			if (error) {throw error;}
+			if (responseCode !== 200){
+				throw new Error('Should respond 200: Response code is ' + responseCode);
+			}
+			if (!citation) {throw new Error ('Empty body');}
+			if (!citation[0].language){
+				throw new Error('Should contain language code');
+			}
+			done();
+		});
+	});
+});

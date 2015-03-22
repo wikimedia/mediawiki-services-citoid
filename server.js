@@ -52,28 +52,8 @@ app.all('*', function(req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('api')); //cache api pages
-
-/* Landing Page */
-app.get('/', function(req, res){
-	res.setHeader("Content-Type", "text/html");
-	res.send('<!DOCTYPE html>\
-<html>\
-	<head>\
-		<meta charset="UTF-8">\
-	<title>Citoid service</title>\
-</head>\
-<body>\
-	<h1>Citoid</h1>\
-	<h2><a href="https://www.mediawiki.org/wiki/Citoid" target="_blank">Documentation</a></h2>\
-	<h2>Test request</h2>\
-	<form action="/url" method="POST">\
-		<input type="hidden" name="format" value="mediawiki" />\
-		<p>URL: <input name="url" size="100" value="http://link.springer.com/chapter/10.1007/11926078_68" /> <input type="submit" /></p>\
-	</form>\
-</body></html>\
-	');
-});
+app.use(express.static('api')); // Cache api pages
+app.use(express.static(__dirname + '/static')); // Static HTML files
 
 /* Endpoint for retrieving citations in JSON format from a URL */
 app.post('/url', function(req, res){

@@ -1,4 +1,10 @@
 {
+
+	"predef": [
+		"Map",
+		"Set"
+	],
+
 	// Enforcing
 	"bitwise": true,
 	"eqeqeq": true,
@@ -6,7 +12,6 @@
 	"noarg": true,
 	"nonew": true,
 	"undef": true,
-	"unused": true,
 
 	"curly": true,
 	"newcap": true,
@@ -27,11 +32,7 @@
 	"smarttabs": true,
 	"nomen": false,
 
-	// Environment
-	"globals":{
-		"require": true,
-		"module": true,
-		"global": true
-	},
+	"node": true,
 	"esnext": true
+
 }

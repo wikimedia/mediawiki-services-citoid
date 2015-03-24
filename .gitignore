@@ -1,7 +1,5 @@
 *~
 .DS_Store
 *.log
-
-localsettings.js
-
 node_modules
+coverage

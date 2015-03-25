@@ -95,7 +95,12 @@ router.get('/api', function(req, res) {
 	};
 
 	app.citoid.request(opts, function(error, responseCode, body) {
-		res.status(responseCode).type('application/json');
+		res.status(responseCode);
+		if(format === 'bibtex') {
+			res.type('application/x-bibtex');
+		} else {
+			res.type('application/json');
+		}
 		res.send(body);
 	});
 

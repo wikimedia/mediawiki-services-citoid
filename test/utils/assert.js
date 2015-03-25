@@ -110,6 +110,19 @@ function checkCitation(res, title) {
 }
 
 
+function checkBibtex(res, beginning) {
+
+	var cit = res.body;
+
+	if (cit instanceof String) {
+		throw new Error('Expected String, got: ' + JSON.stringify(cit));
+	}
+
+	assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
+
+}
+
+
 module.exports.ok             = assert.ok;
 module.exports.fails          = fails;
 module.exports.deepEqual      = deepEqual;
@@ -118,4 +131,5 @@ module.exports.notDeepEqual   = notDeepEqual;
 module.exports.contentType    = contentType;
 module.exports.status         = status;
 module.exports.checkCitation  = checkCitation;
+module.exports.checkBibtex    = checkBibtex;
 

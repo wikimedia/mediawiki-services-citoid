@@ -12,7 +12,7 @@ describe('errors', function() {
 
 	before(function () { return server.start(); });
 
-	it('missing format', function() {
+	it('missing format in query', function() {
 		return preq.get({
 			uri: server.config.q_uri,
 			query: {
@@ -25,7 +25,7 @@ describe('errors', function() {
 		});
 	});
 
-	it('missing search', function() {
+	it('missing search in query', function() {
 		return preq.get({
 			uri: server.config.q_uri,
 			query: {
@@ -38,7 +38,7 @@ describe('errors', function() {
 		});
 	});
 
-	it('erroneous domain', function() {
+	it('bad domain', function() {
 		return server.query('example./com', 'mediawiki', 'en')
 		.then(function(res) {
 			assert.status(res, 520);
@@ -48,7 +48,7 @@ describe('errors', function() {
 		});
 	});
 
-	it('non-existent URL path', function() {
+	it('resource has http errors', function() {
 		var url = 'http://example.com/thisurldoesntexist';
 		return server.query(url, 'mediawiki', 'en')
 		.then(function(res) {
@@ -67,6 +67,18 @@ describe('errors', function() {
 		}, function(err) {
 			assert.status(err, 520);
 			assert.checkCitation(err, url);
+		});
+	});
+
+	it('bad doi', function() {
+		var doi = '10.1000/thisdoidoesntexist';
+		return server.query(doi, 'mediawiki', 'en')
+		.then(function(res) {
+			assert.status(res, 404);
+		}, function(err) {
+			assert.status(err, 404);
+			assert.deepEqual(err.body.Error, 'Unable to resolve DOI',
+				'Unexpected error message ' + err.body.Error);
 		});
 	});
 

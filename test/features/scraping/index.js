@@ -26,7 +26,17 @@ describe('scraping', function() {
 		});
 	});
 
-	it('doi', function() {
+	// DOI which points directly to a resource which can be scraped by Zotero
+	it('direct doi', function() {
+		return server.query('10.1056/NEJM200106073442306').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res);
+			assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+		});
+	});
+
+	// DOI which points to a link which contains further redirects to the Zotero-scrapable resource
+	it('doi with redirect', function() {
 		return server.query('doi: 10.1371/journal.pcbi.1002947').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res);

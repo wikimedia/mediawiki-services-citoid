@@ -12,8 +12,23 @@ describe('scraping', function() {
 
 	before(function () { return server.start(); });
 
-	it('pmid', function() {
-		return server.query('23555203').then(function(res) {
+	//PMID on NIH website that is not found in the id converter api
+	it('pmid (not in id converter)', function() {
+		return server.query('14656957').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
+		});
+	});
+
+	it('pmcid with prefix', function() {
+		return server.query('PMC3605911').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res, 'Viral Phylodynamics');
+		});
+	});
+
+	it('pmcid without prefix', function() {
+		return server.query('3605911').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Viral Phylodynamics');
 		});

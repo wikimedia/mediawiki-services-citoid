@@ -77,7 +77,32 @@ describe('errors', function() {
 			assert.status(res, 404);
 		}, function(err) {
 			assert.status(err, 404);
-			assert.deepEqual(err.body.Error, 'Unable to resolve DOI',
+			assert.deepEqual(err.body.Error, 'Unable to resolve DOI ' + doi,
+				'Unexpected error message ' + err.body.Error);
+		});
+	});
+
+	it('bad pmid', function() {
+		var pmid = '99999999';
+		return server.query(pmid, 'mediawiki', 'en')
+		.then(function(res) {
+			assert.status(res, 404);
+		}, function(err) {
+			assert.status(err, 404);
+			assert.deepEqual(err.body.Error,
+				'Unable to locate resource with PMID ' + pmid,
+				'Unexpected error message ' + err.body.Error);
+		});
+	});
+
+	it('bad pmcid', function() {
+		var pmcid = 'PMC9999999';
+		return server.query(pmcid, 'mediawiki', 'en')
+		.then(function(res) {
+			assert.status(res, 404);
+		}, function(err) {
+			assert.status(err, 404);
+			assert.deepEqual(err.body.Error, 'Unable to locate resource with PMCID ' + pmcid,
 				'Unexpected error message ' + err.body.Error);
 		});
 	});

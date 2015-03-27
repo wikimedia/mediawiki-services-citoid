@@ -1,6 +1,6 @@
 {
   "name": "citoid",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Converts search terms such as URL or DOI into citations.",
   "scripts": {
     "start": "service-runner",

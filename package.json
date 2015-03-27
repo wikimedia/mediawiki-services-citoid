@@ -18,7 +18,7 @@
     "html-metadata": "0.1.1",
     "js-yaml": "3.2.7",
     "node-uuid": "1.4.3",
-    "preq": "0.3.12",
+    "preq": "0.3.13",
     "request": "2.49.0",
     "service-runner": "0.1.5"
   },

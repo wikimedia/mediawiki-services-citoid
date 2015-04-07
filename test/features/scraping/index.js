@@ -17,6 +17,7 @@ describe('scraping', function() {
 		return server.query('14656957').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});
 
@@ -24,6 +25,7 @@ describe('scraping', function() {
 		return server.query('PMC3605911').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Viral Phylodynamics');
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});
 
@@ -31,6 +33,7 @@ describe('scraping', function() {
 		return server.query('3605911').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Viral Phylodynamics');
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});
 
@@ -47,6 +50,7 @@ describe('scraping', function() {
 			assert.status(res, 200);
 			assert.checkCitation(res);
 			assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});
 
@@ -56,6 +60,7 @@ describe('scraping', function() {
 			assert.status(res, 200);
 			assert.checkCitation(res);
 			assert.deepEqual(res.body[0].pages, 'e1002947', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});
 

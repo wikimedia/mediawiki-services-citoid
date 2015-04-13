@@ -64,6 +64,19 @@ function initApp(options) {
 	// init the Citoid service object
 	app.citoid  = new CitoidService(app.conf, app.logger, app.metrics);
 
+	// set allowed export formats and expected response type
+	var nativeFormats = {
+		'mediawiki':'application/json',
+		'zotero':'application/json',
+		'mwDeprecated':'application/json'
+	};
+
+	var zoteroFormats = {
+		'bibtex':'application/x-bibtex'
+	};
+
+	app.formats = Object.assign({}, nativeFormats, zoteroFormats);
+
 	return BBPromise.resolve(app);
 
 }

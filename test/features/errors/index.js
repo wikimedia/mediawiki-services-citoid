@@ -12,19 +12,6 @@ describe('errors', function() {
 
 	before(function () { return server.start(); });
 
-	it('missing format in query', function() {
-		return preq.get({
-			uri: server.config.q_uri,
-			query: {
-				search: '123456'
-			}
-		}).then(function(res) {
-			assert.status(res, 400);
-		}, function(err) {
-			assert.status(err, 400);
-		});
-	});
-
 	it('missing search in query', function() {
 		return preq.get({
 			uri: server.config.q_uri,
@@ -35,6 +22,37 @@ describe('errors', function() {
 			assert.status(res, 400);
 		}, function(err) {
 			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, "No 'search' value specified");
+		});
+	});
+
+	it('missing format in query', function() {
+		return preq.get({
+			uri: server.config.q_uri,
+			query: {
+				search: '123456'
+			}
+		}).then(function(res) {
+			assert.status(res, 400);
+		}, function(err) {
+			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, "No 'format' value specified");
+		});
+	});
+
+	it('bad format in query', function() {
+		var format = 'badformat';
+		return preq.get({
+			uri: server.config.q_uri,
+			query: {
+				search: '123456',
+				format: format
+			}
+		}).then(function(res) {
+			assert.status(res, 400);
+		}, function(err) {
+			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, 'Invalid format requested ' + format);
 		});
 	});
 

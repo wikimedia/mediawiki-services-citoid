@@ -14,7 +14,6 @@ var router = sUtil.router();
  */
 var app;
 
-
 /**
  * GET /robots.txt
  * Instructs robots no indexing should occur on this domain.
@@ -47,8 +46,14 @@ router.post('/url', function(req, res) {
 	}
 
 	if (!requestedURL) {
-		res.status(400).type('text/plain');
-		res.send('"url" is a required parameter');
+		res.status(400).type('application/json');
+		res.send({Error:"No 'url' value specified"});
+		return;
+	}
+
+	if (!app.formats[format]) {
+		res.status(400).type('application/json');
+		res.send({Error:'Invalid format requested ' + format});
 		return;
 	}
 
@@ -59,7 +64,7 @@ router.post('/url', function(req, res) {
 	};
 
 	app.citoid.request(opts, function(error, responseCode, body){
-		res.status(responseCode).type('application/json');
+		res.status(responseCode).type(app.formats[format]);
 		res.send(body);
 	});
 
@@ -78,12 +83,16 @@ router.get('/api', function(req, res) {
 		search = req.query.search;
 
 	if (!search) {
-		res.status(400).type('text/plain');
-		res.send("No 'search' value specified\n");
+		res.status(400).type('application/json');
+		res.send({Error:"No 'search' value specified"});
 		return;
 	} else if(!format) {
-		res.status(400).type('text/plain');
-		res.send("No 'format' value specified\nOptions are 'mediawiki','zotero'");
+		res.status(400).type('application/json');
+		res.send({Error:"No 'format' value specified"});
+		return;
+	} else if (!app.formats[format]) {
+		res.status(400).type('application/json');
+		res.send({Error:'Invalid format requested ' + format});
 		return;
 	}
 
@@ -95,12 +104,7 @@ router.get('/api', function(req, res) {
 	};
 
 	app.citoid.request(opts, function(error, responseCode, body) {
-		res.status(responseCode);
-		if(format === 'bibtex') {
-			res.type('application/x-bibtex');
-		} else {
-			res.type('application/json');
-		}
+		res.status(responseCode).type(app.formats[format]);
 		res.send(body);
 	});
 

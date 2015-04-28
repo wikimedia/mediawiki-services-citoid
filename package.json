@@ -2,6 +2,7 @@
   "name": "citoid",
   "version": "0.2.6",
   "description": "Converts search terms such as URL or DOI into citations.",
+  "homepage": "https://www.mediawiki.org/wiki/Citoid",
   "scripts": {
     "start": "service-runner",
     "test": "mocha test/index.js",

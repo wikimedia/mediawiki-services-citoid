@@ -27,5 +27,22 @@ describe('languages', function() {
 		});
 	});
 
+	// Support for language encoding other than those native to Node
+	it('non-native to node encoding in response', function() {
+		return server.query('http://corriere.it/esteri/15_marzo_27/aereo-germanwings-indizi-interessanti-casa-copilota-ff5e34f8-d446-11e4-831f-650093316b0e.shtml').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res, 'Aereo Germanwings, «indizi interessanti» nella casa del copilota');
+		});
+	});
+
+	// Support for language encoding other than those native to Node
+	it('content-type header present in body but not in response headers', function() {
+		return server.query('www.insee.fr/fr/ppp/bases-de-donnees/recensement/populations-legales/departement.asp').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res, 'Insee - Populations légales 2012 - 01-Ain');
+		});
+	});
+
+
 });
 

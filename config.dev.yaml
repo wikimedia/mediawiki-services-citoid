@@ -40,13 +40,13 @@ services:
       # cors: false
       # to restrict to a particular domain, use:
       # cors: restricted.domain.org
-      # URL of the outbound proxy to use (complete with protocol)
-      # proxy: http://127.0.0.0.1
       # User-Agent HTTP header to use for requests
       userAgent: null
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
       # zotero's server port
       zoteroPort: 1969
-      # whether the proxy should be used to contact zotero
-      zoteroUseProxy: false
+      # URL of the outbound proxy to use (complete with protocol)
+      # proxy: http://127.0.0.0.1
+      # the list of domains for which not to use the proxy defined above
+      # no_proxy_list: 127.0.0.1

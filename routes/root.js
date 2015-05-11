@@ -35,12 +35,13 @@ router.get('/robots.txt', function(req, res) {
  */
 router.post('/url', function(req, res) {
 
-	var opts,
-		acceptLanguage = req.headers['accept-language'],
-		format = req.body.format,
-		requestedURL = req.body.url;
+	var opts;
+	var acceptLanguage = req.headers['accept-language'];
+	var format = req.body.format;
+	var requestedURL = req.body.url;
+	var eFormat = encodeURIComponent(format);
 
-	// temp backwards compatibility
+	// Temp backwards compatibility
 	if (!format) {
 	 	format = 'mwDeprecated';
 	}
@@ -53,13 +54,13 @@ router.post('/url', function(req, res) {
 
 	if (!app.formats[format]) {
 		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + format});
+		res.send({Error:'Invalid format requested ' + eFormat});
 		return;
 	}
 
 	opts = {
 		search: requestedURL,
-		format: format,
+		format: eFormat,
 		acceptLanguage: acceptLanguage
 	};
 
@@ -77,10 +78,12 @@ router.post('/url', function(req, res) {
  */
 router.get('/api', function(req, res) {
 
-	var dSearch, opts,
-		acceptLanguage = req.headers['accept-language'],
-		format = req.query.format,
-		search = req.query.search;
+	var dSearch;
+	var opts;
+	var acceptLanguage = req.headers['accept-language'];
+	var format = req.query.format;
+	var search = req.query.search;
+	var eFormat = encodeURIComponent(format); // Encoded format
 
 	if (!search) {
 		res.status(400).type('application/json');
@@ -92,14 +95,15 @@ router.get('/api', function(req, res) {
 		return;
 	} else if (!app.formats[format]) {
 		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + format});
+		res.send({Error:'Invalid format requested ' + eFormat});
 		return;
 	}
 
-	dSearch = decodeURIComponent(search); //decode urlencoded search string
+	dSearch = decodeURIComponent(encodeURI(search)); // Decode urlencoded search string
+
 	opts = {
 		search: dSearch,
-		format: format,
+		format: eFormat,
 		acceptLanguage: acceptLanguage
 	};
 

@@ -80,5 +80,12 @@ describe('scraping', function() {
 		});
 	});
 
+	it('requires cookie handling', function() {
+		return server.query('www.jstor.org/discover/10.2307/3677029').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res);
+		});
+	});
+
 });
 

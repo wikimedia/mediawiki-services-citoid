@@ -108,7 +108,7 @@ describe('errors', function() {
 		}, function(err) {
 			assert.status(err, 404);
 			assert.deepEqual(err.body.Error,
-				'Unable to locate resource with PMID ' + pmid,
+				'Unable to locate resource with pmid ' + pmid,
 				'Unexpected error message ' + err.body.Error);
 		});
 	});
@@ -120,7 +120,7 @@ describe('errors', function() {
 			assert.status(res, 404);
 		}, function(err) {
 			assert.status(err, 404);
-			assert.deepEqual(err.body.Error, 'Unable to locate resource with PMCID ' + pmcid,
+			assert.deepEqual(err.body.Error, 'Unable to locate resource with pmcid ' + pmcid,
 				'Unexpected error message ' + err.body.Error);
 		});
 	});

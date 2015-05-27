@@ -2,7 +2,7 @@
 
 
 var sUtil = require('../lib/util');
-
+var CitoidRequest = require('../lib/CitoidRequest.js');
 
 /**
  * The main router object
@@ -35,38 +35,37 @@ router.get('/robots.txt', function(req, res) {
  */
 router.post('/url', function(req, res) {
 
-	var opts;
-	var acceptLanguage = req.headers['accept-language'];
-	var format = req.body.format;
-	var requestedURL = req.body.url;
-	var eFormat = encodeURIComponent(format);
+	var cr = new CitoidRequest(req, app);
 
-	// Temp backwards compatibility
-	if (!format) {
-	 	format = 'mwDeprecated';
+	if (!req.body.format) {
+	 	cr.format = 'mwDeprecated'; // Backwards compatibility with prior version of API which did not require format
+	} else {
+		cr.format = encodeURIComponent(req.body.format);
 	}
 
-	if (!requestedURL) {
+	if (!req.body.url) {
 		res.status(400).type('application/json');
 		res.send({Error:"No 'url' value specified"});
 		return;
 	}
 
-	if (!app.formats[format]) {
+	// Set search value with uri encoded url
+	cr.search = req.body.url;
+	cr.encodedSearch = encodeURIComponent(req.body.url);
+
+	// Ensure format is supported
+	if (!app.formats[cr.format]) {
 		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + eFormat});
+		res.send({Error:'Invalid format requested ' + cr.format});
 		return;
 	}
 
-	opts = {
-		search: requestedURL,
-		format: eFormat,
-		acceptLanguage: acceptLanguage
-	};
-
-	app.citoid.request(opts, function(error, responseCode, body){
-		res.status(responseCode).type(app.formats[format]);
-		res.send(body);
+	return app.citoid.request(cr).then(function(cr){
+		res.status(cr.response.responseCode).type(app.formats[cr.format]);
+		res.send(cr.response.body);
+	}, function(cr){
+		res.status(cr.response.responseCode).type(app.formats[cr.format]);
+		res.send(cr.response.body);
 	});
 
 });
@@ -78,38 +77,28 @@ router.post('/url', function(req, res) {
  */
 router.get('/api', function(req, res) {
 
-	var dSearch;
-	var opts;
-	var acceptLanguage = req.headers['accept-language'];
-	var format = req.query.format;
-	var search = req.query.search;
-	var eFormat = encodeURIComponent(format); // Encoded format
+	var cr = new CitoidRequest(req, app);
 
-	if (!search) {
+	if (!req.query.search) {
 		res.status(400).type('application/json');
 		res.send({Error:"No 'search' value specified"});
 		return;
-	} else if(!format) {
+	} else if(!req.query.format) {
 		res.status(400).type('application/json');
 		res.send({Error:"No 'format' value specified"});
 		return;
-	} else if (!app.formats[format]) {
+	} else if (!app.formats[cr.format]) { // Use encoded format
 		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + eFormat});
+		res.send({Error:'Invalid format requested ' + cr.format});
 		return;
 	}
 
-	dSearch = decodeURIComponent(encodeURI(search)); // Decode urlencoded search string
-
-	opts = {
-		search: dSearch,
-		format: eFormat,
-		acceptLanguage: acceptLanguage
-	};
-
-	app.citoid.request(opts, function(error, responseCode, body) {
-		res.status(responseCode).type(app.formats[format]);
-		res.send(body);
+	return app.citoid.request(cr).then(function(cr){
+		res.status(cr.response.responseCode).type(app.formats[cr.format]);
+		res.send(cr.response.body);
+	}, function(cr){
+		res.status(cr.response.responseCode).type(app.formats[cr.format]);
+		res.send(cr.response.body);
 	});
 
 });

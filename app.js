@@ -73,22 +73,20 @@ function initApp(options) {
 	app.use(bodyParser.urlencoded({extended: true}));
 	// serve static files from static/
 	app.use(express.static(__dirname + '/static'));
-
-	// init the Citoid service object
-	app.citoid = new CitoidService(app.conf, app.logger, app.metrics);
-
 	// set allowed export formats and expected response type
-	var nativeFormats = {
+	app.nativeFormats = {
 		'mediawiki':'application/json',
 		'zotero':'application/json',
 		'mwDeprecated':'application/json'
 	};
-
-	var zoteroFormats = {
+	app.zoteroFormats = {
 		'bibtex':'application/x-bibtex'
 	};
+	app.formats = Object.assign({}, app.nativeFormats, app.zoteroFormats);
 
-	app.formats = Object.assign({}, nativeFormats, zoteroFormats);
+
+	// init the Citoid service object
+	app.citoid = new CitoidService(app);
 
 	return BBPromise.resolve(app);
 

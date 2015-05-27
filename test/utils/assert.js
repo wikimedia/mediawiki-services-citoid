@@ -102,7 +102,11 @@ function checkCitation(res, title) {
 	}
 
 	cit = cit[0];
+
+	// Check presence of all required fields
 	assert.notDeepEqual(cit.itemType, undefined, 'No itemType present');
+	assert.notDeepEqual(cit.title, undefined, 'No title present');
+
 	if(title) {
 		assert.deepEqual(cit.title, title, 'Wrong title, expected "' + title + '", got "' + cit.title + '"');
 	}
@@ -112,12 +116,10 @@ function checkCitation(res, title) {
 
 function checkBibtex(res, beginning) {
 
-	var cit = res.body;
+	var cit;
 
-	if (cit instanceof String) {
-		throw new Error('Expected String, got: ' + JSON.stringify(cit));
-	}
-
+	assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
+	cit = res.body.toString();
 	assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
 
 }

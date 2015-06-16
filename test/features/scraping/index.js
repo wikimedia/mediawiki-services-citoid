@@ -128,5 +128,18 @@ describe('scraping', function() {
 		});
 	});
 
+	// The following tests require the WMF fork of the zotero translators, as found
+	// here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
+	// It will pass with either repository, however, since the output should be the same.
+	describe(' uses WMF translator fork', function() {
+
+		it('Google books link that cause Zotero to have internal server error', function() {
+			return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
+				assert.status(res, 200);
+				assert.checkCitation(res, 'isbn%3A0596554141 - Google Search');
+			});
+		});
+	});
+
 });
 

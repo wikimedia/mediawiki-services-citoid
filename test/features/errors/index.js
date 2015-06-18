@@ -56,10 +56,10 @@ describe('errors', function() {
 	it('bad domain', function() {
 		return server.query('example./com', 'mediawiki', 'en')
 		.then(function(res) {
-			assert.status(res, 520);
+			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 520);
-			assert.checkCitation(err, 'http://example./com');
+			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, 'Invalid host supplied');
 		});
 	});
 

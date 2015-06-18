@@ -26,13 +26,10 @@ describe('encoding', function() {
 	it('javascript in search', function() {
 		return server.query('f<script>alert(1);</script>', 'mediawiki', 'en')
 		.then(function(res) {
-			assert.status(res, 520);
+			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 520);
-			assert.deepEqual(err.body[0].title,
-				'http://f%3Cscript%3Ealert(1);%3C/script%3E');
-			assert.deepEqual(err.body[0].url,
-				'http://f%3Cscript%3Ealert(1);%3C/script%3E');
+			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, 'Invalid host supplied');
 		});
 	});
 

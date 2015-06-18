@@ -50,3 +50,5 @@ services:
       zoteroPort: 1969
       # whether the proxy should be used to contact zotero
       zoteroUseProxy: false
+      allowPrivateAddresses: false
+      maxRedirects: 5

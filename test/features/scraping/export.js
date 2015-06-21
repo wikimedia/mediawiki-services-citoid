@@ -12,26 +12,54 @@ describe('exports', function() {
 
 	before(function () { return server.start(); });
 
-	it('bibtex from scraper', function() {
-		return server.query('http://example.com', 'bibtex').then(function(res) {
-			assert.status(res, 200);
-			assert.checkBibtex(res, '\n@misc{_example_???');
+	describe('exporting to bibtex', function() {
+		it('bibtex from scraper', function() {
+			return server.query('http://example.com', 'bibtex').then(function(res) {
+				assert.status(res, 200);
+				assert.checkBibtex(res, '\n@misc{_example_???');
+			});
+		});
+
+		it('bibtex from zotero', function() {
+			return server.query('http://www.ncbi.nlm.nih.gov/pubmed/14656957', 'bibtex').then(function(res) {
+				assert.status(res, 200);
+				assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
+			});
+		});
+
+		it('bibtex from pmid', function() {
+			return server.query('14656957', 'bibtex').then(function(res) {
+				assert.status(res, 200);
+				assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
+			});
+		});
+
+	});
+
+	describe('exporting to zotero', function() {
+		it('doi pointing to bookSection', function() {
+			return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
+				assert.status(res, 200);
+				assert.checkCitation(res, 'Semantic MediaWiki');
+				assert.ok(res.body[0].creators);
+				assert.ok(res.body[0].DOI);
+				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+			});
 		});
 	});
 
-	it('bibtex from zotero', function() {
-		return server.query('http://www.ncbi.nlm.nih.gov/pubmed/14656957', 'bibtex').then(function(res) {
-			assert.status(res, 200);
-			assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
+	describe('exporting to mwDeprecated', function() {
+		it('doi pointing to bookSection', function() {
+			return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
+				assert.status(res, 200);
+				assert.checkCitation(res, 'Semantic MediaWiki');
+				assert.ok(res.body[0]['author1-last']);
+				assert.ok(res.body[0].DOI);
+				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+			});
 		});
 	});
-
-	it('bibtex from pmid', function() {
-		return server.query('14656957', 'bibtex').then(function(res) {
-			assert.status(res, 200);
-			assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
-		});
-	});
-
 });
 

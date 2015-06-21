@@ -97,15 +97,16 @@ function checkCitation(res, title) {
 
 	var cit = res.body;
 
-	if(!Array.isArray(cit) || !cit.length) {
-		throw new Error('Expected to receive an array of citations, got: ' + JSON.stringify(cit));
+	if(!Array.isArray(cit) || cit.length !== 1) {
+		throw new Error('Expected to receive an array of 1 citation, got: ' + JSON.stringify(cit));
 	}
 
 	cit = cit[0];
 
 	// Check presence of all required fields
-	assert.notDeepEqual(cit.itemType, undefined, 'No itemType present');
-	assert.notDeepEqual(cit.title, undefined, 'No title present');
+	assert.deepEqual(!!cit.itemType, true, 'No itemType present');
+	assert.deepEqual(!!cit.title, true, 'No title present');
+	assert.deepEqual(!!cit.url, true, 'No url present');
 
 	if(title) {
 		assert.deepEqual(cit.title, title, 'Wrong title, expected "' + title + '", got "' + cit.title + '"');

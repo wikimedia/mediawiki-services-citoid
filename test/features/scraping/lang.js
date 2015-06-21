@@ -16,6 +16,7 @@ describe('languages', function() {
 		return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Willkommen bei Twitter - Anmelden oder Registrieren');
+			assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 		});
 	});
 
@@ -24,6 +25,7 @@ describe('languages', function() {
 			assert.status(res, 200);
 			assert.checkCitation(res);
 			assert.deepEqual(res.body[0].language, undefined, 'Should not have a language code, got: ' + res.body[0].language);
+			assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 		});
 	});
 
@@ -32,6 +34,7 @@ describe('languages', function() {
 		return server.query('http://corriere.it/esteri/15_marzo_27/aereo-germanwings-indizi-interessanti-casa-copilota-ff5e34f8-d446-11e4-831f-650093316b0e.shtml').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Aereo Germanwings, «indizi interessanti» nella casa del copilota');
+			assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 		});
 	});
 
@@ -40,6 +43,7 @@ describe('languages', function() {
 		return server.query('www.insee.fr/fr/ppp/bases-de-donnees/recensement/populations-legales/departement.asp').then(function(res) {
 			assert.status(res, 200);
 			assert.checkCitation(res, 'Insee - Populations légales 2012 - 01-Ain');
+			assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 		});
 	});
 

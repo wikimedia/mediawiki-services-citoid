@@ -17,10 +17,9 @@ describe('scraping', function() {
 		it('PMID (not in id converter)', function() {
 			return server.query('14656957').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
+				assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
 				assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
 		});
@@ -28,10 +27,9 @@ describe('scraping', function() {
 		it('PMCID with prefix', function() {
 			return server.query('PMC3605911').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Viral Phylodynamics');
+				assert.checkZotCitation(res, 'Viral Phylodynamics');
 				assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
 		});
@@ -39,10 +37,9 @@ describe('scraping', function() {
 		it('PMCID without prefix', function() {
 			return server.query('3605911').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Viral Phylodynamics');
+				assert.checkZotCitation(res, 'Viral Phylodynamics');
 				assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
 		});
@@ -50,10 +47,9 @@ describe('scraping', function() {
 		it('PMCID with trailing space', function() {
 			return server.query('3605911 ').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Viral Phylodynamics');
+				assert.checkZotCitation(res, 'Viral Phylodynamics');
 				assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
 		});
@@ -61,7 +57,7 @@ describe('scraping', function() {
 		it('PMCID with encoded space', function() {
 			return server.query('3605911%20').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Viral Phylodynamics');
+				assert.checkZotCitation(res, 'Viral Phylodynamics');
 				assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -72,9 +68,8 @@ describe('scraping', function() {
 		it('direct DOI', function() {
 			return server.query('10.1056/NEJM200106073442306').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
@@ -84,9 +79,8 @@ describe('scraping', function() {
 		it('DOI with space', function() {
 			return server.query('DOI: 10.1056/NEJM200106073442306').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
@@ -96,9 +90,8 @@ describe('scraping', function() {
 		it('DOI with redirect', function() {
 			return server.query('10.1371/journal.pcbi.1002947').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(res.body[0].pages, 'e1002947', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 			});
@@ -108,8 +101,7 @@ describe('scraping', function() {
 		it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
 			return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			});
 		});
@@ -118,8 +110,7 @@ describe('scraping', function() {
 		it('DOI pointing to resource in zotero with no DOI', function() {
 			return server.query('10.1007/11926078_68').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			});
 		});
@@ -128,8 +119,7 @@ describe('scraping', function() {
 		it('dx.DOI link pointing to resource in zotero with no DOI', function() {
 			return server.query('http://dx.DOI.org/10.1007/11926078_68').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				assert.checkZotCitation(res);
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			});
 		});
@@ -137,11 +127,31 @@ describe('scraping', function() {
 		it('doi pointing to bookSection', function() {
 			return server.query('10.1007/11926078_68').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res, 'Semantic MediaWiki');
-				assert.ok(res.body[0].DOI);
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-				// TODO: Preserve the "book section" type from zotero instead of overwriting it because it has a doi
+				assert.checkZotCitation(res, 'Semantic MediaWiki');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 				assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+			});
+		});
+
+		// Ensure html tags are stripped out of title
+		it('zotero gives us html tags in title', function() {
+			return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'Ninja Turtles (film)');
+				assert.deepEqual(res.body[0].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[0].itemType);
+			});
+		});
+
+		// The following tests require the WMF fork of the zotero translators, as found
+		// here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
+		describe(' uses WMF translator fork', function() {
+			// This test will pass with either repository since the output should be the same.
+			it('Google books link that cause Zotero to have internal server error', function() {
+				return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
+					assert.status(res, 200);
+					assert.checkCitation(res, 'isbn%3A0596554141 - Google Search');
+					assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+				});
 			});
 		});
 
@@ -230,20 +240,6 @@ describe('scraping', function() {
 			});
 		});
 
-	});
-
-	// The following tests require the WMF fork of the zotero translators, as found
-	// here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
-	// It will pass with either repository, however, since the output should be the same.
-	describe(' uses WMF translator fork', function() {
-
-		it('Google books link that cause Zotero to have internal server error', function() {
-			return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
-				assert.status(res, 200);
-				assert.checkCitation(res, 'isbn%3A0596554141 - Google Search');
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-			});
-		});
 	});
 
 });

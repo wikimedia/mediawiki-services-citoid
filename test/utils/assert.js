@@ -115,6 +115,16 @@ function checkCitation(res, title) {
 }
 
 
+function checkZotCitation(res, title) {
+
+	checkCitation(res, title);
+
+	assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+	assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
+
+}
+
+
 function checkBibtex(res, beginning) {
 
 	var cit;
@@ -126,14 +136,15 @@ function checkBibtex(res, beginning) {
 }
 
 
-module.exports.ok             = assert.ok;
-module.exports.fails          = fails;
-module.exports.deepEqual      = deepEqual;
-module.exports.isDeepEqual    = isDeepEqual;
-module.exports.notDeepEqual   = notDeepEqual;
-module.exports.contentType    = contentType;
-module.exports.status         = status;
-module.exports.checkCitation  = checkCitation;
-module.exports.checkBibtex    = checkBibtex;
+module.exports.ok               = assert.ok;
+module.exports.fails            = fails;
+module.exports.deepEqual        = deepEqual;
+module.exports.isDeepEqual      = isDeepEqual;
+module.exports.notDeepEqual     = notDeepEqual;
+module.exports.contentType      = contentType;
+module.exports.status           = status;
+module.exports.checkCitation    = checkCitation;
+module.exports.checkZotCitation = checkZotCitation;
+module.exports.checkBibtex      = checkBibtex;
 
 

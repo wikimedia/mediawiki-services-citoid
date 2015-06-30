@@ -142,6 +142,17 @@ describe('scraping', function() {
 			});
 		});
 
+		it('doi with US style date', function() {
+			return server.query('10.1542/peds.2007-2362').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'Management of Children With Autism Spectrum Disorders');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+				assert.deepEqual(res.body[0].date, '2007-11-01', 'Incorrect date; expected 2007-11-01, got ' + res.body[0].date);
+				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+
+			});
+		});
+
 		// The following tests require the WMF fork of the zotero translators, as found
 		// here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
 		describe(' uses WMF translator fork', function() {

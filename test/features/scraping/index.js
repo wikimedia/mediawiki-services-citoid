@@ -197,13 +197,13 @@ describe('scraping', function() {
 			});
 		});
 
-		it('websiteTitle + publicationTitle', function() {
+		it('websiteTitle but no publicationTitle', function() {
 			return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
 				assert.status(res, 200);
 				assert.checkCitation(res);
 				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
-				assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
+				assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
 			});
 		});
 

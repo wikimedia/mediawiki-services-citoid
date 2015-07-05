@@ -42,7 +42,7 @@ describe('exports', function() {
 				assert.status(res, 200);
 				assert.checkZotCitation(res, 'Semantic MediaWiki');
 				assert.ok(res.body[0].creators);
-				assert.ok(res.body[0].DOI);
+				assert.deepEqual(res.body[0].DOI, undefined, 'DOI is invalid field for type bookSection');
 				assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
 			});
 		});

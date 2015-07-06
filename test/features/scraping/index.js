@@ -227,10 +227,13 @@ describe('scraping', function() {
 		});
 
 		// Ensure DOI is present in non-zotero scraped page when request from DOI link
-		it('dx.DOI link pointing to resource not in zotero', function() {
+		it('dx.DOI link pointing to resource not in zotero - uses crossRef', function() {
 			return server.query('http://dx.DOI.org/10.2307/3677029').then(function(res) {
 				assert.status(res, 200);
-				assert.checkCitation(res);
+				assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
+				assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
+				assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+				assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 				assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -238,16 +241,17 @@ describe('scraping', function() {
 		});
 
 		// Ensure DOI is present in non-zotero scraped page where scraping fails
-		it('DOI pointing to resource that can\'t be scraped', function() {
+		it('DOI pointing to resource that can\'t be scraped - uses crossRef', function() {
 			return server.query('10.1038/scientificamerican0200-90')
 			.then(function(res) {
-				assert.status(res, 520);
-			}, function(res) {
-				assert.status(res, 520);
+				assert.status(res, 200);
 				assert.checkCitation(res);
+				assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
+				assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+				assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 				assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			});
 		});
 

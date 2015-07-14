@@ -2,7 +2,7 @@
 
 
 var sUtil = require('../lib/util');
-var CitoidRequest = require('../lib/CitoidRequest.js');
+
 
 /**
  * The main router object
@@ -13,6 +13,7 @@ var router = sUtil.router();
  * The main application object reported when this module is require()d
  */
 var app;
+
 
 /**
  * GET /robots.txt
@@ -29,77 +30,17 @@ router.get('/robots.txt', function(req, res) {
 
 
 /**
- * POST /url
- * Endpoint for retrieving citations in JSON format from a URL.
- * Note: this endpoint is deprecated.
+ * GET /
+ * Main entry point. Currently it only responds if the spec query
+ * parameter is given, otherwise lets the next middleware handle it
  */
-router.post('/url', function(req, res) {
+router.get('/', function(req, res, next) {
 
-	var cr = new CitoidRequest(req, app);
-
-	if (!req.body.format) {
-	 	cr.format = 'mwDeprecated'; // Backwards compatibility with prior version of API which did not require format
+	if(!(req.query || {}).hasOwnProperty('spec')) {
+		next();
 	} else {
-		cr.format = encodeURIComponent(req.body.format);
+		res.json(app.conf.spec);
 	}
-
-	if (!req.body.url) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'url' value specified"});
-		return;
-	}
-
-	// Set search value with uri encoded url
-	cr.search = req.body.url;
-	cr.encodedSearch = encodeURIComponent(req.body.url);
-
-	// Ensure format is supported
-	if (!app.formats[cr.format]) {
-		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + cr.format});
-		return;
-	}
-
-	return app.citoid.request(cr).then(function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	}, function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	});
-
-});
-
-
-/**
- * GET /api
- * Endpoint for retrieving citations based on search term (URL, DOI).
- */
-router.get('/api', function(req, res) {
-
-	var cr = new CitoidRequest(req, app);
-
-	if (!req.query.search) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'search' value specified"});
-		return;
-	} else if(!req.query.format) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'format' value specified"});
-		return;
-	} else if (!app.formats[cr.format]) { // Use encoded format
-		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + cr.format});
-		return;
-	}
-
-	return app.citoid.request(cr).then(function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	}, function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	});
 
 });
 

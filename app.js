@@ -10,6 +10,7 @@ var fs = BBPromise.promisifyAll(require('fs'));
 var sUtil = require('./lib/util');
 var CitoidService = require('./lib/CitoidService');
 var packageInfo = require('./package.json');
+var yaml = require('js-yaml');
 
 
 /**
@@ -47,6 +48,31 @@ function initApp(options) {
 		}
 	}
 
+	// set up the spec
+	if(!app.conf.spec) {
+		app.conf.spec = __dirname + '/spec.yaml';
+	}
+	try {
+		app.conf.spec = yaml.safeLoad(fs.readFileSync(app.conf.spec));
+	} catch(e) {
+		app.logger.log('warn/spec', 'Could not load the spec: ' + e);
+		app.conf.spec = {};
+	}
+	if(!app.conf.spec.swagger) {
+		app.conf.spec.swagger = '2.0';
+	}
+	if(!app.conf.spec.info) {
+		app.conf.spec.info = {
+			version: app.info.version,
+			title: app.info.name,
+			description: app.info.description
+		};
+	}
+	app.conf.spec.info.version = app.info.version;
+	if(!app.conf.spec.paths) {
+		app.conf.spec.paths = {};
+	}
+
 	// set the CORS and CSP headers
 	app.all('*', function(req, res, next) {
 		if(app.conf.cors !== false) {
@@ -71,8 +97,6 @@ function initApp(options) {
 	app.use(bodyParser.json());
 	// use the application/x-www-form-urlencoded parser
 	app.use(bodyParser.urlencoded({extended: true}));
-	// serve static files from static/
-	app.use(express.static(__dirname + '/static'));
 	// set allowed export formats and expected response type
 	app.nativeFormats = {
 		'mediawiki':'application/json',
@@ -127,6 +151,8 @@ function loadRoutes (app) {
 	}).then(function () {
 		// catch errors
 		sUtil.setErrorHandler(app);
+		// serve static files from static/ - here to allow routes to take precedence
+		app.use(express.static(__dirname + '/static'));
 		// route loading is now complete, return the app object
 		return BBPromise.resolve(app);
 	});

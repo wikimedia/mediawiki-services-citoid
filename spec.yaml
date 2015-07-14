@@ -1,0 +1,128 @@
+swagger: '2.0'
+info:
+  version: 0.2.7
+  title: Citoid
+  description: A citation service relying on Zotero
+  termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
+  contact:
+    name: the Wikimedia Services team
+    url: http://mediawiki.org/wiki/Services
+  license:
+    name: Apache2
+    url: http://www.apache.org/licenses/LICENSE-2.0
+paths:
+  # from routes/root.js
+  /robots.txt:
+    get:
+      tags:
+        - Root
+        - Robots
+      description: Gets robots.txt
+      x-monitor: false
+  /:
+    get:
+      tags:
+        - Root
+      description: The root service end-point
+      produces:
+        - application/json
+      x-amples:
+        - title: spec from root
+          request:
+            query:
+              spec: true
+          response:
+            status: 200
+  # from routes/info.js
+  /_info:
+    get:
+      tags:
+        - Service information
+      description: Gets information about the service
+      produces:
+        - application/json
+      x-amples:
+        - title: retrieve service info
+          request: {}
+          response:
+            status: 200
+            headers:
+              content-type: application/json
+            body:
+              name: /.+/
+              description: /.+/
+              version: /.+/
+              home: /.+/
+  # from routes/citoid.js
+  /url:
+    post:
+      tags:
+        - Citations
+      description: Converts URLs, DOIs, etc into citations. Note that this
+        endpoint is deprecated.
+      produces:
+        - application/json
+      x-monitor: false
+  /api:
+    get:
+      tags:
+        - Citations
+      description: Converts URLs, DOIs, etc into citations
+      produces:
+        - application/json
+      x-amples:
+        - title: bad URL
+          request:
+            query:
+              format: mediawiki
+              search: http://example.com/thisurldoesntexist
+            headers:
+              accept-language: en
+          response:
+            status: 520
+        - title: bad PMCID
+          request:
+            query:
+              format: mediawiki
+              search: PMC9999999
+            headers:
+              accept-language: en
+          response:
+            status: 404
+        - title: web site in alternative language
+          request:
+            query:
+              format: mediawiki
+              search: http://twitter.com
+            headers:
+              accept-language: de
+          response:
+            status: 200
+            body:
+              - itemType: /.+/
+                title: /Willkommen bei Twitter/
+                url: /.+/
+                accessDate: /.+/
+        - title: Zotero alive
+          request:
+            query:
+              format: bibtex
+              search: http://example.com
+            headers:
+              accept-language: en
+          response:
+            status: 200
+        - title: open graph via native scraper
+          request:
+            query:
+              format: mediawiki
+              search: http://www.pbs.org/newshour/making-sense/care-peoples-kids/
+            headers:
+              accept-language: en
+          response:
+            status: 200
+            body:
+              - itemType: /.+/
+                title: /.+/
+                url: /.+/
+                accessDate: /.+/

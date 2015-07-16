@@ -21,6 +21,7 @@
     "iconv-lite": "0.4.11",
     "js-yaml": "3.3.1",
     "preq": "0.4.4",
+    "request": "^2.58.0",
     "service-runner": "0.2.1",
     "tough-cookie": "2.0.0",
     "striptags": "2.0.2"

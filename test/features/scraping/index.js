@@ -240,6 +240,14 @@ describe('scraping', function() {
 			});
 		});
 
+		it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function() {
+			return server.query('10.14344/IOC.ML.4.4').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'IOC World Bird List 4.4');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+			});
+		});
+
 		// Ensure DOI is present in non-zotero scraped page where scraping fails
 		it('DOI pointing to resource that can\'t be scraped - uses crossRef', function() {
 			return server.query('10.1038/scientificamerican0200-90')

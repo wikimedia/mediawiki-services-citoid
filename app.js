@@ -48,6 +48,9 @@ function initApp(options) {
 		}
 	}
 
+	// ensure the User-Agent header is set
+	if(!app.conf.userAgent) { app.conf.userAgent = 'Citoid/' + app.info.version; }
+
 	// set up the spec
 	if(!app.conf.spec) {
 		app.conf.spec = __dirname + '/spec.yaml';

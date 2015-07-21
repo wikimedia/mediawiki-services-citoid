@@ -97,6 +97,17 @@ describe('scraping', function() {
 			});
 		});
 
+		// DOI which needs User-Agent to be set in order to detect the redirect
+		it('DOI with User-Agent set', function() {
+			return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+				assert.deepEqual(res.body[0].pages, '65', 'Wrong pages item; expected 65, got ' + res.body[0].pages);
+				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+			});
+		});
+
 		// Ensure DOI is present in zotero scraped page when requested from link containing DOI
 		it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
 			return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {

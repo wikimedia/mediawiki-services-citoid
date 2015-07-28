@@ -92,6 +92,19 @@ function fails(promise, onRejected) {
 
 }
 
+function checkError(res, status, message) {
+
+	deepEqual(res.status, status,
+		'Expected status to be ' + status + ', but was ' + res.status);
+
+	if(message) {
+		assert.deepEqual(res.body.Error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.Error + '"');
+	}
+
+	assert.deepEqual(res.body.name, undefined, 'Unexpected parameter "name" in error response');
+
+}
+
 
 function checkCitation(res, title) {
 
@@ -143,8 +156,8 @@ module.exports.isDeepEqual      = isDeepEqual;
 module.exports.notDeepEqual     = notDeepEqual;
 module.exports.contentType      = contentType;
 module.exports.status           = status;
+module.exports.checkError       = checkError;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;
-
 

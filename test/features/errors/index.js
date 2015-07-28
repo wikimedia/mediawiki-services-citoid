@@ -21,8 +21,7 @@ describe('errors', function() {
 		}).then(function(res) {
 			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 400);
-			assert.deepEqual(err.body.Error, "No 'search' value specified");
+			assert.checkError(err, 400, "No 'search' value specified");
 		});
 	});
 
@@ -35,8 +34,7 @@ describe('errors', function() {
 		}).then(function(res) {
 			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 400);
-			assert.deepEqual(err.body.Error, "No 'format' value specified");
+			assert.checkError(err, 400, "No 'format' value specified");
 		});
 	});
 
@@ -51,8 +49,7 @@ describe('errors', function() {
 		}).then(function(res) {
 			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 400);
-			assert.deepEqual(err.body.Error, 'Invalid format requested ' + format);
+			assert.checkError(err, 400, 'Invalid format requested ' + format);
 		});
 	});
 
@@ -94,8 +91,7 @@ describe('errors', function() {
 		.then(function(res) {
 			assert.status(res, 404);
 		}, function(err) {
-			assert.status(err, 404);
-			assert.deepEqual(err.body.Error, 'Unable to resolve DOI ' + doi,
+			assert.checkError(err, 404, 'Unable to resolve DOI ' + doi,
 				'Unexpected error message ' + err.body.Error);
 		});
 	});
@@ -106,8 +102,7 @@ describe('errors', function() {
 		.then(function(res) {
 			assert.status(res, 404);
 		}, function(err) {
-			assert.status(err, 404);
-			assert.deepEqual(err.body.Error,
+			assert.checkError(err, 404,
 				'Unable to locate resource with pmid ' + pmid,
 				'Unexpected error message ' + err.body.Error);
 		});
@@ -119,8 +114,7 @@ describe('errors', function() {
 		.then(function(res) {
 			assert.status(res, 404);
 		}, function(err) {
-			assert.status(err, 404);
-			assert.deepEqual(err.body.Error, 'Unable to locate resource with pmcid ' + pmcid,
+			assert.checkError(err, 404, 'Unable to locate resource with pmcid ' + pmcid,
 				'Unexpected error message ' + err.body.Error);
 		});
 	});

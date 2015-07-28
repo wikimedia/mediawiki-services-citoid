@@ -4,10 +4,11 @@
 var BBPromise = require('bluebird');
 var ServiceRunner = require('service-runner');
 var logStream = require('./logStream');
-var fs        = require('fs');
-var assert    = require('./assert');
-var yaml      = require('js-yaml');
-var preq      = require('preq');
+var fs = require('fs');
+var assert = require('./assert');
+var yaml = require('js-yaml');
+var preq = require('preq');
+var extend = require('extend');
 
 
 // set up the configuration
@@ -16,7 +17,8 @@ var config = {
 };
 // build the API endpoint URI by supposing the actual service
 // is the last one in the 'services' list in the config file
-var myService = config.conf.services[config.conf.services.length - 1];
+var myServiceIdx = config.conf.services.length - 1;
+var myService = config.conf.services[myServiceIdx];
 config.uri = 'http://localhost:' + myService.conf.port + '/';
 config.q_uri = config.uri + 'api';
 // no forking, run just one process when testing
@@ -27,10 +29,12 @@ config.conf.logging = {
 	level: 'trace',
 	stream: logStream()
 };
+// make a deep copy of it for later reference
+var origConfig = extend(true, {}, config);
 
 var stop    = function () {};
 var options = null;
-var runner = new ServiceRunner();
+var runner  = new ServiceRunner();
 
 
 function start(_options) {
@@ -41,6 +45,9 @@ function start(_options) {
 		console.log('server options changed; restarting');
 		stop();
 		options = _options;
+		// set up the config
+		config = extend(true, {}, origConfig);
+		extend(true, config.conf.services[myServiceIdx].conf, options);
 		return runner.run(config.conf)
 		.then(function(servers) {
 			var server = servers[0];

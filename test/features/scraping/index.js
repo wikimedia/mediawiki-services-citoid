@@ -187,6 +187,13 @@ describe('scraping', function() {
 					assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
 				});
 			});
+
+			it('Google books link that lacks native url field', function() {
+				return server.query('http://books.google.de/books?hl=en&lr=&id=Ct6FKwHhBSQC&oi=fnd&pg=PP9&dq=%22Peggy+Eaton%22&ots=KN-Z0-HAcv&sig=snBNf7bilHi9GFH4-6-3s1ySI9Q&redir_esc=y#v=onepage&q=%22Peggy%20Eaton%22&f=false').then(function(res) {
+					assert.status(res, 200);
+					assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
+				});
+			});
 		});
 
 	});

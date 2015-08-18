@@ -49,13 +49,10 @@ describe('encoding', function() {
 	it('json in search', function() {
 		return server.query('{"json":"object"}', 'mediawiki', 'en')
 		.then(function(res) {
-			assert.status(res, 520);
+			assert.status(res, 400);
 		}, function(err) {
-			assert.status(err, 520);
-			assert.deepEqual(err.body[0].title,
-				'http://%7B%22json%22:%22object%22%7D');
-			assert.deepEqual(err.body[0].url,
-				'http://%7B%22json%22:%22object%22%7D');
+			assert.status(err, 400);
+			assert.deepEqual(err.body.Error, 'Invalid host supplied');
 		});
 	});
 

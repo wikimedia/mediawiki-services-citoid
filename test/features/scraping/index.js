@@ -156,6 +156,15 @@ describe('scraping', function() {
 			});
 		});
 
+		// Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
+		it('doi in url with query parameters- uses Zotero', function() {
+			return server.query('example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+				assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+			});
+		});
+
 		// Ensure html tags are stripped out of title
 		it('zotero gives us html tags in title', function() {
 			return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
@@ -290,6 +299,24 @@ describe('scraping', function() {
 				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 				assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
 				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+			});
+		});
+
+		// Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromURL & crossRef
+		it('doi in url with query parameters - uses crossRef', function() {
+			return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
+				assert.status(res, 200);
+				assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System*');
+				assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+			});
+		});
+
+		// URL with string that previously matched doi regex but shouldn't
+		it('url with pseudo doi', function() {
+			return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'Glasgow 2014 - Dika Toua Profile');
+				assert.deepEqual(!!res.body[0].DOI, false);
 			});
 		});
 

@@ -308,6 +308,7 @@ describe('scraping', function() {
 				assert.status(res, 200);
 				assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System*');
 				assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+				assert.deepEqual(res.body[0].author.length, 1);
 			});
 		});
 

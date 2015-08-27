@@ -76,6 +76,24 @@ describe('coins unit', function() {
 			assert.deepEqual(result, expected);
 		});
 
+		it('Doesn\'t add duplicate author names with nbsp present', function() {
+			expected = {
+				creators: [{
+					creatorType: 'author',
+					firstName: 'Firstname',
+					lastName: 'Lastname, Jr.'
+				}]
+			};
+			input = {
+				aulast: 'Lastname',
+				aufirst: 'Firstname',
+				ausuffix: 'Jr.',
+				au: ['Firstname\xa0Lastname,\xa0Jr.'] // Contains nbsp instead of traditional space
+			};
+			result = coins.general.addAuthors({}, input);
+			assert.deepEqual(result, expected);
+		});
+
 		it('Correctly adds name with missing firstname', function() {
 			expected = {
 				creators: [{

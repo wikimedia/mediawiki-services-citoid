@@ -1,12 +1,17 @@
 var assert = require('../../utils/assert.js');
 var gen = require('../../../lib/translators/general.js');
 
-
 describe('general translator unit', function() {
 
 	var result;
 	var expected;
 	var input;
+
+	it('Translator function strips leading and trailing whitespace', function() {
+		expected = {title: 'Title of the Song'};
+		result = gen.util.makeTranslator('title').translate({}, ['\nTitle of the Song \xa0']);
+		assert.deepEqual(result, expected);
+	});
 
 	it('Author function ignores non-string arguments', function() {
 		expected = {};

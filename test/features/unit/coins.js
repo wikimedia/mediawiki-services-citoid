@@ -7,6 +7,20 @@ describe('coins unit', function() {
 	var result;
 	var expected;
 	var input;
+	var metadata;
+
+	it('Correctly adds pages from spage and epage', function(){
+		metadata = {
+			spage : '97',
+			epage : '102'
+		};
+		expected = {
+			itemType : 'bookSection',
+			pages: '97-102'
+		};
+		result = coins.other.spage({itemType: 'bookSection'}, metadata);
+		assert.deepEqual(result, expected);
+	});
 
 	it('Correctly adds date', function() {
 		expected = {

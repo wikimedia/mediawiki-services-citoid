@@ -187,6 +187,17 @@ describe('scraping', function() {
 			});
 		});
 
+		it('doi spage and epage fields in crossRef coins data', function() {
+			return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function(res) {
+				assert.status(res, 200);
+				assert.checkZotCitation(res, 'Ueber einige Derivate des Naphtylamins');
+				assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+				assert.deepEqual(!!res.body[0].pages, true, 'Missing pages');
+				assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+
+			});
+		});
+
 		// The following tests require the WMF fork of the zotero translators, as found
 		// here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
 		describe(' uses WMF translator fork', function() {

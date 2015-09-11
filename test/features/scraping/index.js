@@ -230,14 +230,6 @@ describe('scraping', function() {
 			});
 		});
 
-		it('open graph', function() {
-			return server.query('http://www.pbs.org/newshour/making-sense/care-peoples-kids/').then(function(res) {
-				assert.status(res, 200);
-				assert.checkCitation(res);
-				assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-			});
-		});
-
 		it('websiteTitle but no publicationTitle', function() {
 			return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
 				assert.status(res, 200);

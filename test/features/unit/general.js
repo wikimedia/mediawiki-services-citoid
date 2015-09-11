@@ -1,5 +1,7 @@
 var assert = require('../../utils/assert.js');
 var gen = require('../../../lib/translators/general.js');
+var fixDate = require('../../../lib/Exporter.js').fixDate;
+var fixLang = require('../../../lib/Exporter.js').fixLang;
 
 describe('general translator unit', function() {
 
@@ -10,6 +12,18 @@ describe('general translator unit', function() {
 	it('Translator function strips leading and trailing whitespace', function() {
 		expected = {title: 'Title of the Song'};
 		result = gen.util.makeTranslator('title').translate({}, ['\nTitle of the Song \xa0']);
+		assert.deepEqual(result, expected);
+	});
+
+	it('Translator function correctly adds date with fixDate validate function', function() {
+		expected = {date: '2012-08-01'};
+		result = gen.util.makeTranslator('date', fixDate).translate({}, ['August 2012']);
+		assert.deepEqual(result, expected);
+	});
+
+	it('Translator function correctly uses fixLang validate function', function() {
+		expected = {language: 'en-US'};
+		result = gen.util.makeTranslator('language', fixLang).translate({}, 'en_US');
 		assert.deepEqual(result, expected);
 	});
 

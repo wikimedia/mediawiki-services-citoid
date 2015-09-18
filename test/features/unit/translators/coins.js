@@ -1,5 +1,7 @@
-var assert = require('../../utils/assert.js');
-var coins = require('../../../lib/translators/coins.js');
+/* Unit tests for the coins translator */
+
+var assert = require('../../../utils/assert.js');
+var coins = require('../../../../lib/translators/coins.js');
 
 
 describe('coins unit', function() {
@@ -8,6 +10,7 @@ describe('coins unit', function() {
 	var expected;
 	var input;
 	var metadata;
+	var citation;
 
 	it('Correctly adds pages from spage and epage', function(){
 		metadata = {
@@ -61,135 +64,185 @@ describe('coins unit', function() {
 		assert.deepEqual(result, expected);
 	});
 
-	describe('general.addAuthors function', function() {
+	describe('exports.other.addCreators function', function() {
 
 		it('Doesn\'t add empty creators field', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
+			metadata = {
+			};
+			result = coins.other.addCreators(citation, metadata);
 			expected = {
+				itemType: 'journalArticle'
 			};
-			input = {
-			};
-			result = coins.general.addAuthors({}, input);
 			assert.deepEqual(result, expected);
 		});
 
-		it('Doesn\'t add duplicate author names', function() {
+		it('Doesn\'t add creators field if missing itemType', function() {
 			expected = {
-				creators: [{
-					creatorType: 'author',
-					firstName: 'Firstname',
-					lastName: 'Lastname, Jr.'
-				}]
 			};
-			input = {
+			citation = {};
+			metadata = {
 				aulast: 'Lastname',
 				aufirst: 'Firstname',
 				ausuffix: 'Jr.',
 				au: ['Firstname Lastname, Jr.']
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
-		it('Doesn\'t add duplicate author names with nbsp present', function() {
+		it('Doesn\'t add duplicate author names', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: 'Firstname',
 					lastName: 'Lastname, Jr.'
 				}]
 			};
-			input = {
+			metadata = {
+				aulast: 'Lastname',
+				aufirst: 'Firstname',
+				ausuffix: 'Jr.',
+				au: ['Firstname Lastname, Jr.']
+			};
+			result = coins.other.addCreators(citation, metadata);
+			assert.deepEqual(result, expected);
+		});
+
+		it('Doesn\'t add duplicate author names with nbsp present', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
+			citation = {
+				itemType: 'journalArticle',
+				creators: [{
+					creatorType: 'author',
+					firstName: 'Firstname',
+					lastName: 'Lastname, Jr.'
+				}]
+			};
+			metadata = {
 				aulast: 'Lastname',
 				aufirst: 'Firstname',
 				ausuffix: 'Jr.',
 				au: ['Firstname\xa0Lastname,\xa0Jr.'] // Contains nbsp instead of traditional space
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly adds name with missing firstname', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: '',
 					lastName: 'Lastname'
 				}]
 			};
-			input = {
+			metadata = {
 				aulast: 'Lastname',
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly adds name with missing lastname', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: 'Firstname',
 					lastName: ''
 				}]
 			};
-			input = {
+			metadata = {
 				aufirst: 'Firstname',
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly uses auinit1 and auinitm', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: 'F. M.',
 					lastName: 'Lastname'
 				}]
 			};
-			input = {
+			metadata = {
 				aulast: 'Lastname',
 				auinit1: 'F.',
 				auinitm: 'M.'
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly uses auinit1 and auinitm', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: 'F. M.',
 					lastName: 'Lastname'
 				}]
 			};
-			input = {
+			metadata = {
 				aulast: 'Lastname',
 				auinit: 'F. M.',
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly adds corporation names', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: '',
 					lastName: 'Name of corporation'
 				}]
 			};
-			input = {
+			metadata = {
 				aucorp: [
 					'Name of corporation'
 				]
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 
 		it('Correctly adds 3 word names', function() {
+			citation = {
+				itemType: 'journalArticle'
+			};
 			expected = {
+				itemType: 'journalArticle',
 				creators: [{
 					creatorType: 'author',
 					firstName: 'A. B.',
@@ -201,13 +254,13 @@ describe('coins unit', function() {
 					lastName: 'Jklmno'
 				}]
 			};
-			input = {
+			metadata = {
 				au: [
 					'A. B. Cdefg',
 					'H. I. Jklmno'
 				]
 			};
-			result = coins.general.addAuthors({}, input);
+			result = coins.other.addCreators(citation, metadata);
 			assert.deepEqual(result, expected);
 		});
 	});

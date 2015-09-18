@@ -6,15 +6,15 @@ var eg = require('./util/index.js').extendGeneral;
 var makeCreatorsTranslator = require('./util/index.js').makeCreatorsTranslator;
 
 /**
- * General field values : Zotero type field values
+ * Template field values : translators made with Zotero type field values
  * @type {Object}
  */
 
 exports.general = {
-	canonical: makeTranslator('url'),
-	description: makeTranslator('abstractNote'),
-	publisher: makeTranslator('publisher'),
-	title: makeTranslator('title')
+	urlTemplateField: makeTranslator('url'),
+	abstractTemplateField: makeTranslator('abstractNote'),
+	publisherTemplateField: makeTranslator('publisher'),
+	titleTemplateField: makeTranslator('title')
 };
 
 // Shortcut for extendGeneral utility

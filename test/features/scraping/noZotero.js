@@ -35,7 +35,7 @@ describe('unreachable Zotero service', function() {
 	it('PMCID present in doi id converter api', function() {
 		return server.query('PMC3605911').then(function(res) {
 			assert.status(res, 200);
-			assert.checkZotCitation(res, 'Viral Phylodynamics');
+			assert.checkCitation(res, 'Viral Phylodynamics');
 			assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
 			assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			assert.deepEqual(!!res.body[0].ISSN, false, 'Should not contain ISSN'); // This indicates Zotero is actually activated since ISSN is not in crossRef, where we're obtaining the metadata
@@ -47,9 +47,20 @@ describe('unreachable Zotero service', function() {
 	it('JSTOR page with tabs in natively scraped title', function() {
 		return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function(res) {
 			assert.status(res, 200);
-			assert.checkZotCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
+			assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
 			assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
 			assert.deepEqual(!!res.body[0].ISSN, false, 'Should not contain ISSN'); // This indicates Zotero is actually activated since ISSN is not in crossRef, where we're obtaining the metadata
+			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+		});
+	});
+
+	// Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
+	it('Article with doi within DublinCore metadata', function() {
+		return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function(res) {
+			assert.status(res, 200);
+			assert.checkCitation(res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife');
+			assert.deepEqual(res.body[0].date, '2004-01-16');
+			assert.deepEqual(res.body[0].DOI, '10.1126/science.1092528');
 			assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 		});
 	});

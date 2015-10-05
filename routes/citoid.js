@@ -22,38 +22,38 @@ var app;
  */
 router.post('/url', function(req, res) {
 
-	var cr = new CitoidRequest(req, app);
+    var cr = new CitoidRequest(req, app);
 
-	if (!req.body.format) {
-		cr.format = 'mwDeprecated'; // Backwards compatibility with prior version of API which did not require format
-	} else {
-		cr.format = encodeURIComponent(req.body.format);
-	}
+    if (!req.body.format) {
+        cr.format = 'mwDeprecated'; // Backwards compatibility with prior version of API which did not require format
+    } else {
+        cr.format = encodeURIComponent(req.body.format);
+    }
 
-	if (!req.body.url) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'url' value specified"});
-		return;
-	}
+    if (!req.body.url) {
+        res.status(400).type('application/json');
+        res.send({Error:"No 'url' value specified"});
+        return;
+    }
 
-	// Set search value with uri encoded url
-	cr.search = req.body.url;
-	cr.encodedSearch = encodeURIComponent(req.body.url);
+    // Set search value with uri encoded url
+    cr.search = req.body.url;
+    cr.encodedSearch = encodeURIComponent(req.body.url);
 
-	// Ensure format is supported
-	if (!app.formats[cr.format]) {
-		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + cr.format});
-		return;
-	}
+    // Ensure format is supported
+    if (!app.formats[cr.format]) {
+        res.status(400).type('application/json');
+        res.send({Error:'Invalid format requested ' + cr.format});
+        return;
+    }
 
-	return app.citoid.request(cr).then(function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	}, function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	});
+    return app.citoid.request(cr).then(function(cr){
+        res.status(cr.response.responseCode).type(app.formats[cr.format]);
+        res.send(cr.response.body);
+    }, function(cr){
+        res.status(cr.response.responseCode).type(app.formats[cr.format]);
+        res.send(cr.response.body);
+    });
 
 });
 
@@ -64,42 +64,42 @@ router.post('/url', function(req, res) {
  */
 router.get('/api', function(req, res) {
 
-	var cr = new CitoidRequest(req, app);
+    var cr = new CitoidRequest(req, app);
 
-	if (!req.query.search) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'search' value specified"});
-		return;
-	} else if(!req.query.format) {
-		res.status(400).type('application/json');
-		res.send({Error:"No 'format' value specified"});
-		return;
-	} else if (!app.formats[cr.format]) { // Use encoded format
-		res.status(400).type('application/json');
-		res.send({Error:'Invalid format requested ' + cr.format});
-		return;
-	}
+    if (!req.query.search) {
+        res.status(400).type('application/json');
+        res.send({Error:"No 'search' value specified"});
+        return;
+    } else if(!req.query.format) {
+        res.status(400).type('application/json');
+        res.send({Error:"No 'format' value specified"});
+        return;
+    } else if (!app.formats[cr.format]) { // Use encoded format
+        res.status(400).type('application/json');
+        res.send({Error:'Invalid format requested ' + cr.format});
+        return;
+    }
 
-	return app.citoid.request(cr).then(function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	}, function(cr){
-		res.status(cr.response.responseCode).type(app.formats[cr.format]);
-		res.send(cr.response.body);
-	});
+    return app.citoid.request(cr).then(function(cr){
+        res.status(cr.response.responseCode).type(app.formats[cr.format]);
+        res.send(cr.response.body);
+    }, function(cr){
+        res.status(cr.response.responseCode).type(app.formats[cr.format]);
+        res.send(cr.response.body);
+    });
 
 });
 
 
 module.exports = function(appObj) {
 
-	app = appObj;
+    app = appObj;
 
-	return {
-		path: '/',
-		skip_domain: true,
-		router: router
-	};
+    return {
+        path: '/',
+        skip_domain: true,
+        router: router
+    };
 
 };
 

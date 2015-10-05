@@ -13,7 +13,7 @@ var extend = require('extend');
 
 // set up the configuration
 var config = {
-	conf: yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yaml'))
+    conf: yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yaml'))
 };
 // build the API endpoint URI by supposing the actual service
 // is the last one in the 'services' list in the config file
@@ -25,9 +25,9 @@ config.q_uri = config.uri + 'api';
 config.conf.num_workers = 0;
 // have a separate, in-memory logger only
 config.conf.logging = {
-	name: 'test-log',
-	level: 'trace',
-	stream: logStream()
+    name: 'test-log',
+    level: 'trace',
+    stream: logStream()
 };
 // make a deep copy of it for later reference
 var origConfig = extend(true, {}, config);
@@ -39,58 +39,58 @@ var runner  = new ServiceRunner();
 
 function start(_options) {
 
-	_options = _options || {};
+    _options = _options || {};
 
-	if (!assert.isDeepEqual(options, _options)) {
-		console.log('server options changed; restarting');
-		stop();
-		options = _options;
-		// set up the config
-		config = extend(true, {}, origConfig);
-		extend(true, config.conf.services[myServiceIdx].conf, options);
-		return runner.run(config.conf)
-		.then(function(servers) {
-			var server = servers[0];
-			stop = function () {
-				console.log('stopping test server');
-				server.close();
-				stop = function () {};
-			};
-			return true;
-		});
-	} else {
-		return BBPromise.resolve();
-	}
+    if (!assert.isDeepEqual(options, _options)) {
+        console.log('server options changed; restarting');
+        stop();
+        options = _options;
+        // set up the config
+        config = extend(true, {}, origConfig);
+        extend(true, config.conf.services[myServiceIdx].conf, options);
+        return runner.run(config.conf)
+        .then(function(servers) {
+            var server = servers[0];
+            stop = function () {
+                console.log('stopping test server');
+                server.close();
+                stop = function () {};
+            };
+            return true;
+        });
+    } else {
+        return BBPromise.resolve();
+    }
 
 }
 
 
 function query(search, format, language) {
 
-	if (!format) {
-		format = 'mediawiki';
-	}
-	if (!language) {
-		language = 'en';
-	}
+    if (!format) {
+        format = 'mediawiki';
+    }
+    if (!language) {
+        language = 'en';
+    }
 
-	return preq.get({
-		uri: config.q_uri,
-		query: {
-			format: format,
-			search: search
-		},
-		headers: {
-			'accept-language': language
-		}
-	});
+    return preq.get({
+        uri: config.q_uri,
+        query: {
+            format: format,
+            search: search
+        },
+        headers: {
+            'accept-language': language
+        }
+    });
 
 }
 
 
 module.exports = {
-	config: config,
-	start: start,
-	query: query
+    config: config,
+    start: start,
+    query: query
 };
 

@@ -21,10 +21,10 @@ var app;
  */
 router.get('/robots.txt', function(req, res) {
 
-	res.set({
-		'User-agent': '*',
-		'Disallow': '/'
-	}).end();
+    res.set({
+        'User-agent': '*',
+        'Disallow': '/'
+    }).end();
 
 });
 
@@ -36,24 +36,24 @@ router.get('/robots.txt', function(req, res) {
  */
 router.get('/', function(req, res, next) {
 
-	if(!(req.query || {}).hasOwnProperty('spec')) {
-		next();
-	} else {
-		res.json(app.conf.spec);
-	}
+    if(!(req.query || {}).hasOwnProperty('spec')) {
+        next();
+    } else {
+        res.json(app.conf.spec);
+    }
 
 });
 
 
 module.exports = function(appObj) {
 
-	app = appObj;
+    app = appObj;
 
-	return {
-		path: '/',
-		skip_domain: true,
-		router: router
-	};
+    return {
+        path: '/',
+        skip_domain: true,
+        router: router
+    };
 
 };
 

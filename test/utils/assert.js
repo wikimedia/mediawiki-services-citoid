@@ -9,8 +9,8 @@ var assert = require('assert');
  */
 function status(res, expected) {
 
-	deepEqual(res.status, expected,
-		'Expected status to be ' + expected + ', but was ' + res.status);
+    deepEqual(res.status, expected,
+        'Expected status to be ' + expected + ', but was ' + res.status);
 
 }
 
@@ -20,131 +20,131 @@ function status(res, expected) {
  */
 function contentType(res, expected) {
 
-	var actual = res.headers['content-type'];
-	deepEqual(actual, expected,
-		'Expected content-type to be ' + expected + ', but was ' + actual);
+    var actual = res.headers['content-type'];
+    deepEqual(actual, expected,
+        'Expected content-type to be ' + expected + ', but was ' + actual);
 
 }
 
 
 function isDeepEqual(result, expected, message) {
 
-	try {
-		if (typeof expected === 'string') {
-			assert.ok(result === expected || (new RegExp(expected).test(result)), message);
-		} else {
-			assert.deepEqual(result, expected, message);
-		}
-		return true;
-	} catch (e) {
-		return false;
-	}
+    try {
+        if (typeof expected === 'string') {
+            assert.ok(result === expected || (new RegExp(expected).test(result)), message);
+        } else {
+            assert.deepEqual(result, expected, message);
+        }
+        return true;
+    } catch (e) {
+        return false;
+    }
 
 }
 
 
 function deepEqual(result, expected, message) {
 
-	try {
-		if (typeof expected === 'string') {
-			assert.ok(result === expected || (new RegExp(expected).test(result)));
-		} else {
-			assert.deepEqual(result, expected, message);
-		}
-	} catch (e) {
-		console.log('Expected:\n' + JSON.stringify(expected, null, 2));
-		console.log('Result:\n' + JSON.stringify(result, null, 2));
-		throw e;
-	}
+    try {
+        if (typeof expected === 'string') {
+            assert.ok(result === expected || (new RegExp(expected).test(result)));
+        } else {
+            assert.deepEqual(result, expected, message);
+        }
+    } catch (e) {
+        console.log('Expected:\n' + JSON.stringify(expected, null, 2));
+        console.log('Result:\n' + JSON.stringify(result, null, 2));
+        throw e;
+    }
 
 }
 
 
 function notDeepEqual(result, expected, message) {
 
-	try {
-		assert.notDeepEqual(result, expected, message);
-	} catch (e) {
-		console.log('Not expected:\n' + JSON.stringify(expected, null, 2));
-		console.log('Result:\n' + JSON.stringify(result, null, 2));
-		throw e;
-	}
+    try {
+        assert.notDeepEqual(result, expected, message);
+    } catch (e) {
+        console.log('Not expected:\n' + JSON.stringify(expected, null, 2));
+        console.log('Result:\n' + JSON.stringify(result, null, 2));
+        throw e;
+    }
 
 }
 
 
 function fails(promise, onRejected) {
 
-	var failed = false;
+    var failed = false;
 
-	function trackFailure(e) {
-		failed = true;
-		return onRejected(e);
-	}
+    function trackFailure(e) {
+        failed = true;
+        return onRejected(e);
+    }
 
-	function check() {
-		if (!failed) {
-			throw new Error('expected error was not thrown');
-		}
-	}
+    function check() {
+        if (!failed) {
+            throw new Error('expected error was not thrown');
+        }
+    }
 
-	return promise.catch(trackFailure).then(check);
+    return promise.catch(trackFailure).then(check);
 
 }
 
 function checkError(res, status, message) {
 
-	deepEqual(res.status, status,
-		'Expected status to be ' + status + ', but was ' + res.status);
+    deepEqual(res.status, status,
+        'Expected status to be ' + status + ', but was ' + res.status);
 
-	if(message) {
-		assert.deepEqual(res.body.Error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.Error + '"');
-	}
+    if(message) {
+        assert.deepEqual(res.body.Error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.Error + '"');
+    }
 
-	assert.deepEqual(res.body.name, undefined, 'Unexpected parameter "name" in error response');
+    assert.deepEqual(res.body.name, undefined, 'Unexpected parameter "name" in error response');
 
 }
 
 
 function checkCitation(res, title) {
 
-	var cit = res.body;
+    var cit = res.body;
 
-	if(!Array.isArray(cit) || cit.length !== 1) {
-		throw new Error('Expected to receive an array of 1 citation, got: ' + JSON.stringify(cit));
-	}
+    if(!Array.isArray(cit) || cit.length !== 1) {
+        throw new Error('Expected to receive an array of 1 citation, got: ' + JSON.stringify(cit));
+    }
 
-	cit = cit[0];
+    cit = cit[0];
 
-	// Check presence of all required fields
-	assert.deepEqual(!!cit.itemType, true, 'No itemType present');
-	assert.deepEqual(!!cit.title, true, 'No title present');
-	assert.deepEqual(!!cit.url, true, 'No url present');
+    // Check presence of all required fields
+    assert.deepEqual(!!cit.itemType, true, 'No itemType present');
+    assert.deepEqual(!!cit.title, true, 'No title present');
+    assert.deepEqual(!!cit.url, true, 'No url present');
 
-	if(title) {
-		assert.deepEqual(cit.title, title, 'Wrong title, expected "' + title + '", got "' + cit.title + '"');
-	}
+    if(title) {
+        assert.deepEqual(cit.title, title, 'Wrong title, expected "' + title + '", got "' + cit.title + '"');
+    }
 
 }
 
 
 function checkZotCitation(res, title) {
 
-	checkCitation(res, title);
+    checkCitation(res, title);
 
-	assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-	assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
+    assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+    assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 
 }
 
 
 function checkBibtex(res, beginning) {
 
-	var cit;
+    var cit;
 
-	assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
-	cit = res.body.toString();
-	assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
+    assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
+    cit = res.body.toString();
+    assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
 
 }
 

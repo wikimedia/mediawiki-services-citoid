@@ -21,13 +21,13 @@ var app;
  */
 router.get('/', function(req, res) {
 
-	// simple sync return
-	res.json({
-		name: app.info.name,
-		version: app.info.version,
-		description: app.info.description,
-		home: app.info.homepage
-	});
+    // simple sync return
+    res.json({
+        name: app.info.name,
+        version: app.info.version,
+        description: app.info.description,
+        home: app.info.homepage
+    });
 
 });
 
@@ -38,8 +38,8 @@ router.get('/', function(req, res) {
  */
 router.get('/name', function(req, res) {
 
-	// simple return
-	res.json({ name: app.info.name });
+    // simple return
+    res.json({ name: app.info.name });
 
 });
 
@@ -50,8 +50,8 @@ router.get('/name', function(req, res) {
  */
 router.get('/version', function(req, res) {
 
-	// simple return
-	res.json({ version: app.info.version });
+    // simple return
+    res.json({ version: app.info.version });
 
 });
 
@@ -63,28 +63,28 @@ router.get('/version', function(req, res) {
  */
 router.all('/home', function(req, res) {
 
-	var home = app.info.homepage;
-	if(home && /^http/.test(home)) {
-		// we have a home page URI defined, so send it
-		res.redirect(301, home);
-		return;
-	} else {
-		// no URI defined for the home page, error out
-		res.status(404).end('No home page URL defined for ' + app.info.name);
-	}
+    var home = app.info.homepage;
+    if(home && /^http/.test(home)) {
+        // we have a home page URI defined, so send it
+        res.redirect(301, home);
+        return;
+    } else {
+        // no URI defined for the home page, error out
+        res.status(404).end('No home page URL defined for ' + app.info.name);
+    }
 
 });
 
 
 module.exports = function(appObj) {
 
-	app = appObj;
+    app = appObj;
 
-	return {
-		path: '/_info',
-		skip_domain: true,
-		router: router
-	};
+    return {
+        path: '/_info',
+        skip_domain: true,
+        router: router
+    };
 
 };
 

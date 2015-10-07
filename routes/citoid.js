@@ -46,6 +46,11 @@ router.post('/url', function(req, res) {
         res.status(400).type('application/json');
         res.send({Error:'Invalid format requested ' + cr.format});
         return;
+    // Ensure format supports baseFields- currently mediawiki only
+    } else if(cr.baseFields && cr.format !== 'mediawiki'){
+        res.status(400).type('application/json');
+        res.send({Error:'Base fields are not supported for format ' + cr.format});
+        return;
     }
 
     return app.citoid.request(cr).then(function(cr){
@@ -77,7 +82,11 @@ router.get('/api', function(req, res) {
         return;
     } else if (!app.formats[cr.format]) { // Use encoded format
         res.status(400).type('application/json');
-        res.send({Error:'Invalid format requested ' + cr.format});
+        res.send({Error:'Invalid format requested ' + cr.format || ''});
+        return;
+    } else if(cr.baseFields && cr.format !== 'mediawiki'){ // Ensure format supports baseFields- currently mediawiki only
+        res.status(400).type('application/json');
+        res.send({Error:'Base fields are not supported for format ' + cr.format || ''});
         return;
     }
 

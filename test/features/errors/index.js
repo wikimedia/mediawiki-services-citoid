@@ -53,6 +53,22 @@ describe('errors', function() {
         });
     });
 
+    it('request for base fields for unsupported type', function() {
+        var format = 'zotero';
+        return preq.get({
+            uri: server.config.q_uri,
+            query: {
+                search: 'http://example.com',
+                format: format,
+                basefields: 'true'
+            }
+        }).then(function(res) {
+            assert.status(res, 400);
+        }, function(err) {
+            assert.checkError(err, 400, 'Base fields are not supported for format ' + format);
+        });
+    });
+
     it('bad domain', function() {
         return server.query('example./com', 'mediawiki', 'en')
         .then(function(res) {

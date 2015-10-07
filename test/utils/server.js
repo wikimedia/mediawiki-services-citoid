@@ -69,7 +69,7 @@ function start(_options) {
 }
 
 
-function query(search, format, language) {
+function query(search, format, language, basefields) {
 
     if (!format) {
         format = 'mediawiki';
@@ -82,7 +82,8 @@ function query(search, format, language) {
         uri: config.q_uri,
         query: {
             format: format,
-            search: search
+            search: search,
+            basefields: basefields,
         },
         headers: {
             'accept-language': language

@@ -1,0 +1,42 @@
+'use strict';
+
+/**
+ * Tests for when Zotero can translate but not export
+ */
+
+var preq   = require('preq');
+var assert = require('../../utils/assert.js');
+var server = require('../../utils/server.js');
+var zotero = require('../../utils/mockZoteroServer.js');
+
+
+describe('mock Zotero service that cannot export', function() {
+
+    this.timeout(40000);
+
+    // Give Zotero port which is it is not running from-
+    // Mimics Zotero being down.
+    before(function () {
+        zotero.start(1968); // Start mock zotero server
+        return server.start({zoteroPort:1968}); // Start citoid server using mock Zotero location
+    });
+
+    it('Get error for bibtex export from mock Zotero server', function() {
+        return server.query('http://www.example.com', 'bibtex', 'en')
+        .then(function(res) {
+            assert.status(res, 404);
+        }, function(err) {
+            assert.deepEqual(JSON.parse(err.body.toString()).Error,'Unable to serve bibtex format at this time');
+            assert.status(err, 404);
+            //assert.checkError(err, 404, 'Unable to serve bibtex at this time');
+        });
+    });
+
+    it('Success with bibtex export from mock Zotero server', function() {
+        return server.query('http://www.example.com').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Example Domain');
+        });
+    });
+
+});

@@ -3,6 +3,7 @@
 
 var sUtil = require('../lib/util');
 var CitoidRequest = require('../lib/CitoidRequest.js');
+var CitoidService = require('../lib/CitoidService');
 
 /**
  * The main router object
@@ -94,6 +95,20 @@ router.get('/api', function(req, res) {
 module.exports = function(appObj) {
 
     app = appObj;
+
+    // set allowed export formats and expected response type
+    app.nativeFormats = {
+        'mediawiki':'application/json',
+        'zotero':'application/json',
+        'mwDeprecated':'application/json'
+    };
+    app.zoteroFormats = {
+        'bibtex':'application/x-bibtex'
+    };
+    app.formats = Object.assign({}, app.nativeFormats, app.zoteroFormats);
+
+    // init the Citoid service object
+    app.citoid = new CitoidService(app);
 
     return {
         path: '/',

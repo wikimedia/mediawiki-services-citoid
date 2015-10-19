@@ -1,12 +1,12 @@
 'use strict';
 
 
-var preq = require('preq');
+var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
-var URI = require('swagger-router').URI;
-var yaml = require('js-yaml');
-var fs = require('fs');
+var URI    = require('swagger-router').URI;
+var yaml   = require('js-yaml');
+var fs     = require('fs');
 
 
 function staticSpecLoad() {

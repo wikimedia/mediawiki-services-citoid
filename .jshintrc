@@ -1,38 +1,36 @@
 {
+    "predef": [
+        "Map",
+        "Set"
+    ],
 
-	"predef": [
-		"Map",
-		"Set"
-	],
+    // Enforcing
+    "bitwise": true,
+    "eqeqeq": true,
+    "freeze": true,
+    "noarg": true,
+    "nonew": true,
+    "undef": true,
 
-	// Enforcing
-	"bitwise": true,
-	"eqeqeq": true,
-	"freeze": true,
-	"noarg": true,
-	"nonew": true,
-	"undef": true,
+    "curly": true,
+    "newcap": true,
+    "noempty": true,
+    "immed": true,
 
-	"curly": true,
-	"newcap": true,
-	"noempty": true,
-	"immed": true,
+    // Relaxing
+    "laxbreak": true,
+    "sub": true,
+    "boss": true,
+    "eqnull": true,
+    "multistr": true,
+    "loopfunc": true,
 
-	// Relaxing
-	"laxbreak": true,
-	"sub": true,
-	"boss": true,
-	"eqnull": true,
-	"multistr": true,
-	"loopfunc": true,
+    // Invalid options (?)
+    "regexp": false,
+    "trailing": true,
+    "smarttabs": true,
+    "nomen": false,
 
-	// Invalid options (?)
-	"regexp": false,
-	"trailing": true,
-	"smarttabs": true,
-	"nomen": false,
-
-	"node": true,
-	"esnext": true
-
+    "node": true,
+    "esnext": true
 }

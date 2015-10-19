@@ -34,6 +34,9 @@ services:
       port: 1970
       # IP address to bind to, all IPs by default
       # interface: localhost # uncomment to only listen on localhost
+      # more per-service config settings
+      # the location of the spec, defaults to spec.yaml if not specified
+      # spec: ./spec.template.yaml
       # allow cross-domain requests to the API (default '*')
       cors: '*'
       # to disable use:
@@ -41,7 +44,21 @@ services:
       # to restrict to a particular domain, use:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
-      # proxy: http://127.0.0.0.1
+      # proxy: http://my.proxy.org:8080
+      # the list of domains for which not to use the proxy defined above
+      # no_proxy_list:
+      #   - domain1.com
+      #   - domain2.org
+      # the list of incoming request headers that can be logged; if left empty,
+      # the following headers are allowed: cache-control, content-length,
+      # content-type, if-match, user-agent, x-request-id
+      # log_header_whitelist:
+      #   - cache-control
+      #   - content-length
+      #   - content-type
+      #   - if-match
+      #   - user-agent
+      #   - x-request-id
       # User-Agent HTTP header to use for requests
       userAgent: null
       # URL where to contact Zotero

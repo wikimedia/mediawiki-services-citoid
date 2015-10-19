@@ -149,15 +149,14 @@ function checkBibtex(res, beginning) {
 }
 
 
-module.exports.ok               = assert.ok;
-module.exports.fails            = fails;
-module.exports.deepEqual        = deepEqual;
-module.exports.isDeepEqual      = isDeepEqual;
-module.exports.notDeepEqual     = notDeepEqual;
-module.exports.contentType      = contentType;
-module.exports.status           = status;
+module.exports.ok             = assert.ok;
+module.exports.fails          = fails;
+module.exports.deepEqual      = deepEqual;
+module.exports.isDeepEqual    = isDeepEqual;
+module.exports.notDeepEqual   = notDeepEqual;
+module.exports.contentType    = contentType;
+module.exports.status         = status;
 module.exports.checkError       = checkError;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;
-

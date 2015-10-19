@@ -1,6 +1,10 @@
 'use strict';
 
 
+// mocha defines to avoid JSHint breakage
+/* global describe, it, before, beforeEach, after, afterEach */
+
+
 var BBPromise = require('bluebird');
 var ServiceRunner = require('service-runner');
 var logStream = require('./logStream');
@@ -32,9 +36,9 @@ config.conf.logging = {
 // make a deep copy of it for later reference
 var origConfig = extend(true, {}, config);
 
-var stop    = function () {};
+var stop = function () {};
 var options = null;
-var runner  = new ServiceRunner();
+var runner = new ServiceRunner();
 
 
 function start(_options) {
@@ -88,9 +92,6 @@ function query(search, format, language) {
 }
 
 
-module.exports = {
-    config: config,
-    start: start,
-    query: query
-};
-
+module.exports.config = config;
+module.exports.start  = start;
+module.exports.query  = query;

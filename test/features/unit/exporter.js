@@ -68,5 +68,12 @@ describe('exporter functions', function() {
         });
     });
 
+    describe('fixPages function', function() {
+        it('converts hyphen minus to en dash', function() {
+            expected = {pages: '15–44'};
+            result = exporter.fixPages({pages:'15-44'});
+            assert.deepEqual(result, expected);
+        });
+    });
 
 });

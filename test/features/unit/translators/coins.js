@@ -19,9 +19,17 @@ describe('coins unit', function() {
         };
         expected = {
             itemType : 'bookSection',
-            pages: '97-102'
+            pages: '97–102'
         };
         result = coins.other.spage({itemType: 'bookSection'}, metadata);
+        assert.deepEqual(result, expected);
+    });
+
+    it('Correctly fixes en dash in pages fields', function() {
+        expected = {
+            pages: '15–44'
+        };
+        result = coins.bookSection.pages.translate({}, '15-44');
         assert.deepEqual(result, expected);
     });
 

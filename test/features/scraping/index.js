@@ -70,7 +70,7 @@ describe('scraping', function() {
                 assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -81,7 +81,7 @@ describe('scraping', function() {
                 assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764-1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -187,12 +187,12 @@ describe('scraping', function() {
             });
         });
 
-        it('doi spage and epage fields in crossRef coins data', function() {
-            return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function(res) {
+        it('fixes en dash in zotero results', function() {
+            return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Ueber einige Derivate des Naphtylamins');
+                assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(!!res.body[0].pages, true, 'Missing pages');
+                assert.deepEqual(res.body[0].pages, '15–44');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 
             });

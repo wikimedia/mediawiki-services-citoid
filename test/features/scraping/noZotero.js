@@ -65,4 +65,15 @@ describe('unreachable Zotero service', function() {
 		});
 	});
 
+    it('doi spage and epage fields in crossRef coins data', function() {
+        return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function(res) {
+            assert.status(res, 200);
+            assert.checkZotCitation(res, 'Ueber einige Derivate des Naphtylamins');
+            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+            assert.deepEqual(res.body[0].pages, '90–93', 'Missing pages'); // Uses en dash
+            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+
+        });
+    });
+
 });

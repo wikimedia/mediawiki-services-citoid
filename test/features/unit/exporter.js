@@ -76,4 +76,56 @@ describe('exporter functions', function() {
         });
     });
 
+    describe('replaceCreators function', function() {
+        var creators;
+        it('Correctly adds name with firstName and lastName present', function() {
+            creators = [
+                {creatorType:'author', lastName:'Plath', firstName:'Sylvia'},
+                {creatorType:'author', lastName:'Hughes', firstName:'Langston'}
+            ];
+            expected = {author: [
+                ['Sylvia', 'Plath'],
+                ['Langston', 'Hughes']
+            ]};
+            result = exporter.replaceCreators({creators:creators});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly adds names with only lastName or firstName present', function() {
+            creators = [
+                {creatorType:'author', lastName:'', firstName:'Madonna'},
+                {creatorType:'author', lastName:'Prince', firstName:''}
+            ];
+            expected = {author: [
+                ['Madonna', ''],
+                ['', 'Prince']
+            ]};
+            result = exporter.replaceCreators({creators:creators});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Adds names with name field', function() {
+            creators = [
+                {creatorType:'author', name:'Madonna'},
+                {creatorType:'author', name:'Prince'}
+            ];
+            expected =  {author: [
+                ['', 'Madonna'],
+                ['', 'Prince']
+            ]};
+            result = exporter.replaceCreators({creators:creators});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Doesn\'t add names with incorrect field name', function() {
+            creators = [
+                {creatorType:'author', foo:'Madonna'},
+                {creatorType:'author', foo:'Prince'}
+            ];
+            expected = {};
+            result = exporter.replaceCreators({creators:creators});
+            assert.deepEqual(result, expected);
+        });
+    });
+
 });

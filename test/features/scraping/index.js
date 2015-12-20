@@ -198,6 +198,24 @@ describe('scraping', function() {
             });
         });
 
+        // Correctly adds authors from zotero 'name' field
+        it('Correctly skips bad authors from Zotero whilst converting to mediawiki format', function() {
+            return server.query('http://dx.doi.org/10.1001/jama.296.10.1274').then(function(res) {
+                var expectedAuthor = [
+                    [ '', 'Detsky ME'],
+                    ['','McDonald DR'],
+                    ['', 'Baerlocher MO'],
+                    ['','Tomlinson GA'],
+                    ['','McCrory DC'],
+                    ['','Booth CM']
+                ];
+                assert.status(res, 200);
+                assert.checkCitation(res, 'DOes this patient with headache have a migraine or need neuroimaging?'); // Title from crossRef
+                assert.deepEqual(res.body[0].author, expectedAuthor);
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
         // The following tests require the WMF fork of the zotero translators, as found
         // here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
         describe(' uses WMF translator fork', function() {
@@ -216,6 +234,7 @@ describe('scraping', function() {
                     assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
                 });
             });
+
         });
 
     });

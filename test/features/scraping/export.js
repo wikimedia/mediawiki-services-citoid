@@ -6,13 +6,13 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
 
-describe('exports', function() {
+describe('Exports: ', function() {
 
     this.timeout(20000);
 
     before(function () { return server.start(); });
 
-    describe('exporting to bibtex', function() {
+    describe('Exporting to bibtex: ', function() {
         it('bibtex from scraper', function() {
             return server.query('http://example.com', 'bibtex').then(function(res) {
                 assert.status(res, 200);
@@ -36,7 +36,7 @@ describe('exports', function() {
 
     });
 
-    describe('exporting to zotero', function() {
+    describe('Exporting to zotero: ', function() {
         it('doi pointing to bookSection', function() {
             return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
                 assert.status(res, 200);
@@ -48,7 +48,7 @@ describe('exports', function() {
         });
     });
 
-    describe('exporting to mwDeprecated', function() {
+    describe('Exporting to mwDeprecated: ', function() {
         it('doi pointing to bookSection', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
                 assert.status(res, 200);
@@ -56,6 +56,15 @@ describe('exports', function() {
                 assert.ok(res.body[0]['author1-last']);
                 assert.ok(res.body[0].DOI);
                 assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+            });
+        });
+        it('doi pointing to Zotero gotten response with name field instead of lastName in creators object', function() {
+            return server.query('10.1001/jama.296.10.1274', 'mwDeprecated').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'DOes this patient with headache have a migraine or need neuroimaging?');
+                assert.ok(res.body[0]['author1-last']);
+                assert.ok(res.body[0].DOI);
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
     });

@@ -6,13 +6,13 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
 
-describe('languages', function() {
+describe('Languages: ', function() {
 
     this.timeout(20000);
 
     before(function () { return server.start(); });
 
-    describe(' using zotero results', function() {
+    describe('Using zotero results: ', function() {
         it('invalid language code', function() {
             return server.query('http://www.ncbi.nlm.nih.gov/pubmed/23555203').then(function(res) {
                 assert.status(res, 200);
@@ -22,7 +22,7 @@ describe('languages', function() {
         });
     });
 
-    describe(' using native scraper', function() {
+    describe('Using native scraper: ', function() {
         it('german twitter', function() {
             return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
                 assert.status(res, 200);
@@ -53,7 +53,7 @@ describe('languages', function() {
         it('content-type header present in body but not in response headers', function() {
             return server.query('www.insee.fr/fr/ppp/bases-de-donnees/recensement/populations-legales/departement.asp').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Insee - Populations légales 2012 - 01-Ain');
+                assert.checkCitation(res, 'Insee - Populations légales 2013 - 01-Ain');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });

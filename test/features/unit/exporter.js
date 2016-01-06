@@ -2,13 +2,13 @@ var assert = require('../../utils/assert.js');
 var exporter = require('../../../lib/Exporter.js');
 
 
-describe('exporter functions', function() {
+describe('lib/Exporter.js functions: ', function() {
 
     var result;
     var expected;
     var input;
 
-    describe('fixURL function', function() {
+    describe('fixURL function: ', function() {
         var url;
         it('discards url with no host', function() {
             url = 'http://www.example.com/path/with/host';
@@ -24,7 +24,7 @@ describe('exporter functions', function() {
         });
     });
 
-    describe('addIDSToCitation', function() {
+    describe('addIDSToCitation function: ', function() {
         var title;
         it('cleans script and html out of title', function() {
             title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
@@ -34,7 +34,7 @@ describe('exporter functions', function() {
         });
     });
 
-    describe('stripCitation function', function() {
+    describe('stripCitation function :', function() {
         var title;
         it('cleans script and html out of title', function() {
             title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
@@ -44,7 +44,7 @@ describe('exporter functions', function() {
         });
     });
 
-    describe('fixDate function', function() {
+    describe('fixDate function: ', function() {
         var date;
         it('sets year only date to January 1st of that year', function() {
             date = '2010';
@@ -68,7 +68,7 @@ describe('exporter functions', function() {
         });
     });
 
-    describe('fixPages function', function() {
+    describe('fixPages function: ', function() {
         it('converts hyphen minus to en dash', function() {
             expected = {pages: '15–44'};
             result = exporter.fixPages({pages:'15-44'});

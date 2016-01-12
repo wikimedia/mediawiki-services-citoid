@@ -31,28 +31,34 @@ describe('lib/Scraper.js translate function: ', function() {
     var result;
     var expected;
     var itemTypeName;
-    var metadataType;
 
     // Cycle through every translator
-    for (var t in translators){
-        metadataType = translators[t];
+    translators.forEach(function(metadataType) {
         // Cycle through every sample html file
-        for (var file in htmlFiles){
-            it('translates '+ metadataType.name +' metadata from ' + htmlFiles[file].name + ' file', function() {
+        htmlFiles.forEach(function(file) {
+            it('translates '+ metadataType.name +' metadata from ' + file.name + ' file', function() {
                 // Get metadata from html file
-                return meta.parseAll(htmlFiles[file].value).then(function(metadata){
+                return meta.parseAll(file.value).then(function(metadata){
                     // For every valid Zotero item type, check corresponding translator on file
                     Object.keys(itemTypes).forEach(function(key){
-                        itemTypeName = types.itemTypeMethods.getName(key);
-                        citation = scraper.translate({}, metadata[metadataType.name], metadataType.value[itemTypeName]);
-                        // Check that every key in citation is a valid field for given type
-                        Object.keys(citation).forEach(function(citationField){
-                            result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
-                            assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
-                        });
+                        // Only test citation if metadata exists for the given translator type
+                        if(metadata[metadataType.name]){
+                            citation = scraper.translate({}, metadata[metadataType.name], metadataType.value[itemTypeName]);
+                            // Check that every key in citation is a valid field for given type
+                            Object.keys(citation).forEach(function(citationField){
+                                result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
+                                assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
+                            });
+                            if (citation.creators){
+                                for (var c in citation.creators){
+                                    result = types.creatorTypesMethods.isValidForType(citation.creators[c].creatorType, itemTypeName);
+                                    assert.deepEqual(result, true, 'Citation field "' + citation.creators[c].creatorType + '" is not valid for itemType "' + itemTypeName + '"');
+                                }
+                            }
+                        }
                     });
                 });
             });
-        }
-    }
+        });
+    });
 });

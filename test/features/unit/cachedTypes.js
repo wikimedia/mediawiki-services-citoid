@@ -86,6 +86,19 @@ describe('type schema data functions', function() {
             expected = 1;
             assert.deepEqual(result, expected);
         });
+
+        it('determines if creatorType valid for type- true', function() {
+            result = types.creatorTypesMethods.isValidForType('programmer', 'computerProgram');
+            expected = true;
+            assert.deepEqual(result, expected);
+        });
+
+        it('determines if creatorType valid for type- false', function() {
+            result = types.creatorTypesMethods.isValidForType('elephant', 'computerProgram');
+            expected = false;
+            assert.deepEqual(result, expected);
+        });
+
     });
 
     describe('item fields methods', function() {
@@ -97,6 +110,18 @@ describe('type schema data functions', function() {
 
         it('determines if id is valid for type- true', function() {
             result = types.itemFieldsMethods.isValidForType('websiteTitle', 'webpage');
+            expected = true;
+            assert.deepEqual(result, expected);
+        });
+
+        it('determines if creator field is valid for type- true', function() {
+            result = types.itemFieldsMethods.isValidForType('creators', 'webpage');
+            expected = true;
+            assert.deepEqual(result, expected);
+        });
+
+        it('determines if creator field is valid for type- false', function() {
+            result = types.itemFieldsMethods.isValidForType('creators', 'note');
             expected = true;
             assert.deepEqual(result, expected);
         });

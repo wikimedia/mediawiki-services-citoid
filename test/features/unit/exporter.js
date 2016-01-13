@@ -68,6 +68,65 @@ describe('lib/Exporter.js functions: ', function() {
         });
     });
 
+    describe('fixISBN function: ', function() {
+        var isbnStr;
+        it('Correctly extracts single ISBN', function() {
+            isbnStr = '0810935317';
+            expected = {ISBN: ['0810935317']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly extracts ISBN-10', function() {
+            isbnStr = '0810935317 081093531X';
+            expected = {ISBN: ['0810935317', '081093531X']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly extracts ISBN-13', function() {
+            isbnStr = '9780810935310 9780810935310';
+            expected = {ISBN: ['9780810935310', '9780810935310']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly extracts ISBN-10 and ISBN-13', function() {
+            isbnStr = '9780810935310 0810935317 081093531X 9780810935310';
+            expected = {ISBN: ['9780810935310', '0810935317', '081093531X', '9780810935310']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly handles and normalizes hyphenated ISBN', function() {
+            isbnStr = '978-0-8109-3531-0 0-8109-3531-7';
+            expected = {ISBN: ['9780810935310', '0810935317']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly handles ISBNs with and without hyphens', function() {
+            isbnStr = '978-0-8109-3531-0 0810935317';
+            expected = {ISBN: ['9780810935310', '0810935317']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly handles ISBN-13s that have spaces in them', function() {
+            isbnStr = '978 0810935310 0810935317 978 0810935310';
+            expected = {ISBN: ['9780810935310', '0810935317', '9780810935310']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly handles out comma separated ISBNs', function() {
+            isbnStr = '978 0810935310, 081093531X, 978-0-8109-3531-0, 9780810935310';
+            expected = {ISBN: ['9780810935310', '081093531X', '9780810935310', '9780810935310']};
+            result = exporter.fixISBN({ISBN:isbnStr});
+            assert.deepEqual(result, expected);
+        });
+    });
+
     describe('fixPages function: ', function() {
         it('converts hyphen minus to en dash', function() {
             expected = {pages: '15–44'};

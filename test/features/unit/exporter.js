@@ -66,6 +66,13 @@ describe('lib/Exporter.js functions: ', function() {
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
+
+        it('ISO format in different TZ', function() {
+            date = '2013-04-02T20:00:03-07:00';
+            expected = {date: '2013-04-03'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
     });
 
     describe('fixISBN function: ', function() {

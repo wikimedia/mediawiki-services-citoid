@@ -1,5 +1,6 @@
 var assert = require('../../utils/assert.js');
 var scraper = require('../../../lib/Scraper.js');
+var bp = require('../../../lib/translators/bePress.js');
 var coins = require('../../../lib/translators/coins.js');
 var dc = require('../../../lib/translators/dublinCore.js');
 var gen = require('../../../lib/translators/general.js');
@@ -15,6 +16,8 @@ var movie = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/stat
 var article = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_article.html'));
 
 var translators = [
+    {value:bp, name: 'bePress'},
+    {value:bp, name: 'highwirePress'}, // Use bp translator on highwire press metadata
     {value:coins, name:'coins'},
     {value:dc, name:'dublinCore'},
     {value:gen, name:'general'},
@@ -41,9 +44,14 @@ describe('lib/Scraper.js translate function: ', function() {
                 return meta.parseAll(file.value).then(function(metadata){
                     // For every valid Zotero item type, check corresponding translator on file
                     Object.keys(itemTypes).forEach(function(key){
+                        itemTypeName = types.itemTypeMethods.getName(key);
+                        // Ensure every itemType has a corresponding translator
+                        if (!metadataType.value[itemTypeName]){
+                            throw new Error('No translator found for itemType ' + itemTypeName);
+                        }
                         // Only test citation if metadata exists for the given translator type
                         if(metadata[metadataType.name]){
-                            citation = scraper.translate({}, metadata[metadataType.name], metadataType.value[itemTypeName]);
+                            citation = scraper.translate({itemType:itemTypeName}, metadata[metadataType.name], metadataType.value[itemTypeName]);
                             // Check that every key in citation is a valid field for given type
                             Object.keys(citation).forEach(function(citationField){
                                 result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);

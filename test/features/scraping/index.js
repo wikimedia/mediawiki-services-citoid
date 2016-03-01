@@ -345,17 +345,6 @@ describe('scraping', function() {
             });
         });
 
-        // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-        it('Article with doi and DublinCore metadata', function() {
-            return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Increased transcription rates correlate with increased reversion rates in leuB and argH Escherichia coli auxotrophs'); // Title from crossRef
-                assert.deepEqual(res.body[0].date, '2004-05-01');
-                assert.deepEqual(res.body[0].DOI, '10.1099/mic.0.26954-0');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
     });
 
 });

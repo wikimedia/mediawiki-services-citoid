@@ -19,7 +19,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, ['One']);
+        result = dc.generalWithAuthor.creator.translate({}, {author:['One']}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -31,7 +31,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, 'One');
+        result = dc.generalWithAuthor.creator.translate({}, {author:'One'}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -43,7 +43,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'Two'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, 'One Two');
+        result = dc.generalWithAuthor.creator.translate({}, {author:'One Two'}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -55,7 +55,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'Three'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, 'One Two Three');
+        result = dc.generalWithAuthor.creator.translate({}, {author:'One Two Three'}, 'author');
         assert.deepEqual(result, expected);
     });
 });

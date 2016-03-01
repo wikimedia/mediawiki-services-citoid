@@ -38,7 +38,7 @@ describe('unreachable Zotero service', function() {
             assert.checkCitation(res, 'Viral Phylodynamics');
             assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
             assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(!!res.body[0].ISSN, false, 'Should not contain ISSN'); // This indicates Zotero is actually activated since ISSN is not in crossRef, where we're obtaining the metadata
+            assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
             assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
         });
     });
@@ -54,13 +54,12 @@ describe('unreachable Zotero service', function() {
         });
     });
 
-    // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-    it('Article with doi within DublinCore metadata', function() {
+    it('Article with doi within DublinCore metadata + highwire data', function() {
         return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function(res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife');
-            assert.deepEqual(res.body[0].date, '2004-01-16');
-            assert.deepEqual(res.body[0].DOI, '10.1126/science.1092528');
+            assert.deepEqual(res.body[0].date, '2004-01-16'); // Field uses highwire data with bePress translator
+            assert.deepEqual(res.body[0].DOI, '10.1126/science.1092528'); // DOI from DC metadata
             assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
         });
     });
@@ -73,6 +72,42 @@ describe('unreachable Zotero service', function() {
             assert.deepEqual(res.body[0].pages, '90–93', 'Missing pages'); // Uses en dash
             assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 
+        });
+    });
+
+    it('successfully uses highwire press metadata', function() {
+        return server.query('http://mic.microbiologyresearch.org/content/journal/micro/10.1099/mic.0.082289-0').then(function(res) {
+            assert.status(res, 200);
+            assert.checkZotCitation(res, 'Resistance to bacteriocins produced by Gram-positive bacteria');
+            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+            assert.deepEqual(!!res.body[0].ISSN, true, 'Missing ISSN'); // Comes from highwire
+            assert.deepEqual(res.body[0].author.length, 3, 'Should have 3 authors');
+            assert.deepEqual(res.body[0].pages, '683–700', 'Incorrect or missing pages'); // Comes from crossRef
+            assert.deepEqual(res.body[0].date, '2015-04-01', 'Incorrect or missing date'); // Comes from highwire
+            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+
+        });
+    });
+
+    it('successfully uses bepress press metadata', function() {
+        return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function(res) {
+            assert.status(res, 200);
+            assert.checkZotCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
+            assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
+            assert.deepEqual(res.body[0].date, '1970-01-01', 'Incorrect or missing date'); // Comes from highwire
+            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType); // Actually is a book but no way to tell from metadata :(
+
+        });
+    });
+
+    // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
+    it('Article with doi and DublinCore metadata', function() {
+        return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Increased transcription rates correlate with increased reversion rates in leuB and argH Escherichia coli auxotrophs'); // Title from crossRef
+            assert.deepEqual(res.body[0].date, '2004-05-01');
+            assert.deepEqual(res.body[0].DOI, '10.1099/mic.0.26954-0');
+            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
         });
     });
 

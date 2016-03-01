@@ -29,7 +29,7 @@ describe('coins unit', function() {
         expected = {
             pages: '15–44'
         };
-        result = coins.bookSection.pages.translate({}, '15-44');
+        result = coins.bookSection.pages.translate({}, {pages:'15-44'}, 'pages');
         assert.deepEqual(result, expected);
     });
 
@@ -37,38 +37,7 @@ describe('coins unit', function() {
         expected = {
             date: '2010-01-01'
         };
-        result = coins.general.date.translate({}, '2010');
-        assert.deepEqual(result, expected);
-    });
-
-    it('Correctly adds one isbn', function() {
-        input = ['978-3-16-148410-0'];
-        expected = {
-            ISBN: '978-3-16-148410-0'
-        };
-        result = coins.other.isbn.translate({}, input);
-        assert.deepEqual(result, expected);
-    });
-
-    it('Correctly adds one issn and one eissn', function() {
-        var inputISSN = ['978-3-16-148410-0'];
-        var inputEISSN = ['978-9-99-000000-X'];
-        expected = {
-            ISSN: '978-3-16-148410-0, 978-9-99-000000-X'
-        };
-        result = coins.other.issn.translate({}, inputISSN);
-        result = coins.other.eissn.translate(result, inputEISSN);
-        assert.deepEqual(result, expected);
-    });
-
-    it('Correctly adds two issn and one eissn', function() {
-        var inputISSN = ['978-3-16-148410-0', '978-9-99-999999-X'];
-        var inputEISSN = ['978-9-99-000000-X'];
-        expected = {
-            ISSN: '978-3-16-148410-0, 978-9-99-999999-X, 978-9-99-000000-X'
-        };
-        result = coins.other.issn.translate({}, inputISSN);
-        result = coins.other.eissn.translate(result, inputEISSN);
+        result = coins.general.date.translate({}, {date:'2010'}, 'date');
         assert.deepEqual(result, expected);
     });
 

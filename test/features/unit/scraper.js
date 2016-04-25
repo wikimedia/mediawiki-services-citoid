@@ -28,7 +28,7 @@ var htmlFiles = [
     {value:article, name:'article'}
 ];
 
-describe('lib/Scraper.js translate function: ', function() {
+describe('translate function: ', function() {
     var types = new CachedTypes();
     var citation;
     var result;
@@ -68,5 +68,28 @@ describe('lib/Scraper.js translate function: ', function() {
                 });
             });
         });
+    });
+});
+
+describe('addItemType function: ', function() {
+    it('sets videoRecording itemType', function() {
+        return meta.parseAll(movie).then(function(metadata){
+            var itemType = scraper.addItemType(metadata, {}).itemType;
+            assert.deepEqual(itemType, 'videoRecording', 'Expected itemType videoRecording, got itemType ' + itemType);
+        });
+    });
+
+    it('sets article itemType', function() {
+        return meta.parseAll(article).then(function(metadata){
+            var itemType = scraper.addItemType(metadata, {}).itemType;
+            assert.deepEqual(itemType, 'journalArticle', 'Expected itemType journalArticle, got itemType ' + itemType);
+        });
+    });
+
+    it('sets itemType webpage if no relevant metadata available', function() {
+        var metadata = {general:{title:'Example domain'}};
+        var itemType = scraper.addItemType(metadata, {}).itemType;
+        assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
+
     });
 });

@@ -160,3 +160,4 @@ module.exports.checkError       = checkError;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;
+

@@ -43,9 +43,23 @@ function initApp(options) {
     // set outgoing proxy
     if(app.conf.proxy) {
         process.env.HTTP_PROXY = app.conf.proxy;
+        // if there is a list of domains which should
+        // not be proxied, set it
+        if(app.conf.no_proxy_list) {
+            if(Array.isArray(app.conf.no_proxy_list)) {
+                process.env.NO_PROXY = app.conf.no_proxy_list.join(',');
+            } else {
+                process.env.NO_PROXY = app.conf.no_proxy_list;
+            }
+        }
         if(!app.conf.zoteroUseProxy) {
             // don't use proxy for accessing Zotero unless specified in settings
-            process.env.NO_PROXY = app.conf.zoteroInterface;
+            if(process.env.NO_PROXY) {
+                process.env.NO_PROXY += ',';
+            } else {
+                process.env.NO_PROXY = '';
+            }
+            process.env.NO_PROXY += app.conf.zoteroInterface;
         }
     }
 
@@ -94,15 +108,15 @@ function initApp(options) {
             res.header('access-control-allow-headers', 'accept, x-requested-with, content-type');
             res.header('access-control-expose-headers', 'etag');
         }
-        res.header('x-xss-protection', '1; mode=block');
-        res.header('x-content-type-options', 'nosniff');
-        res.header('x-frame-options', 'SAMEORIGIN');
-        res.header('content-security-policy', app.conf.csp);
-        res.header('x-content-security-policy', app.conf.csp);
-        res.header('x-webkit-csp', app.conf.csp);
-
+        if(app.conf.csp !== false) {
+            res.header('x-xss-protection', '1; mode=block');
+            res.header('x-content-type-options', 'nosniff');
+            res.header('x-frame-options', 'SAMEORIGIN');
+            res.header('content-security-policy', app.conf.csp);
+            res.header('x-content-security-policy', app.conf.csp);
+            res.header('x-webkit-csp', app.conf.csp);
+        }
         sUtil.initAndLogRequest(req, app);
-
         next();
     });
 
@@ -131,7 +145,7 @@ function loadRoutes (app) {
 
     // get the list of files in routes/
     return fs.readdirAsync(__dirname + '/routes').map(function(fname) {
-        return BBPromise.try(function () {
+        return BBPromise.try(function() {
             // ... and then load each route
             // but only if it's a js file
             if(!/\.js$/.test(fname)) {
@@ -140,12 +154,12 @@ function loadRoutes (app) {
             // import the route file
             var route = require(__dirname + '/routes/' + fname);
             return route(app);
-        }).then(function (route) {
+        }).then(function(route) {
             if(route === undefined) {
                 return undefined;
             }
             // check that the route exports the object we need
-            if (route.constructor !== Object || !route.path || !route.router || !(route.api_version || route.skip_domain)) {
+            if(route.constructor !== Object || !route.path || !route.router || !(route.api_version || route.skip_domain)) {
                 throw new TypeError('routes/' + fname + ' does not export the correct object!');
             }
             // wrap the route handlers with Promise.try() blocks
@@ -208,8 +222,7 @@ module.exports = function(options) {
         // serve static files from static/
         app.use(express.static(__dirname + '/static'));
         return app;
-    })
-    .then(createServer);
+    }).then(createServer);
 
 };
 

@@ -25,6 +25,7 @@ var myServiceIdx = config.conf.services.length - 1;
 var myService = config.conf.services[myServiceIdx];
 config.uri = 'http://localhost:' + myService.conf.port + '/';
 config.q_uri = config.uri + 'api';
+config.service = myService;
 // no forking, run just one process when testing
 config.conf.num_workers = 0;
 // have a separate, in-memory logger only

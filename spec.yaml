@@ -71,38 +71,38 @@ paths:
       produces:
         - application/json
       x-amples:
-        - title: bad URL
-          request:
-            query:
-              format: mediawiki
-              search: http://example.com/thisurldoesntexist
-            headers:
-              accept-language: en
-          response:
-            status: 520
-        - title: bad PMCID
-          request:
-            query:
-              format: mediawiki
-              search: PMC9999999
-            headers:
-              accept-language: en
-          response:
-            status: 404
-        - title: web site in alternative language
-          request:
-            query:
-              format: mediawiki
-              search: http://twitter.com
-            headers:
-              accept-language: de
-          response:
-            status: 200
-            body:
-              - itemType: /.+/
-                title: /Willkommen bei Twitter/
-                url: /.+/
-                accessDate: /.+/
+#        - title: bad URL
+#          request:
+#            query:
+#              format: mediawiki
+#              search: http://example.com/thisurldoesntexist
+#            headers:
+#              accept-language: en
+#          response:
+#            status: 520
+#        - title: bad PMCID
+#          request:
+#            query:
+#              format: mediawiki
+#              search: PMC9999999
+#            headers:
+#              accept-language: en
+#          response:
+#            status: 404
+#        - title: web site in alternative language
+#          request:
+#            query:
+#              format: mediawiki
+#              search: http://twitter.com
+#            headers:
+#              accept-language: de
+#          response:
+#            status: 200
+#            body:
+#              - itemType: /.+/
+#                title: /Willkommen bei Twitter/
+#                url: /.+/
+#                accessDate: /.+/
         - title: Zotero alive
           request:
             query:

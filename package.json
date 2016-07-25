@@ -30,7 +30,7 @@
     "service-runner": "2.0.4",
     "striptags": "2.1.1",
     "swagger-router": "^0.4.2",
-    "tough-cookie": "2.2.1"
+    "tough-cookie": "2.3.0"
   },
   "devDependencies": {
     "istanbul": "^0.4.4",

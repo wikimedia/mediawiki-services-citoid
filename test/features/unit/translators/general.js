@@ -56,4 +56,16 @@ describe('general translator unit', function() {
         result = gen.generalWithAuthor.creator.translate({}, {author:'One Two Three'}, 'author');
         assert.deepEqual(result, expected);
     });
+
+    it('Does something redonk with Harry Potter author field from worldcat', function() {
+        expected = {
+            creators: [{
+                creatorType: 'author',
+                firstName: 'J.K. Rowling ; illustrations by Mary',
+                lastName: 'GrandPré.'
+            }]
+        };
+        result = gen.generalWithAuthor.creator.translate({}, {author:'J.K. Rowling ; illustrations by Mary GrandPré.'}, 'author');
+        assert.deepEqual(result, expected);
+    });
 });

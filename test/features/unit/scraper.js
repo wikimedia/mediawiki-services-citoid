@@ -7,6 +7,7 @@ var gen = require('../../../lib/translators/general.js');
 var og = require('../../../lib/translators/openGraph.js');
 var CachedTypes = require('../../../lib/zotero/cachedTypes.js');
 var itemTypes = require('../../../lib/zotero/typeSchemaData.js').itemTypes;
+var Translator = require('../../../lib/Translator.js');
 
 var meta = require('html-metadata');
 var cheerio = require('cheerio');
@@ -29,6 +30,10 @@ var htmlFiles = [
 ];
 
 describe('translate function: ', function() {
+    var app = {
+        logger: function(){}
+    };
+    var translator = new Translator(app);
     var types = new CachedTypes();
     var citation;
     var result;
@@ -51,7 +56,7 @@ describe('translate function: ', function() {
                         }
                         // Only test citation if metadata exists for the given translator type
                         if(metadata[metadataType.name]){
-                            citation = scraper.translate({itemType:itemTypeName}, metadata[metadataType.name], metadataType.value[itemTypeName]);
+                            citation = translator.translate({itemType:itemTypeName}, metadata[metadataType.name], metadataType.value[itemTypeName]);
                             // Check that every key in citation is a valid field for given type
                             Object.keys(citation).forEach(function(citationField){
                                 result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);

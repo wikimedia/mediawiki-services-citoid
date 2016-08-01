@@ -62,6 +62,13 @@ services:
       # the user agent to use when issuing requests
       # user_agent: service-template-node
       # the template used for contacting the MW API
+
+      # enable use of worldcat xisbn service to query for isbns
+      xisbn: true
+      # a Token, Secret, and the requesting IP are nessecary to use the xisbn service in production
+      xisbnToken: abc
+      xisbnSecret: efg
+      xisbnIP: 127.0.0.1
       mwapi_req:
         method: post
         uri: http://api.svc.eqiad.wmnet/w/api.php

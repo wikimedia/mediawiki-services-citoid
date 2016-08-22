@@ -21,7 +21,7 @@
     "core-js": "2.4.1",
     "express": "4.14.0",
     "extend": "3.0.0",
-    "html-metadata": "1.4.1",
+    "html-metadata": "1.4.3",
     "iconv-lite": "0.4.13",
     "ip": "1.1.0",
     "js-yaml": "3.6.1",

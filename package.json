@@ -1,6 +1,6 @@
 {
   "name": "citoid",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Converts search terms such as URL or DOI into citations.",
   "homepage": "https://www.mediawiki.org/wiki/Citoid",
   "license": "Apache-2.0",
@@ -16,6 +16,7 @@
     "bunyan": "1.8.1",
     "cassandra-uuid": "0.0.2",
     "cheerio": "0.20.0",
+    "chrono-node": "1.2.4",
     "compression": "1.6.2",
     "content-type": "1.0.2",
     "core-js": "2.4.1",

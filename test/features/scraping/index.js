@@ -330,7 +330,7 @@ describe('scraping', function() {
         it('doi in url with query parameters - uses crossRef', function() {
             return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System*');
+                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
                 assert.deepEqual(res.body[0].author.length, 1);
             });

@@ -67,12 +67,55 @@ describe('lib/Exporter.js functions: ', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('ISO format in different TZ', function() {
-            date = '2013-04-02T20:00:03-07:00';
-            expected = {date: '2013-04-03'};
+        it('Normal date', function() {
+            date = 'May 8 2010';
+            expected = {date: '2010-05-08'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
+
+        it('Normal date with ordinal indicator', function() {
+            date = 'May 8th, 2010';
+            expected = {date: '2010-05-08'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Badly sets normal date with ordinal number', function() {
+            date = 'May eighth, 2010';
+            expected = {date: '2010-05-01'}; // Wrong sets to May 1st instead of May 8th
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Date on the fence: ISO with - notation', function() {
+            date = '2013-04-02T20:00:03-07:00';
+            expected = {date: '2013-04-02'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Date on the fence; ISO with + notation', function() {
+            date = '2016-03-08T01:16:07+02:00';
+            expected = {date: '2016-03-08'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Date on the fence; toString output', function() {
+            date = 'Sat May 08 2010 00:16:07 GMT+0100 (BST)';
+            expected = {date: '2010-05-08'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Date on the fence; ISO with Z notation', function() {
+            date = '2010-05-08T00:16:00.060Z';
+            expected = {date: '2010-05-08'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
     });
 
     describe('fixISBN function: ', function() {

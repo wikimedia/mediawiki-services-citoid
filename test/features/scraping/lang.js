@@ -26,7 +26,7 @@ describe('Languages: ', function() {
         it('german twitter', function() {
             return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Twitter - Sieh Dir an, was gerade los ist');
+                assert.checkCitation(res, 'Twitter. Alles, was gerade los ist.');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });

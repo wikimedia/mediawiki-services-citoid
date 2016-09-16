@@ -20,6 +20,7 @@ describe('ISBN tests: ', function() {
         return server.query('978-0-596-51979-7').then(function(res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'MediaWiki');
+            assert.isInArray(res.body[0].source, 'WorldCat');
             assert.deepEqual(res.body[0].author, [['Daniel J.', 'Barrett']], 'Unexpected value; expected [[\'Daniel J.\'], [\'Barrett.\']] ' + res.body[0].author);
             assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
             assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
@@ -34,6 +35,7 @@ describe('ISBN tests: ', function() {
         return server.query('9780439784542').then(function(res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'Harry Potter and the half-blood prince');
+            assert.isInArray(res.body[0].source, 'WorldCat');
             assert.deepEqual(res.body[0].author, [['J.K.', 'Rowling']], 'Unexpected value; expected [[\'J.K.\', \'Rowling\']] got ' + res.body[0].author);
             assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
             assert.deepEqual(res.body[0].edition, '1st American ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);

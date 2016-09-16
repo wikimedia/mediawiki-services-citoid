@@ -244,6 +244,7 @@ describe('scraping', function() {
         it('example domain', function() {
             return server.query('example.com').then(function(res) {
                 assert.status(res, 200);
+                assert.isInArray(res.body[0].source, 'citoid');
                 assert.checkCitation(res, 'Example Domain');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
@@ -254,6 +255,7 @@ describe('scraping', function() {
             var url = 'http://www.google.com';
             return server.query(url).then(function(res) {
                 assert.status(res, 200);
+                assert.isInArray(res.body[0].source, 'citoid');
                 assert.checkCitation(res, 'Google');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(res.body[0].url, url);
@@ -264,62 +266,19 @@ describe('scraping', function() {
             return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
+                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
                 assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
             });
         });
 
-        it('requires cookie handling', function() {
-            return server.query('www.jstor.org/discover/10.2307/3677029').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res);
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-            });
-        });
-
         // Ensure DOI is present in non-zotero scraped page when requested from DOI
-        it('DOI pointing to resource not in zotero', function() {
+        it.skip('DOI pointing to resource not in zotero', function() { // Currently this *is* in Zotero, so we need a new DOI that is not in Zotero
             return server.query('10.2307/3677029').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('dx.DOI link pointing to resource not in zotero - uses crossRef', function() {
-            return server.query('http://dx.DOI.org/10.2307/3677029').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
-                assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
-                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function() {
-            return server.query('10.14344/IOC.ML.4.4').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'IOC World Bird List 4.4');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            });
-        });
-
-        // Ensure DOI is present in non-zotero scraped page where scraping fails
-        it('DOI pointing to resource that can\'t be scraped - uses crossRef', function() {
-            return server.query('10.1038/scientificamerican0200-90')
-            .then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res);
-                assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
-                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -331,6 +290,7 @@ describe('scraping', function() {
             return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
                 assert.deepEqual(res.body[0].author.length, 1);
             });
@@ -340,7 +300,8 @@ describe('scraping', function() {
         it('url with pseudo doi', function() {
             return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Glasgow 2014 - Dika Toua Profile');
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.checkCitation(res, 'Glasgow 2014 - Dika Toua Profile');
                 assert.deepEqual(!!res.body[0].DOI, false);
             });
         });

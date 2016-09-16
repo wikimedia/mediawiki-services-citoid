@@ -40,7 +40,9 @@ describe('Exports: ', function() {
         it('doi pointing to bookSection', function() {
             return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Semantic MediaWiki');
+                assert.checkCitation(res, 'Semantic MediaWiki');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);
                 assert.deepEqual(res.body[0].DOI, undefined, 'DOI is invalid field for type bookSection');
                 assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
@@ -52,7 +54,9 @@ describe('Exports: ', function() {
         it('doi pointing to bookSection', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Semantic MediaWiki');
+                assert.checkCitation(res, 'Semantic MediaWiki');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0]['author1-last']);
                 assert.ok(res.body[0].DOI);
                 assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
@@ -61,7 +65,9 @@ describe('Exports: ', function() {
         it('doi pointing to Zotero gotten response with name field instead of lastName in creators object', function() {
             return server.query('10.1001/jama.296.10.1274', 'mwDeprecated').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'DOes this patient with headache have a migraine or need neuroimaging?');
+                assert.checkCitation(res, 'DOes this patient with headache have a migraine or need neuroimaging?');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0]['author1-last']);
                 assert.ok(res.body[0].DOI);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);

@@ -21,7 +21,7 @@ describe('mock Zotero service that cannot export', function() {
         return server.start({zoteroPort:1968}); // Start citoid server using mock Zotero location
     });
 
-    it('Get error for bibtex export from mock Zotero server', function() {
+    it('Get error for bibtex export', function() {
         return server.query('http://www.example.com', 'bibtex', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -32,7 +32,7 @@ describe('mock Zotero service that cannot export', function() {
         });
     });
 
-    it('Success with bibtex export from mock Zotero server', function() {
+    it('Success with mediawiki export', function() {
         return server.query('http://www.example.com').then(function(res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'Example Domain');

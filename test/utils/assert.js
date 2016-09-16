@@ -105,6 +105,14 @@ function checkError(res, status, message) {
 
 }
 
+// Assert that expected value is an element of an array.
+function isInArray(arr, expected) {
+    if(!Array.isArray(arr)){
+        throw new Error('Expected array, got ' + arr); // If arr is undefined will throw undefined error instead
+    }
+    assert.notDeepEqual(arr.indexOf(expected), -1);
+}
+
 
 function checkCitation(res, title) {
 
@@ -132,6 +140,8 @@ function checkZotCitation(res, title) {
 
     checkCitation(res, title);
 
+    isInArray(res.body[0].source, 'Zotero');
+
     assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
     assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 
@@ -157,6 +167,7 @@ module.exports.notDeepEqual   = notDeepEqual;
 module.exports.contentType    = contentType;
 module.exports.status         = status;
 module.exports.checkError       = checkError;
+module.exports.isInArray        = isInArray;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;

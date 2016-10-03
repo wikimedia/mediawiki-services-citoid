@@ -306,6 +306,17 @@ describe('scraping', function() {
             });
         });
 
+        // itemType from open graph
+        it('itemType from open graph', function() {
+            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Pinlig for Skåber');
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.deepEqual(res.body[0].itemType, 'newspaperArticle');
+                assert.deepEqual(res.body[0].publicationTitle, 'Aftenposten')
+            });
+        });
+
     });
 
 });

@@ -108,7 +108,7 @@ function checkError(res, status, message) {
 // Assert that expected value is an element of an array.
 function isInArray(arr, expected) {
     if(!Array.isArray(arr)){
-        throw new Error('Expected array, got ' + arr); // If arr is undefined will throw undefined error instead
+        throw new Error('Expected array, got ' + typeof arr + ' ' + arr); // If arr is undefined will throw undefined error instead
     }
     assert.notDeepEqual(arr.indexOf(expected), -1);
 }

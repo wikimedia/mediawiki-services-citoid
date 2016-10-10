@@ -65,7 +65,7 @@ describe('Exports: ', function() {
         it('doi pointing to Zotero gotten response with name field instead of lastName in creators object', function() {
             return server.query('10.1001/jama.296.10.1274', 'mwDeprecated').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'DOes this patient with headache have a migraine or need neuroimaging?');
+                assert.checkCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0]['author1-last']);

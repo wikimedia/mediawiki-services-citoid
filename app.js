@@ -42,6 +42,17 @@ function initApp(options) {
     }
     if(!app.conf.userAgent) { app.conf.userAgent = 'Citoid/' + app.info.version; }
 
+    // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
+    if (typeof app.conf.zotero === 'undefined') {
+        app.conf.zotero = true;
+    }
+
+    // ensure sane defaults for Zotero
+    if (app.conf.zotero) {
+        if (!app.conf.zoteroInterface) { app.conf.zoteroInterface = '127.0.0.1'; }
+        if (!app.conf.zoteroPort) { app.conf.zoteroPort = 1969; }
+    }
+
     // set outgoing proxy
     if(app.conf.proxy) {
         process.env.HTTP_PROXY = app.conf.proxy;

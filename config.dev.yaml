@@ -63,6 +63,8 @@ services:
       #   - x-request-id
       # User-Agent HTTP header to use for requests
       userAgent: null
+      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      zotero: true
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
       # zotero's server port

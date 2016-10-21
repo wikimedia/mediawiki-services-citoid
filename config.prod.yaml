@@ -63,6 +63,14 @@ services:
       # user_agent: service-template-node
       # the template used for contacting the MW API
 
+      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      zotero: true
+      # URL where to contact Zotero
+      zoteroInterface: 127.0.0.1
+      # zotero's server port
+      zoteroPort: 1969
+      # whether the proxy should be used to contact zotero
+      zoteroUseProxy: false
       # enable use of worldcat xisbn service to query for isbns
       xisbn: true
       # a Token, Secret, and the requesting IP are nessecary to use the xisbn service in production

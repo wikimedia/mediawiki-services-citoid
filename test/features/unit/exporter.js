@@ -46,6 +46,28 @@ describe('lib/Exporter.js functions: ', function() {
 
     describe('fixDate function: ', function() {
         var date;
+
+        it('Contains copyright symbol', function() {
+            date = '©2010';
+            expected = {date: '2010-01-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Contains copyright symbol & whitespace', function() {
+            date = ' ©2010';
+            expected = {date: '2010-01-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Contains c symbol', function() {
+            date = 'c2010';
+            expected = {date: '2010-01-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
         it('sets year only date to January 1st of that year', function() {
             date = '2010';
             expected = {date: '2010-01-01'};

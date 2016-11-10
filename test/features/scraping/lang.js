@@ -51,9 +51,9 @@ describe('Languages: ', function() {
 
         // Support for language encoding other than those native to Node
         it('content-type header present in body but not in response headers', function() {
-            return server.query('www.insee.fr/fr/ppp/bases-de-donnees/recensement/populations-legales/departement.asp').then(function(res) {
+            return server.query('https://www.insee.fr/fr/statistiques/zones/2021173').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Insee - Populations légales 2013 - 01-Ain');
+                assert.checkCitation(res, 'Populations légales 2013−Ces données sont disponibles sur toutes les communes de France | Insee');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });

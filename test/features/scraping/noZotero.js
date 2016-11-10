@@ -48,8 +48,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        // JSTOR page with tabs in natively scraped title
-        it('JSTOR page with tabs in natively scraped title', function() {
+        // JSTOR page, uses crossRef
+        it('JSTOR page', function() {
             return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');

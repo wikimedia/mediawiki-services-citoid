@@ -81,9 +81,9 @@ describe('lib/Exporter.js functions: ', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Badly sets normal date with ordinal number', function() {
+        it('Correctly sets normal date with ordinal number', function() {
             date = 'May eighth, 2010';
-            expected = {date: '2010-05-01'}; // Wrong sets to May 1st instead of May 8th
+            expected = {date: '2010-05-08'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });

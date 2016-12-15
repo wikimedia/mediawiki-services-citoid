@@ -33,7 +33,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.deepEqual(res.body[0].date, '2009-01-01', 'Unexpected value; expected 2009-01-01, got ' + res.body[0].date);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780596519797');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });
@@ -47,7 +47,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(res.body[0].author, [['J.K.', 'Rowling']], 'Unexpected value; expected [[\'J.K.\', \'Rowling\']] got ' + res.body[0].author);
                 assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st American ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780439784542');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });
@@ -62,7 +62,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(res.body[0].publisher, 'DK Pub.', 'Unexpected value; expected DK Pub., got ' + res.body[0].publisher);
                 assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].date, '2010-01-01', 'Unexpected value; expected 2010-01-01, got ' + res.body[0].date);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780756662967');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });
@@ -95,7 +95,7 @@ describe('ISBN tests: ', function() {
                 //assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place); // Not currently working with Worldcat Search API - not present in results
                 //assert.deepEqual(res.body[0].edition, '1st ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition); // Not currently working with Worldcat Search API - present in description tag
                 assert.deepEqual(res.body[0].date, '2009-01-01', 'Unexpected value; expected 2009-01-01, got ' + res.body[0].date);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780596519797');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });
@@ -110,7 +110,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(res.body[0].studio, 'DK Pub', 'Unexpected value; expected DK Pub, got ' + res.body[0].studio);
                 //assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 //assert.deepEqual(res.body[0].date, '2010-01-01', 'Unexpected value; expected 2010-01-01, got ' + res.body[0].date); // Not currently working with worldcat; date is returned to us as '2010, ©1996'
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780756662967');
                 assert.deepEqual(res.body[0].itemType, 'videoRecording', 'Wrong itemType; expected videoRecording, got ' + res.body[0].itemType);
             });
         });
@@ -124,7 +124,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(!!res.body[0].contributor, true, 'Missing contributor');
                 assert.deepEqual(res.body[0].studio, 'Universal', 'Unexpected value; expected Universal, got ' + res.body[0].studio);
                 assert.deepEqual(res.body[0].date, '2000-01-01', 'Unexpected value; expected 2000-01-01, got ' + res.body[0].date);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780783244396');
                 assert.deepEqual(res.body[0].itemType, 'videoRecording', 'Wrong itemType; expected videoRecording, got ' + res.body[0].itemType);
             });
         });
@@ -138,7 +138,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(!!res.body[0].contributor, true, 'Missing contributor');
                 //assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 //assert.deepEqual(res.body[0].edition, '1st American ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
-                assert.deepEqual(!!res.body[0].ISBN, true, 'Missing ISBN');
+                assert.isInArray(res.body[0].ISBN, '9780439784542');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });

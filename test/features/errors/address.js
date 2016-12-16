@@ -58,7 +58,7 @@ describe('address restrictions', function() {
     });
 
     it('redir-to-zot-supported', function() {
-        return server.query('https://httpbin.org/redirect-to?url=http://en.wikipedia.org/wiki/Zotero', 'mediawiki', 'en')
+        return server.query('https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero', 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 200);
         });

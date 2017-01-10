@@ -138,6 +138,27 @@ describe('lib/Exporter.js functions: ', function() {
             assert.deepEqual(result, expected);
         });
 
+        it('Year first date', function() {
+            date = '"1975 Nov-Dec';
+            expected = {date: '1975-11-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Partial ISO date no preceeding 0', function() {
+            date = '"1975-2';
+            expected = {date: '1975-02-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Partial ISO date proceeding 0', function() {
+            date = '"1975-02';
+            expected = {date: '1975-02-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
     });
 
     describe('fixISBN function: ', function() {

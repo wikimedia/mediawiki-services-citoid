@@ -24,6 +24,17 @@ describe('uses zotero', function() {
         });
     });
 
+    it('PMID with less than eight digits', function() {
+        return server.query('123').then(function(res) {
+            assert.status(res, 200);
+            assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
+            assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID');
+            assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
+            assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
+            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+        });
+    });
+
     it('PMCID with prefix', function() {
         return server.query('PMC3605911').then(function(res) {
             assert.status(res, 200);
@@ -34,18 +45,8 @@ describe('uses zotero', function() {
         });
     });
 
-    it('PMCID without prefix', function() {
-        return server.query('3605911').then(function(res) {
-            assert.status(res, 200);
-            assert.checkZotCitation(res, 'Viral Phylodynamics');
-            assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-        });
-    });
-
     it('PMCID with trailing space', function() {
-        return server.query('3605911 ').then(function(res) {
+        return server.query('PMC3605911 ').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'Viral Phylodynamics');
             assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -55,7 +56,7 @@ describe('uses zotero', function() {
     });
 
     it('PMCID with encoded space', function() {
-        return server.query('3605911%20').then(function(res) {
+        return server.query('PMC3605911%20').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'Viral Phylodynamics');
             assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -65,7 +66,7 @@ describe('uses zotero', function() {
     });
 
     it('PMCID- requires PMC prefix to retrieve DOI from id converter', function() {
-        return server.query('1690724').then(function(res) {
+        return server.query('PMC1690724').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.');
             assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');

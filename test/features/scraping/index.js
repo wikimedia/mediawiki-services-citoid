@@ -97,7 +97,19 @@ describe('using native scraper', function() {
             assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
         });
     });
+    it('PMCID but no PMID', function() {
+
+        it('webpage', function() {
+            return server.query('PMC2096233',
+                'mediawiki', 'en', 'true').then(function(res) {
+                assert.status(res, 200);
+                console.log(res);
+                assert.deepEqual(!!res.body[0].PMCID, true, 'PMC2096233');
+                assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
+            });
+        });
+
+    });
 
 
 });
-

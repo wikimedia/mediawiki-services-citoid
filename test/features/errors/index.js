@@ -83,10 +83,10 @@ describe('errors', function() {
         var url = 'http://example.com/thisurldoesntexist';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.checkCitation(err, url);
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
         });
     });
 
@@ -94,10 +94,10 @@ describe('errors', function() {
         var url = 'http://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.checkCitation(err, url);
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
         });
     });
 
@@ -118,9 +118,7 @@ describe('errors', function() {
         .then(function(res) {
             assert.status(res, 404);
         }, function(err) {
-            assert.checkError(err, 404,
-                'Unable to locate resource with pmid ' + pmid,
-                'Unexpected error message ' + err.body.Error);
+            assert.checkError(err, 404); //May be interpreted as PMID or PMCID
         });
     });
 

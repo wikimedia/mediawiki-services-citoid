@@ -102,10 +102,10 @@ describe('address restrictions', function() {
         var url = 'https://httpbin.org/redirect/5';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.deepEqual(err.body[0].url, url);
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
         });
     });
 

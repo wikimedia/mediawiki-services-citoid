@@ -118,8 +118,8 @@ function checkCitation(res, title) {
 
     var cit = res.body;
 
-    if(!Array.isArray(cit) || cit.length !== 1) {
-        throw new Error('Expected to receive an array of 1 citation, got: ' + JSON.stringify(cit));
+    if(!Array.isArray(cit) || cit.length < 1) {
+        throw new Error('Expected to receive an array of at least 1 citation, got: ' + JSON.stringify(cit));
     }
 
     cit = cit[0];

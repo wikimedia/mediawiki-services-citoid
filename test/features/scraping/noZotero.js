@@ -27,8 +27,7 @@ describe('Zotero service down or disabled: ', function() {
             .then(function(res) {
                 assert.status(res, 404);
             }, function(err) {
-                assert.checkError(err, 404, 'Unable to locate resource with pmid ' + pmid,
-                    'Unexpected error message ' + err.body.Error);
+                assert.checkError(err, 404); // Exact error may differ as may be interpreted as pmcid or pmid
             });
         });
 
@@ -200,8 +199,7 @@ describe('Zotero service down or disabled: ', function() {
             .then(function(res) {
                 assert.status(res, 404);
             }, function(err) {
-                assert.checkError(err, 404, 'Unable to locate resource with pmid ' + pmid,
-                    'Unexpected error message ' + err.body.Error);
+                assert.checkError(err, 404); // Error may be for pmcid or pmid
             });
         });
 

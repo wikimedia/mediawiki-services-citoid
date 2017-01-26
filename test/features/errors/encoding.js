@@ -68,41 +68,35 @@ describe('encoding', function() {
     });
 
     it('spaces in fully qualified url', function() {
-        return server.query('http://www.example.com/spaces in url', 'mediawiki', 'en')
+        var url = 'http://www.example.com/spaces in url';
+        return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.deepEqual(err.body[0].title,
-                "http://www.example.com/spaces%20in%20url");
-            assert.deepEqual(err.body[0].url,
-                "http://www.example.com/spaces%20in%20url");
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + encodeURI(url));
         });
     });
 
     it('spaces in url missing http://', function() {
-        return server.query('www.example.com/spaces in url', 'mediawiki', 'en')
+        var url = 'www.example.com/spaces in url'
+        return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.deepEqual(err.body[0].title,
-                "http://www.example.com/spaces%20in%20url");
-            assert.deepEqual(err.body[0].url,
-                "http://www.example.com/spaces%20in%20url");
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + 'http://' + encodeURI(url));
         });
     });
 
     it('spaces in url missing http:// and www', function() {
-        return server.query('example.com/spaces in url', 'mediawiki', 'en')
+        var url = 'example.com/spaces in url';
+        return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 520);
+            assert.status(res, 404);
         }, function(err) {
-            assert.status(err, 520);
-            assert.deepEqual(err.body[0].title,
-                "http://example.com/spaces%20in%20url");
-            assert.deepEqual(err.body[0].url,
-                "http://example.com/spaces%20in%20url");
+            assert.status(err, 404);
+            assert.deepEqual(err.body.Error, 'Unable to load URL ' + 'http://' + encodeURI(url));
         });
     });
 

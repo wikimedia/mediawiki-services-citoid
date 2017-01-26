@@ -232,6 +232,16 @@ describe('uses zotero', function() {
         });
     });
 
+    it('removes null issn', function() {
+        return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function(res) {
+            assert.status(res, 200);
+            assert.checkZotCitation(res, 'The Daily Palo Alto times.');
+            assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
+            assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
+
+        });
+    });
+
     // Correctly adds authors from zotero 'name' field
     // TODO: Add new tests to test this issue
     it.skip('Correctly skips bad authors from Zotero whilst converting to mediawiki format', function() {

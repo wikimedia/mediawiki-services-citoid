@@ -220,6 +220,53 @@ describe('lib/Exporter.js functions: ', function() {
         });
     });
 
+    describe('fixISSN function: ', function() {
+        var issn;
+        it('Correctly ignores invalid ISSN', function() {
+            issn = 'None';
+            expected = {};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly adds valid ISSN', function() {
+            issn = '0317-8471';
+            expected = {ISSN: ['0317-8471']};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly adds valid ISSN with X', function() {
+            issn = '2434-561X';
+            expected = {ISSN: ['2434-561X']};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly adds valid ISSN with x', function() {
+            issn = '2434-561x';
+            expected = {ISSN: ['2434-561x']};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly ignores invalid ISSN without hyphen', function() {
+            issn = '12345678';
+            expected = {};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Correctly ignores invalid ISSN', function() {
+            issn = '123456789';
+            expected = {};
+            result = exporter.fixISSN({ISSN:issn});
+            assert.deepEqual(result, expected);
+        });
+
+    });
+
+
     describe('fixPages function: ', function() {
         it('converts hyphen minus to en dash', function() {
             expected = {pages: '15–44'};

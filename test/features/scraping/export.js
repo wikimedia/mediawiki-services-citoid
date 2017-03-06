@@ -37,15 +37,15 @@ describe('Exports: ', function() {
     });
 
     describe('Exporting to zotero: ', function() {
-        it('doi pointing to bookSection', function() {
+        it('doi pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);
-                assert.deepEqual(res.body[0].DOI, undefined, 'DOI is invalid field for type bookSection');
-                assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+                assert.deepEqual(res.body[0].DOI, undefined, 'DOI is invalid field for type conferencePaper');
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
             });
         });
         it('doi with ISSN', function() {
@@ -63,7 +63,7 @@ describe('Exports: ', function() {
     });
 
     describe('Exporting to mwDeprecated: ', function() {
-        it('doi pointing to bookSection', function() {
+        it('doi pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Semantic MediaWiki');
@@ -71,7 +71,7 @@ describe('Exports: ', function() {
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0]['author1-last']);
                 assert.ok(res.body[0].DOI);
-                assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
             });
         });
         it('doi pointing to Zotero gotten response with name field instead of lastName in creators object', function() {

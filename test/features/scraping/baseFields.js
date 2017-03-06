@@ -14,11 +14,11 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     describe(' using zotero results', function() {
 
-        it('bookSection', function() {
+        it('conferencePaper', function() {
             return server.query('10.1007/11926078_68', 'mediawiki', 'en', '1').then(function(res) {
                 assert.status(res, 200);
                 assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                assert.deepEqual(!!res.body[0].bookTitle, true, 'Missing bookTitle field');
+                assert.deepEqual(!!res.body[0].proceedingsTitle, true, 'Missing proceedingsTitle field');
                 //TODO replace above line with below line once backwards compatibility is no longer needed
                 //assert.deepEqual(res.body[0].bookTitle, undefined, 'Invalid field bookTitle');
             });

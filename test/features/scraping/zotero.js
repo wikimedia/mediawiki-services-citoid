@@ -183,12 +183,12 @@ describe('uses zotero', function() {
         });
     });
 
-    it('doi pointing to bookSection', function() {
+    it('doi pointing to conferencePaper', function() {
         return server.query('10.1007/11926078_68').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'Semantic MediaWiki');
             assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+            assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
         });
     });
 

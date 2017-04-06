@@ -12,17 +12,15 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     before(function () { return server.start(); });
 
-    describe(' using basefields param', function() {
+    describe('using basefields param', function() {
 
-        describe(' using zotero results', function() {
+        describe('using zotero results', function() {
 
             it('conferencePaper', function() {
                 return server.query('10.1007/11926078_68', 'mediawiki', 'en', '1').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].proceedingsTitle, true,   'Missing proceedingsTitle field');
-                    //TODO replace above line with below line once backwards compatibility is no longer needed
-                    //assert.deepEqual(res.body[0].bookTitle, undefined, 'Invalid field bookTitle');
+                    assert.deepEqual(res.body[0].proceedingsTitle, undefined, 'Not missing proceedingsTitle field');
                 });
             });
 
@@ -31,9 +29,7 @@ describe('correctly gets base fields instead of more specific fields', function(
                     'mediawiki', 'en', 'true').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].encyclopediaTitle, true, 'Missing encyclopediaTitle field');
-                    //TODO replace above line with below line once backwards compatibility is no longer needed
-                    //assert.deepEqual(res.body[0].encyclopediaTitle, undefined, 'Invalid field encyclopediaTitle');
+                    assert.deepEqual(res.body[0].encyclopediaTitle, undefined, 'Not missing encyclopediaTitle field');
                 });
             });
 
@@ -41,15 +37,14 @@ describe('correctly gets base fields instead of more specific fields', function(
 
         });
 
-        describe(' using native scraper', function() {
+        describe('using native scraper', function() {
 
             it('webpage', function() {
                 return server.query('http://example.com',
                     'mediawiki', 'en', 'true').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
-                    //assert.deepEqual(res.body[0].websiteTitle, undefined, 'Invalid field websiteTitle');
+                    assert.deepEqual(res.body[0].websiteTitle, undefined, 'Not missing websiteTitle field');
                 });
             });
 
@@ -64,9 +59,7 @@ describe('correctly gets base fields instead of more specific fields', function(
                 return server.query('10.1007/11926078_68', 'basefields', 'en').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].proceedingsTitle, true,   'Missing proceedingsTitle field');
-                    //TODO replace above line with below line once backwards compatibility is no longer needed
-                    //assert.deepEqual(res.body[0].bookTitle, undefined, 'Invalid field bookTitle');
+                    assert.deepEqual(!!res.body[0].proceedingsTitle, false,   'Missing proceedingsTitle field');
                 });
             });
 
@@ -75,9 +68,7 @@ describe('correctly gets base fields instead of more specific fields', function(
                     'basefields', 'en', 'true').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].encyclopediaTitle, true, 'Missing encyclopediaTitle field');
-                    //TODO replace above line with below line once backwards compatibility is no longer needed
-                    //assert.deepEqual(res.body[0].encyclopediaTitle, undefined, 'Invalid field encyclopediaTitle');
+                    assert.deepEqual(!!res.body[0].encyclopediaTitle, false, 'Missing encyclopediaTitle field');
                 });
             });
 
@@ -92,8 +83,7 @@ describe('correctly gets base fields instead of more specific fields', function(
                     'basefields', 'en', 'false').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
-                    //assert.deepEqual(res.body[0].websiteTitle, undefined, 'Invalid field websiteTitle');
+                    assert.deepEqual(!!res.body[0].websiteTitle, false, 'Missing websiteTitle field');
                 });
             });
 

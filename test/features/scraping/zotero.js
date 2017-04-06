@@ -195,8 +195,8 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('dx.DOI link pointing to resource in zotero with no DOI', function() {
-            return server.query('http://dx.DOI.org/10.1007/11926078_68').then(function(res) {
+        it('DOI.org link pointing to resource in zotero with no DOI', function() {
+            return server.query('http://DOI.org/10.1007/11926078_68').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');

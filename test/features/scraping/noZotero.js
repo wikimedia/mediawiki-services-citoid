@@ -71,7 +71,7 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         it('doi spage and epage fields in crossRef coins data', function() {
-            return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function(res) {
+            return server.query('http://doi.org/10.1002/jlac.18571010113').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Ueber einige Derivate des Naphtylamins');
                 assert.isInArray(res.body[0].source, 'Crossref');

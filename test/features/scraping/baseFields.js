@@ -56,7 +56,7 @@ describe('correctly gets base fields instead of more specific fields', function(
         describe(' using zotero results', function() {
 
             it('conferencePaper', function() {
-                return server.query('10.1007/11926078_68', 'basefields', 'en').then(function(res) {
+                return server.query('10.1007/11926078_68', 'mediawiki-basefields', 'en').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
                     assert.deepEqual(!!res.body[0].proceedingsTitle, false,   'Missing proceedingsTitle field');
@@ -65,7 +65,7 @@ describe('correctly gets base fields instead of more specific fields', function(
 
             it('encyclopediaArticle', function() {
                 return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238',
-                    'basefields', 'en', 'true').then(function(res) {
+                    'mediawiki-basefields', 'en', 'true').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
                     assert.deepEqual(!!res.body[0].encyclopediaTitle, false, 'Missing encyclopediaTitle field');
@@ -80,7 +80,7 @@ describe('correctly gets base fields instead of more specific fields', function(
 
             it('webpage', function() {
                 return server.query('http://example.com',
-                    'basefields', 'en', 'false').then(function(res) {
+                    'mediawiki-basefields', 'en', 'false').then(function(res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
                     assert.deepEqual(!!res.body[0].websiteTitle, false, 'Missing websiteTitle field');

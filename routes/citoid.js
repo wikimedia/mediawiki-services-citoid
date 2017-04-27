@@ -41,7 +41,7 @@ router.get('/api', function(req, res) {
         res.status(400).type('application/json');
         res.send({Error:'Invalid format requested ' + cr.format || ''});
         return;
-    } else if(getBool(cr.baseFields) && !(getBool(cr.baseFields) && (cr.format === 'mediawiki' || cr.format === 'basefields'))){ // Ensure format supports baseFields- currently mediawiki & basefields only
+    } else if(getBool(cr.baseFields) && !(getBool(cr.baseFields) && (cr.format === 'mediawiki' || cr.format === 'mediawiki-basefields'))){ // Ensure format supports baseFields- currently mediawiki & mediawiki-basefields formats only
         res.status(400).type('application/json');
         res.send({Error:'Base fields are not supported for format ' + cr.format || ''});
         return;
@@ -66,7 +66,7 @@ module.exports = function(appObj) {
     app.nativeFormats = {
         'mediawiki':'application/json',
         'zotero':'application/json',
-        'basefields': 'application/json'
+        'mediawiki-basefields': 'application/json'
     };
     app.zoteroFormats = {
         'bibtex':'application/x-bibtex'

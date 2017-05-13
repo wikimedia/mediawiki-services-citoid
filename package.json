@@ -1,6 +1,6 @@
 {
   "name": "citoid",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Converts search terms such as URL or DOI into citations.",
   "homepage": "https://www.mediawiki.org/wiki/Citoid",
   "license": "Apache-2.0",

@@ -35,7 +35,7 @@ describe('coins unit', function() {
 
     it('Correctly adds date', function() {
         expected = {
-            date: '2010-01-01'
+            date: '2010'
         };
         result = coins.general.date.translate({}, {date:'2010'}, 'date');
         assert.deepEqual(result, expected);

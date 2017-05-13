@@ -49,28 +49,28 @@ describe('lib/Exporter.js functions: ', function() {
 
         it('Contains copyright symbol', function() {
             date = '©2010';
-            expected = {date: '2010-01-01'};
+            expected = {date: '2010'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
 
         it('Contains copyright symbol & whitespace', function() {
             date = ' ©2010';
-            expected = {date: '2010-01-01'};
+            expected = {date: '2010'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
 
         it('Contains c symbol', function() {
             date = 'c2010';
-            expected = {date: '2010-01-01'};
+            expected = {date: '2010'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
 
-        it('sets year only date to January 1st of that year', function() {
+        it('sets year only date to year only date', function() {
             date = '2010';
-            expected = {date: '2010-01-01'};
+            expected = {date: '2010'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
@@ -82,7 +82,7 @@ describe('lib/Exporter.js functions: ', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Uses year from ambiguous date', function() {
+        it('Uses year from ambiguous date', function() { // Partial ISO?
             date = 'Fall 1975';
             expected = {date: '1975-01-01'};
             result = exporter.fixDate({date:date});

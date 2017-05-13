@@ -103,7 +103,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
                 assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
-                assert.deepEqual(res.body[0].date, '1970-01-01', 'Incorrect or missing date'); // Comes from highwire
+                assert.deepEqual(res.body[0].date, '1970', 'Incorrect or missing date'); // Comes from highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType); // Actually is a book but no way to tell from metadata :(
 
             });
@@ -275,7 +275,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
                 assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
-                assert.deepEqual(res.body[0].date, '1970-01-01', 'Incorrect or missing date'); // Comes from highwire
+                assert.deepEqual(res.body[0].date, '1970', 'Incorrect or missing date'); // Comes from highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType); // Actually is a book but no way to tell from metadata :(
 
             });

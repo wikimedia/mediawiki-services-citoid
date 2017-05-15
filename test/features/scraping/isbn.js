@@ -103,10 +103,10 @@ describe('ISBN tests: ', function() {
         it('valid DVD ISBN - type Image', function() {
             return server.query('978-0756662967').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res); // Returns either 'Seashore' or 'Eyewitness DVD. Seashore.' as title
+                assert.checkCitation(res, 'Seashore');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
-                //assert.deepEqual(res.body[0].contributor, [['Sheen,','Martin.'],['Cohen,','Bonni.'],['Thomson,','Richard.'],['DK Publishing,','Inc.']], 'Unexpected value:' + res.body[0].author); // only get this sometimes
+                assert.deepEqual(res.body[0].contributor, [['Sheen,','Martin.'],['Cohen,','Bonni.'],['Thomson,','Richard.'],['DK Publishing,','Inc.']], 'Unexpected value:' + res.body[0].author); // only get this sometimes
                 assert.deepEqual(res.body[0].studio, 'DK Pub', 'Unexpected value; expected DK Pub, got ' + res.body[0].studio);
                 //assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 //assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date); // Not currently working with worldcat; date is returned to us as '2010, ©1996'
@@ -118,7 +118,7 @@ describe('ISBN tests: ', function() {
         it('valid DVD ISBN - invalid Type', function() {
             return server.query('9780783244396').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res); // Title varies
+                assert.checkCitation(res, 'Jaws');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
                 assert.deepEqual(!!res.body[0].contributor, true, 'Missing contributor');
@@ -132,10 +132,10 @@ describe('ISBN tests: ', function() {
         it('valid ISBN with funky author field', function() {
             return server.query('9780439784542').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res); // Title varies
+                assert.checkCitation(res, 'Harry Potter and the Half-Blood Prince');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
-                //assert.deepEqual(!!res.body[0].author, true, 'Missing author');
+                assert.deepEqual(!!res.body[0].contributor, true, 'Missing contributor');
                 //assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 //assert.deepEqual(res.body[0].edition, '1st American ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.isInArray(res.body[0].ISBN, '9780439784542');

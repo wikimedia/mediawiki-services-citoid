@@ -109,7 +109,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(res.body[0].contributor, [['Sheen,','Martin.'],['Cohen,','Bonni.'],['Thomson,','Richard.'],['DK Publishing,','Inc.']], 'Unexpected value:' + res.body[0].author); // only get this sometimes
                 assert.deepEqual(res.body[0].studio, 'DK Pub', 'Unexpected value; expected DK Pub, got ' + res.body[0].studio);
                 //assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
-                //assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date); // Not currently working with worldcat; date is returned to us as '2010, ©1996'
+                assert.deepEqual(res.body[0].date, '2010, ©1996', 'Unexpected value; expected 2010, ©1996, got ' + res.body[0].date); // Not currently working with worldcat; date is returned to us as '2010, ©1996'
                 assert.isInArray(res.body[0].ISBN, '9780756662967');
                 assert.deepEqual(res.body[0].itemType, 'videoRecording', 'Wrong itemType; expected videoRecording, got ' + res.body[0].itemType);
             });

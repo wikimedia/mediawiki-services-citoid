@@ -82,9 +82,30 @@ describe('lib/Exporter.js functions: ', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Uses year from ambiguous date', function() { // Partial ISO?
+        it('Unable to parse to leaves as written; season', function() { // Partial ISO?
             date = 'Fall 1975';
-            expected = {date: '1975-01-01'};
+            expected = {date: 'Fall 1975'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Unable to parse so leaves it as written', function() {
+            date = '2014, ©2010';
+            expected = {date: '2014, ©2010'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Multilingual date - Spanish - leaves as written', function() {
+            date = 'Mayo de 2010';
+            expected = {date: 'Mayo de 2010'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Multilingual date - Russian - leaves as written', function() {
+            date = 'Май 2010 г.';
+            expected = {date: 'Май 2010 г.'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
@@ -139,22 +160,22 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         it('Year first date', function() {
-            date = '"1975 Nov-Dec';
-            expected = {date: '1975-11-01'};
+            date = '1975 Nov-Dec';
+            expected = {date: 'November 1975'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
 
         it('Partial ISO date no preceeding 0', function() {
-            date = '"1975-2';
-            expected = {date: '1975-02-01'};
+            date = '1975-2';
+            expected = {date: 'February 1975'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });
 
         it('Partial ISO date proceeding 0', function() {
-            date = '"1975-02';
-            expected = {date: '1975-02-01'};
+            date = '1975-02';
+            expected = {date: 'February 1975'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });

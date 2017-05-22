@@ -17,7 +17,7 @@ describe('general translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = gen.generalWithAuthor.creator.translate({}, {author:['One']}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, {author:['One']}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -29,7 +29,7 @@ describe('general translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = gen.generalWithAuthor.creator.translate({}, {author:'One'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, {author:'One'}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -41,7 +41,7 @@ describe('general translator unit', function() {
                 lastName: 'Two'
             }]
         };
-        result = gen.generalWithAuthor.creator.translate({}, {author:'One Two'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, {author:'One Two'}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -53,7 +53,7 @@ describe('general translator unit', function() {
                 lastName: 'Three'
             }]
         };
-        result = gen.generalWithAuthor.creator.translate({}, {author:'One Two Three'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, {author:'One Two Three'}, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -65,7 +65,7 @@ describe('general translator unit', function() {
                 lastName: 'GrandPré.'
             }]
         };
-        result = gen.generalWithAuthor.creator.translate({}, {author:'J.K. Rowling ; illustrations by Mary GrandPré.'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, {author:'J.K. Rowling ; illustrations by Mary GrandPré.'}, 'author');
         assert.deepEqual(result, expected);
     });
 });

@@ -4,7 +4,7 @@ var assert = require('../../../utils/assert.js');
 var coins = require('../../../../lib/translators/coins.js');
 
 
-describe('coins unit', function() {
+describe('coins metadata', function() {
 
     var result;
     var expected;

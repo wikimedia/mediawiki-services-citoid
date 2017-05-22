@@ -29,11 +29,13 @@ var htmlFiles = [
     {value:article, name:'article'}
 ];
 
+var app = {
+    logger: function(){}
+};
+var translator = new Translator(app);
+
 describe('translate function: ', function() {
-    var app = {
-        logger: function(){}
-    };
-    var translator = new Translator(app);
+
     var types = new CachedTypes();
     var citation;
     var result;
@@ -96,5 +98,46 @@ describe('addItemType function: ', function() {
         var itemType = scraper.addItemType(metadata, {}).itemType;
         assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
 
+    });
+});
+
+describe('check specific results', function() {
+    it('sets right info from webpage for general metadata', function() {
+        return meta.parseAll(article).then(function(metadata){
+            var citation = translator.translate({itemType:'webpage'}, metadata.general, gen.webpage);
+            var expected = {
+              itemType: "webpage",
+              creators: [
+                {
+                  creatorType: "author",
+                  lastName: "Lvr",
+                  firstName: "Turtle"
+                }
+              ],
+              url: "http://example.com/turtles",
+              abstractNote: "Exposition on the awesomeness of turtles",
+              title: "Turtles are AWESOME!!1 | Awesome Turtles Website",
+              language: "en"
+            }
+            assert.deepEqual(citation, expected);
+        });
+    });
+    it('sets right info from webpage for bepress metadata', function() {
+        return meta.parseAll(article).then(function(metadata){
+            var citation = translator.translate({itemType:'webpage'}, metadata.bePress, bp.webpage);
+            var expected = {
+              itemType: "webpage",
+              creators: [
+                {
+                  creatorType: "author",
+                  lastName: "Lvr",
+                  firstName: "Turtle"
+                }
+              ],
+              date: "2012",
+              title: "Turtles are AWESOME!!1"
+            }
+            assert.deepEqual(citation, expected);
+        });
     });
 });

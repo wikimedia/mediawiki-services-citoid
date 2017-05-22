@@ -9,6 +9,4 @@ A translator is used to translate from the embedded metadata types and propertie
 
 Each translator here corresponds to a type of metadata found in [html-metadata node library](https://github.com/wikimedia/html-metadata). The name of the file matches the keys found in the Object [metadataFunctions](https://github.com/wikimedia/html-metadata/blob/master/lib/index.js) in the library.
 
-A template for writing new translators is found in template.js.txt.
-
 Utility functions that are used across translators are found in ./util.

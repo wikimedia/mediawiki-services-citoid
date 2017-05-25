@@ -16,7 +16,7 @@ describe('Exports: ', function() {
         it('bibtex from scraper', function() {
             return server.query('http://example.com', 'bibtex').then(function(res) {
                 assert.status(res, 200);
-                assert.checkBibtex(res, '\n@misc{_example_???');
+                assert.checkBibtex(res, '\n@misc{noauthor_exa');
             });
         });
 
@@ -44,7 +44,7 @@ describe('Exports: ', function() {
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);
-                assert.deepEqual(res.body[0].DOI, undefined, 'DOI is invalid field for type conferencePaper');
+                assert.deepEqual(res.body[0].DOI, '10.1007/11926078_68');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
             });
         });

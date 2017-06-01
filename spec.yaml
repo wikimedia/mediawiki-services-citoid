@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.2.7
+  version: 0.5.2
   title: Citoid
   description: A citation service relying on Zotero
   termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
@@ -54,55 +54,32 @@ paths:
               version: /.+/
               home: /.+/
   # from routes/citoid.js
-  /url:
-    post:
-      tags:
-        - Citations
-      description: Converts URLs, DOIs, etc into citations. Note that this
-        endpoint is deprecated.
-      produces:
-        - application/json
-      x-monitor: false
   /api:
     get:
       tags:
         - Citations
-      description: Converts URLs, DOIs, etc into citations
+      description: Converts URLs, DOIs, ISBNs, PMIDs, etc into citations
       produces:
         - application/json
       x-amples:
-#        - title: bad URL
-#          request:
-#            query:
-#              format: mediawiki
-#              search: http://example.com/thisurldoesntexist
-#            headers:
-#              accept-language: en
-#          response:
-#            status: 520
-#        - title: bad PMCID
-#          request:
-#            query:
-#              format: mediawiki
-#              search: PMC9999999
-#            headers:
-#              accept-language: en
-#          response:
-#            status: 404
-#        - title: web site in alternative language
-#          request:
-#            query:
-#              format: mediawiki
-#              search: http://twitter.com
-#            headers:
-#              accept-language: de
-#          response:
-#            status: 200
-#            body:
-#              - itemType: /.+/
-#                title: /Willkommen bei Twitter/
-#                url: /.+/
-#                accessDate: /.+/
+        - title: bad URL
+          request:
+            query:
+              format: mediawiki
+              search: http://example.com/thisurldoesntexist
+            headers:
+              accept-language: en
+          response:
+            status: 404
+        - title: bad PMCID
+          request:
+            query:
+              format: mediawiki
+              search: PMC9999999
+            headers:
+              accept-language: en
+          response:
+            status: 404
         - title: Zotero alive
           request:
             query:
@@ -112,11 +89,11 @@ paths:
               accept-language: en
           response:
             status: 200
-        - title: open graph via native scraper
+        - title: Scrapes sample page
           request:
             query:
               format: mediawiki
-              search: http://www.pbs.org/newshour/making-sense/care-peoples-kids/
+              search: http://example.com
             headers:
               accept-language: en
           response:

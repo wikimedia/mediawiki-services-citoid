@@ -1,6 +1,6 @@
-Dockerfile
+/Dockerfile
 .idea/
 coverage
-config.yaml
+/config.yaml
 node_modules
 npm-debug.log

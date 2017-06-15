@@ -71,15 +71,6 @@ paths:
               accept-language: en
           response:
             status: 404
-        - title: bad PMCID
-          request:
-            query:
-              format: mediawiki
-              search: PMC9999999
-            headers:
-              accept-language: en
-          response:
-            status: 404
         - title: Zotero alive
           request:
             query:

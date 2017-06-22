@@ -67,6 +67,17 @@ describe('using native scraper', function() {
         });
     });
 
+    // Restricted url but with info in cross ref that can be pulled from doi in url
+    it('doi in restricted url', function() {
+        return server.query('http://localhost/10.1086/378695').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+            assert.isInArray(res.body[0].source, 'Crossref');
+            assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+            assert.deepEqual(res.body[0].author.length, 1);
+        });
+    });
+
     // URL with string that previously matched doi regex but shouldn't
     it('url with pseudo doi', function() {
         return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {

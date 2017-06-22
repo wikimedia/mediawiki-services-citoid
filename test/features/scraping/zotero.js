@@ -163,6 +163,18 @@ describe('uses zotero', function() {
             });
         });
 
+        // Wiley DOI
+        it('DOI whth redirect - Wiley', function() {
+            return server.query('10.1029/94WR00436').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
+                assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+            });
+        });
+
         /* FIXME: determine why exactly this test is not passing any more and re-enable it */
         // DOI which needs User-Agent to be set in order to detect the redirect
         it.skip('DOI with User-Agent set', function() {
@@ -214,6 +226,7 @@ describe('uses zotero', function() {
                 assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
             });
         });
+
     });
 
     it('doi pointing to conferencePaper', function() {

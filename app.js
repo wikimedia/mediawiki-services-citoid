@@ -43,9 +43,9 @@ function initApp(options) {
     if(!app.conf.userAgent) { app.conf.userAgent = 'Citoid/' + app.info.version; }
 
     // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
-    if (typeof app.conf.zotero === 'undefined') {
-        app.conf.zotero = true;
-    }
+    if (app.conf.zotero === undefined) {app.conf.zotero = true;}
+    // backwards compatibility for configurations which predate use of 'pubmed' keyword in conf
+    if (app.conf.pubmed === undefined){app.conf.pubmed = true;}
 
     // ensure sane defaults for Zotero
     if (app.conf.zotero) {

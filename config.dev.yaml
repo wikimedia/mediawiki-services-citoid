@@ -65,6 +65,8 @@ services:
       userAgent: null
       # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
       zotero: true
+      # enable use of NIH PubMed id converter to add pmids and pmcids to citations at the end of a request; defaults to true if undefined
+      pubmed: false
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
       # zotero's server port

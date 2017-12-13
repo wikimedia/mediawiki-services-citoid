@@ -1,36 +1,29 @@
 {
     "predef": [
+        "ve",
+        "setImmediate",
+        "QUnit",
         "Map",
         "Set"
     ],
-
-    // Enforcing
     "bitwise": true,
-    "eqeqeq": true,
-    "freeze": true,
-    "noarg": true,
-    "nonew": true,
-    "undef": true,
-
-    "curly": true,
-    "newcap": true,
-    "noempty": true,
-    "immed": true,
-
-    // Relaxing
     "laxbreak": true,
-    "sub": true,
-    "boss": true,
-    "eqnull": true,
-    "multistr": true,
-    "loopfunc": true,
-
-    // Invalid options (?)
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "noempty": true,
+    "nonew": true,
     "regexp": false,
+    "undef": true,
+    "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "nomen": false,
-
+    "multistr": true,
     "node": true,
+    "nomen": false,
+    "loopfunc": true,
     "esnext": true
 }

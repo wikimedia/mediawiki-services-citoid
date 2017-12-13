@@ -6,6 +6,11 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
 
+if (!server.stopHookAdded) {
+    server.stopHookAdded = true;
+    after(() => server.stop());
+}
+
 describe('Languages: ', function() {
 
     this.timeout(20000);
@@ -32,7 +37,7 @@ describe('Languages: ', function() {
         });
 
         it('open graph locale converted to language code', function() {
-            return server.query('http://www.pbs.org/newshour/making-sense/care-peoples-kids/').then(function(res) {
+            return server.query('https://www.pbs.org/newshour/nation/care-peoples-kids/').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');

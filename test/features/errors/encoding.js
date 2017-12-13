@@ -6,6 +6,11 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
 
+if (!server.stopHookAdded) {
+    server.stopHookAdded = true;
+    after(() => server.stop());
+}
+
 describe('encoding', function() {
 
     this.timeout(20000);

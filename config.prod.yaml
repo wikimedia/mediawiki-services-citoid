@@ -62,7 +62,6 @@ services:
       # the user agent to use when issuing requests
       # user_agent: service-template-node
       # the template used for contacting the MW API
-
       # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
       zotero: true
       # enable use of NIH PubMed id converted to add pmids and pmcids to citations at the end of a request; defaults to true if undefined

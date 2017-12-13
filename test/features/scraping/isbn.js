@@ -10,6 +10,11 @@ var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
+if (!server.stopHookAdded) {
+    server.stopHookAdded = true;
+    after(() => server.stop());
+}
+
 describe('ISBN tests: ', function() {
 
     this.timeout(40000);

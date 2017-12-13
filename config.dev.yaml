@@ -61,8 +61,6 @@ services:
       #   - if-match
       #   - user-agent
       #   - x-request-id
-      # User-Agent HTTP header to use for requests
-      userAgent: null
       # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
       zotero: true
       # enable use of NIH PubMed id converter to add pmids and pmcids to citations at the end of a request; defaults to true if undefined
@@ -79,6 +77,10 @@ services:
       wskey: SzH9M2MhDgFmp0nyi8xKGI62A2Ll3cB4j8krnON0ZJPQqzqm0uo1Du3CNYk7mVllOcujIsWWwLumboHj
       allowPrivateAddresses: false
       maxRedirects: 5
+      # the user agent to use when issuing requests
+      user_agent: null
+      # User-Agent HTTP header to use for requests
+      userAgent: null
       # the template used for contacting the MW API
       mwapi_req:
         method: post

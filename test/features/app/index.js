@@ -6,6 +6,11 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
 
+if (!server.stopHookAdded) {
+    server.stopHookAdded = true;
+    after(() => server.stop());
+}
+
 describe('express app', function() {
 
     this.timeout(20000);
@@ -21,7 +26,7 @@ describe('express app', function() {
         });
     });
 
-    it('get landing page', function() {
+    it.skip('get landing page', function() {
         return preq.get({
             uri: server.config.uri
         }).then(function(res) {

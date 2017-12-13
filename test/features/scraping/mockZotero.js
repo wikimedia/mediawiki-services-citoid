@@ -10,6 +10,11 @@ var server = require('../../utils/server.js');
 var zotero = require('../../utils/mockZoteroServer.js');
 
 
+if (!server.stopHookAdded) {
+    server.stopHookAdded = true;
+    after(() => server.stop());
+}
+
 describe('mock Zotero service that cannot export', function() {
 
     this.timeout(40000);

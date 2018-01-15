@@ -232,15 +232,14 @@ describe('uses zotero', function() {
             });
         });
 
-    });
 
-    it('doi pointing to conferencePaper', function() {
-        return server.query('10.1007/11926078_68').then(function(res) {
-            assert.status(res, 200);
-            assert.checkZotCitation(res, 'Semantic MediaWiki');
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
-
+        it('doi pointing to conferencePaper', function() {
+            return server.query('10.1007/11926078_68').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Semantic MediaWiki');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
+            });
         });
 
         // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
@@ -260,6 +259,18 @@ describe('uses zotero', function() {
                 assert.deepEqual(res.body[0].date, '2007-11-01', 'Incorrect date; expected 2007-11-01, got ' + res.body[0].date);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 
+            });
+        });
+
+        // Sometimes this DOI times out when being resolved for some reason
+        it('DOI with poor resolving time', function() {
+            return server.query('10.1098/rspb.2000.1188').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID'); // Not present in Zotero - should come from API
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // Present in Zotero
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // Present in Zotero
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
     });
@@ -285,7 +296,8 @@ describe('uses zotero', function() {
         });
     });
 
-    it('removes null issn', function() {
+    // URL dead upstream
+    it.skip('removes null issn', function() {
         return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'The Daily Palo Alto times.');

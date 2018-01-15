@@ -58,7 +58,7 @@ describe('Languages: ', function() {
         it('content-type header present in body but not in response headers', function() {
             return server.query('https://www.insee.fr/fr/statistiques/zones/2021173').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Populations légales 2013−Ces données sont disponibles sur toutes les communes de France | Insee');
+                assert.checkCitation(res, 'Populations légales 2013 − Ces données sont disponibles sur toutes les communes de France | Insee');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });

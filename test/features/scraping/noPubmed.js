@@ -11,7 +11,7 @@ if (!server.stopHookAdded) {
     after(() => server.stop());
 }
 
-describe('Disable pubmed requests for extra IDs', function() {
+describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
 
     this.timeout(20000);
 
@@ -251,19 +251,21 @@ describe('Disable pubmed requests for extra IDs', function() {
 
 });
 
-describe('Defaults conf to true if pubmed undefined', function() {
+describe('noPubmed.js - Defaults conf to true if pubmed undefined', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start({pubmed:undefined}); });
+    before(function () {
+        return server.start({pubmed:undefined});
+    });
 
     it('DOI- PMCID available from NIH DB only', function() {
-        return server.query('10.1098/rspb.2000.1188').then(function(res) {
+        return server.query('http://rspb.royalsocietypublishing.org/content/267/1453/1627').then(function(res) {
             assert.status(res, 200);
             assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-            assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-            assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+            assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID'); // Not present in Zotero - should come from API
+            assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // Present in Zotero
+            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // Present in Zotero
             assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
         });
     });

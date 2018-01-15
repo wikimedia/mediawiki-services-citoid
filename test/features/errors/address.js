@@ -76,6 +76,16 @@ describe('address restrictions', function() {
         });
     });
 
+    it('private ip', function() {
+        return server.query('http://192.168.1.2', 'mediawiki', 'en')
+        .then(function(res) {
+            assert.status(res, 400);
+        }, function(err) {
+            assert.status(err, 400);
+        });
+    });
+
+
     it('redir-to-private', function() {
         return server.query('https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en')
         .then(function(res) {

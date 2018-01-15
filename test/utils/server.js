@@ -52,7 +52,8 @@ function start(_options) {
             options = _options;
             // set up the config
             config = extend(true, {}, origConfig);
-            extend(true, config.conf.services[myServiceIdx].conf, options);
+            // Respects 'undefined' in the options object
+            config.conf.services[myServiceIdx].conf = Object.assign({}, config.conf.services[myServiceIdx].conf, options);
             return runner.start(config.conf)
             .then((serviceReturns) => {
                 module.exports.stop = () => {

@@ -113,6 +113,28 @@ describe('using native scraper', function() {
             assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
         });
     });
+
+    it('dublinCore data with multiple identifiers in array', function() {
+        return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
+            assert.isInArray(res.body[0].source, 'citoid');
+            assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
+            assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+        });
+    });
+
+    it('gets DOI from dublinCore identifier field', function() {
+        return server.query('http://eprints.gla.ac.uk/113711/').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Zika virus: a previously slow pandemic spreads rapidly through the Americas');
+            assert.deepEqual(res.body[0].DOI, '10.1099/jgv.0.000381');
+            assert.isInArray(res.body[0].source, 'citoid');
+            assert.deepEqual(res.body[0].itemType, 'journalArticle');
+        });
+    });
+
     it('PMCID but no PMID', function() {
 
         it('webpage', function() {

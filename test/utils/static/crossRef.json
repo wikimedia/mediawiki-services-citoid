@@ -1,0 +1,485 @@
+[
+    {
+        "indexed":{
+            "date-parts":[
+                [
+                    2018,
+                    1,
+                    10
+                ]
+            ],
+            "date-time":"2018-01-10T05:02:34Z",
+            "timestamp":1515560554022
+        },
+        "reference-count":31,
+        "publisher":"Geological Society of America",
+        "issue":"4",
+        "content-domain":{
+            "domain":[
+
+            ],
+            "crossmark-restriction":false
+        },
+        "short-container-title":[
+            "Geology"
+        ],
+        "published-print":{
+            "date-parts":[
+                [
+                    2017,
+                    4
+                ]
+            ]
+        },
+        "DOI":"10.1130\/g38665.1",
+        "type":"journal-article",
+        "created":{
+            "date-parts":[
+                [
+                    2017,
+                    1,
+                    24
+                ]
+            ],
+            "date-time":"2017-01-24T02:55:22Z",
+            "timestamp":1485226522000
+        },
+        "page":"311-314",
+        "source":"Crossref",
+        "is-referenced-by-count":2,
+        "title":[
+            "Block-controlled hillslope form and persistence of topography in rocky landscapes"
+        ],
+        "prefix":"10.1130",
+        "volume":"45",
+        "author":[
+            {
+                "given":"Rachel C.",
+                "family":"Glade",
+                "affiliation":[
+
+                ]
+            },
+            {
+                "given":"Robert S.",
+                "family":"Anderson",
+                "affiliation":[
+
+                ]
+            },
+            {
+                "given":"Gregory E.",
+                "family":"Tucker",
+                "affiliation":[
+
+                ]
+            }
+        ],
+        "member":"257",
+        "published-online":{
+            "date-parts":[
+                [
+                    2017,
+                    1,
+                    23
+                ]
+            ]
+        },
+        "container-title":[
+            "Geology"
+        ],
+        "original-title":[
+
+        ],
+        "link":[
+            {
+                "URL":"https:\/\/syndication.highwire.org\/content\/doi\/10.1130\/G38665.1",
+                "content-type":"unspecified",
+                "content-version":"vor",
+                "intended-application":"similarity-checking"
+            }
+        ],
+        "deposited":{
+            "date-parts":[
+                [
+                    2017,
+                    7,
+                    7
+                ]
+            ],
+            "date-time":"2017-07-07T10:53:02Z",
+            "timestamp":1499424782000
+        },
+        "score":1.0,
+        "subtitle":[
+
+        ],
+        "short-title":[
+
+        ],
+        "issued":{
+            "date-parts":[
+                [
+                    2017,
+                    1,
+                    23
+                ]
+            ]
+        },
+        "references-count":31,
+        "alternative-id":[
+            "10.1130\/G38665.1"
+        ],
+        "URL":"http:\/\/dx.doi.org\/10.1130\/g38665.1",
+        "relation":{
+
+        },
+        "ISSN":[
+            "0091-7613",
+            "1943-2682"
+        ],
+        "issn-type":[
+            {
+                "value":"0091-7613",
+                "type":"print"
+            },
+            {
+                "value":"1943-2682",
+                "type":"electronic"
+            }
+        ],
+        "subject":[
+            "Geology"
+        ]
+    },
+    {
+        "indexed":{
+            "date-parts":[
+                [
+                    2017,
+                    10,
+                    27
+                ]
+            ],
+            "date-time":"2017-10-27T17:34:37Z",
+            "timestamp":1509125677973
+        },
+        "reference-count":0,
+        "publisher":"Presses Universitaires de France",
+        "content-domain":{
+            "domain":[
+
+            ],
+            "crossmark-restriction":false
+        },
+        "short-container-title":[
+
+        ],
+        "published-print":{
+            "date-parts":[
+                [
+                    2007
+                ]
+            ]
+        },
+        "DOI":"10.3917\/puf.tsch.2007.01.0087",
+        "type":"book-chapter",
+        "created":{
+            "date-parts":[
+                [
+                    2015,
+                    9,
+                    18
+                ]
+            ],
+            "date-time":"2015-09-18T08:31:20Z",
+            "timestamp":1442565080000
+        },
+        "page":"87",
+        "source":"Crossref",
+        "is-referenced-by-count":0,
+        "title":[
+            "Harry Potter \u00e0 l\u2019\u00e9cole des juv\u00e9nistes"
+        ],
+        "prefix":"10.3917",
+        "author":[
+            {
+                "given":"Johanne",
+                "family":"Prud\u2019homme",
+                "affiliation":[
+
+                ]
+            }
+        ],
+        "member":"2273",
+        "container-title":[
+            "Harry Potter, ange ou d\u00e9mon ?"
+        ],
+        "original-title":[
+
+        ],
+        "deposited":{
+            "date-parts":[
+                [
+                    2015,
+                    9,
+                    18
+                ]
+            ],
+            "date-time":"2015-09-18T08:31:25Z",
+            "timestamp":1442565085000
+        },
+        "score":1.0,
+        "subtitle":[
+
+        ],
+        "short-title":[
+
+        ],
+        "issued":{
+            "date-parts":[
+                [
+                    2007
+                ]
+            ]
+        },
+        "ISBN":[
+            "9782130565727"
+        ],
+        "references-count":0,
+        "URL":"http:\/\/dx.doi.org\/10.3917\/puf.tsch.2007.01.0087",
+        "relation":{
+
+        }
+    },
+    {
+        "indexed":{
+            "date-parts":[
+                [
+                    2018,
+                    1,
+                    30
+                ]
+            ],
+            "date-time":"2018-01-30T16:22:24Z",
+            "timestamp":1517329344485
+        },
+        "publisher-location":"Hoboken, NJ, USA",
+        "reference-count":11,
+        "publisher":"John Wiley & Sons, Inc.",
+        "content-domain":{
+            "domain":[
+
+            ],
+            "crossmark-restriction":false
+        },
+        "DOI":"10.1002/0471142956.cy0635s71",
+        "type":"reference-entry",
+        "created":{
+            "date-parts":[
+                [
+                    2015,
+                    1,
+                    5
+                ]
+            ],
+            "date-time":"2015-01-05T13:59:07Z",
+            "timestamp":1420466347000
+        },
+        "page":"6.35.1-6.35.7",
+        "source":"Crossref",
+        "is-referenced-by-count":1,
+        "title":[
+            "Quantification of Th1 and Th17 Cells with Intracellular Staining Following PMA/Ionomycin Stimulation"
+        ],
+        "prefix":"10.1002",
+        "author":[
+            {
+                "given":"Fridrik",
+                "family":"Karlsson",
+                "affiliation":[
+                    {
+                        "name":"CTI-Boston, Pfizer Inc; Boston Massachusetts"
+                    }
+                ]
+            },
+            {
+                "given":"Mina",
+                "family":"Hassan-Zahraee",
+                "affiliation":[
+                    {
+                        "name":"Biotherapeutics Clinical R&D, Precision Medicine, Pfizer Inc; Cambridge Massachusetts"
+                    }
+                ]
+            }
+        ],
+        "member":"311",
+        "published-online":{
+            "date-parts":[
+                [
+                    2015,
+                    1,
+                    5
+                ]
+            ]
+        },
+        "reference":[
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0001|cy0635-cit-0001",
+                "doi-asserted-by":"crossref",
+                "first-page":"36",
+                "DOI":"10.1002/cyto.a.22348",
+                "article-title":"T helper cells plasticity in inflammation",
+                "volume":"85",
+                "author":"Cosmi",
+                "year":"2014",
+                "journal-title":"Cytometry A"
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0002|cy0635-cit-0002",
+                "doi-asserted-by":"crossref",
+                "first-page":"80",
+                "DOI":"10.1007/s10875-009-9345-1",
+                "article-title":"Foxp3 +regulatory T cells, Th17 effector cells, and cytokine environment in inflammatory bowel disease",
+                "volume":"30",
+                "author":"Eastaff-Leung",
+                "year":"2010",
+                "journal-title":"J. Clin. Immunol."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0003|cy0635-cit-0003",
+                "doi-asserted-by":"crossref",
+                "first-page":"1124",
+                "DOI":"10.1086/314702",
+                "article-title":"Detection of intracellular antigen-specific cytokines in human T cell populations",
+                "volume":"179",
+                "author":"Kallas",
+                "year":"1999",
+                "journal-title":"J. Infect. Dis."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0004|cy0635-cit-0004",
+                "doi-asserted-by":"crossref",
+                "first-page":"503",
+                "DOI":"10.1089/10799900152434376",
+                "article-title":"Identification of IFN-gamma-producing CD4+ T cells following PMA stimulation",
+                "volume":"21",
+                "author":"Kemp",
+                "year":"2001",
+                "journal-title":"J. Interferon Cytokine Res."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0005|cy0635-cit-0005",
+                "doi-asserted-by":"crossref",
+                "first-page":"439",
+                "DOI":"10.1002/cyto.a.22269",
+                "article-title":"OMIP-017: Human CD4(+) helper T cell subsets including follicular helper cells",
+                "volume":"83",
+                "author":"Mahnke",
+                "year":"2013",
+                "journal-title":"Cytometry A"
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0006|cy0635-cit-0006",
+                "doi-asserted-by":"crossref",
+                "first-page":"763",
+                "DOI":"10.1038/nrd3794",
+                "article-title":"Targeting IL-17 and TH17 cells in chronic inflammation",
+                "volume":"11",
+                "author":"Miossec",
+                "year":"2012",
+                "journal-title":"Nat. Rev. Drug Discov."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0007|cy0635-cit-0007",
+                "doi-asserted-by":"crossref",
+                "first-page":"592",
+                "DOI":"10.2174/156652412800620066",
+                "article-title":"Th17-related cytokines in inflammatory bowel diseases: friends or foes",
+                "volume":"12",
+                "author":"Monteleone",
+                "year":"2012",
+                "journal-title":"Curr. Mol. Med."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0008|cy0635-cit-0008",
+                "doi-asserted-by":"crossref",
+                "first-page":"1209",
+                "DOI":"10.1084/jem.178.4.1209",
+                "article-title":"Phorbol ester-induced downregulation of CD4 is a multistep process involving dissociation from p56lck, increased association with clathrin-coated pits, and altered endosomal sorting",
+                "volume":"178",
+                "author":"Pelchen-Matthews",
+                "year":"1993",
+                "journal-title":"J. Exp. Med."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0009|cy0635-cit-0009",
+                "doi-asserted-by":"crossref",
+                "first-page":"3747",
+                "DOI":"10.1016/j.febslet.2011.03.064",
+                "article-title":"Cytokines and effector T cell subsets causing autoimmune CNS disease",
+                "volume":"585",
+                "author":"Petermann",
+                "year":"2011",
+                "journal-title":"FEBS Lett."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0010|cy0635-cit-0010",
+                "doi-asserted-by":"crossref",
+                "first-page":"199",
+                "DOI":"10.1016/j.clim.2003.11.015",
+                "article-title":"Flow cytometric analysis of vaccine responses: How many colors are enough",
+                "volume":"110",
+                "author":"Roederer",
+                "year":"2004",
+                "journal-title":"Clin. Immunol."
+            },
+            {
+                "key":"10.1002/0471142956.cy0635s71-BIB0011|cy0635-cit-0011",
+                "first-page":"1351",
+                "article-title":"Modulation of CD4 by antigenic activation",
+                "volume":"138",
+                "author":"Weyand",
+                "year":"1987",
+                "journal-title":"J. Immunol."
+            }
+        ],
+        "container-title":[
+            "Current Protocols in Cytometry"
+        ],
+        "deposited":{
+            "date-parts":[
+                [
+                    2017,
+                    6,
+                    23
+                ]
+            ],
+            "date-time":"2017-06-23T03:04:57Z",
+            "timestamp":1498187097000
+        },
+        "score":1,
+        "subtitle":[
+            "Quantification of Th1 and Th17 Cells with Intracellular Staining"
+        ],
+        "issued":{
+            "date-parts":[
+                [
+                    2015,
+                    1,
+                    5
+                ]
+            ]
+        },
+        "ISBN":[
+            "9780471142959"
+        ],
+        "references-count":11,
+        "URL":"http://dx.doi.org/10.1002/0471142956.cy0635s71",
+        "relation":{
+            "cites":[
+
+            ]
+        }
+    }
+]

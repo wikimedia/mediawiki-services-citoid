@@ -59,7 +59,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(!!res.body[0].ISSN, false, 'Should not contain ISSN'); // This indicates Zotero is actually activated since ISSN is not in crossRef, where we're obtaining the metadata
+                assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -185,6 +185,41 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
+
+        it('gets date from crossRef REST API', function() {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
+                assert.deepEqual(res.body[0].date, 'May 1998');
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            });
+        });
+
+        it('gets editors from crossRef REST API for book-tract type', function() {
+            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
+                assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.deepEqual(!!res.body[0].editor, true); // Has editors
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'bookSection');
+            });
+        });
+
+        it('gets proceedings from crossRef REST API', function() {
+            return server.query('10.4271/2015-01-0821').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
+                assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.deepEqual(!!res.body[0].author, true); // Has editors
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper');
+            });
+        });
     });
 
     describe('disabled in conf', function() {
@@ -231,7 +266,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(!!res.body[0].ISSN, false, 'Should not contain ISSN'); // This indicates Zotero is actually activated since ISSN is not in crossRef, where we're obtaining the metadata
+                assert.deepEqual(!!res.body[0].ISSN, true, 'Missing ISSN');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -355,6 +390,41 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'IOC World Bird List 4.4');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+            });
+        });
+
+        it('gets date from crossRef REST API', function() {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
+                assert.deepEqual(res.body[0].date, 'May 1998');
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            });
+        });
+
+        it('gets editors from crossRef REST API for book-tract type', function() {
+            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
+                assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.deepEqual(!!res.body[0].editor, true); // Has editors
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'bookSection');
+            });
+        });
+
+        it('gets proceedings from crossRef REST API', function() {
+            return server.query('10.4271/2015-01-0821').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
+                assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.deepEqual(!!res.body[0].author, true); // Has editors
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper');
             });
         });
     });

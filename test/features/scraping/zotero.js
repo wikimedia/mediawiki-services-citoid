@@ -168,8 +168,9 @@ describe('uses zotero', function() {
             });
         });
 
-        // Wiley DOI
-        it('DOI whth redirect - Wiley', function() {
+
+        // Currently causes internal server error
+        it.skip('DOI with redirect - Wiley', function() {
             return server.query('10.1029/94WR00436').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
@@ -180,9 +181,7 @@ describe('uses zotero', function() {
             });
         });
 
-        /* FIXME: determine why exactly this test is not passing any more and re-enable it */
-        // DOI which needs User-Agent to be set in order to detect the redirect
-        it.skip('DOI with User-Agent set', function() {
+        it('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
@@ -191,7 +190,18 @@ describe('uses zotero', function() {
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
-        /* END FIXME */
+
+        // FIXME: DOI not resolving to the end, see: T188243
+        it.skip('Needs to follow several redirects before Zotero request', function() {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
+                assert.deepEqual(res.body[0].date, 'May 1998');
+                assert.isInArray(res.body[0].source, 'citoid');
+                assert.isInArray(res.body[0].source, 'crossRef');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            });
+        });
 
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
         it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
@@ -273,6 +283,17 @@ describe('uses zotero', function() {
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
+
+        // Restricted url but with info in crossRef that can be pulled from doi in url
+        it('doi in restricted url', function() {
+            return server.query('http://localhost/10.1086/378695').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+                assert.deepEqual(res.body[0].author.length, 1);
+            });
+        });
     });
 
     // Ensure html tags are stripped out of title
@@ -285,9 +306,11 @@ describe('uses zotero', function() {
     });
 
 
-    it('fixes en dash in zotero results', function() {
+    // Currently causes internal server error in zotero locally
+    it.skip('fixes en dash in zotero results', function() {
         return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
             assert.status(res, 200);
+            console.log(res.body);
             assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
             assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             assert.deepEqual(res.body[0].pages, '15–44');

@@ -80,7 +80,9 @@ services:
       # the user agent to use when issuing requests
       user_agent: null
       # User-Agent HTTP header to use for requests
-      userAgent: null
+      userAgent: citoid-test-env
+      # Contact e-mail address. Used for making crossRef requests
+      mailto: example@example.com
       # the template used for contacting the MW API
       mwapi_req:
         method: post

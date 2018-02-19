@@ -49,41 +49,20 @@ describe('using native scraper', function() {
         });
     });
 
-    // Ensure DOI is present in non-zotero scraped page when requested from DOI
-    it.skip('DOI pointing to resource not in zotero', function() { // Currently this *is* in Zotero, so we need a new DOI that is not in Zotero
-        return server.query('10.2307/3677029').then(function(res) {
-            assert.status(res, 200);
-            assert.checkCitation(res);
-            assert.isInArray(res.body[0].source, 'citoid');
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
-            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-        });
-    });
-
-    // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromURL & crossRef
+    // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
     it('doi in url with query parameters - uses crossRef', function() {
         return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
             assert.isInArray(res.body[0].source, 'Crossref');
+            assert.deepEqual(res.body[0].issue, '1');
+            assert.deepEqual(res.body[0].volume, '47');
+            assert.deepEqual(res.body[0].date, '2004-04');
             assert.deepEqual(res.body[0].DOI, '10.1086/378695');
             assert.deepEqual(res.body[0].author.length, 1);
         });
     });
 
-    // Restricted url but with info in cross ref that can be pulled from doi in url
-    it('doi in restricted url', function() {
-        return server.query('http://localhost/10.1086/378695').then(function(res) {
-            assert.status(res, 200);
-            assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
-            assert.isInArray(res.body[0].source, 'Crossref');
-            assert.deepEqual(res.body[0].DOI, '10.1086/378695');
-            assert.deepEqual(res.body[0].author.length, 1);
-        });
-    });
-
-    // URL with string that previously matched doi regex but shouldn't
     it('url with pseudo doi', function() {
         return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
             assert.status(res, 200);
@@ -147,6 +126,17 @@ describe('using native scraper', function() {
             });
         });
 
+    });
+
+    // Restricted url but with info in crossRef that can be pulled from doi in url
+    it('doi in restricted url', function() {
+        return server.query('http://localhost/10.1086/378695').then(function(res) {
+            assert.status(res, 200);
+            assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+            assert.isInArray(res.body[0].source, 'Crossref');
+            assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+            assert.deepEqual(res.body[0].author.length, 1);
+        });
     });
 
 

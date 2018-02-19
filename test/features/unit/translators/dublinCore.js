@@ -1,7 +1,5 @@
 /* Unit tests for the dublinCore translator */
 
-/* Unit tests for the general translator */
-
 var assert = require('../../../utils/assert.js');
 var dc = require('../../../../lib/translators/dublinCore.js');
 

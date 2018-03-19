@@ -60,7 +60,34 @@ paths:
         - Citations
       description: Converts URLs, DOIs, ISBNs, PMIDs, etc into citations
       produces:
-        - application/json
+        - application/json; charset=utf-8;
+        - application/x-bibtex; charset=utf-8
+      parameters:
+        - name: format
+          in: query
+          description: "The format to use for the resulting citation data"
+          type: string
+          enum:
+            - mediawiki
+            - mediawiki-basefields
+            - zotero
+            - bibtex
+          required: true
+        - name: search
+          in: query
+          description: >
+            URL of an article, DOI, ISBN, PMCID or PMID in the URL-encoded format.
+            Note that on the Swagger-UI doc page you don't need to URI-encode the
+            parameter manually, it will be done by the docs engine.
+          schema:
+            type: string
+          required: true
+        - name: Accept-Language
+          in: header
+          type: string
+          required: false
+          description: >
+            Provides citation metadata in the requested language, if it is available.
       x-amples:
         - title: bad URL
           request:
@@ -94,3 +121,26 @@ paths:
                 title: /.+/
                 url: /.+/
                 accessDate: /.+/
+      responses:
+        '200':
+          description: The citation data in the requested format
+          schema:
+            required:
+              - title
+              - url
+              - itemType
+            properties:
+              itemType:
+                type: string
+              title:
+                type: string
+              url:
+                type: string
+        '404':
+          description: Citation data was not found.
+          schema:
+            required:
+              - Error
+            properties:
+              Error:
+                type: string

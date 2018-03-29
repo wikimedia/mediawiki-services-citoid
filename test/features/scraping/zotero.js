@@ -17,6 +17,112 @@ describe('uses zotero', function() {
 
     before(function () { return server.start({pubmed:true}); });
 
+    describe('PMID ', function() {
+
+        //PMID on NIH website that is not found in the id converter api
+        it('not in id converter', function() {
+            return server.query('14656957').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
+                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
+                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID'); // Missing PMC as unable to retrieve from ID converter api
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        //PMID on NIH website that is not found in the id converter api
+        it('returns citation interpreted as both pmid and pmcid', function() {
+            return server.query('14656').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res); // Which citation is first is unpredictable
+                assert.deepEqual(res.body.length, 2, 'Unexpected number of citations in body');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing first PMID'); // From Zotero
+                assert.deepEqual(!!res.body[1].PMID, true, 'Missing second PMID'); // From Zotero
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('with space ', function() {
+            return server.query('PMID 14656957').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
+                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID'); // Missing PMC as unable to retrieve from ID converter api
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('with less than eight digits', function() {
+            return server.query('123').then(function(res) {
+                assert.status(res, 200);
+                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
+                assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
+                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
+                assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('has PMCID, DOI, PMID', function() {
+            return server.query('11467425').then(function(res) {
+                assert.status(res, 200);
+                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
+                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+    });
+
+    describe('PMCID ', function() {
+        it('with prefix', function() {
+            return server.query('PMC3605911').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('with trailing space', function() {
+            return server.query('PMC3605911 ').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('with encoded space', function() {
+            return server.query('PMC3605911%20').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('which requires PMC prefix to retrieve DOI from id converter', function() {
+            return server.query('PMC1690724').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+    });
+
     describe('DOI  ', function() {
         it('DOI- has PMCID, PMID, DOI', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
@@ -168,157 +274,6 @@ describe('uses zotero', function() {
             });
         });
     });
-
-    describe('PMCID ', function() {
-        it('with prefix', function() {
-            return server.query('PMC3605911').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('with trailing space', function() {
-            return server.query('PMC3605911 ').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('with encoded space', function() {
-            return server.query('PMC3605911%20').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('which requires PMC prefix to retrieve DOI from id converter', function() {
-            return server.query('PMC1690724').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-    });
-
-    describe('PMID ', function() {
-
-        //PMID on NIH website that is not found in the id converter api
-        it('not in id converter', function() {
-            return server.query('14656957').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
-                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
-                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID'); // Missing PMC as unable to retrieve from ID converter api
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        //PMID on NIH website that is not found in the id converter api
-        it('returns citation interpreted as both pmid and pmcid', function() {
-            return server.query('14656').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res); // Which citation is first is unpredictable
-                assert.deepEqual(res.body.length, 2, 'Unexpected number of citations in body');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing first PMID'); // From Zotero
-                assert.deepEqual(!!res.body[1].PMID, true, 'Missing second PMID'); // From Zotero
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('with space ', function() {
-            return server.query('PMID 14656957').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
-                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID'); // Missing PMC as unable to retrieve from ID converter api
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('with less than eight digits', function() {
-            return server.query('123').then(function(res) {
-                assert.status(res, 200);
-                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
-                assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
-                assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('has PMCID, DOI, PMID', function() {
-            return server.query('11467425').then(function(res) {
-                assert.status(res, 200);
-                assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
-                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-    });
-
-
-    describe('QID ', function() {
-        it('is a journal article', function() {
-            return server.query('Q33415777').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
-                console.log(res.body[0]);
-                assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
-                assert.deepEqual(res.body[0].qid, 'Q33415777');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('has trailing space', function() {
-            return server.query('Q33415777 ').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
-                assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
-                assert.deepEqual(res.body[0].qid, 'Q33415777');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('should be case insensitive', function() {
-            return server.query('q33415777').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
-                assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
-                assert.deepEqual(res.body[0].qid, 'Q33415777');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-
-        it('is a person', function() {
-            return server.query('Q1771279').then(function(res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Maryam Mirzakhani');
-                assert.deepEqual(res.body[0].qid, 'Q1771279');
-                assert.deepEqual(res.body[0].itemType, 'webpage', 'Wrong itemType; expected webpage, got' + res.body[0].itemType);
-            });
-        });
-
-    });
-
 
     // Ensure html tags are stripped out of title
     it('zotero gives us html tags in title', function() {

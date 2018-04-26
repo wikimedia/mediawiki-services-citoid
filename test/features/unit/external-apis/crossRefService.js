@@ -94,4 +94,31 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         });
     });
 
+    describe('open search function', function() {
+
+        let app = {
+            conf: conf.services[0].conf
+        };
+
+        app.conf.userAgent = 'mocha-user-agent';
+        app.conf.mailto = 'example@example.com';
+
+        app.conf.logging = {
+            name: 'test-log',
+            level: 'trace',
+            stream: logStream()
+        };
+
+        app.logger = new Logger(app.conf.logging);
+
+        const crossref = new CrossRefService(app);
+
+        it('Gets metadata for open search', function() {
+            let search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
+            promise = crossref.search(search);
+            return promise.then(function(results){
+                assert.deepEqual(results.DOI, '10.1017/s0305004100013554');
+            });
+        });
+    });
 });

@@ -190,7 +190,7 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
-                assert.deepEqual(res.body[0].date, 'May 1998');
+                assert.deepEqual(res.body[0].date, '1998-05');
                 assert.isInArray(res.body[0].source, 'citoid');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
@@ -202,7 +202,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
                 assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].editor, true); // Has editors
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'bookSection');
@@ -397,7 +396,7 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
-                assert.deepEqual(res.body[0].date, 'May 1998');
+                assert.deepEqual(res.body[0].date, '1998-05');
                 assert.isInArray(res.body[0].source, 'citoid');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
@@ -409,7 +408,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
                 assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].editor, true); // Has editors
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'bookSection');

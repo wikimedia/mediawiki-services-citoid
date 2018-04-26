@@ -28,16 +28,6 @@ describe('encoding', function() {
         });
     });
 
-    it('javascript in search', function() {
-        return server.query('f<script>alert(1);</script>', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-            assert.deepEqual(err.body.Error, 'Invalid host supplied');
-        });
-    });
-
     it('javascript in doi', function() {
         var format = 'badformat';
         return server.query('10.1000/f<script>alert(1);</script>', 'mediawiki', 'en')
@@ -48,16 +38,6 @@ describe('encoding', function() {
             assert.deepEqual(err.body.Error,
                 'Unable to resolve DOI 10.1000/f%3Cscript%3Ealert(1);%3C/script%3E',
                 'Unexpected error message ' + err.body.Error);
-        });
-    });
-
-    it('json in search', function() {
-        return server.query('{"json":"object"}', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-            assert.deepEqual(err.body.Error, 'Invalid host supplied');
         });
     });
 
@@ -85,17 +65,6 @@ describe('encoding', function() {
 
     it('spaces in url missing http://', function() {
         var url = 'www.example.com/spaces in url'
-        return server.query(url, 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 404);
-        }, function(err) {
-            assert.status(err, 404);
-            assert.deepEqual(err.body.Error, 'Unable to load URL ' + 'http://' + encodeURI(url));
-        });
-    });
-
-    it('spaces in url missing http:// and www', function() {
-        var url = 'example.com/spaces in url';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);

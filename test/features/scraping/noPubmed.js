@@ -137,9 +137,9 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         it('direct DOI', function() {
             return server.query('10.1056/NEJM200106073442306').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res);
+                assert.checkCitation(res, 'AIDS — The First 20 Years');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected 1764–1772, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -148,9 +148,9 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         it('DOI with space', function() {
             return server.query('DOI: 10.1056/NEJM200106073442306').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res);
+                assert.checkCitation(res, 'AIDS — The First 20 Years');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected 1764–1772, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -228,11 +228,11 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
             });
         });
 
-        // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
+        // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI
         it('doi in url with query parameters- uses Zotero', function() {
             return server.query('example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
             });
         });

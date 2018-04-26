@@ -132,6 +132,8 @@ describe('Tests for Translator.js : ', function() {
                 date: "2017-01-23",
                 ISSN: "0091-7613, 1943-2682",
                 publicationTitle: "Geology",
+                DOI: "10.1130/g38665.1",
+                url: "http://dx.doi.org/10.1130/g38665.1",
                 title: "Block-controlled hillslope form and persistence of topography in rocky landscapes"
             };
             assert.deepEqual(citation, expected);
@@ -153,6 +155,7 @@ describe('Tests for Translator.js : ', function() {
                 date: "2007",
                 pages: "87",
                 bookTitle: "Harry Potter, ange ou démon ?",
+                url: "http://dx.doi.org/10.3917/puf.tsch.2007.01.0087",
                 title: "Harry Potter à l’école des juvénistes"
             };
             assert.deepEqual(citation, expected);

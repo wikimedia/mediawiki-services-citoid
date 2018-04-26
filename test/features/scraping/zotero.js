@@ -31,22 +31,22 @@ describe('uses zotero', function() {
 
         // DOI which points directly to a resource which can be scraped by Zotero
         it('direct DOI', function() {
-            return server.query('10.1056/NEJM200106073442306').then(function(res) {
+            return server.query('10.1017/s0305004100013554').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res);
+                assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
 
         // DOI extracted from within a string
         it('DOI with space', function() {
-            return server.query('DOI: 10.1056/NEJM200106073442306').then(function(res) {
+            return server.query('DOI: 10.1017/s0305004100013554').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res);
+                assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -137,7 +137,7 @@ describe('uses zotero', function() {
         });
 
 
-        it('doi pointing to conferencePaper', function() {
+        it('DOI pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Semantic MediaWiki');
@@ -147,15 +147,15 @@ describe('uses zotero', function() {
         });
 
         // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
-        it('doi in url with query parameters- uses Zotero', function() {
-            return server.query('example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
+        it('DOI in url with query parameters- uses Zotero', function() {
+            return server.query('example.com/10.1542/peds.2007-2362?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
-                assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+                assert.checkZotCitation(res, 'Management of Children With Autism Spectrum Disorders');
+                assert.deepEqual(res.body[0].DOI, '10.1542/peds.2007-2362');
             });
         });
 
-        it('doi with US style date', function() {
+        it('DOI with US style date', function() {
             return server.query('10.1542/peds.2007-2362').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Management of Children With Autism Spectrum Disorders');
@@ -179,7 +179,7 @@ describe('uses zotero', function() {
         });
 
         // Restricted url but with info in crossRef that can be pulled from doi in url
-        it('doi in restricted url', function() {
+        it('DOI in restricted url', function() {
             return server.query('http://localhost/10.1086/378695').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
@@ -302,7 +302,6 @@ describe('uses zotero', function() {
             return server.query('Q33415777').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
-                console.log(res.body[0]);
                 assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
                 assert.deepEqual(res.body[0].qid, 'Q33415777');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -355,7 +354,6 @@ describe('uses zotero', function() {
     it.skip('fixes en dash in zotero results', function() {
         return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
             assert.status(res, 200);
-            console.log(res.body);
             assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
             assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             assert.deepEqual(res.body[0].pages, '15–44');

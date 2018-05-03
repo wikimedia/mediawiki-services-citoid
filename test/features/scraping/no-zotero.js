@@ -213,7 +213,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
                 assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].author, true); // Has editors
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper');
@@ -419,7 +418,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
                 assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].author, true); // Has editors
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper');

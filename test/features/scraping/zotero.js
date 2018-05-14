@@ -70,7 +70,7 @@ describe('uses zotero', function() {
             });
         });
 
-        it('DOI with User-Agent set', function() {
+        it.skip('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
                 assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');

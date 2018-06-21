@@ -106,13 +106,46 @@ describe('errors', function() {
         });
     });
 
-    it('bad doi', function() {
+    it('unknown doi', function() {
         var doi = '10.1000/thisdoidoesntexist';
         return server.query(doi, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
         }, function(err) {
             assert.checkError(err, 404, 'Unable to resolve DOI ' + doi,
+                'Unexpected error message ' + err.body.Error);
+        });
+    });
+
+    it('doi url with single quote', function() {
+        var doi = 'http://DOI.org/10.1007/11926078_68\'';
+        return server.query(doi, 'mediawiki', 'en')
+        .then(function(res) {
+            assert.status(res, 404);
+        }, function(err) {
+            assert.checkError(err, 404, 'Unable to load URL http://DOI.org/10.1007/11926078_68\'',
+                'Unexpected error message ' + err.body.Error);
+        });
+    });
+
+    it('doi url with double quote', function() {
+        var doi = 'http://DOI.org/10.1007/11926078_68"';
+        return server.query(doi, 'mediawiki', 'en')
+        .then(function(res) {
+            assert.status(res, 404);
+        }, function(err) {
+            assert.checkError(err, 404, 'Unable to load URL http://DOI.org/10.1007/11926078_68%22',
+                'Unexpected error message ' + err.body.Error);
+        });
+    });
+
+    it('doi with single quote', function() {
+        var doi = '10.1007/11926078_68\'';
+        return server.query(doi, 'mediawiki', 'en')
+        .then(function(res) {
+            assert.status(res, 404);
+        }, function(err) {
+            assert.checkError(err, 404, 'Unable to resolve DOI 10.1007/11926078_68%27',
                 'Unexpected error message ' + err.body.Error);
         });
     });

@@ -11,7 +11,7 @@ if (!server.stopHookAdded) {
     after(() => server.stop());
 }
 
-describe('Exports: ', function() {
+describe('Exports into non mediawiki formats: ', function() {
 
     this.timeout(20000);
 
@@ -25,7 +25,7 @@ describe('Exports: ', function() {
             });
         });
 
-        it('bibtex from zotero', function() {
+        it('bibtex from pubmed', function() {
             return server.query('http://www.ncbi.nlm.nih.gov/pubmed/14656957', 'bibtex').then(function(res) {
                 assert.status(res, 200);
                 assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
@@ -42,21 +42,19 @@ describe('Exports: ', function() {
     });
 
     describe('Exporting to zotero: ', function() {
-        it('doi pointing to conferencePaper', function() {
+        // May or may not come from zotero depending on version, but asking for it in Zotero format.
+        it('doi', function() {
             return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Semantic MediaWiki');
+                assert.deepEqual(res.body[0].title, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);
-                assert.deepEqual(res.body[0].DOI, '10.1007/11926078_68');
-                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
             });
         });
         it('doi with ISSN', function() {
             return server.query('doi:10.1039/b309952k', 'zotero').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, '');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);

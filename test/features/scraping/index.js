@@ -55,7 +55,6 @@ describe('using native scraper', function() {
     it('uses original url', function() {
         var url = 'http://www.google.com';
         return server.query(url).then(function(res) {
-            assert.status(res, 200);
             assert.isInArray(res.body[0].source, 'citoid');
             assert.checkCitation(res, 'Google');
             assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
@@ -65,7 +64,6 @@ describe('using native scraper', function() {
 
     it('websiteTitle but no publicationTitle', function() {
         return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res);
             assert.isInArray(res.body[0].source, 'citoid');
             assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
@@ -77,7 +75,6 @@ describe('using native scraper', function() {
     // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
     it('doi in url with query parameters - uses crossRef', function() {
         return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
             assert.isInArray(res.body[0].source, 'Crossref');
             assert.deepEqual(res.body[0].issue, '1');
@@ -90,7 +87,6 @@ describe('using native scraper', function() {
 
     it('url with pseudo doi', function() {
         return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
-            assert.status(res, 200);
             assert.isInArray(res.body[0].source, 'citoid');
             assert.checkCitation(res, 'Glasgow 2014 - Dika Toua Profile');
             assert.deepEqual(!!res.body[0].DOI, false);
@@ -110,7 +106,6 @@ describe('using native scraper', function() {
 
     it('dublinCore data but no highWire metadata', function() {
         return server.query('https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)');
             assert.isInArray(res.body[0].source, 'citoid');
             assert.deepEqual(res.body[0].itemType, 'webpage');
@@ -120,7 +115,6 @@ describe('using native scraper', function() {
 
     it('dublinCore data with multiple identifiers in array', function() {
         return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
             assert.isInArray(res.body[0].source, 'citoid');
             assert.deepEqual(res.body[0].itemType, 'journalArticle');
@@ -131,7 +125,6 @@ describe('using native scraper', function() {
 
     it('gets DOI from dublinCore identifier field', function() {
         return server.query('http://eprints.gla.ac.uk/113711/').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Zika virus: a previously slow pandemic spreads rapidly through the Americas');
             assert.deepEqual(res.body[0].DOI, '10.1099/jgv.0.000381');
             assert.isInArray(res.body[0].source, 'citoid');
@@ -155,7 +148,6 @@ describe('using native scraper', function() {
     // Restricted url but with info in crossRef that can be pulled from DOI in url
     it('DOI in restricted url', function() {
         return server.query('http://localhost/10.1086/378695').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
             assert.isInArray(res.body[0].source, 'Crossref');
             assert.deepEqual(res.body[0].DOI, '10.1086/378695');
@@ -165,7 +157,6 @@ describe('using native scraper', function() {
 
     it('Open search for Schrodinger', function() {
         return server.query('E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res, 'Discussion of Probability Relations between Separated Systems');
             assert.isInArray(res.body[0].source, 'Crossref');
             assert.deepEqual(res.body[0].DOI, '10.1017/s0305004100013554');
@@ -175,7 +166,6 @@ describe('using native scraper', function() {
 
     it('Open search containing <> works; but gets wrong results from crossRef', function() {
         return server.query('Title. Available at: <http://www.example.com>. Accessed on May 19, 1998.').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res);
             assert.deepEqual(res.body.length, 2); // Two citations; one from url, one from crossRef
         });
@@ -183,7 +173,6 @@ describe('using native scraper', function() {
 
     it('Open search with www but no protocol', function() {
         return server.query('Title. Available at: <www.example.com>. Accessed on May 19, 1998.').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res);
             assert.deepEqual(res.body.length, 2); // Two citations; one from url, one from crossRef
         });
@@ -191,8 +180,7 @@ describe('using native scraper', function() {
 
     it('Open search with doi', function() {
         return server.query('Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166').then(function(res) {
-            assert.status(res, 200);
-            assert.checkCitation(res, 'Data from: The strength of phenotypic selection in natural populations');
+            assert.checkZotCitation(res, 'Data from: The strength of phenotypic selection in natural populations');
             assert.deepEqual(res.body.length, 1); // One citation from detected DOI
         });
     });
@@ -200,7 +188,6 @@ describe('using native scraper', function() {
     // Gets correct data from url, incorrect data from crossRef
     it('Open search with url', function() {
         return server.query('Frederico Girosi; Gary King, 2006, ‘Cause of Death Data’, http://hdl.handle.net/1902.1/UOVMCPSWOL UNF:3:9JU+SmVyHgwRhAKclQ85Cg== IQSS Dataverse Network [Distributor] V3 [Version].').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res);
             assert.deepEqual(res.body.length, 2); // Two citations; one from url, one from crossRef
         });
@@ -209,9 +196,9 @@ describe('using native scraper', function() {
     // Gets item from single search term
     it('Open search with single term', function() {
         return server.query('Mediawiki').then(function(res) {
-            assert.status(res, 200);
             assert.checkCitation(res);
             assert.deepEqual(res.body.length, 1); // One citation from crossRef
         });
     });
+
 });

@@ -20,7 +20,6 @@ describe('uses zotero', function() {
     describe('DOI  ', function() {
         it('DOI- has PMCID, PMID, DOI', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
@@ -32,7 +31,6 @@ describe('uses zotero', function() {
         // DOI which points directly to a resource which can be scraped by Zotero
         it('direct DOI', function() {
             return server.query('10.1017/s0305004100013554').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
@@ -43,7 +41,6 @@ describe('uses zotero', function() {
         // DOI extracted from within a string
         it('DOI with space', function() {
             return server.query('DOI: 10.1017/s0305004100013554').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
@@ -54,7 +51,6 @@ describe('uses zotero', function() {
         // DOI which points to a link which contains further redirects to the Zotero-scrapable resource
         it('DOI with redirect', function() {
             return server.query('10.1371/journal.pcbi.1002947').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, 'e1002947', 'Wrong pages item; expected e1002947, got ' + res.body[0].pages);
@@ -66,7 +62,6 @@ describe('uses zotero', function() {
         // Currently causes internal server error
         it.skip('DOI with redirect - Wiley', function() {
             return server.query('10.1029/94WR00436').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
                 assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -77,7 +72,6 @@ describe('uses zotero', function() {
 
         it('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '65', 'Wrong pages item; expected 65, got ' + res.body[0].pages);
@@ -88,8 +82,7 @@ describe('uses zotero', function() {
         // FIXME: DOI not resolving to the end, see: T188243
         it.skip('Needs to follow several redirects before Zotero request', function() {
             return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
+                assert.checkZotCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
                 assert.deepEqual(res.body[0].date, 'May 1998');
                 assert.isInArray(res.body[0].source, 'citoid');
                 assert.isInArray(res.body[0].source, 'crossRef');
@@ -98,27 +91,24 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
-        it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
+        it.skip('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
             return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
 
         // Ensure DOI is present in zotero scraped page when requested from DOI
-        it('DOI pointing to resource in zotero with no DOI', function() {
+        it.skip('DOI pointing to resource in zotero with no DOI', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('DOI.org link pointing to resource in zotero with no DOI', function() {
+        it.skip('DOI.org link pointing to resource in zotero with no DOI', function() {
             return server.query('http://DOI.org/10.1007/11926078_68').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
@@ -127,7 +117,6 @@ describe('uses zotero', function() {
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
         it('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
             return server.query('10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Phylogenetic relationships of antpitta genera (passeriformes: formicariidae)');
                 assert.deepEqual(res.body[0].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[0].publicationTitle);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -137,9 +126,8 @@ describe('uses zotero', function() {
         });
 
 
-        it('DOI pointing to conferencePaper', function() {
+        it.skip('DOI pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
@@ -149,7 +137,6 @@ describe('uses zotero', function() {
         // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
         it('DOI in url with query parameters- uses Zotero', function() {
             return server.query('example.com/10.1542/peds.2007-2362?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Management of Children With Autism Spectrum Disorders');
                 assert.deepEqual(res.body[0].DOI, '10.1542/peds.2007-2362');
             });
@@ -157,7 +144,6 @@ describe('uses zotero', function() {
 
         it('DOI with US style date', function() {
             return server.query('10.1542/peds.2007-2362').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Management of Children With Autism Spectrum Disorders');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].date, '2007-11-01', 'Incorrect date; expected 2007-11-01, got ' + res.body[0].date);
@@ -169,7 +155,6 @@ describe('uses zotero', function() {
         // Sometimes this DOI times out when being resolved for some reason
         it('DOI with poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID'); // Not present in Zotero - should come from API
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // Present in Zotero
@@ -179,10 +164,9 @@ describe('uses zotero', function() {
         });
 
         // Restricted url but with info in crossRef that can be pulled from doi in url
-        it('DOI in restricted url', function() {
+        it.skip('DOI in restricted url', function() {
             return server.query('http://localhost/10.1086/378695').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
                 assert.deepEqual(res.body[0].author.length, 1);
@@ -193,7 +177,6 @@ describe('uses zotero', function() {
     describe('PMCID ', function() {
         it('with prefix', function() {
             return server.query('PMC3605911').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -203,7 +186,6 @@ describe('uses zotero', function() {
 
         it('with trailing space', function() {
             return server.query('PMC3605911 ').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -213,7 +195,6 @@ describe('uses zotero', function() {
 
         it('with encoded space', function() {
             return server.query('PMC3605911%20').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -223,7 +204,6 @@ describe('uses zotero', function() {
 
         it('which requires PMC prefix to retrieve DOI from id converter', function() {
             return server.query('PMC1690724').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -238,7 +218,6 @@ describe('uses zotero', function() {
         //PMID on NIH website that is not found in the id converter api
         it('not in id converter', function() {
             return server.query('14656957').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
                 assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
@@ -251,7 +230,6 @@ describe('uses zotero', function() {
         //PMID on NIH website that is not found in the id converter api
         it('returns citation interpreted as both pmid and pmcid', function() {
             return server.query('14656').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res); // Which citation is first is unpredictable
                 assert.deepEqual(res.body.length, 2, 'Unexpected number of citations in body');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing first PMID'); // From Zotero
@@ -262,7 +240,6 @@ describe('uses zotero', function() {
 
         it('with space ', function() {
             return server.query('PMID 14656957').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
@@ -273,7 +250,6 @@ describe('uses zotero', function() {
 
         it('with less than eight digits', function() {
             return server.query('123').then(function(res) {
-                assert.status(res, 200);
                 assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
                 assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
                 assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID');
@@ -285,7 +261,6 @@ describe('uses zotero', function() {
 
         it('has PMCID, DOI, PMID', function() {
             return server.query('11467425').then(function(res) {
-                assert.status(res, 200);
                 assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -300,7 +275,6 @@ describe('uses zotero', function() {
     describe('QID ', function() {
         it('is a journal article', function() {
             return server.query('Q33415777').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
                 assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
                 assert.deepEqual(res.body[0].qid, 'Q33415777');
@@ -310,7 +284,6 @@ describe('uses zotero', function() {
 
         it('has trailing space', function() {
             return server.query('Q33415777 ').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
                 assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
                 assert.deepEqual(res.body[0].qid, 'Q33415777');
@@ -320,7 +293,6 @@ describe('uses zotero', function() {
 
         it('should be case insensitive', function() {
             return server.query('q33415777').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Growth of Weil-Petersson Volumes and Random Hyperbolic Surface of Large Genus');
                 assert.deepEqual(res.body[0].DOI, '10.4310/JDG/1367438650');
                 assert.deepEqual(res.body[0].qid, 'Q33415777');
@@ -330,7 +302,6 @@ describe('uses zotero', function() {
 
         it('is a person', function() {
             return server.query('Q1771279').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Maryam Mirzakhani');
                 assert.deepEqual(res.body[0].qid, 'Q1771279');
                 assert.deepEqual(res.body[0].itemType, 'webpage', 'Wrong itemType; expected webpage, got' + res.body[0].itemType);
@@ -343,7 +314,6 @@ describe('uses zotero', function() {
     // Ensure html tags are stripped out of title
     it('zotero gives us html tags in title', function() {
         return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
-            assert.status(res, 200);
             assert.checkZotCitation(res, 'Ninja Turtles (film)');
             assert.deepEqual(res.body[0].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[0].itemType);
         });
@@ -353,7 +323,6 @@ describe('uses zotero', function() {
     // Currently causes internal server error in zotero locally
     it.skip('fixes en dash in zotero results', function() {
         return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
-            assert.status(res, 200);
             assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
             assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             assert.deepEqual(res.body[0].pages, '15–44');
@@ -365,7 +334,6 @@ describe('uses zotero', function() {
     // URL dead upstream
     it.skip('removes null issn', function() {
         return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function(res) {
-            assert.status(res, 200);
             assert.checkZotCitation(res, 'The Daily Palo Alto times.');
             assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
             assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
@@ -385,8 +353,7 @@ describe('uses zotero', function() {
                 ['','McCrory DC'],
                 ['','Booth CM']
             ];
-            assert.status(res, 200);
-            assert.checkCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?'); // Title from crossRef
+            assert.checkZotCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?'); // Title from crossRef
             assert.deepEqual(res.body[0].author, expectedAuthor);
             assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
         });
@@ -396,17 +363,15 @@ describe('uses zotero', function() {
     // here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
     describe(' uses WMF translator fork', function() {
         // This test will pass with either repository since the output should be the same.
-        it('Google books link that cause Zotero to have internal server error', function() {
+        it.skip('Google books link that cause Zotero to have internal server error', function() {
             return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'isbn%3A0596554141 - Google Search');
+                assert.checkZotCitation(res, 'isbn%3A0596554141 - Google Search');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });
 
         it('Google books link that lacks native url field', function() {
             return server.query('http://books.google.de/books?hl=en&lr=&id=Ct6FKwHhBSQC&oi=fnd&pg=PP9&dq=%22Peggy+Eaton%22&ots=KN-Z0-HAcv&sig=snBNf7bilHi9GFH4-6-3s1ySI9Q&redir_esc=y#v=onepage&q=%22Peggy%20Eaton%22&f=false').then(function(res) {
-                assert.status(res, 200);
                 assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
             });
         });

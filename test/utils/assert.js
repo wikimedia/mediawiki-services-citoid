@@ -108,15 +108,28 @@ function checkError(res, status, message) {
 }
 
 // Assert that expected value is an element of an array.
-function isInArray(arr, expected) {
+function isInArray(arr, expected, message) {
     if(!Array.isArray(arr)){
         throw new Error('Expected array, got ' + typeof arr + ' ' + arr); // If arr is undefined will throw undefined error instead
     }
-    assert.notDeepEqual(arr.indexOf(expected), -1);
+
+    assert.notDeepEqual(arr.indexOf(expected), -1, message);
+}
+
+// Assert that expected value is not element of an array.
+function isNotInArray(arr, expected, message) {
+    if(!Array.isArray(arr)){
+        throw new Error('Expected array, got ' + typeof arr + ' ' + arr); // If arr is undefined will throw undefined error instead
+    }
+
+    assert.deepEqual(arr.indexOf(expected), -1, message);
 }
 
 
-function checkCitation(res, title) {
+// Used by checkCitation and checkZotCitation
+function checkCit(res, title) {
+
+    status(res, 200);
 
     var cit = res.body;
 
@@ -137,16 +150,26 @@ function checkCitation(res, title) {
 
 }
 
-
+// Checks Zotero citation
 function checkZotCitation(res, title) {
 
-    checkCitation(res, title);
+    isInArray(res.body[0].source, 'Zotero', 'Expected response from Zotero');
 
-    isInArray(res.body[0].source, 'Zotero');
+    checkCit(res, title);
 
     assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
     assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 
+}
+
+// Checks native (non-Zotero) citation
+function checkCitation(res, title) {
+    isNotInArray(res.body[0].source, 'Zotero', 'Expected no response from Zotero');
+
+    checkCit(res, title);
+
+    assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+    assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 }
 
 
@@ -170,6 +193,7 @@ module.exports.contentType    = contentType;
 module.exports.status         = status;
 module.exports.checkError       = checkError;
 module.exports.isInArray        = isInArray;
+module.exports.isNotInArray     = isNotInArray;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;

@@ -70,7 +70,7 @@ describe('uses zotero', function() {
             });
         });
 
-        it('DOI with User-Agent set', function() {
+        it.skip('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
                 assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -115,7 +115,7 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
+        it.skip('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
             return server.query('10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2').then(function(res) {
                 assert.checkZotCitation(res, 'Phylogenetic relationships of antpitta genera (passeriformes: formicariidae)');
                 assert.deepEqual(res.body[0].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[0].publicationTitle);

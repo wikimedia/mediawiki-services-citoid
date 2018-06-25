@@ -21,14 +21,6 @@ describe('correctly gets base fields instead of more specific fields', function(
 
         describe('using zotero results', function() {
 
-            it('conferencePaper', function() {
-                return server.query('10.1007/11926078_68', 'mediawiki', 'en', '1').then(function(res) {
-                    assert.status(res, 200);
-                    assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                    assert.deepEqual(res.body[0].proceedingsTitle, undefined, 'Not missing proceedingsTitle field');
-                });
-            });
-
             it('encyclopediaArticle', function() {
                 return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238',
                     'mediawiki', 'en', 'true').then(function(res) {
@@ -43,6 +35,14 @@ describe('correctly gets base fields instead of more specific fields', function(
         });
 
         describe('using native scraper', function() {
+
+            it('bookSection', function() {
+                return server.query('10.1007/11926078_68', 'mediawiki', 'en', '1').then(function(res) {
+                    assert.status(res, 200);
+                    assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
+                    assert.deepEqual(res.body[0].bookTitle, undefined, 'Not missing bookTitle field');
+                });
+            });
 
             it('webpage', function() {
                 return server.query('http://example.com',

@@ -98,15 +98,15 @@ paths:
               accept-language: en
           response:
             status: 404
-        - title: Zotero alive
-          request:
-            query:
-              format: bibtex
-              search: http://example.com
-            headers:
-              accept-language: en
-          response:
-            status: 200
+#        - title: Zotero alive
+#          request:
+#            query:
+#              format: bibtex
+#              search: http://example.com
+#            headers:
+#              accept-language: en
+#          response:
+#            status: 200
         - title: Scrapes sample page
           request:
             query:

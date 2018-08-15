@@ -47,9 +47,9 @@ describe('address restrictions', function() {
     it('non-existing', function() {
         return server.query('http://foobarbaz.example.com/', 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 404);
+            assert.status(res, 400);
         }, function(err) {
-            assert.status(err, 404);
+            assert.status(err, 400);
         });
     });
 

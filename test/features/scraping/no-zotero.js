@@ -44,7 +44,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
@@ -106,7 +105,6 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
                 assert.deepEqual(res.body[0].date, '1970', 'Incorrect or missing date'); // Comes from highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType); // Actually is a book but no way to tell from metadata :(
@@ -191,7 +189,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
                 assert.deepEqual(res.body[0].date, '1998-05');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
             });
@@ -216,6 +213,35 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(!!res.body[0].author, true); // Has editors
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper');
+            });
+        });
+
+        // itemType from open graph
+        it('itemType from open graph', function() {
+            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function(res) {
+                assert.status(res, 200);
+                assert.checkCitation(res, 'Pinlig for Skåber');
+                assert.deepEqual(res.body[0].itemType, 'newspaperArticle');
+                assert.deepEqual(res.body[0].publicationTitle, 'Aftenposten');
+            });
+        });
+
+        // Prefer original url for using native scraper
+        it('uses original url', function() {
+            var url = 'http://www.google.com';
+            return server.query(url).then(function(res) {
+                assert.checkCitation(res, 'Google');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.deepEqual(res.body[0].url, url);
+            });
+        });
+
+        it('websiteTitle but no publicationTitle', function() {
+            return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
+                assert.checkCitation(res);
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
+                assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
             });
         });
     });
@@ -249,7 +275,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
@@ -311,7 +336,6 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
                 assert.deepEqual(res.body[0].date, '1970', 'Incorrect or missing date'); // Comes from highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType); // Actually is a book but no way to tell from metadata :(
@@ -396,7 +420,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
                 assert.deepEqual(res.body[0].date, '1998-05');
-                assert.isInArray(res.body[0].source, 'citoid');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
             });
@@ -422,6 +445,19 @@ describe('Zotero service down or disabled: ', function() {
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.deepEqual(res.body[0].itemType, 'conferencePaper');
             });
+        });
+
+        it('PMCID but no PMID', function() {
+
+            it('webpage', function() {
+                return server.query('PMC2096233',
+                    'mediawiki', 'en', 'true').then(function(res) {
+                    assert.status(res, 200);
+                    assert.deepEqual(!!res.body[0].PMCID, true, 'PMC2096233');
+                    assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
+                });
+            });
+
         });
     });
 

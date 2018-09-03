@@ -126,7 +126,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // DOI which points directly to a resource which can be scraped by Zotero
         it('direct DOI', function() {
             return server.query('10.1056/NEJM200106073442306').then(function(res) {
-                assert.checkCitation(res, 'AIDS — The First 20 Years');
+                assert.checkZotCitation(res, 'AIDS — The First 20 Years');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected 1764–1772, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -136,7 +136,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // DOI extracted from within a string
         it('DOI with space', function() {
             return server.query('DOI: 10.1056/NEJM200106073442306').then(function(res) {
-                assert.checkCitation(res, 'AIDS — The First 20 Years');
+                assert.checkZotCitation(res, 'AIDS — The First 20 Years');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '1764–1772', 'Wrong pages item; expected 1764–1772, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -157,7 +157,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // DOI which needs User-Agent to be set in order to detect the redirect
         it.skip('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
-                assert.checkCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
+                assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '65', 'Wrong pages item; expected 65, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -168,7 +168,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
         it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
             return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
-                assert.checkCitation(res);
+                assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
@@ -176,7 +176,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // Ensure DOI is present in zotero scraped page when requested from DOI
         it('DOI pointing to resource in zotero with no DOI', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
-                assert.checkCitation(res);
+                assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
@@ -184,7 +184,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
         it('DOI.org link pointing to resource in zotero with no DOI', function() {
             return server.query('http://DOI.org/10.1007/11926078_68').then(function(res) {
-                assert.checkCitation(res);
+                assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
             });
         });
@@ -200,19 +200,18 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
             });
         });
 
-
-        it('doi pointing to bookSection', function() {
+        it('doi pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
-                assert.checkCitation(res, 'Semantic MediaWiki');
+                assert.checkZotCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
+                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
             });
         });
 
         // Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI
         it('doi in url with query parameters- uses Zotero', function() {
             return server.query('example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
-                assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
             });
         });

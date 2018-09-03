@@ -162,7 +162,7 @@ function checkZotCitation(res, title) {
 
 }
 
-// Checks native (non-Zotero) citation
+// Checks non-Zotero citation
 function checkCitation(res, title) {
     isNotInArray(res.body[0].source, 'Zotero', 'Expected no response from Zotero');
 

@@ -28,6 +28,9 @@ describe('Languages: ', function() {
     });
 
     describe('Using native scraper: ', function() {
+
+        before(function () { return server.start({zotero:false}); });
+
         it('german twitter', function() {
             return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
                 assert.status(res, 200);

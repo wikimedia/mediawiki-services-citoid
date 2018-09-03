@@ -35,7 +35,7 @@ describe('correctly gets base fields instead of more specific fields', function(
         });
 
         describe('using native scraper', function() {
-
+            before(function () { return server.start({zotero:false}); });
             it('bookSection', function() {
                 return server.query('10.1007/11926078_68', 'mediawiki', 'en', '1').then(function(res) {
                     assert.status(res, 200);
@@ -82,6 +82,8 @@ describe('correctly gets base fields instead of more specific fields', function(
         });
 
         describe(' using native scraper', function() {
+
+            before(function () { return server.start({zotero:false}); });
 
             it('webpage', function() {
                 return server.query('http://example.com',

@@ -22,7 +22,6 @@ describe('Tests using a very short timeout - all use crossRef', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMID, false, 'Missing PMID'); // Doesn't get PMID because crossref only
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
@@ -51,7 +50,7 @@ describe('Tests using a very short timeout - all use crossRef', function() {
         });
 
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
-        it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
+        it.skip('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
             return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
@@ -69,7 +68,7 @@ describe('Tests using a very short timeout - all use crossRef', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('DOI.org link pointing to resource in zotero with no DOI', function() {
+        it.skip('DOI.org link pointing to resource in zotero with no DOI', function() {
             return server.query('http://DOI.org/10.1007/11926078_68').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);

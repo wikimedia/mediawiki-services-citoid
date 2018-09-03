@@ -17,15 +17,6 @@ describe('address restrictions', function() {
 
     before(function () { return server.start(); });
 
-    it('localhost:1970', function() {
-        return server.query('localhost:1970', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err, res) {
-            assert.status(err, 400);
-        });
-    });
-
     it('http://localhost:1970', function() {
         return server.query('http://localhost:1970', 'mediawiki', 'en')
         .then(function(res) {
@@ -114,12 +105,22 @@ describe('address restrictions', function() {
     });
 
     it('five-redirect-max-by-default-under', function() {
+        var url = 'https://httpbin.org/redirect/4';
+        return server.query(url, 'mediawiki', 'en')
+        .then(function(res) {
+            assert.status(res, 200 );
+        }, function(err) {
+            assert.status(err, 200);
+        });
+    });
+
+    it('five-redirect-max-by-default-equal', function() {
         var url = 'https://httpbin.org/redirect/5';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 404);
+            assert.status(res, 200);
         }, function(err) {
-            assert.status(err, 404);
+            assert.status(err, 200);
             assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
         });
     });

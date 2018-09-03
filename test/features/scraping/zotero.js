@@ -17,6 +17,127 @@ describe('uses zotero', function() {
 
     before(function () { return server.start({pubmed:true}); });
 
+    describe('URL ', function() {
+        it('example domain', function() {
+            return server.query('example.com').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Example Domain');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+            });
+        });
+
+        // Prefer original url for using native scraper
+        it('uses original url', function() {
+            var url = 'http://www.google.com';
+            return server.query(url).then(function(res) {
+                assert.checkZotCitation(res, 'Google');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.deepEqual(res.body[0].url, url);
+            });
+        });
+
+        it('websiteTitle but no publicationTitle', function() {
+            return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
+                assert.checkZotCitation(res);
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
+                assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
+            });
+        });
+
+
+        it('url with pseudo doi', function() {
+            return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
+                assert.checkZotCitation(res, 'Glasgow 2014 - Dika Toua Profile');
+                assert.deepEqual(!!res.body[0].DOI, false);
+            });
+        });
+
+        // Worse results from Zotero
+        it('itemType', function() {
+            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Pinlig for Skåber');
+                assert.deepEqual(res.body[0].itemType, 'webpage');
+                assert.deepEqual(res.body[0].websiteTitle, 'Aftenposten');
+            });
+        });
+
+        it('dublinCore data but no highWire metadata', function() {
+            return server.query('https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00').then(function(res) {
+                assert.checkZotCitation(res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)');
+                assert.deepEqual(res.body[0].itemType, 'webpage');
+                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+            });
+        });
+
+        it('gets DOI from dublinCore identifier field', function() {
+            return server.query('http://eprints.gla.ac.uk/113711/').then(function(res) {
+                assert.checkZotCitation(res, 'Zika virus: a previously slow pandemic spreads rapidly through the Americas');
+                assert.deepEqual(res.body[0].DOI, '10.1099/jgv.0.000381');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            });
+        });
+
+        it('DOI in restricted url', function() {
+            return server.query('http://localhost/10.1086/378695').then(function(res) {
+                assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
+                assert.deepEqual(res.body[0].DOI, '10.1086/378695');
+                assert.deepEqual(res.body[0].author.length, 1);
+            });
+        });
+
+        // Ensure html tags are stripped out of title
+        it('zotero gives us html tags in title', function() {
+            return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
+                assert.checkZotCitation(res, 'Ninja Turtles (film)');
+                assert.deepEqual(res.body[0].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('fixes en dash in zotero results', function() {
+            return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
+                assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].pages, '15–44');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('removes null issn', function() {
+            return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function(res) {
+                assert.checkZotCitation(res, 'The Daily Palo Alto times.');
+                assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
+                assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
+
+            });
+        });
+
+        // Correctly adds authors from zotero 'name' field
+        // TODO: Add new tests to test this issue
+        it.skip('Correctly skips bad authors from Zotero whilst converting to mediawiki format', function() {
+            return server.query('http://dx.doi.org/10.1001/jama.296.10.1274').then(function(res) {
+                var expectedAuthor = [
+                    [ '', 'Detsky ME'],
+                    ['','McDonald DR'],
+                    ['', 'Baerlocher MO'],
+                    ['','Tomlinson GA'],
+                    ['','McCrory DC'],
+                    ['','Booth CM']
+                ];
+                assert.checkZotCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?'); // Title from crossRef
+                assert.deepEqual(res.body[0].author, expectedAuthor);
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('Google books link that lacks native url field', function() {
+            return server.query('http://books.google.de/books?hl=en&lr=&id=Ct6FKwHhBSQC&oi=fnd&pg=PP9&dq=%22Peggy+Eaton%22&ots=KN-Z0-HAcv&sig=snBNf7bilHi9GFH4-6-3s1ySI9Q&redir_esc=y#v=onepage&q=%22Peggy%20Eaton%22&f=false').then(function(res) {
+                assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
+            });
+        });
+    });
+
     describe('DOI  ', function() {
         it('DOI- has PMCID, PMID, DOI', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
@@ -58,19 +179,7 @@ describe('uses zotero', function() {
             });
         });
 
-
-        // Currently causes internal server error
-        it.skip('DOI with redirect - Wiley', function() {
-            return server.query('10.1029/94WR00436').then(function(res) {
-                assert.checkZotCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
-                assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
-            });
-        });
-
-        it.skip('DOI with User-Agent set', function() {
+        it('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
                 assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -79,19 +188,16 @@ describe('uses zotero', function() {
             });
         });
 
-        // FIXME: DOI not resolving to the end, see: T188243
-        it.skip('Needs to follow several redirects before Zotero request', function() {
-            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+        it('Needs to follow several redirects before Zotero request', function() {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) {
                 assert.checkZotCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
-                assert.deepEqual(res.body[0].date, 'May 1998');
-                assert.isInArray(res.body[0].source, 'citoid');
-                assert.isInArray(res.body[0].source, 'crossRef');
+                assert.deepEqual(res.body[0].date, '1998-05-01');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
             });
         });
 
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
-        it.skip('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
+        it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
             return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -99,7 +205,7 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in zotero scraped page when requested from DOI
-        it.skip('DOI pointing to resource in zotero with no DOI', function() {
+        it('DOI pointing to resource in zotero with no DOI', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -107,7 +213,7 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it.skip('DOI.org link pointing to resource in zotero with no DOI', function() {
+        it('DOI.org link pointing to resource in zotero with no DOI', function() {
             return server.query('http://DOI.org/10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -115,7 +221,7 @@ describe('uses zotero', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it.skip('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
+        it('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
             return server.query('10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2').then(function(res) {
                 assert.checkZotCitation(res, 'Phylogenetic relationships of antpitta genera (passeriformes: formicariidae)');
                 assert.deepEqual(res.body[0].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[0].publicationTitle);
@@ -125,8 +231,7 @@ describe('uses zotero', function() {
             });
         });
 
-
-        it.skip('DOI pointing to conferencePaper', function() {
+        it('DOI pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -152,7 +257,6 @@ describe('uses zotero', function() {
             });
         });
 
-        // Sometimes this DOI times out when being resolved for some reason
         it('DOI with poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
@@ -163,11 +267,11 @@ describe('uses zotero', function() {
             });
         });
 
-        // Restricted url but with info in crossRef that can be pulled from doi in url
-        it.skip('DOI in restricted url', function() {
+        // Restricted url but with info in that can be pulled from doi in url
+        it('DOI in restricted url', function() {
             return server.query('http://localhost/10.1086/378695').then(function(res) {
                 assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
-                assert.isInArray(res.body[0].source, 'Crossref');
+                assert.deepEqual(res.body[0].url, 'https://www.journals.uchicago.edu/doi/10.1086/378695');
                 assert.deepEqual(res.body[0].DOI, '10.1086/378695');
                 assert.deepEqual(res.body[0].author.length, 1);
             });
@@ -271,7 +375,6 @@ describe('uses zotero', function() {
         });
     });
 
-
     describe('QID ', function() {
         it('is a journal article', function() {
             return server.query('Q33415777').then(function(res) {
@@ -305,74 +408,6 @@ describe('uses zotero', function() {
                 assert.checkZotCitation(res, 'Maryam Mirzakhani');
                 assert.deepEqual(res.body[0].qid, 'Q1771279');
                 assert.deepEqual(res.body[0].itemType, 'webpage', 'Wrong itemType; expected webpage, got' + res.body[0].itemType);
-            });
-        });
-
-    });
-
-
-    // Ensure html tags are stripped out of title
-    it('zotero gives us html tags in title', function() {
-        return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
-            assert.checkZotCitation(res, 'Ninja Turtles (film)');
-            assert.deepEqual(res.body[0].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[0].itemType);
-        });
-    });
-
-
-    // Currently causes internal server error in zotero locally
-    it.skip('fixes en dash in zotero results', function() {
-        return server.query('http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract').then(function(res) {
-            assert.checkZotCitation(res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions');
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(res.body[0].pages, '15–44');
-            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-
-        });
-    });
-
-    // URL dead upstream
-    it.skip('removes null issn', function() {
-        return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function(res) {
-            assert.checkZotCitation(res, 'The Daily Palo Alto times.');
-            assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
-            assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
-
-        });
-    });
-
-    // Correctly adds authors from zotero 'name' field
-    // TODO: Add new tests to test this issue
-    it.skip('Correctly skips bad authors from Zotero whilst converting to mediawiki format', function() {
-        return server.query('http://dx.doi.org/10.1001/jama.296.10.1274').then(function(res) {
-            var expectedAuthor = [
-                [ '', 'Detsky ME'],
-                ['','McDonald DR'],
-                ['', 'Baerlocher MO'],
-                ['','Tomlinson GA'],
-                ['','McCrory DC'],
-                ['','Booth CM']
-            ];
-            assert.checkZotCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?'); // Title from crossRef
-            assert.deepEqual(res.body[0].author, expectedAuthor);
-            assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-        });
-    });
-
-    // The following tests require the WMF fork of the zotero translators, as found
-    // here: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
-    describe(' uses WMF translator fork', function() {
-        // This test will pass with either repository since the output should be the same.
-        it.skip('Google books link that cause Zotero to have internal server error', function() {
-            return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
-                assert.checkZotCitation(res, 'isbn%3A0596554141 - Google Search');
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-            });
-        });
-
-        it('Google books link that lacks native url field', function() {
-            return server.query('http://books.google.de/books?hl=en&lr=&id=Ct6FKwHhBSQC&oi=fnd&pg=PP9&dq=%22Peggy+Eaton%22&ots=KN-Z0-HAcv&sig=snBNf7bilHi9GFH4-6-3s1ySI9Q&redir_esc=y#v=onepage&q=%22Peggy%20Eaton%22&f=false').then(function(res) {
-                assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
             });
         });
     });

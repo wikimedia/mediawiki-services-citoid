@@ -22,7 +22,6 @@ describe('uses zotero', function() {
             return server.query('example.com').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Example Domain');
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
             });
         });
 
@@ -31,7 +30,6 @@ describe('uses zotero', function() {
             var url = 'http://www.google.com';
             return server.query(url).then(function(res) {
                 assert.checkZotCitation(res, 'Google');
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(res.body[0].url, url);
             });
         });
@@ -39,7 +37,6 @@ describe('uses zotero', function() {
         it('websiteTitle but no publicationTitle', function() {
             return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
                 assert.checkZotCitation(res);
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
                 assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
             });

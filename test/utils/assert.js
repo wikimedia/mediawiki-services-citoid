@@ -157,7 +157,7 @@ function checkZotCitation(res, title) {
 
     checkCit(res, title);
 
-    assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+    assert.deepEqual(res.body[0].accessDate.length, 10, 'accessDate length incorrect');
     assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 
 }

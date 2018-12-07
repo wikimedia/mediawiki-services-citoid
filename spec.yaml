@@ -107,6 +107,20 @@ paths:
 #              accept-language: en
 #          response:
 #            status: 200
+        - title: Ensure Zotero is working
+          request:
+            params:
+              format: mediawiki
+              search: https://en.wikipedia.org/wiki/Darth_Vader
+          response:
+            status: 200
+            headers:
+              content-type:  /^application\/json/
+            body:
+              - title: Darth Vader
+                language: en
+                itemType: encyclopediaArticle
+                encyclopediaTitle: Wikipedia
         - title: Scrapes sample page
           request:
             query:

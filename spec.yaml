@@ -109,7 +109,7 @@ paths:
 #            status: 200
         - title: Ensure Zotero is working
           request:
-            params:
+            query:
               format: mediawiki
               search: https://en.wikipedia.org/wiki/Darth_Vader
           response:

@@ -25,19 +25,19 @@ describe('Languages: ', function() {
                 assert.deepEqual(res.body[0].language, undefined, 'Should not have a language code, got: ' + res.body[0].language);
             });
         });
+
+        it('german twitter', function() {
+            return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
+                assert.status(res, 200);
+                assert.checkZotCitation(res, 'Twitter. Alles, was gerade los ist.');
+            });
+        });
+
     });
 
     describe('Using native scraper: ', function() {
 
         before(function () { return server.start({zotero:false}); });
-
-        it('german twitter', function() {
-            return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Twitter. Alles, was gerade los ist.');
-                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-            });
-        });
 
         it('open graph locale converted to language code', function() {
             return server.query('https://www.pbs.org/newshour/nation/care-peoples-kids/').then(function(res) {

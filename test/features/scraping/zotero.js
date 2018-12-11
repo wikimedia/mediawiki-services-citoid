@@ -133,10 +133,20 @@ describe('uses zotero', function() {
                 assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
             });
         });
+
+        it('Has PMCID, PMID, DOI', function() {
+            return server.query('https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2000.1188').then(function(res) {
+                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
+                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
     });
 
     describe('DOI  ', function() {
-        it('DOI- has PMCID, PMID, DOI', function() {
+        it('DOI has poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -251,16 +261,6 @@ describe('uses zotero', function() {
                 assert.deepEqual(res.body[0].date, '2007-11-01', 'Incorrect date; expected 2007-11-01, got ' + res.body[0].date);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 
-            });
-        });
-
-        it('DOI with poor resolving time', function() {
-            return server.query('10.1098/rspb.2000.1188').then(function(res) {
-                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID'); // Not present in Zotero - should come from API
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // Present in Zotero
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // Present in Zotero
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
 

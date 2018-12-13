@@ -244,6 +244,15 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
             });
         });
+
+        it('dublinCore data with multiple identifiers in array', function() {
+            return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
+                assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle');
+                assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+            });
+        });
     });
 
     describe('disabled in conf', function() {

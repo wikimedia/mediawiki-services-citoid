@@ -34,15 +34,6 @@ describe('uses zotero', function() {
             });
         });
 
-        it('websiteTitle but no publicationTitle', function() {
-            return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
-                assert.checkZotCitation(res);
-                assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
-                assert.deepEqual(res.body[0].publicationTitle, undefined, 'Invalid field publicationTitle');
-            });
-        });
-
-
         it('url with pseudo doi', function() {
             return server.query('http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html').then(function(res) {
                 assert.checkZotCitation(res, 'Glasgow 2014 - Dika Toua Profile');
@@ -68,7 +59,7 @@ describe('uses zotero', function() {
             });
         });
 
-        it('gets DOI from dublinCore identifier field', function() {
+        it('has DOI from dublinCore identifier field', function() {
             return server.query('http://eprints.gla.ac.uk/113711/').then(function(res) {
                 assert.checkZotCitation(res, 'Zika virus: a previously slow pandemic spreads rapidly through the Americas');
                 assert.deepEqual(res.body[0].DOI, '10.1099/jgv.0.000381');
@@ -85,7 +76,7 @@ describe('uses zotero', function() {
         });
 
         // Ensure html tags are stripped out of title
-        it('zotero gives us html tags in title', function() {
+        it('zotero previously gave us html tags in title', function() {
             return server.query('http://fr.wikipedia.org/w/index.php?title=Ninja_Turtles_(film)&oldid=115125238').then(function(res) {
                 assert.checkZotCitation(res, 'Ninja Turtles (film)');
                 assert.deepEqual(res.body[0].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[0].itemType);
@@ -106,7 +97,6 @@ describe('uses zotero', function() {
                 assert.checkZotCitation(res, 'The Daily Palo Alto times.');
                 assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
                 assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
-
             });
         });
 
@@ -141,6 +131,21 @@ describe('uses zotero', function() {
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        it('dublinCore data with multiple identifiers in array', function() {
+            return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
+                assert.checkZotCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
+                assert.deepEqual(res.body[0].itemType, 'report');
+                assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+            });
+        });
+
+        it('Google books search link', function() {
+            return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
+                assert.checkZotCitation(res, 'isbn%3A0596554141 - Google Search');
             });
         });
     });

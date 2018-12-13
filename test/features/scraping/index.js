@@ -28,31 +28,6 @@ describe('Native scraper: ', function() {
         });
     });
 
-    it('dublinCore data with multiple identifiers in array', function() {
-        return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
-            assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
-            assert.deepEqual(res.body[0].itemType, 'journalArticle');
-            assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
-            assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
-        });
-    });
-
-    it('Google books link', function() {
-        return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
-            assert.checkCitation(res, 'isbn%3A0596554141 - Google Search');
-            assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
-        });
-    });
-
-    it('dublinCore data with multiple identifiers in array', function() {
-        return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
-            assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
-            assert.deepEqual(res.body[0].itemType, 'journalArticle');
-            assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
-            assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
-        });
-    });
-
     // Unable to scrape and ends up with crossRef data
     it('DOI with redirect - Wiley', function() {
         return server.query('10.1029/94WR00436').then(function(res) {

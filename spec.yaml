@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.5.2
+  version: 1.0.0
   title: Citoid
   description: A citation service relying on Zotero
   termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use

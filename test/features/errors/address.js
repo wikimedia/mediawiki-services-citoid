@@ -105,7 +105,7 @@ describe('address restrictions', function() {
     });
 
     it('five-redirect-max-by-default-under', function() {
-        var url = 'https://httpbin.org/redirect/4';
+        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 200 );
@@ -115,7 +115,7 @@ describe('address restrictions', function() {
     });
 
     it('five-redirect-max-by-default-equal', function() {
-        var url = 'https://httpbin.org/redirect/5';
+        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 200);

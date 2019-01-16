@@ -10,7 +10,7 @@ var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
-describe('ISBN tests: ', function() {
+describe.skip('ISBN tests: ', function() {
 
     this.timeout(40000);
 

@@ -1,5 +1,6 @@
 /Dockerfile
 .idea/
+.vscode/
 coverage
 /config.yaml
 node_modules

@@ -1,6 +1,5 @@
 'use strict';
 
-
 const http = require('http');
 const BBPromise = require('bluebird');
 const express = require('express');
@@ -12,7 +11,6 @@ const apiUtil = require('./lib/api-util');
 const packageInfo = require('./package.json');
 const yaml = require('js-yaml');
 const addShutdown = require('http-shutdown');
-
 
 /**
  * Creates an express app and initialises it
@@ -30,24 +28,25 @@ function initApp(options) {
     app.conf = options.config;      // this app's config options
     app.info = packageInfo;         // this app's package info
 
-    if(!app.conf.userAgent) { app.conf.userAgent = 'Citoid/' + app.info.version; }
+    app.conf.userAgent = app.conf.userAgent || 'Citoid/' + app.info.version;
 
     // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
-    if (app.conf.zotero === undefined) { app.conf.zotero = true; }
+    app.conf.zotero = app.conf.zotero === undefined ? true : app.conf.zotero;
     // backwards compatibility for configurations which predate use of 'pubmed' keyword in conf
-    if (app.conf.pubmed === undefined) { app.conf.pubmed = true; }
+    app.conf.pubmed = app.conf.pubmed === undefined ? true : app.conf.pubmed;
 
     // ensure sane defaults for Zotero
     if (app.conf.zotero) {
-        if (!app.conf.zoteroInterface) { app.conf.zoteroInterface = '127.0.0.1'; }
-        if (!app.conf.zoteroPort) { app.conf.zoteroPort = 1969; }
+        app.conf.zoteroInterface = app.conf.zoteroInterface || '127.0.0.1';
+        app.conf.zoteroPort = app.conf.zoteroPort || 1969;
     }
 
     // ensure some sane defaults
-    if (!app.conf.port) { app.conf.port = 1970; }
-    if (!app.conf.interface) { app.conf.interface = '0.0.0.0'; }
-    if (app.conf.compression_level === undefined) { app.conf.compression_level = 3; }
-    if (app.conf.cors === undefined) { app.conf.cors = '*'; }
+    app.conf.port = app.conf.port || 1970;
+    app.conf.interface = app.conf.interface || '0.0.0.0';
+    // eslint-disable-next-line max-len
+    app.conf.compression_level = app.conf.compression_level === undefined ? 3 : app.conf.compression_level;
+    app.conf.cors = app.conf.cors === undefined ? '*' : app.conf.cors;
     if (app.conf.csp === undefined) {
         // eslint-disable-next-line max-len
         app.conf.csp = "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'";
@@ -67,7 +66,7 @@ function initApp(options) {
         }
         if (!app.conf.zoteroUseProxy) {
             // don't use proxy for accessing Zotero unless specified in settings
-            if(process.env.NO_PROXY) {
+            if (process.env.NO_PROXY) {
                 process.env.NO_PROXY += ',';
             } else {
                 process.env.NO_PROXY = '';
@@ -154,7 +153,6 @@ function initApp(options) {
 
 }
 
-
 /**
  * Loads all routes declared in routes/ into the app
  * @param {Application} app the application object to load routes into
@@ -178,8 +176,8 @@ function loadRoutes(app) {
                 return undefined;
             }
             // check that the route exports the object we need
-            if (route.constructor !== Object || !route.path || !route.router
-                || !(route.api_version || route.skip_domain)) {
+            if (route.constructor !== Object || !route.path || !route.router ||
+                !(route.api_version || route.skip_domain)) {
                 throw new TypeError(`routes/${fname} does not export the correct object!`);
             }
             // normalise the path to be used as the mount point
@@ -206,7 +204,6 @@ function loadRoutes(app) {
 
 }
 
-
 /**
  * Creates and start the service's web server
  * @param {Application} app the app object to use in the service
@@ -232,7 +229,7 @@ function createServer(app) {
         // Don't delay incomplete packets for 40ms (Linux default) on
         // pipelined HTTP sockets. We write in large chunks or buffers, so
         // lack of coalescing should not be an issue here.
-        server.on("connection", (socket) => {
+        server.on('connection', (socket) => {
             socket.setNoDelay(true);
         });
 
@@ -241,14 +238,16 @@ function createServer(app) {
 
 }
 
-
 /**
  * The service's entry point. It takes over the configuration
  * options and the logger- and metrics-reporting objects from
  * service-runner and starts an HTTP server, attaching the application
  * object to it.
+ *
+ * @param {Object} options configuration options
+ * @return {bluebird} HTTP server
  */
-module.exports = function(options) {
+module.exports = (options) => {
 
     return initApp(options)
     .then(loadRoutes)
@@ -259,4 +258,3 @@ module.exports = function(options) {
     }).then(createServer);
 
 };
-

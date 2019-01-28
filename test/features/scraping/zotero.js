@@ -134,25 +134,17 @@ describe('uses zotero', function() {
             });
         });
 
-        it('dublinCore data with multiple identifiers in array', function() {
-            return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
-                assert.checkZotCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
-                assert.deepEqual(res.body[0].itemType, 'report');
-                assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
-                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
-            });
-        });
-
         it('Google books search link', function() {
             return server.query('https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141').then(function(res) {
                 assert.checkZotCitation(res, 'isbn%3A0596554141 - Google Search');
             });
         });
+
     });
 
-    describe('DOI  ', function() {
+    describe('DOI  - uses /search endpoint', function() {
         // Times out
-        it.skip('DOI has poor resolving time', function() {
+        it('DOI has poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
@@ -167,7 +159,7 @@ describe('uses zotero', function() {
             return server.query('10.1017/s0305004100013554').then(function(res) {
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -177,7 +169,7 @@ describe('uses zotero', function() {
             return server.query('DOI: 10.1017/s0305004100013554').then(function(res) {
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -194,7 +186,7 @@ describe('uses zotero', function() {
 
         it('DOI with User-Agent set', function() {
             return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
-                assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
+                assert.checkZotCitation(res, 'THE 2012 FLARE OF PG 1553+113 SEEN WITH H.E.S.S. AND FERMI -LAT');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '65', 'Wrong pages item; expected 65, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -204,7 +196,7 @@ describe('uses zotero', function() {
         it('Needs to follow several redirects before Zotero request', function() {
             return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) {
                 assert.checkZotCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
-                assert.deepEqual(res.body[0].date, '1998-05-01');
+                assert.deepEqual(res.body[0].date, '1998-5');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
             });
         });
@@ -248,7 +240,7 @@ describe('uses zotero', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
+                assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
             });
         });
 

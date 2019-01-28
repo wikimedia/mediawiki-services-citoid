@@ -11,11 +11,11 @@ if (!server.stopHookAdded) {
     after(() => server.stop());
 }
 
-describe('Tests using a very short timeout - all use crossRef', function() {
+describe('Tests using a very short timeout - all use crossRef - zotero disabled', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start({timeout:1}); });
+    before(function () { return server.start({timeout:1, zotero:false}); });
 
     describe('DOI  ', function() {
         it('DOI- missing PMCID', function() {

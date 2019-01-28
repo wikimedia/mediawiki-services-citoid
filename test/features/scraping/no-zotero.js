@@ -253,6 +253,26 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
             });
         });
+
+        it('has page range in direct scrape', function() {
+            return server.query('10.1017/s0305004100013554').then(function(res) {
+                assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+
+        // Unable to scrape and ends up with crossRef data
+        it('DOI with redirect - Wiley', function() {
+            return server.query('10.1029/94WR00436').then(function(res) {
+                assert.checkCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
+                assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+            });
+        });
     });
 
     describe('disabled in conf', function() {
@@ -467,6 +487,17 @@ describe('Zotero service down or disabled: ', function() {
                 });
             });
 
+        });
+
+        // Unable to scrape and ends up with crossRef data
+        it('DOI with redirect - Wiley', function() {
+            return server.query('10.1029/94WR00436').then(function(res) {
+                assert.checkCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
+                assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+            });
         });
     });
 

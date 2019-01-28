@@ -28,17 +28,14 @@ describe('Native scraper: ', function() {
         });
     });
 
-    // Unable to scrape and ends up with crossRef data
-    it('DOI with redirect - Wiley', function() {
-        return server.query('10.1029/94WR00436').then(function(res) {
-            assert.checkCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
-            assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
-            assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-            assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-            assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+    it('dublinCore data with multiple identifiers in array - empty result from zotero', function() {
+        return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
+            assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
+            assert.deepEqual(res.body[0].itemType, 'journalArticle');
+            assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
+            assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
         });
     });
-
 
 });
 

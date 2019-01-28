@@ -113,10 +113,10 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         });
     });
 
-    describe('DOI  ', function() {
-        it('too many redirects, uses citoid', function() {
+    describe('DOI - uses /search endpoint ', function() {
+        it('too many redirects', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
-                assert.checkCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
+                assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); //PMC not in
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -153,18 +153,6 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
             });
         });
 
-        /* FIXME: determine why exactly this test is not passing any more and re-enable it */
-        // DOI which needs User-Agent to be set in order to detect the redirect
-        it.skip('DOI with User-Agent set', function() {
-            return server.query('10.1088/0004-637X/802/1/65').then(function(res) {
-                assert.checkZotCitation(res, 'The 2012 Flare of PG 1553+113 Seen with H.E.S.S. and Fermi-LAT');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '65', 'Wrong pages item; expected 65, got ' + res.body[0].pages);
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
-        });
-        /* END FIXME */
-
         // Ensure DOI is present in zotero scraped page when requested from link containing DOI
         it('non-dx.DOI link with DOI pointing to resource in zotero with no DOI', function() {
             return server.query('http://link.springer.com/chapter/10.1007/11926078_68').then(function(res) {
@@ -200,11 +188,11 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
             });
         });
 
-        it('doi pointing to conferencePaper', function() {
+        it('doi pointing to bookSection', function() {
             return server.query('10.1007/11926078_68').then(function(res) {
                 assert.checkZotCitation(res, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].itemType, 'conferencePaper', 'Wrong itemType; expected conferencePaper, got' + res.body[0].itemType);
+                assert.deepEqual(res.body[0].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[0].itemType);
             });
         });
 
@@ -237,7 +225,7 @@ describe('noPubmed.js - Defaults conf to true if pubmed undefined', function() {
         return server.start({pubmed:undefined});
     });
 
-    it('DOI- PMCID available from NIH DB only', function() {
+    it('PMCID available from NIH DB only', function() {
         return server.query('http://rspb.royalsocietypublishing.org/content/267/1453/1627').then(function(res) {
             assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
             assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID'); // Not present in Zotero - should come from API

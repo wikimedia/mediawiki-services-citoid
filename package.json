@@ -7,7 +7,7 @@
   "main": "./app.js",
   "scripts": {
     "start": "service-runner",
-    "lint": "eslint --max-warnings 0 --ext .js --ext .json .",
+    "lint": "eslint --max-warnings 0 --ext .js --ext .json --cache --report-unused-disable-directives .",
     "test": "npm run lint",
     "coverage": "istanbul cover _mocha -- -R spec"
   },

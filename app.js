@@ -30,7 +30,7 @@ function initApp(options) {
     app.conf = options.config;      // this app's config options
     app.info = packageInfo;         // this app's package info
 
-    if(!app.conf.userAgent) { app.conf.userAgent = 'Citoid/' + app.info.version; }
+    if (!app.conf.userAgent) { app.conf.userAgent = `Citoid/${app.info.version}`; }
 
     // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
     if (app.conf.zotero === undefined) { app.conf.zotero = true; }
@@ -67,7 +67,7 @@ function initApp(options) {
         }
         if (!app.conf.zoteroUseProxy) {
             // don't use proxy for accessing Zotero unless specified in settings
-            if(process.env.NO_PROXY) {
+            if (process.env.NO_PROXY) {
                 process.env.NO_PROXY += ',';
             } else {
                 process.env.NO_PROXY = '';

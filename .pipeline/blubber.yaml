@@ -17,6 +17,7 @@ variants:
   test:
     includes: [build]
     entrypoint: [npm, test]
+    runs: { insecurely: true }
   prep:
     includes: [build]
     node: { env: production }

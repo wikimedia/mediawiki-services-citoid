@@ -15,28 +15,28 @@ if (!server.stopHookAdded) {
     after(() => server.stop());
 }
 
-describe.skip('ISBN tests: ', function() {
+describe('ISBN tests: ', function() {
 
     this.timeout(40000);
 
-    // Use xisbn for tests //appears to be down, not sure if permanently
-    describe.skip('xisbn service: ', function() {
+    // Use zotero search endpoint for isbn
+    describe('zotero isbn only: ', function() {
 
         before(function () { return server.start({
-            xisbn:true,
-            wskey:false
+            wskey:false,
+            zotero:true
         }); });
 
         it('valid ISBN', function() {
             return server.query('978-0-596-51979-7').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'MediaWiki');
+                assert.checkZotCitation(res, 'MediaWiki');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.isInArray(res.body[0].source, 'WorldCat');
+                assert.isInArray(res.body[0].source, 'Zotero');
                 assert.deepEqual(res.body[0].author, [['Daniel J.', 'Barrett']], 'Unexpected value; expected [[\'Daniel J.\'], [\'Barrett.\']] ' + res.body[0].author);
                 assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
-                assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
-                assert.deepEqual(res.body[0].edition, '1st ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
+                assert.deepEqual(res.body[0].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
+                assert.deepEqual(res.body[0].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.deepEqual(res.body[0].date, '2009', 'Unexpected value; expected 2009, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '9780596519797');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
@@ -46,12 +46,13 @@ describe.skip('ISBN tests: ', function() {
         it('valid ISBN with funky author field', function() {
             return server.query('9780439784542').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Harry Potter and the half-blood prince');
-                assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.isInArray(res.body[0].source, 'WorldCat');
-                assert.deepEqual(res.body[0].author, [['J.K.', 'Rowling']], 'Unexpected value; expected [[\'J.K.\', \'Rowling\']] got ' + res.body[0].author);
+        //        assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
+                assert.deepEqual(res.body[0].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[0].title);
+        //        assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
+                assert.isInArray(res.body[0].source, 'Zotero');
+                assert.deepEqual(res.body[0].author, [['J. K.', 'Rowling'], ['Mary','GrandPré']]);
                 assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
-                assert.deepEqual(res.body[0].edition, '1st American ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
+                assert.deepEqual(res.body[0].edition, '1st American ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.isInArray(res.body[0].ISBN, '9780439784542');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
@@ -60,12 +61,12 @@ describe.skip('ISBN tests: ', function() {
         it('valid DVD ISBN - type Image', function() {
             return server.query('978-0756662967').then(function(res) {
                 assert.status(res, 200);
-                assert.checkCitation(res, 'Seashore');
+                assert.checkZotCitation(res, 'Eyewitness DVD.'); // Not great
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.isInArray(res.body[0].source, 'WorldCat');
-                assert.deepEqual(!!res.body[0].author, true, 'Missing author');
+                assert.isInArray(res.body[0].source, 'Zotero');
+        //        assert.deepEqual(!!res.body[0].author, true, 'Missing author');
                 assert.deepEqual(res.body[0].publisher, 'DK Pub.', 'Unexpected value; expected DK Pub., got ' + res.body[0].publisher);
-                assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
+        //        assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '9780756662967');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
@@ -86,8 +87,11 @@ describe.skip('ISBN tests: ', function() {
 
     // Uses worldcat search api. This requires a working wskey in your config.yaml file. Free temporary keys available here:
     // https://platform.worldcat.org/wskey/keys/manage
-    describe('worldcat search api: ', function() {
-        before(function () { return server.start(); });
+    describe.skip('worldcat search api only: ', function() {
+
+        before(function () { return server.start({
+            zotero: false
+        }); });
 
         it('valid book ISBN - type Text', function() {
             return server.query('978-0-596-51979-7').then(function(res) {

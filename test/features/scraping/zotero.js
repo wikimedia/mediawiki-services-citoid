@@ -271,6 +271,16 @@ describe('uses zotero', function() {
                 assert.deepEqual(res.body[0].author.length, 1);
             });
         });
+
+        // phab:T214766
+        it('Natively resolved url does not work', function() {
+            return server.query('10.1080/00288306.1980.10424125').then(function(res) {
+                assert.checkZotCitation(res, 'Tholeiitic basalt from the Monowai seamount, Tonga-Kermadec ridge (Note)');
+                assert.deepEqual(res.body[0].url, 'http://www.tandfonline.com/doi/abs/10.1080/00288306.1980.10424125');
+                assert.deepEqual(res.body[0].DOI, '10.1080/00288306.1980.10424125');
+                assert.deepEqual(res.body[0].author.length, 4);
+            });
+        });
     });
 
     describe('PMCID ', function() {

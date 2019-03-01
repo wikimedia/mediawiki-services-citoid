@@ -22,7 +22,7 @@ describe('express app', function() {
             uri: server.config.uri + 'robots.txt'
         }).then(function(res) {
             assert.status(res, 200);
-            assert.deepEqual(res.headers['disallow'], '/');
+            assert.deepEqual(res.body, 'User-agent: *\nDisallow: /\n');
         });
     });
 

@@ -19,6 +19,9 @@ paths:
         - Robots
       description: Gets robots.txt
       x-monitor: false
+      responses:
+        '200':
+          description: OK
   /:
     get:
       tags:
@@ -26,6 +29,9 @@ paths:
       description: The root service end-point
       produces:
         - application/json
+      responses:
+        '200':
+          description: OK
       x-amples:
         - title: spec from root
           request:
@@ -41,6 +47,9 @@ paths:
       description: Gets information about the service
       produces:
         - application/json
+      responses:
+        '200':
+          description: OK
       x-amples:
         - title: retrieve service info
           request: {}
@@ -79,8 +88,7 @@ paths:
             URL of an article, DOI, ISBN, PMCID or PMID in the URL-encoded format.
             Note that on the Swagger-UI doc page you don't need to URI-encode the
             parameter manually, it will be done by the docs engine.
-          schema:
-            type: string
+          type: string
           required: true
         - name: Accept-Language
           in: header

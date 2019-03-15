@@ -49,7 +49,6 @@ function initApp(options) {
     if (app.conf.compression_level === undefined) { app.conf.compression_level = 3; }
     if (app.conf.cors === undefined) { app.conf.cors = '*'; }
     if (app.conf.csp === undefined) {
-        // eslint-disable-next-line max-len
         app.conf.csp = "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'";
     }
 
@@ -247,6 +246,8 @@ function createServer(app) {
  * options and the logger- and metrics-reporting objects from
  * service-runner and starts an HTTP server, attaching the application
  * object to it.
+ * @param {Object} options
+ * @return {bluebird}
  */
 module.exports = function(options) {
 
@@ -257,6 +258,5 @@ module.exports = function(options) {
         app.use('/static', express.static(`${__dirname}/static`));
         return app;
     }).then(createServer);
-
 };
 

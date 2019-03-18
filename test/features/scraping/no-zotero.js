@@ -256,7 +256,7 @@ describe('Zotero service down or disabled: ', function() {
 
         it('has page range in direct scrape', function() {
             return server.query('10.1017/s0305004100013554').then(function(res) {
-                assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
+                assert.checkCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);

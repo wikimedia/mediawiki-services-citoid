@@ -37,8 +37,8 @@ describe('dublinCore translator unit', function() {
         expected = {
             creators: [{
                 creatorType: 'author',
-                firstName: 'One',
-                lastName: 'Two'
+                firstName: '',
+                lastName: 'One Two'
             }]
         };
         result = dc.generalWithAuthor.creator.translate({}, {author:'One Two'}, 'author');
@@ -49,8 +49,8 @@ describe('dublinCore translator unit', function() {
         expected = {
             creators: [{
                 creatorType: 'author',
-                firstName: 'One Two',
-                lastName: 'Three'
+                firstName: '',
+                lastName: 'One Two Three'
             }]
         };
         result = dc.generalWithAuthor.creator.translate({}, {author:'One Two Three'}, 'author');

@@ -110,45 +110,45 @@ describe('translator utilities: ', function() {
 
     describe('makeCreatorsTranslator function: ', function() {
 
-        it('Correctly adds author', function() {
+        it('Name as written', function() {
             input = ['Daniel J. Barrett'];
             expected = {
                 creators: [{
                     'creatorType':'author',
-                    'firstName': 'Daniel J.',
-                    'lastName': 'Barrett'
+                    'firstName': '',
+                    'lastName': 'Daniel J. Barrett'
                 }]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, {author:input}, 'author');
             assert.deepEqual(result, expected);
         });
 
-        it('Doesn not like format Last name, first name', function() {
+        it('Format Last name, first name', function() {
             input = ['Barrett, Daniel J.'];
             expected = {
                 creators: [{
                     'creatorType':'author',
-                    'firstName': 'Barrett, Daniel',
-                    'lastName': 'J.'
+                    'firstName': '',
+                    'lastName': 'Barrett, Daniel J.'
                 }]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, {author:input}, 'author');
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly adds two different contributor types', function() {
+        it('Adds two different contributor types', function() {
             author = 'J.K. Rowling';
             contributor = 'Mary GrandPré'
             expected = {
                 creators: [{
                     'creatorType':'author',
-                    'firstName': 'J.K.',
-                    'lastName': 'Rowling'
+                    'firstName': '',
+                    'lastName': 'J.K. Rowling'
                 },
                 {
                     'creatorType':'contributor',
-                    'firstName': 'Mary',
-                    'lastName': 'GrandPré'
+                    'firstName': '',
+                    'lastName': 'Mary GrandPré'
                 }]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, {author:author}, 'author');

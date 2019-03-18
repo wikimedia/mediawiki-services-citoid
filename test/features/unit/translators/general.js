@@ -37,8 +37,8 @@ describe('general translator unit', function() {
         expected = {
             creators: [{
                 creatorType: 'author',
-                firstName: 'One',
-                lastName: 'Two'
+                firstName: '',
+                lastName: 'One Two'
             }]
         };
         result = gen.generalWithAuthor.author.translate({}, {author:'One Two'}, 'author');
@@ -49,8 +49,8 @@ describe('general translator unit', function() {
         expected = {
             creators: [{
                 creatorType: 'author',
-                firstName: 'One Two',
-                lastName: 'Three'
+                firstName: '',
+                lastName: 'One Two Three'
             }]
         };
         result = gen.generalWithAuthor.author.translate({}, {author:'One Two Three'}, 'author');
@@ -61,8 +61,8 @@ describe('general translator unit', function() {
         expected = {
             creators: [{
                 creatorType: 'author',
-                firstName: 'J.K. Rowling ; illustrations by Mary',
-                lastName: 'GrandPré.'
+                firstName: '',
+                lastName: 'J.K. Rowling ; illustrations by Mary GrandPré.'
             }]
         };
         result = gen.generalWithAuthor.author.translate({}, {author:'J.K. Rowling ; illustrations by Mary GrandPré.'}, 'author');

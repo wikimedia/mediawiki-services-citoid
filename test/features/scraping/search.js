@@ -112,6 +112,11 @@ describe('Search results where we expect multiple results', function() {
 
     describe.skip('worldcat enabled', function() {
 
+        before(function () {  return server.start({
+            zotero:true
+            });
+        });
+
         // Previously gave error; now passes to search
         it('spaces in url missing http:// and www', function() {
             var url = 'example.com/spaces in url';

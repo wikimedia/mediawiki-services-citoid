@@ -28,7 +28,7 @@
     "js-yaml": "^3.10.0",
     "preq": "^0.5.4",
     "request": "^2.85.0",
-    "service-runner": "^2.4.8",
+    "service-runner": "^2.6.17",
     "swagger-router": "^0.7.1",
     "swagger-ui": "git+https://github.com/wikimedia/swagger-ui#master",
     "http-shutdown": "^1.2.0",

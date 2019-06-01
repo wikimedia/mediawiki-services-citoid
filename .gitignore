@@ -7,3 +7,4 @@ node_modules
 npm-debug.log
 .eslintcache
 .nyc_output
+.ipynb_checkpoints/

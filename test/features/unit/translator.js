@@ -222,8 +222,8 @@ describe('Tests for Translator.js : ', function() {
                   creators: [
                     {
                       creatorType: "author",
-                      lastName: "Lvr",
-                      firstName: "Turtle"
+                      lastName: "Turtle Lvr",
+                      firstName: ""
                     }
                   ],
                   url: "http://example.com/turtles",
@@ -242,8 +242,8 @@ describe('Tests for Translator.js : ', function() {
                   creators: [
                     {
                       creatorType: "author",
-                      lastName: "Lvr",
-                      firstName: "Turtle"
+                      lastName: "Turtle Lvr",
+                      firstName: ""
                     }
                   ],
                   date: "2012",

@@ -44,7 +44,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -304,7 +304,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -482,7 +482,7 @@ describe('Zotero service down or disabled: ', function() {
                 return server.query('PMC2096233',
                     'mediawiki', 'en', 'true').then(function(res) {
                     assert.status(res, 200);
-                    assert.deepEqual(!!res.body[0].PMCID, true, 'PMC2096233');
+                    assert.deepEqual(!!res.body[0].PMCID, true, '2096233');
                     assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
                 });
             });

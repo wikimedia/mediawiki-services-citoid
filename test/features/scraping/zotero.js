@@ -127,7 +127,7 @@ describe('uses zotero', function() {
         it('Has PMCID, PMID, DOI', function() {
             return server.query('https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '1690724');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -156,7 +156,7 @@ describe('uses zotero', function() {
         it('DOI has poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '1690724', 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -296,7 +296,7 @@ describe('uses zotero', function() {
         it('with prefix', function() {
             return server.query('PMC3605911').then(function(res) {
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
@@ -305,7 +305,7 @@ describe('uses zotero', function() {
         it('with trailing space', function() {
             return server.query('PMC3605911 ').then(function(res) {
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
@@ -314,7 +314,7 @@ describe('uses zotero', function() {
         it('with encoded space', function() {
             return server.query('PMC3605911%20').then(function(res) {
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
@@ -324,7 +324,7 @@ describe('uses zotero', function() {
             return server.query('PMC1690724').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                assert.deepEqual(!!res.body[0].PMCID, true, 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, '1690724');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });

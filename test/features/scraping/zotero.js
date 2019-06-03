@@ -296,6 +296,7 @@ describe('uses zotero', function() {
         it('with prefix', function() {
             return server.query('PMC3605911').then(function(res) {
                 assert.checkZotCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(res.body[0].url, 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/');
                 assert.deepEqual(res.body[0].PMCID, '3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -339,6 +340,7 @@ describe('uses zotero', function() {
                 assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
                 assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // From Zotero
+                assert.deepEqual(res.body[0].url, 'https://www.ncbi.nlm.nih.gov/pubmed/14656957');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI'); // From Zotero
                 assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID'); // Missing PMC as unable to retrieve from ID converter api
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);

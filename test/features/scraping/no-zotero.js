@@ -42,6 +42,7 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('PMC3605911').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
                 assert.deepEqual(res.body[0].PMCID, '3605911');
@@ -302,6 +303,7 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('PMC3605911').then(function(res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Viral Phylodynamics');
+                assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
                 assert.deepEqual(res.body[0].PMCID, '3605911');

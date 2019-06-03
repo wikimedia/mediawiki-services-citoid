@@ -68,7 +68,8 @@ module.exports = function(appObj) {
     app.nativeFormats = {
         'mediawiki':'application/json',
         'zotero':'application/json',
-        'mediawiki-basefields': 'application/json'
+        'mediawiki-basefields': 'application/json',
+        'wikibase':'application/json'
     };
     app.zoteroFormats = {
         'bibtex':'application/x-bibtex'

@@ -81,6 +81,7 @@ paths:
             - mediawiki-basefields
             - zotero
             - bibtex
+            - wikibase
           required: true
         - name: search
           in: query

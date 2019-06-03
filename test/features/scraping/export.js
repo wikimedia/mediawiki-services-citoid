@@ -65,6 +65,31 @@ describe('Exports into non mediawiki formats: ', function() {
         });
     });
 
+
+    describe('Exporting to wikibase: ', function() {
+        it('doi', function() {
+            return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
+                assert.status(res, 200);
+                assert.deepEqual(res.body[0].title, 'Semantic MediaWiki');
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
+                assert.ok(res.body[0].creators);
+            });
+        });
+        it('doi with ISSN', function() {
+            return server.query('doi:10.1039/b309952k', 'zotero').then(function(res) {
+                assert.status(res, 200);
+                assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
+                assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
+                assert.ok(res.body[0].creators);
+                assert.ok(res.body[0].DOI);
+                assert.deepEqual(res.body[0].ISSN, '1463-9084');
+                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+            });
+        });
+    });
+
+
     describe('Exporting to mwDeprecated no longer functioning : ', function() {
         it('Uses formerly correct parameter', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {

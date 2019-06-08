@@ -30,18 +30,12 @@ function initApp(options) {
     app.conf = options.config;      // this app's config options
     app.info = packageInfo;         // this app's package info
 
-    if (!app.conf.userAgent) { app.conf.userAgent = `Citoid/${app.info.version}`; }
+    app.conf.userAgent = app.conf.user_agent || app.conf.userAgent || `Citoid/${app.info.version}`;
 
     // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
     if (app.conf.zotero === undefined) { app.conf.zotero = true; }
     // backwards compatibility for configurations which predate use of 'pubmed' keyword in conf
     if (app.conf.pubmed === undefined) { app.conf.pubmed = true; }
-
-    // ensure sane defaults for Zotero
-    if (app.conf.zotero) {
-        if (!app.conf.zoteroInterface) { app.conf.zoteroInterface = '127.0.0.1'; }
-        if (!app.conf.zoteroPort) { app.conf.zoteroPort = 1969; }
-    }
 
     // ensure some sane defaults
     if (!app.conf.port) { app.conf.port = 1970; }
@@ -50,6 +44,11 @@ function initApp(options) {
     if (app.conf.cors === undefined) { app.conf.cors = '*'; }
     if (app.conf.csp === undefined) {
         app.conf.csp = "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'";
+    }
+
+    // check the zotero configuration
+    if (app.conf.zotero && !(app.conf.zoteroInterface && app.conf.zoteroPort)) {
+        throw new Error('Zotero IP/host or port not set');
     }
 
     // set outgoing proxy

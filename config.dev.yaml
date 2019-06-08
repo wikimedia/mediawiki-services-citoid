@@ -78,9 +78,7 @@ services:
       allowPrivateAddresses: false
       maxRedirects: 5
       # the user agent to use when issuing requests
-      user_agent: null
-      # User-Agent HTTP header to use for requests
-      userAgent: citoid-test-env
+      user_agent: citoid-test-env
       # Contact e-mail address. Used for making crossRef requests
       mailto: example@example.com
       # Force certain requests to return with partial data using this timeout in milliseconds

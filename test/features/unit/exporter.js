@@ -168,7 +168,21 @@ describe('lib/Exporter.js functions: ', function() {
 
         it('Partial ISO date no preceeding 0', function() {
             date = '1975-2';
-            expected = {date: '1975-2'};
+            expected = {date: '1975-02'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Full ISO date no preceeding 0', function() {
+            date = '1975-2-01';
+            expected = {date: '1975-02-01'};
+            result = exporter.fixDate({date:date});
+            assert.deepEqual(result, expected);
+        });
+
+        it('Full ISO date no preceeding 0 month or day', function() {
+            date = '1975-2-1';
+            expected = {date: '1975-02-01'};
             result = exporter.fixDate({date:date});
             assert.deepEqual(result, expected);
         });

@@ -73,7 +73,7 @@ describe('ISBN tests: ', function() {
         it('ISBN with 979 prefix; not as good data as worldcat', function() {
             return server.query('9791029801297').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Mon jardin tropical: [guide de jardinage');
+                assert.checkZotCitation(res, 'Mon jardin tropical: guide de jardinage : Antilles, Réunion');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.deepEqual(res.body[0].date, '2016', 'Unexpected value; expected 2002, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '979-10-298-0129-7');

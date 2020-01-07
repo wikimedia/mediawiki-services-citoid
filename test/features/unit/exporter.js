@@ -371,43 +371,131 @@ describe('lib/Exporter.js functions: ', function() {
     });
 
     describe('export formats: ', function() {
+        var citation;
         var app = { conf: {} };
         var exp = new exporter.Exporter(app);
         describe('wikibase: ', function() {
-            var citation;
-            it('itemType webpage', function() {
-                citation = new Citation('url', 'http://www.example.com');
-                citation.format = 'wikibase';
-                citation.content = {
-                    title: 'Example Domain',
-                    itemType: 'webpage',
-                    url: 'http://www.example.com'
-                };
-                return exp.convertToWikibase(citation).then( function(citation) {
-                    assert.deepEqual(citation.content.title, citation.formattedContent.title);
-                }).catch( function(e) {
-                    throw e;
+            describe('different search term types ', function() {
+                it('url from search, doi from result', function() {
+                    citation = new Citation('url', 'http://www.example.com');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage',
+                        DOI: '10.10/abc'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(citation.url, citation.formattedContent.identifiers.url);
+                        assert.deepEqual(citation.content.DOI, citation.formattedContent.identifiers.doi);
+                    });
+                });
+
+                it('doi from search, no url', function() {
+                    citation = new Citation('doi', '10.10/abc');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage',
+                        DOI: '10.10/def'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(undefined, citation.formattedContent.identifiers.url);
+                        assert.deepEqual(citation.doi, citation.formattedContent.identifiers.doi);
+                    });
+                });
+
+                it('qid, no url', function() {
+                    citation = new Citation('qid', 'Q1');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(undefined, citation.formattedContent.identifiers.url);
+                        assert.deepEqual(citation.qid, citation.formattedContent.identifiers.qid);
+                    });
+                });
+
+                it('pmid, no url', function() {
+                    citation = new Citation('pmid', '1234567');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(undefined, citation.formattedContent.identifiers.url);
+                        assert.deepEqual(citation.pmid, citation.formattedContent.identifiers.pmid);
+                    });
+                });
+
+                it('pmcid, no url', function() {
+                    citation = new Citation('pmcid', 'PMC1234567');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(undefined, citation.formattedContent.identifiers.url);
+                        assert.deepEqual(citation.pmcid, citation.formattedContent.identifiers.pmcid);
+                    });
                 });
             });
 
-            it('itemType book', function() {
-                citation = new Citation('url', 'http://www.example.com');
-                citation.format = 'wikibase';
-                citation.content = {
-                    title: 'Title of a Book',
-                    itemType: 'book',
-                    ISBN: '978-0-8109-3531-0 081093531b 007462542X',
-                    url: 'http://www.example.com'
-                };
-                return exp.convertToWikibase(citation).then( function(citation) {
-                    assert.deepEqual(citation.formattedContent.identifiers.isbn10, ['0-07-462542-X']);
-                    assert.deepEqual(citation.formattedContent.identifiers.isbn13, ['978-0-8109-3531-0']);
-                    assert.deepEqual(!!citation.formattedContent.ISBN, false);
-                }).catch( function(e) {
-                    throw e;
+            describe('different item types', function() {
+                it('itemType webpage', function() {
+                    citation = new Citation('url', 'http://www.example.com');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Example Domain',
+                        itemType: 'webpage',
+                        url: 'http://www.example.com'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(citation.content.title, citation.formattedContent.title);
+                        assert.deepEqual(citation.formattedContent.identifiers.url, 'http://www.example.com');
+                    });
+                });
+
+                it('itemType book', function() {
+                    citation = new Citation('url', 'http://www.example.com');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Title of a Book',
+                        itemType: 'book',
+                        ISBN: '978-0-8109-3531-0 081093531b 007462542X',
+                        extra: 'OCLC: 1234556',
+                        url: 'http://www.example.com'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(citation.formattedContent.identifiers.isbn10, ['0-07-462542-X']);
+                        assert.deepEqual(citation.formattedContent.identifiers.isbn13, ['978-0-8109-3531-0']);
+                        assert.deepEqual(citation.formattedContent.identifiers.url, 'http://www.example.com');
+                        assert.deepEqual(citation.formattedContent.identifiers.oclc, '1234556');
+                        assert.deepEqual(!!citation.formattedContent.ISBN, false);
+                    });
+                });
+
+                it('itemType journalArticle', function() {
+                    citation = new Citation('url', 'http://www.example.com');
+                    citation.format = 'wikibase';
+                    citation.content = {
+                        title: 'Title of a Journal Article',
+                        itemType: 'journalArticle',
+                        DOI: '10.10/abc',
+                        extra: 'PMCID: PMC1234567\nPMID: 89101112',
+                        url: 'http://www.example.com'
+                    };
+                    return exp.convertToWikibase(citation).then( function(citation) {
+                        assert.deepEqual(citation.formattedContent.identifiers.doi, '10.10/abc');
+                        assert.deepEqual(citation.formattedContent.identifiers.pmcid, '1234567');
+                        assert.deepEqual(citation.formattedContent.identifiers.pmid, '89101112');
+                        assert.deepEqual(!!citation.formattedContent.DOI, false);
+                    });
                 });
             });
-
         });
     });
 

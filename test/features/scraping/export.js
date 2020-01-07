@@ -86,8 +86,8 @@ describe('Exports into non mediawiki formats: ', function() {
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
                 assert.ok(res.body[0].creators);
-                assert.ok(res.body[0].DOI);
-                assert.deepEqual(res.body[0].ISSN, '1463-9084');
+                assert.ok(res.body[0].identifiers.doi);
+                assert.deepEqual(res.body[0].ISSN, ['1463-9076','1463-9084']);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });

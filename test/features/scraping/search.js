@@ -78,7 +78,8 @@ describe('Search results where we expect multiple results', function() {
             });
         });
 
-        it('Open search with doi', function() {
+        // Timing out due to upstream request response time
+        it.skip('Open search with doi', function() {
             return server.query('Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166').then(function(res) {
                 assert.checkZotCitation(res, 'Data from: The strength of phenotypic selection in natural populations');
                 assert.deepEqual(res.body.length, 1); // One citation from detected DOI

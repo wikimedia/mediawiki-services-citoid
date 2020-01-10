@@ -130,7 +130,7 @@ describe('Zotero service down or disabled: ', function() {
             .then(function(res) {
                 assert.status(res, 404);
             }, function(err) {
-                assert.deepEqual(JSON.parse(err.body.toString()).Error,'Unable to serve bibtex format at this time');
+                assert.deepEqual(err.body.Error,'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
                 //assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });
@@ -391,7 +391,7 @@ describe('Zotero service down or disabled: ', function() {
             .then(function(res) {
                 assert.status(res, 404);
             }, function(err) {
-                assert.deepEqual(JSON.parse(err.body.toString()).Error,'Unable to serve bibtex format at this time');
+                assert.deepEqual(err.body.Error,'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
                 //assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });

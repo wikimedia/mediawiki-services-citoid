@@ -54,7 +54,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
                 assert.deepEqual(res.body.length, 1, 'Unexpected number of citations in body');
                 assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
+                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -180,7 +180,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
         it('DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', function() {
             return server.query('10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2').then(function(res) {
-                assert.checkZotCitation(res, 'PHYLOGENETIC RELATIONSHIPS OF ANTPITTA GENERA (PASSERIFORMES: FORMICARIIDAE)');
+                assert.checkZotCitation(res, 'Phylogenetic Relationships of Antpitta Genera (Passeriformes: Formicariidae)');
                 assert.deepEqual(res.body[0].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[0].publicationTitle);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');

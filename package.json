@@ -8,7 +8,7 @@
   "scripts": {
     "start": "service-runner",
     "lint": "eslint --max-warnings 0 --ext .js --cache --report-unused-disable-directives .",
-    "test": "npm run lint",
+    "test": "npm run lint && mocha ./test/features/unit/*",
     "coverage": "nyc --reporter=lcov _mocha"
   },
   "dependencies": {

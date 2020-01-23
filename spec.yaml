@@ -102,21 +102,12 @@ paths:
           request:
             query:
               format: mediawiki
-              search: http://example.com/thisurldoesntexist
+              search: https://wikimediafoundation.org/404
             headers:
               accept-language: en
           response:
             status: 404
-#        - title: Zotero alive
-#          request:
-#            query:
-#              format: bibtex
-#              search: http://example.com
-#            headers:
-#              accept-language: en
-#          response:
-#            status: 200
-        - title: Ensure Zotero is working
+        - title: Zotero and citoid alive
           request:
             query:
               format: mediawiki
@@ -130,20 +121,6 @@ paths:
                 language: en
                 itemType: encyclopediaArticle
                 encyclopediaTitle: Wikipedia
-        - title: Scrapes sample page
-          request:
-            query:
-              format: mediawiki
-              search: http://example.com
-            headers:
-              accept-language: en
-          response:
-            status: 200
-            body:
-              - itemType: /.+/
-                title: /.+/
-                url: /.+/
-                accessDate: /.+/
       responses:
         '200':
           description: The citation data in the requested format

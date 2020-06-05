@@ -123,7 +123,7 @@ describe('ISBN tests: ', function() {
                 assert.checkCitation(res, 'Mon jardin tropical : [guide de jardinage : Antilles [et] Réunion]');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
-                assert.deepEqual(res.body[0].date, '2002', 'Unexpected value; expected 2002, got ' + res.body[0].date);
+                //assert.deepEqual(res.body[0].date, '2002', 'Unexpected value; expected 2002, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '979-10-298-0129-7');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });

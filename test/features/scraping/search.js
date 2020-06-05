@@ -206,6 +206,16 @@ describe('Search results where we expect multiple results', function() {
                     assert.deepEqual(res.body.length, 2); // One from Worldcat, one from Crossref
                 });
             });
+
+            it('non-isbn in dc:identifiers', function() {
+                return server.query('Istorijsko poreklo Srba').then(function(res) {
+                    assert.status(res, 200);
+                    assert.checkCitation(res);
+                    assert.isInArray(res.body[1].ISBN, '978-86-911149-2-3');
+                    assert.isNotInArray(res.body[1].ISBN, '2012467583');
+                    assert.deepEqual(res.body[1].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
+                });
+            });
         });
 
         describe('wikibase format', function() {

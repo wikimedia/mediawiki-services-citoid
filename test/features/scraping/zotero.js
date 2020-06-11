@@ -118,12 +118,6 @@ describe('uses zotero', function() {
             });
         });
 
-        it('Google books link that lacks native url field', function() {
-            return server.query('http://books.google.de/books?hl=en&lr=&id=Ct6FKwHhBSQC&oi=fnd&pg=PP9&dq=%22Peggy+Eaton%22&ots=KN-Z0-HAcv&sig=snBNf7bilHi9GFH4-6-3s1ySI9Q&redir_esc=y#v=onepage&q=%22Peggy%20Eaton%22&f=false').then(function(res) {
-                assert.checkZotCitation(res, 'Some American Ladies: Seven Informal Biographies ...');
-            });
-        });
-
         it('Has PMCID, PMID, DOI', function() {
             return server.query('https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');

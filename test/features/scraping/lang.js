@@ -26,10 +26,11 @@ describe('Languages: ', function() {
             });
         });
 
-        it('german twitter', function() {
-            return server.query('http://twitter.com', 'mediawiki', 'de').then(function(res) {
+        it('redirects to french dolphin emulator page', function() {
+            return server.query('http://dolphin-emu.org', 'mediawiki', 'fr').then(function(res) {
                 assert.status(res, 200);
-                assert.checkZotCitation(res, 'Twitter. Alles, was gerade los ist.');
+                assert.checkZotCitation(res, 'Dolphin Emulator');
+                assert.deepEqual(res.body[0].url, 'https://fr.dolphin-emu.org/?cr=fr');
             });
         });
 

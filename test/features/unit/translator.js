@@ -23,22 +23,22 @@ const movie = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/st
 const article = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_article.html'));
 
 const translators = [
-    {value:bp, name: 'bePress'},
-    {value:bp, name: 'highwirePress'}, // Use bp translator on highwire press metadata
-    {value:coins, name:'coins'},
-    {value:dc, name:'dublinCore'},
-    {value:gen, name:'general'},
-    {value:og, name:'openGraph'}
+    { value:bp, name: 'bePress' },
+    { value:bp, name: 'highwirePress' }, // Use bp translator on highwire press metadata
+    { value:coins, name:'coins' },
+    { value:dc, name:'dublinCore' },
+    { value:gen, name:'general' },
+    { value:og, name:'openGraph' }
 ];
 
 const htmlFiles = [
-    {value:movie, name:'movie'},
-    {value:article, name:'article'}
+    { value:movie, name:'movie' },
+    { value:article, name:'article' }
 ];
 
 const Logger = require('../../../node_modules/service-runner/lib/logger.js');
 const logStream = require('../../utils/logStream.js');
-//const conf = yaml.safeLoad(fs.readFileSync('./config.yaml'));
+// const conf = yaml.safeLoad(fs.readFileSync('./config.yaml'));
 
 let app = {
     conf: {}
@@ -61,33 +61,32 @@ describe('Tests for Translator.js : ', function() {
 
         let citation;
         let result;
-        let expected;
         let itemTypeName;
 
         // Cycle through every translator
         translators.forEach(function(metadataType) {
             // Cycle through every sample html file
             htmlFiles.forEach(function(file) {
-                it('translates '+ metadataType.name +' metadata from ' + file.name + ' file', function() {
+                it('translates ' + metadataType.name + ' metadata from ' + file.name + ' file', function() {
                     // Get metadata from html file
-                    return meta.parseAll(file.value).then(function(metadata){
+                    return meta.parseAll(file.value).then(function(metadata) {
                         // For every valid Zotero item type, check corresponding translator on file
-                        Object.keys(itemTypes).forEach(function(key){
+                        Object.keys(itemTypes).forEach(function(key) {
                             itemTypeName = types.itemTypeMethods.getName(key);
                             // Ensure every itemType has a corresponding translator
-                            if (!metadataType.value[itemTypeName]){
+                            if (!metadataType.value[itemTypeName]) {
                                 throw new Error('No translator found for itemType ' + itemTypeName);
                             }
                             // Only test citation if metadata exists for the given translator type
-                            if(metadata[metadataType.name]){
-                                citation = translator.translate({itemType:itemTypeName}, metadata[metadataType.name], metadataType.value[itemTypeName]);
+                            if (metadata[metadataType.name]) {
+                                citation = translator.translate({ itemType:itemTypeName }, metadata[metadataType.name], metadataType.value[itemTypeName]);
                                 // Check that every key in citation is a valid field for given type
-                                Object.keys(citation).forEach(function(citationField){
+                                Object.keys(citation).forEach(function(citationField) {
                                     result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
                                     assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                                 });
-                                if (citation.creators){
-                                    for (var c in citation.creators){
+                                if (citation.creators) {
+                                    for (var c in citation.creators) {
                                         result = types.creatorTypesMethods.isValidForType(citation.creators[c].creatorType, itemTypeName);
                                         assert.deepEqual(result, true, 'Citation field "' + citation.creators[c].creatorType + '" is not valid for itemType "' + itemTypeName + '"');
                                     }
@@ -104,9 +103,11 @@ describe('Tests for Translator.js : ', function() {
         const crossRefJSON = JSON.parse(fs.readFileSync('./test/utils/static/crossRef.json'));
         let citation;
         let expected;
+        let itemTypeName;
+        let result;
 
         it('sets right info from journal-article crossRef metadata', function() {
-            citation = {itemType:'journalArticle'};
+            citation = { itemType:'journalArticle' };
             citation = translator.translate(citation, crossRefJSON[0], cr.journalArticle);
             expected = {
                 itemType: "journalArticle",
@@ -140,7 +141,7 @@ describe('Tests for Translator.js : ', function() {
         });
 
         it('sets right info from book-section crossRef metadata', function() {
-            citation = {itemType:'bookSection'};
+            citation = { itemType:'bookSection' };
             citation = translator.translate(citation, crossRefJSON[1], cr.bookSection);
             expected = {
                 itemType: "bookSection",
@@ -165,21 +166,21 @@ describe('Tests for Translator.js : ', function() {
             // Cycle through every crossRef sample metadata in file
             crossRefJSON.forEach(function(metadata) {
                 // For every valid Zotero item type, check corresponding object in the crossRef translator
-                Object.keys(cr).forEach(function(key){
+                Object.keys(cr).forEach(function(key) {
                     itemTypeName = types.itemTypeMethods.getName(key);
                     // Ensure every itemType has a corresponding translator
-                    if (!cr[itemTypeName] && key !== "types"){ // Don't throw error for types obj
+                    if (!cr[itemTypeName] && key !== "types") { // Don't throw error for types obj
                         throw new Error('No translator found for itemType ' + itemTypeName);
                     }
-                    if(metadata){
-                        citation = translator.translate({itemType:itemTypeName}, metadata, cr[itemTypeName]);
+                    if (metadata) {
+                        citation = translator.translate({ itemType:itemTypeName }, metadata, cr[itemTypeName]);
                         // Check that every key in citation is a valid field for given type
-                        Object.keys(citation).forEach(function(citationField){
+                        Object.keys(citation).forEach(function(citationField) {
                             result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
                             assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                         });
-                        if (citation.creators){
-                            for (var c in citation.creators){
+                        if (citation.creators) {
+                            for (var c in citation.creators) {
                                 result = types.creatorTypesMethods.isValidForType(citation.creators[c].creatorType, itemTypeName);
                                 assert.deepEqual(result, true, 'Citation field "' + citation.creators[c].creatorType + '" is not valid for itemType "' + itemTypeName + '"');
                             }
@@ -192,21 +193,21 @@ describe('Tests for Translator.js : ', function() {
 
     describe('addItemType function: ', function() {
         it('sets videoRecording itemType', function() {
-            return meta.parseAll(movie).then(function(metadata){
+            return meta.parseAll(movie).then(function(metadata) {
                 let itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'videoRecording', 'Expected itemType videoRecording, got itemType ' + itemType);
             });
         });
 
         it('sets article itemType', function() {
-            return meta.parseAll(article).then(function(metadata){
+            return meta.parseAll(article).then(function(metadata) {
                 let itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'journalArticle', 'Expected itemType journalArticle, got itemType ' + itemType);
             });
         });
 
         it('sets itemType webpage if no relevant metadata available', function() {
-            let metadata = {general:{title:'Example domain'}};
+            let metadata = { general:{ title:'Example domain' } };
             let itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
 
@@ -215,8 +216,8 @@ describe('Tests for Translator.js : ', function() {
 
     describe('check specific results: ', function() {
         it('sets right info from webpage for general metadata', function() {
-            return meta.parseAll(article).then(function(metadata){
-                let citation = translator.translate({itemType:'webpage'}, metadata.general, gen.webpage);
+            return meta.parseAll(article).then(function(metadata) {
+                let citation = translator.translate({ itemType:'webpage' }, metadata.general, gen.webpage);
                 let expected = {
                   itemType: "webpage",
                   creators: [
@@ -230,13 +231,13 @@ describe('Tests for Translator.js : ', function() {
                   abstractNote: "Exposition on the awesomeness of turtles",
                   title: "Turtles are AWESOME!!1 | Awesome Turtles Website",
                   language: "en"
-                }
+                };
                 assert.deepEqual(citation, expected);
             });
         });
         it('sets right info from webpage for bepress metadata', function() {
-            return meta.parseAll(article).then(function(metadata){
-                let citation = translator.translate({itemType:'webpage'}, metadata.bePress, bp.webpage);
+            return meta.parseAll(article).then(function(metadata) {
+                let citation = translator.translate({ itemType:'webpage' }, metadata.bePress, bp.webpage);
                 let expected = {
                   itemType: "webpage",
                   creators: [
@@ -248,7 +249,7 @@ describe('Tests for Translator.js : ', function() {
                   ],
                   date: "2012",
                   title: "Turtles are AWESOME!!1"
-                }
+                };
                 assert.deepEqual(citation, expected);
             });
         });

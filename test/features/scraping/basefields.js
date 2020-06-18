@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -36,13 +35,13 @@ describe('correctly gets base fields instead of more specific fields', function(
             });
         });
 
-        //TODO: Add test for creator field basefields
+        // TODO: Add test for creator field basefields
 
     });
 
     describe(' using native scraper', function() {
 
-        before(function () { return server.start({zotero:false}); });
+        before(function () { return server.start({ zotero:false }); });
 
         it('webpage', function() {
             return server.query('http://example.com',

@@ -10,7 +10,7 @@ describe('parsing', function() {
 
     it('should scrape meta tag charset content', function(done) {
         var results = ctFromBody(cheerio.load(fs.readFileSync('test/utils/static/metacharset.html')));
-        if (results !== 'iso-8859-1'){
+        if (results !== 'iso-8859-1') {
             throw new Error('Expected to iso-8859-1; got ' + results);
         }
         done();

@@ -7,7 +7,6 @@ describe('dublinCore translator unit', function() {
 
     var result;
     var expected;
-    var input;
 
     it('Creator translate function adds lists of strings', function() {
         expected = {
@@ -17,7 +16,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, {author:['One']}, 'author');
+        result = dc.generalWithAuthor.creator.translate({}, { author:['One'] }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -29,7 +28,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, {author:'One'}, 'author');
+        result = dc.generalWithAuthor.creator.translate({}, { author:'One' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -41,7 +40,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One Two'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, {author:'One Two'}, 'author');
+        result = dc.generalWithAuthor.creator.translate({}, { author:'One Two' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -53,7 +52,7 @@ describe('dublinCore translator unit', function() {
                 lastName: 'One Two Three'
             }]
         };
-        result = dc.generalWithAuthor.creator.translate({}, {author:'One Two Three'}, 'author');
+        result = dc.generalWithAuthor.creator.translate({}, { author:'One Two Three' }, 'author');
         assert.deepEqual(result, expected);
     });
 });

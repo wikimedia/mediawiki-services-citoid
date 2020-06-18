@@ -140,7 +140,7 @@ describe('errors', function() {
         .then(function(res) {
             assert.status(res, 404);
         }, function(err) {
-            assert.checkError(err, 404); //May be interpreted as PMID or PMCID
+            assert.checkError(err, 404); // May be interpreted as PMID or PMCID
         });
     });
 

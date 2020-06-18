@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 'use strict';
 
 
@@ -25,6 +23,8 @@ function deepEqual(result, expected, message) {
 
 /**
  * Asserts whether the return status was as expected
+ * @param {Object} res
+ * @param {integer} expected
  */
 function status(res, expected) {
 
@@ -36,6 +36,8 @@ function status(res, expected) {
 
 /**
  * Asserts whether content type was as expected
+ * @param {Object} res
+ * @param {string} expected
  */
 function contentType(res, expected) {
 
@@ -99,7 +101,7 @@ function checkError(res, status, message) {
     deepEqual(res.status, status,
         'Expected status to be ' + status + ', but was ' + res.status);
 
-    if(message) {
+    if (message) {
         assert.deepEqual(res.body.Error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.Error + '"');
     }
 
@@ -109,7 +111,7 @@ function checkError(res, status, message) {
 
 // Assert that expected value is an element of an array.
 function isInArray(arr, expected, message) {
-    if(!Array.isArray(arr)){
+    if (!Array.isArray(arr)) {
         throw new Error('Expected array, got ' + typeof arr + ' ' + arr); // If arr is undefined will throw undefined error instead
     }
 
@@ -118,7 +120,7 @@ function isInArray(arr, expected, message) {
 
 // Assert that expected value is not element of an array.
 function isNotInArray(arr, expected, message) {
-    if(!Array.isArray(arr)){
+    if (!Array.isArray(arr)) {
         throw new Error('Expected array, got ' + typeof arr + ' ' + arr); // If arr is undefined will throw undefined error instead
     }
 
@@ -133,7 +135,7 @@ function checkCit(res, title) {
 
     var cit = res.body;
 
-    if(!Array.isArray(cit) || cit.length < 1) {
+    if (!Array.isArray(cit) || cit.length < 1) {
         throw new Error('Expected to receive an array of at least 1 citation, got: ' + JSON.stringify(cit));
     }
 
@@ -144,7 +146,7 @@ function checkCit(res, title) {
     assert.deepEqual(!!cit.title, true, 'No title present');
     assert.deepEqual(!!cit.url, true, 'No url present');
 
-    if(title) {
+    if (title) {
         assert.deepEqual(cit.title, title, 'Wrong title, expected "' + title + '", got "' + cit.title + '"');
     }
 

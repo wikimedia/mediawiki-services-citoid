@@ -7,7 +7,7 @@ describe('lib/Scraper.js functions: ', function() {
     let result;
     let expected;
     let logger = { // Dummy logger
-        log: function(){}
+        log: function () {}
     };
 
     describe('matchIDs function: ', function() {
@@ -22,7 +22,7 @@ describe('lib/Scraper.js functions: ', function() {
                     doi: "10.100/example"
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -34,7 +34,7 @@ describe('lib/Scraper.js functions: ', function() {
                     doi: ["puppies", "10.100/example"]
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -46,7 +46,7 @@ describe('lib/Scraper.js functions: ', function() {
                     doi: "10.100/example"
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -58,7 +58,7 @@ describe('lib/Scraper.js functions: ', function() {
                     doi: ["puppies", "10.100/example"]
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -70,7 +70,7 @@ describe('lib/Scraper.js functions: ', function() {
                     identifier: "10.100/example"
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -82,7 +82,7 @@ describe('lib/Scraper.js functions: ', function() {
                     identifier: ["puppies", "10.100/example"]
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -108,7 +108,7 @@ describe('lib/Scraper.js functions: ', function() {
                     doi: "10.100/example3"
                 }
             };
-            expected = {doi: "10.100/example"};
+            expected = { doi: "10.100/example" };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });

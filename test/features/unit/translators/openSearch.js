@@ -7,8 +7,6 @@ describe('openSearch translator unit tests: ', function() {
 
     var result;
     var expected;
-    var input;
-
     var input = {
         author: [ { name: [ 'Barrett, Daniel J.' ] } ],
         title: [ 'MediaWiki' ],
@@ -21,13 +19,13 @@ describe('openSearch translator unit tests: ', function() {
     };
 
     it('title', function() {
-        expected = {title: 'MediaWiki'};
+        expected = { title: 'MediaWiki' };
         result = oSearch.book.title.translate({}, input, 'title');
         assert.deepEqual(result, expected);
     });
 
     it('oclc', function() {
-        expected = {oclc: '474668158'};
+        expected = { oclc: '474668158' };
         result = oSearch.book['oclcterms:recordIdentifier'].translate({}, input, 'oclcterms:recordIdentifier');
         assert.deepEqual(result, expected);
     });

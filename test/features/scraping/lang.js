@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -56,7 +55,7 @@ describe('Languages: ', function() {
 
     describe('Using native scraper: ', function() {
 
-        before(function () { return server.start({zotero:false}); });
+        before(function () { return server.start({ zotero:false }); });
 
         it('open graph locale converted to language code', function() {
             return server.query('https://www.pbs.org/newshour/nation/care-peoples-kids/').then(function(res) {

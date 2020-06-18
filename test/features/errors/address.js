@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -108,7 +107,7 @@ describe('address restrictions', function() {
         var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
-            assert.status(res, 200 );
+            assert.status(res, 200);
         }, function(err) {
             assert.status(err, 200);
         });

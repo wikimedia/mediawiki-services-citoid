@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -15,10 +14,10 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start({pubmed:false}); });
+    before(function () { return server.start({ pubmed:false }); });
 
     describe('PMID ', function() {
-        //PMID on NIH website that is not found in the id converter api
+        // PMID on NIH website that is not found in the id converter api
         it('not in id converter', function() {
             return server.query('14656957').then(function(res) {
                 assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
@@ -29,7 +28,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
             });
         });
 
-        //PMID on NIH website that is not found in the id converter api
+        // PMID on NIH website that is not found in the id converter api
         it('returns citation interpreted as both pmid and pmcid', function() {
             return server.query('14656').then(function(res) {
                 assert.checkZotCitation(res); // Which citation is first is unpredictable
@@ -117,7 +116,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
         it('too many redirects', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); //PMC not in
+                assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID'); // PMC not in
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
@@ -222,7 +221,7 @@ describe('noPubmed.js - Defaults conf to true if pubmed undefined', function() {
     this.timeout(20000);
 
     before(function () {
-        return server.start({pubmed:undefined});
+        return server.start({ pubmed:undefined });
     });
 
     it('PMCID available from NIH DB only', function() {

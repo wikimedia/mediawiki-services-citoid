@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -16,9 +15,10 @@ describe('Search results where we expect multiple results', function() {
 
     describe('Default config (worldcat disabled)', function() {
 
-        before(function () {  return server.start({
-            wskey:false,
-            zotero:true
+        before(function () {
+            return server.start({
+                wskey:false,
+                zotero:true
             });
         });
 
@@ -114,8 +114,9 @@ describe('Search results where we expect multiple results', function() {
     // WSKEY required from worldcat to run these tests
     describe.skip('worldcat enabled', function() {
 
-        before(function () {  return server.start({
-            zotero:true
+        before(function () {
+            return server.start({
+                zotero:true
             });
         });
 

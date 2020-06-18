@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -15,7 +14,7 @@ describe('uses zotero', function() {
 
     this.timeout(40000);
 
-    before(function () { return server.start({pubmed:true}); });
+    before(function () { return server.start({ pubmed:true }); });
 
     describe('URL ', function() {
         it('example domain', function() {
@@ -55,7 +54,7 @@ describe('uses zotero', function() {
             return server.query('https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00').then(function(res) {
                 assert.checkZotCitation(res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)');
                 assert.deepEqual(res.body[0].itemType, 'webpage');
-                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publicationTitle, undefined); // TODO: Investigate why this is undefined
             });
         });
 
@@ -138,8 +137,8 @@ describe('uses zotero', function() {
             return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
                 assert.checkZotCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
-                assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
-                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publisher, undefined); // TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publicationTitle, undefined); // TODO: Investigate why this is undefined
             });
         });
 
@@ -328,7 +327,7 @@ describe('uses zotero', function() {
 
     describe('PMID ', function() {
 
-        //PMID on NIH website that is not found in the id converter api
+        // PMID on NIH website that is not found in the id converter api
         it('not in id converter', function() {
             return server.query('14656957').then(function(res) {
                 assert.checkZotCitation(res, 'Seventh report of the Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure');
@@ -341,7 +340,7 @@ describe('uses zotero', function() {
             });
         });
 
-        //PMID on NIH website that is not found in the id converter api
+        // PMID on NIH website that is not found in the id converter api
         it('returns citation interpreted as both pmid and pmcid', function() {
             return server.query('14656').then(function(res) {
                 assert.checkZotCitation(res); // Which citation is first is unpredictable
@@ -368,7 +367,7 @@ describe('uses zotero', function() {
                 assert.checkZotCitation(res, 'The importance of an innervated and intact antrum and pylorus in preventing postoperative duodenogastric reflux and gastritis');
                 assert.deepEqual(!!res.body[0].PMCID, false, 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
-                ///assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
+                // assert.deepEqual(!!res.body[0].DOI, false, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });

@@ -4,7 +4,6 @@
  * Tests for when Zotero is down/inaccessible
  */
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -21,7 +20,7 @@ describe('Zotero service down or disabled: ', function() {
 
         // Give Zotero port which is it is not running from-
         // Mimics Zotero being down.
-        before(function () { return server.start({zoteroPort:1971}); });
+        before(function () { return server.start({ zoteroPort:1971 }); });
 
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
@@ -132,7 +131,7 @@ describe('Zotero service down or disabled: ', function() {
             }, function(err) {
                 assert.deepEqual(err.body.Error,'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
-                //assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
+                // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });
         });
 
@@ -250,8 +249,8 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
                 assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
-                assert.deepEqual(res.body[0].publisher, undefined); //TODO: Investigate why this is undefined
-                assert.deepEqual(res.body[0].publicationTitle, undefined); //TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publisher, undefined); // TODO: Investigate why this is undefined
+                assert.deepEqual(res.body[0].publicationTitle, undefined); // TODO: Investigate why this is undefined
             });
         });
 
@@ -282,7 +281,7 @@ describe('Zotero service down or disabled: ', function() {
 
         // Give Zotero port which is it is not running from-
         // Mimics Zotero being down.
-        before(function () { return server.start({zotero:false}); });
+        before(function () { return server.start({ zotero:false }); });
 
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
@@ -393,7 +392,7 @@ describe('Zotero service down or disabled: ', function() {
             }, function(err) {
                 assert.deepEqual(err.body.Error,'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
-                //assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
+                // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });
         });
 

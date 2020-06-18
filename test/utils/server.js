@@ -1,10 +1,6 @@
 'use strict';
 
 
-// mocha defines to avoid JSHint breakage
-/* global describe, it, before, beforeEach, after, afterEach */
-
-
 const BBPromise = require('bluebird');
 const ServiceRunner = require('service-runner');
 const logStream = require('./logStream');
@@ -47,7 +43,7 @@ function start(_options) {
     _options = _options || {};
 
     if (!assert.isDeepEqual(options, _options)) {
-        console.log('starting test server'); // eslint-disable-line no-console
+        console.log('starting test server');
         return module.exports.stop().then(() => {
             options = _options;
             // set up the config
@@ -57,7 +53,7 @@ function start(_options) {
             return runner.start(config.conf)
             .then((serviceReturns) => {
                 module.exports.stop = () => {
-                    console.log('stopping test server'); // eslint-disable-line no-console
+                    console.log('stopping test server');
                     serviceReturns.forEach(servers =>
                         servers.forEach(server =>
                             server.shutdown()));

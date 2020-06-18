@@ -1,14 +1,13 @@
 'use strict';
 
 const fs = require('fs');
-const preq   = require('preq');
 const yaml = require('js-yaml');
 
 const assert = require('../../../utils/assert.js');
 const CrossRefService = require('../../../../lib/external-apis/CrossRefService.js');
 const Logger = require('../../../../node_modules/service-runner/lib/logger.js');
 const logStream = require('../../../utils/logStream.js');
-const server = require('../../../utils/server.js')
+const server = require('../../../utils/server.js');
 
 if (!server.stopHookAdded) {
     server.stopHookAdded = true;
@@ -18,10 +17,8 @@ if (!server.stopHookAdded) {
 describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
 
     let doi;
-    let expected;
     let onreject;
     let promise;
-    let result;
     const conf = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../../config.yaml'));
 
     describe('polite config', function() {
@@ -46,7 +43,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         it('Gets metadata for doi', function() {
             doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
             promise = crossref.doi(doi);
-            return promise.then(function(results){
+            return promise.then(function(results) {
                 assert.deepEqual(results.DOI, doi);
             });
         });
@@ -54,7 +51,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         it('Doesn\'t get metadata for invalid doi', function() {
             doi = 'www.example.com';
             promise = crossref.doi(doi);
-            onreject = function(e){return;};
+            onreject = function(e) { return; };
             return assert.fails(promise, onreject);
         });
     });
@@ -81,7 +78,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         it('Gets metadata for doi', function() {
             doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
             promise = crossref.doi(doi);
-            return promise.then(function(results){
+            return promise.then(function(results) {
                 assert.deepEqual(results.DOI, doi);
             });
         });
@@ -89,7 +86,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         it('Doesn\'t get metadata for invalid doi', function() {
             doi = 'www.example.com';
             promise = crossref.doi(doi);
-            onreject = function(e){return;};
+            onreject = function(e) { return; };
             return assert.fails(promise, onreject);
         });
     });
@@ -116,7 +113,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         it('Gets metadata for open search', function() {
             let search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
             promise = crossref.search(search);
-            return promise.then(function(results){
+            return promise.then(function(results) {
                 assert.deepEqual(results.DOI, '10.1017/s0305004100013554');
             });
         });

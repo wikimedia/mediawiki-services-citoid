@@ -7,7 +7,6 @@ describe('general translator unit', function() {
 
     var result;
     var expected;
-    var input;
 
     it('Author function adds lists of strings', function() {
         expected = {
@@ -17,7 +16,7 @@ describe('general translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = gen.generalWithAuthor.author.translate({}, {author:['One']}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, { author:['One'] }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -29,7 +28,7 @@ describe('general translator unit', function() {
                 lastName: 'One'
             }]
         };
-        result = gen.generalWithAuthor.author.translate({}, {author:'One'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, { author:'One' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -41,7 +40,7 @@ describe('general translator unit', function() {
                 lastName: 'One Two'
             }]
         };
-        result = gen.generalWithAuthor.author.translate({}, {author:'One Two'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, { author:'One Two' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -53,7 +52,7 @@ describe('general translator unit', function() {
                 lastName: 'One Two Three'
             }]
         };
-        result = gen.generalWithAuthor.author.translate({}, {author:'One Two Three'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, { author:'One Two Three' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -65,7 +64,7 @@ describe('general translator unit', function() {
                 lastName: 'J.K. Rowling ; illustrations by Mary GrandPré.'
             }]
         };
-        result = gen.generalWithAuthor.author.translate({}, {author:'J.K. Rowling ; illustrations by Mary GrandPré.'}, 'author');
+        result = gen.generalWithAuthor.author.translate({}, { author:'J.K. Rowling ; illustrations by Mary GrandPré.' }, 'author');
         assert.deepEqual(result, expected);
     });
 });

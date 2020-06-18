@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -75,7 +74,7 @@ describe('Exports into non mediawiki formats: ', function() {
                 assert.deepEqual(res.body[0].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.deepEqual(res.body[0].date, '2009', 'Unexpected value; expected 2009, got ' + res.body[0].date);
-                assert.isInArray(res.body[0].identifiers.isbn13, '978-0-596-51979-7' );
+                assert.isInArray(res.body[0].identifiers.isbn13, '978-0-596-51979-7');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });

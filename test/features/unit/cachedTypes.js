@@ -171,6 +171,4 @@ describe('type schema data functions', function() {
 
     });
 
-
-
 });

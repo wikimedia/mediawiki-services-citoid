@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -15,7 +14,7 @@ describe('Tests using a very short timeout - all use crossRef - zotero disabled'
 
     this.timeout(20000);
 
-    before(function () { return server.start({timeout:1, zotero:false}); });
+    before(function () { return server.start({ timeout:1, zotero:false }); });
 
     describe('DOI  ', function() {
         it('DOI- missing PMCID', function() {

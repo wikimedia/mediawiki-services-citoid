@@ -1,7 +1,6 @@
 'use strict';
 
 
-var preq   = require('preq');
 var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 
@@ -29,7 +28,6 @@ describe('encoding', function() {
     });
 
     it('javascript in doi', function() {
-        var format = 'badformat';
         return server.query('10.1000/f<script>alert(1);</script>', 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -64,13 +62,13 @@ describe('encoding', function() {
     });
 
     it('spaces in url missing http://', function() {
-        var url = 'www.example.com/spaces in url'
+        var url = 'www.example.com/spaces in url';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
         }, function(err) {
             assert.status(err, 404);
-            assert.deepEqual(err.body.Error, 'Unable to load URL ' + 'http://' + encodeURI(url));
+            assert.deepEqual(err.body.Error, 'Unable to load URL http://' + encodeURI(url));
         });
     });
 

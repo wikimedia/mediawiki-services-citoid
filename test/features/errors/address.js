@@ -1,9 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
-
+const assert = require('../../utils/assert.js');
+const server = require('../../utils/server.js');
 
 if (!server.stopHookAdded) {
     server.stopHookAdded = true;
@@ -52,80 +51,8 @@ describe('address restrictions', function() {
         });
     });
 
-    it('redir-to-zot-supported', function() {
-        return server.query('https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 200);
-        });
-    });
-
-    it('redir-to-zot-unsupported', function() {
-        return server.query('https://httpbin.org/redirect-to?url=http://example.com', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 200);
-        });
-    });
-
     it('private ip', function() {
         return server.query('http://192.168.1.2', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-        });
-    });
-
-
-    it('redir-to-private', function() {
-        return server.query('https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-        });
-    });
-
-    it('redir-to-redir-private', function() {
-        return server.query('https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-        });
-    });
-
-    it('redir-to-redir-to-redir-to-private', function() {
-        return server.query('https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 400);
-        }, function(err) {
-            assert.status(err, 400);
-        });
-    });
-
-    it('five-redirect-max-by-default-under', function() {
-        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
-        return server.query(url, 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 200);
-        }, function(err) {
-            assert.status(err, 200);
-        });
-    });
-
-    it('five-redirect-max-by-default-equal', function() {
-        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
-        return server.query(url, 'mediawiki', 'en')
-        .then(function(res) {
-            assert.status(res, 200);
-        }, function(err) {
-            assert.status(err, 200);
-            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
-        });
-    });
-
-    it('five-redirect-max-by-default-over', function() {
-        return server.query('https://httpbin.org/redirect/6', 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 400);
         }, function(err) {
@@ -148,4 +75,3 @@ describe('address restrictions', function() {
     });
 
 });
-

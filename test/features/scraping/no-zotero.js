@@ -222,7 +222,6 @@ describe('Zotero service down or disabled: ', function() {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Pinlig for Skåber');
                 assert.deepEqual(res.body[0].itemType, 'newspaperArticle');
-                assert.deepEqual(res.body[0].publicationTitle, 'Aftenposten');
             });
         });
 

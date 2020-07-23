@@ -40,13 +40,13 @@ describe('uses zotero', function() {
             });
         });
 
-        // Worse results from Zotero
+        // Webpage from zotero
         it('itemType', function() {
             return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function(res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Pinlig for Skåber');
                 assert.deepEqual(res.body[0].itemType, 'webpage');
-                assert.deepEqual(res.body[0].websiteTitle, 'Aftenposten');
+                assert.deepEqual(res.body[0].websiteTitle, 'www.aftenposten.no');
             });
         });
 

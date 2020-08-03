@@ -102,7 +102,7 @@ paths:
           request:
             query:
               format: mediawiki
-              search: https://wikimediafoundation.org/404
+              search: https://en.wikipedia.org/404
             headers:
               accept-language: en
           response:

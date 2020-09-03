@@ -63,7 +63,7 @@ describe('ISBN tests: ', function() {
                 assert.checkZotCitation(res, 'Eyewitness DVD.'); // Not great
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
         //        assert.deepEqual(!!res.body[0].author, true, 'Missing author');
-                assert.deepEqual(res.body[0].publisher, 'DK Pub.', 'Unexpected value; expected DK Pub., got ' + res.body[0].publisher);
+                assert.deepEqual(res.body[0].publisher, 'DK Publishing', 'Unexpected value; expected DK Pub., got ' + res.body[0].publisher);
         //        assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '978-0-7566-6296-7');

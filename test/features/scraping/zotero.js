@@ -58,7 +58,7 @@ describe('uses zotero', function() {
             });
         });
 
-        it('has DOI from dublinCore identifier field', function() {
+        it('bad DOI from zotero', function() {
             return server.query('http://eprints.gla.ac.uk/113711/').then(function(res) {
                 assert.checkZotCitation(res, 'Zika virus: a previously slow pandemic spreads rapidly through the Americas');
                 assert.deepEqual(res.body[0].DOI, '10.1099/jgv.0.000381');
@@ -120,7 +120,7 @@ describe('uses zotero', function() {
         it('Has PMCID, PMID, DOI', function() {
             return server.query('https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(res.body[0].PMCID, '1690724');
+                assert.deepEqual(res.body[0].PMCID, 'PMC1690724');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -149,7 +149,7 @@ describe('uses zotero', function() {
         it('DOI has poor resolving time', function() {
             return server.query('10.1098/rspb.2000.1188').then(function(res) {
                 assert.checkZotCitation(res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency');
-                assert.deepEqual(res.body[0].PMCID, '1690724', 'Missing PMCID');
+                assert.deepEqual(res.body[0].PMCID, 'PMC1690724', 'Missing PMCID');
                 assert.deepEqual(!!res.body[0].PMID, true, 'Missing PMID');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -161,7 +161,7 @@ describe('uses zotero', function() {
             return server.query('10.1017/s0305004100013554').then(function(res) {
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -171,7 +171,7 @@ describe('uses zotero', function() {
             return server.query('DOI: 10.1017/s0305004100013554').then(function(res) {
                 assert.checkZotCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });

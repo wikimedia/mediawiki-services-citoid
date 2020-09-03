@@ -44,7 +44,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.deepEqual(res.body[0].PMCID, '3605911');
+                assert.deepEqual(res.body[0].PMCID, 'PMC3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
@@ -257,7 +257,7 @@ describe('Zotero service down or disabled: ', function() {
             return server.query('10.1017/s0305004100013554').then(function(res) {
                 assert.checkCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].pages, '555', 'Wrong pages item; expected 555, got ' + res.body[0].pages);
+                assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
             });
         });
@@ -304,7 +304,7 @@ describe('Zotero service down or disabled: ', function() {
                 assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.isInArray(res.body[0].source, 'PubMed');
-                assert.deepEqual(res.body[0].PMCID, '3605911');
+                assert.deepEqual(res.body[0].PMCID, 'PMC3605911');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(!!res.body[0].ISSN, true, 'Should contain ISSN'); // From highwire
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);

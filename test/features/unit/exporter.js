@@ -7,6 +7,7 @@ describe('lib/Exporter.js functions: ', function() {
 
     var result;
     var expected;
+    var input;
 
     describe('validation functions: ', function() {
         describe('fixURL: ', function() {
@@ -192,6 +193,29 @@ describe('lib/Exporter.js functions: ', function() {
                 date = '1975-02';
                 expected = { date: '1975-02' };
                 result = exporter.fixDate({ date:date });
+                assert.deepEqual(result, expected);
+            });
+        });
+
+        describe('fixDOI: ', function() {
+            it('Correctly gets DOI from full citation', function() {
+                input = 'Gatherer, D.  and Kohl, A.     (2016)  Zika virus: a previously slow pandemic spreads rapidly through the Americas.   Journal of General Virology , 97,  pp. 269-273.   (doi: 10.1099/jgv.0.000381 ) (PMID:26684466)"';
+                expected = { DOI: '10.1099/jgv.0.000381' };
+                result = exporter.fixDOI({ DOI:input });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Correctly removes DOI that is not a DOI', function() {
+                input = '10.1099gv.0.000381 ) (PMID:26684466)"';
+                expected = {};
+                result = exporter.fixDOI({ DOI:input });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Correctly gets DOI when only DOI is present', function() {
+                input = '10.1099/jgv.0.000381';
+                expected = { DOI: '10.1099/jgv.0.000381' };
+                result = exporter.fixDOI({ DOI:input });
                 assert.deepEqual(result, expected);
             });
         });

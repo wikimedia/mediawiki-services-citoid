@@ -12,7 +12,7 @@ if (!server.stopHookAdded) {
 
 describe('Native scraper: ', function() {
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
     it('doi in url with query parameters - uses crossRef', function() {

@@ -14,7 +14,7 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     this.timeout(40000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     describe(' using zotero results', function() {
 
@@ -41,7 +41,7 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     describe(' using native scraper', function() {
 
-        before(function () { return server.start({ zotero:false }); });
+    before(() => server.start({ zotero:false }));
 
         it('webpage', function() {
             return server.query('http://example.com',

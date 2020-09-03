@@ -14,7 +14,7 @@ describe('Languages: ', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     describe('Using zotero results: ', function() {
         it('invalid language code', function() {
@@ -55,7 +55,7 @@ describe('Languages: ', function() {
 
     describe('Using native scraper: ', function() {
 
-        before(function () { return server.start({ zotero:false }); });
+        before(() => server.start({ zotero:false }));
 
         it('open graph locale converted to language code', function() {
             return server.query('https://www.pbs.org/newshour/nation/care-peoples-kids/').then(function(res) {

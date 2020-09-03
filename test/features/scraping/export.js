@@ -14,7 +14,7 @@ describe('Exports into non mediawiki formats: ', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     describe('Exporting to bibtex: ', function() {
         it('bibtex from scraper', function() {

@@ -20,9 +20,9 @@ describe('mock Zotero service that cannot export', function() {
 
     // Give Zotero port which is it is not running from-
     // Mimics Zotero being down.
-    before(function () {
+    before(() => {
         zotero.start(1968); // Start mock zotero server
-        return server.start({ zoteroPort:1968 }); // Start citoid server using mock Zotero location
+        server.start({ zoteroPort:1968 }); // Start citoid server using mock Zotero location
     });
 
     it('Get error for bibtex export', function() {

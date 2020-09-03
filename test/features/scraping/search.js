@@ -15,12 +15,11 @@ describe('Search results where we expect multiple results', function() {
 
     describe('Default config (worldcat disabled)', function() {
 
-        before(function () {
-            return server.start({
+        before(() => server.start({
                 wskey:false,
                 zotero:true
-            });
-        });
+            })
+        );
 
         // Previously gave error; now passes to search
         it('spaces in url missing http:// and www', function() {
@@ -114,11 +113,7 @@ describe('Search results where we expect multiple results', function() {
     // WSKEY required from worldcat to run these tests
     describe.skip('worldcat enabled', function() {
 
-        before(function () {
-            return server.start({
-                zotero:true
-            });
-        });
+        before(() => server.start({ zotero:true }));
 
         describe('mediawiki format', function() {
             // Previously gave error; now passes to search

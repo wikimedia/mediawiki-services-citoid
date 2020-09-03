@@ -21,12 +21,11 @@ describe('ISBN tests: ', function() {
     // Use zotero search endpoint for isbn
     describe('zotero isbn only: ', function() {
 
-        before(function () {
-            return server.start({
-                    wskey:false,
-                    zotero:true
-                });
-        });
+        before(() => server.start({
+                wskey:false,
+                zotero:true
+            })
+        );
 
         it('valid ISBN', function() {
             return server.query('978-0-596-51979-7').then(function(res) {
@@ -98,12 +97,11 @@ describe('ISBN tests: ', function() {
     // https://platform.worldcat.org/wskey/keys/manage
     describe.skip('worldcat search api only: ', function() {
 
-        before(function () {
-            return server.start({
-                    wskey:false,
-                    zotero:true
-                });
-        });
+        before(() => server.start({
+                wskey:false,
+                zotero:true
+            })
+        );
 
         it('book ISBN with dashes, type Text', function() {
             return server.query('978-0-596-51979-7').then(function(res) {

@@ -13,7 +13,7 @@ describe('address restrictions', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     it('http://localhost:1970', function() {
         return server.query('http://localhost:1970', 'mediawiki', 'en')

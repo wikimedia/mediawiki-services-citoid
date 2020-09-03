@@ -14,7 +14,7 @@ describe('encoding', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     it('javascript in format', function() {
         return server.query('http://www.example.com', 'f<script>alert(1);</script>', 'en')

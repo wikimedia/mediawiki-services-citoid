@@ -15,7 +15,7 @@ describe('errors', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     it('missing search in query', function() {
         return preq.get({

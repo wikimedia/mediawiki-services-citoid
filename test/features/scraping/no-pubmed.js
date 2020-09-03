@@ -14,7 +14,7 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start({ pubmed:false }); });
+    before(() => server.start({ pubmed:false }));
 
     describe('PMID ', function() {
         // PMID on NIH website that is not found in the id converter api
@@ -220,9 +220,7 @@ describe('noPubmed.js - Defaults conf to true if pubmed undefined', function() {
 
     this.timeout(20000);
 
-    before(function () {
-        return server.start({ pubmed:undefined });
-    });
+    before(() => server.start({ pubmed:undefined }));
 
     it('PMCID available from NIH DB only', function() {
         return server.query('http://rspb.royalsocietypublishing.org/content/267/1453/1627').then(function(res) {

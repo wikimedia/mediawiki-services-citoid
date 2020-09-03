@@ -14,7 +14,7 @@ describe('uses zotero', function() {
 
     this.timeout(40000);
 
-    before(function () { return server.start({ pubmed:true }); });
+    before(() => server.start({ pubmed:true }));
 
     describe('URL ', function() {
         it('example domain', function() {

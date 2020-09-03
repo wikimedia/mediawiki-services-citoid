@@ -15,7 +15,7 @@ describe('redirects', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     // httpbin no longer live, so just mock its behaviour since all it does here is redirect anyway.
     let redirector = () => {

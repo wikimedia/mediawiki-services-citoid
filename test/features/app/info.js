@@ -15,7 +15,7 @@ describe('service information', function() {
 
     this.timeout(20000);
 
-    before(function () { return server.start(); });
+    before(() => server.start());
 
     // common URI prefix for info tests
     var infoUri = server.config.uri + '_info/';

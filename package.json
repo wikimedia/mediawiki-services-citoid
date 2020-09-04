@@ -34,7 +34,7 @@
     "service-runner": "^2.7.7",
     "striptags": "3.0.1",
     "swagger-router": "^0.7.3",
-    "swagger-ui": "git+https://github.com/wikimedia/swagger-ui#master",
+    "swagger-ui-dist": "^3.22.1",
     "tough-cookie": "2.3.3",
     "xml2js": "0.4.19"
   },

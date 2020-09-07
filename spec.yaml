@@ -67,13 +67,14 @@ paths:
         - name: format
           in: query
           description: "The format to use for the resulting citation data"
-          type: string
-          enum:
-            - mediawiki
-            - mediawiki-basefields
-            - zotero
-            - bibtex
-            - wikibase
+          schema:
+            type: string
+            enum:
+              - mediawiki
+              - mediawiki-basefields
+              - zotero
+              - bibtex
+              - wikibase
           required: true
         - name: search
           in: query
@@ -81,11 +82,13 @@ paths:
             URL of an article, DOI, ISBN, PMCID or PMID in the URL-encoded format.
             Note that on the Swagger-UI doc page you don't need to URI-encode the
             parameter manually, it will be done by the docs engine.
-          type: string
+          schema:
+            type: string
           required: true
         - name: Accept-Language
           in: header
-          type: string
+          schema:
+            type: string
           required: false
           description: >
             Provides citation metadata in the requested language, if it is available.
@@ -116,23 +119,44 @@ paths:
       responses:
         '200':
           description: The citation data in the requested format
-          schema:
-            required:
-              - title
-              - url
-              - itemType
-            properties:
-              itemType:
-                type: string
-              title:
-                type: string
-              url:
-                type: string
+          content:
+            application/json; charset=utf-8;:
+              schema:
+                $ref: '#/components/schemas/result'
+            application/x-bibtex; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/result'
         '404':
           description: Citation data was not found.
-          schema:
-            required:
-              - Error
-            properties:
-              Error:
-                type: string
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/problem'
+components:
+  schemas:
+    result:
+      required:
+        - title
+        - url
+        - itemType
+      type: object
+      properties:
+        itemType:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+    problem:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string

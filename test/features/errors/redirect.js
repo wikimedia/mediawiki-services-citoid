@@ -2,20 +2,17 @@
 
 
 const assert = require('../../utils/assert.js');
-const server = require('../../utils/server.js');
+const Server = require('../../utils/server.js');
 const nock   = require('nock');
 const parse  = require('url').parse;
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('redirects', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     // httpbin no longer live, so just mock its behaviour since all it does here is redirect anyway.
     let redirector = () => {

@@ -1,100 +1,139 @@
 'use strict';
 
 
-const BBPromise = require('bluebird');
-const ServiceRunner = require('service-runner');
-const logStream = require('./logStream');
-const fs = require('fs');
-const assert = require('./assert');
-const yaml = require('js-yaml');
 const extend = require('extend');
-const preq = require('preq');
+const fs = require('fs');
+const preq   = require('preq');
+const yaml = require('js-yaml');
+
+const P = require('bluebird');
+const TestRunner = require('service-runner/test/TestServer');
 
 
-// set up the configuration
-let config = {
-    conf: yaml.safeLoad(fs.readFileSync(`${__dirname}/../../config.yaml`))
-};
-// build the API endpoint URI by supposing the actual service
-// is the last one in the 'services' list in the config file
-const myServiceIdx = config.conf.services.length - 1;
-const myService = config.conf.services[myServiceIdx];
-config.uri = `http://localhost:${myService.conf.port}/`;
-config.q_uri = config.uri + 'api';
-config.service = myService;
-// no forking, run just one process when testing
-config.conf.num_workers = 0;
-// have a separate, in-memory logger only
-config.conf.logging = {
-    name: 'test-log',
-    level: 'trace',
-    stream: logStream()
-};
-// make a deep copy of it for later reference
-const origConfig = extend(true, {}, config);
+class TestCitoidRunner extends TestRunner {
+    constructor(configPath = `${__dirname}/../../config.yaml`) {
+        super(configPath);
+        this._spec = null;
 
-module.exports.stop = () => { return BBPromise.resolve(); };
-let options = null;
-const runner = new ServiceRunner();
-
-
-function start(_options) {
-
-    _options = _options || {};
-
-    if (!assert.isDeepEqual(options, _options)) {
-        console.log('starting test server');
-        return module.exports.stop().then(() => {
-            options = _options;
-            // set up the config
-            config = extend(true, {}, origConfig);
-            // Respects 'undefined' in the options object
-            config.conf.services[myServiceIdx].conf = Object.assign({}, config.conf.services[myServiceIdx].conf, options);
-            return runner.start(config.conf)
-            .then((serviceReturns) => {
-                module.exports.stop = () => {
-                    console.log('stopping test server');
-                    serviceReturns.forEach(servers =>
-                        servers.forEach(server =>
-                            server.shutdown()));
-                    return runner.stop().then(() => {
-                        module.exports.stop = () => {
-                            return BBPromise.resolve();
-                        };
-                    });
-                };
-                return true;
-            });
-        });
-    } else {
-        return BBPromise.resolve();
+        // set up the inital configuration
+        this.originalConfig = {
+            conf: yaml.safeLoad(fs.readFileSync(`${__dirname}/../../config.yaml`))
+        };
+        this.originalConfig.conf.num_workers = 0;
+        this.originalConfig.conf.logging = {}; // Dummy logger, suppresses logging during tests
     }
 
-}
+    /**
+     * Overwrites super method in order to provide config vars on start
+     * @param {Object} _options optional config variables
+     * @return {ServiceRunner}
+     */
+    start(_options) {
+        let options = _options || {};
+        let config = extend(true, {}, this.originalConfig); // Deep copy original config
+        const myServiceIdx = config.conf.services.length - 1;
 
+        config.conf.services[myServiceIdx].conf = Object.assign({}, config.conf.services[myServiceIdx].conf, options);
 
-function query(search, format, language) {
-
-    if (!format) {
-        format = 'mediawiki';
-    }
-    if (!language) {
-        language = 'en';
-    }
-
-    return preq.get({
-        uri: config.q_uri,
-        query: {
-            format: format,
-            search: search,
-        },
-        headers: {
-            'accept-language': language
+        if (this._running) {
+            console.log('The test server is already running. Skipping start.');
+            return P.resolve(this._services);
         }
-    });
+
+        return this._runner.start(config.conf)
+        .tap((result) => {
+            this._running = true;
+            this._services = result;
+        })
+        .catch((e) => {
+            if (this._startupRetriesRemaining > 0 && /EADDRINUSE/.test(e.message)) {
+                console.log('Execution of the previous test might have not finished yet. Retry startup');
+                this._startupRetriesRemaining--;
+                return P.delay(1000).then(() => this.start());
+            }
+            throw e;
+        });
+    }
+
+    /**
+     * Copied config function from service-template-node. Only available after service starts.
+     * @return {Object} config
+     */
+    get config() {
+        if (!this._running) {
+            throw new Error('Accessing test service config before starting the service');
+        }
+
+        // build the API endpoint URI by supposing the actual service
+        // is the last one in the 'services' list in the config file
+        const myServiceIdx = this._runner._impl.config.services.length - 1;
+        const myService = this._runner._impl.config.services[myServiceIdx];
+        const uri = `http://localhost:${myService.conf.port}/`;
+        const qURI = `${uri}api`;
+
+        if (!this._spec) {
+            // We only want to load this once.
+            preq.get(`${uri}?spec`)
+            .then((res) => {
+                if (!res.body) {
+                    throw new Error('Failed to get spec');
+                }
+                // save a copy
+                this._spec = res.body;
+            })
+            .catch((err) => {
+                // this error will be detected later, so ignore it
+                this._spec = { paths: {}, 'x-default-params': {} };
+            })
+            .then(() => {
+                return {
+                    uri,
+                    qURI,
+                    service: myService,
+                    conf: this._runner._impl.config,
+                    spec: this._spec
+                };
+            });
+        }
+
+        return {
+            uri,
+            qURI,
+            service: myService,
+            conf: this._runner._impl.config,
+            spec: this._spec
+        };
+    }
+
+    /**
+     * Wrapper to query the test server api
+     * @param  {string} search     search input
+     * @param  {string} format     requested format
+     * @param  {string} language   language code
+     * @return {Promise}
+     */
+    query(search, format, language) {
+
+        if (!format) {
+            format = 'mediawiki';
+        }
+        if (!language) {
+            language = 'en';
+        }
+
+        return preq.get({
+            uri: this.config.qURI,
+            query: {
+                format: format,
+                search: search,
+            },
+            headers: {
+                'accept-language': language
+            }
+        });
+
+    }
 
 }
 
-module.exports.config = config;
-module.exports.start  = start;
-module.exports.query  = query;
+module.exports = TestCitoidRunner;

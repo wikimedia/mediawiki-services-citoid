@@ -1,20 +1,16 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('Exports into non mediawiki formats: ', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     describe('Exporting to bibtex: ', function() {
         it('bibtex from scraper', function() {

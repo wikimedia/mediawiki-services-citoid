@@ -1,22 +1,20 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('Languages: ', function() {
 
     this.timeout(20000);
-
-    before(() => server.start());
+    const server = new Server();
 
     describe('Using zotero results: ', function() {
+
+        before(() => server.start());
+        after(() => server.stop());
+
         it('invalid language code', function() {
             return server.query('http://www.ncbi.nlm.nih.gov/pubmed/23555203').then(function(res) {
                 assert.status(res, 200);
@@ -56,6 +54,7 @@ describe('Languages: ', function() {
     describe('Using native scraper: ', function() {
 
         before(() => server.start({ zotero:false }));
+        after(() => server.stop());
 
         it('open graph locale converted to language code', function() {
             return server.query('https://www.pbs.org/newshour/nation/care-peoples-kids/').then(function(res) {

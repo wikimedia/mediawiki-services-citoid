@@ -7,12 +7,7 @@ const assert = require('../../../utils/assert.js');
 const CrossRefService = require('../../../../lib/external-apis/CrossRefService.js');
 const Logger = require('../../../../node_modules/service-runner/lib/logger.js');
 const logStream = require('../../../utils/logStream.js');
-const server = require('../../../utils/server.js');
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
 

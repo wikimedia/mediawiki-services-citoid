@@ -1,63 +1,64 @@
 'use strict';
 
+const preq   = require('preq');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-var preq   = require('preq');
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
-
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
-
-describe('service information', function() {
+describe('service information', function () {
 
     this.timeout(20000);
 
-    before(() => server.start());
+    let infoUri = null;
 
-    // common URI prefix for info tests
-    var infoUri = server.config.uri + '_info/';
+    const server = new Server();
+
+    before(() => {
+        return server.start()
+        .then(() => {
+            infoUri = `${server.config.uri}_info/`;
+        });
+    });
+
+    after(() => server.stop());
 
     // common function used for generating requests
     // and checking their return values
     function checkRet(fieldName) {
         return preq.get({
             uri: infoUri + fieldName
-        }).then(function(res) {
+        }).then((res) => {
             // check the returned Content-Type header
             assert.contentType(res, 'application/json');
             // the status as well
             assert.status(res, 200);
             // finally, check the body has the specified field
             assert.notDeepEqual(res.body, undefined, 'No body returned!');
-            assert.notDeepEqual(res.body[fieldName], undefined, 'No ' + fieldName + ' field returned!');
+            assert.notDeepEqual(res.body[fieldName], undefined, `No ${fieldName} field returned!`);
         });
     }
 
-    it('should get the service name', function() {
+    it('should get the service name', () => {
         return checkRet('name');
     });
 
-    it('should get the service version', function() {
+    it('should get the service version', () => {
         return checkRet('version');
     });
 
-    it('should redirect to the service home page', function() {
+    it('should redirect to the service home page', () => {
         return preq.get({
-            uri: infoUri + 'home',
+            uri: `${infoUri}home`,
             followRedirect: false
-        }).then(function(res) {
+        }).then((res) => {
             // check the status
             assert.status(res, 301);
         });
     });
 
-    it('should get the service info', function() {
+    it('should get the service info', () => {
         return preq.get({
             uri: infoUri
-        }).then(function(res) {
+        }).then((res) => {
             // check the status
             assert.status(res, 200);
             // check the returned Content-Type header
@@ -70,6 +71,4 @@ describe('service information', function() {
             assert.notDeepEqual(res.body.home, undefined, 'No home field returned!');
         });
     });
-
 });
-

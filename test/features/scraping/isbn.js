@@ -6,26 +6,20 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('ISBN tests: ', function() {
 
     this.timeout(40000);
+    const server = new Server();
 
     // Use zotero search endpoint for isbn
     describe('zotero isbn only: ', function() {
 
-        before(() => server.start({
-                wskey:false,
-                zotero:true
-            })
-        );
+        before(() => server.start({ wskey:false }));
+        after(() => server.stop());
 
         it('valid ISBN', function() {
             return server.query('978-0-596-51979-7').then(function(res) {
@@ -97,11 +91,8 @@ describe('ISBN tests: ', function() {
     // https://platform.worldcat.org/wskey/keys/manage
     describe.skip('worldcat search api only: ', function() {
 
-        before(() => server.start({
-                wskey:false,
-                zotero:true
-            })
-        );
+        before(() => server.start({ zotero:false }));
+        after(() => server.stop());
 
         it('book ISBN with dashes, type Text', function() {
             return server.query('978-0-596-51979-7').then(function(res) {

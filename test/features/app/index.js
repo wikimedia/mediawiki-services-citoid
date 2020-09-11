@@ -1,27 +1,25 @@
 'use strict';
 
 
-var preq   = require('preq');
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+const preq   = require('preq');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('express app', function() {
 
     this.timeout(20000);
+    const server = new Server();
 
     before(() => server.start());
 
-    it('get robots.txt', function() {
+    after(() => server.stop());
+
+    it('should get robots.txt', () => {
         return preq.get({
-            uri: server.config.uri + 'robots.txt'
-        }).then(function(res) {
-            assert.status(res, 200);
+            uri: `${server.config.uri}robots.txt`
+        }).then((res) => {
+            assert.deepEqual(res.status, 200);
             assert.deepEqual(res.body, 'User-agent: *\nDisallow: /\n');
         });
     });
@@ -37,20 +35,27 @@ describe('express app', function() {
         });
     });
 
-    it('should set CORS headers', function() {
+    it('should set CORS headers', () => {
+        if (server.config.service.conf.cors === false) {
+            return true;
+        }
         return preq.get({
-            uri: server.config.uri + 'robots.txt'
-        }).then(function(res) {
+            uri: `${server.config.uri}robots.txt`
+        }).then((res) => {
             assert.deepEqual(res.status, 200);
             assert.deepEqual(res.headers['access-control-allow-origin'], '*');
-            assert.notDeepEqual(res.headers['access-control-allow-headers'], undefined);
+            assert.deepEqual(!!res.headers['access-control-allow-headers'], true);
+            assert.deepEqual(!!res.headers['access-control-expose-headers'], true);
         });
     });
 
-    it('should set CSP headers', function() {
+    it('should set CSP headers', () => {
+        if (server.config.service.conf.csp === false) {
+            return true;
+        }
         return preq.get({
-            uri: server.config.uri + 'robots.txt'
-        }).then(function(res) {
+            uri: `${server.config.uri}robots.txt`
+        }).then((res) => {
             assert.deepEqual(res.status, 200);
             assert.deepEqual(res.headers['x-xss-protection'], '1; mode=block');
             assert.deepEqual(res.headers['x-content-type-options'], 'nosniff');

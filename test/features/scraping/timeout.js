@@ -2,19 +2,18 @@
 
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('Tests using a very short timeout - all use crossRef - zotero disabled', function() {
 
     this.timeout(20000);
-
-    before(() => server.start({ timeout:1, zotero:false }));
+    const server = new Server();
+    before(() => server.start({
+        zotero:false,
+        timeout:1
+    }));
+    after(() => server.stop());
 
     describe('DOI  ', function() {
         it('DOI- missing PMCID', function() {

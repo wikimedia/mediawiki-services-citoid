@@ -3,23 +3,19 @@
 
 var preq   = require('preq');
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('errors', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     it('missing search in query', function() {
         return preq.get({
-            uri: server.config.q_uri,
+            uri: server.config.qURI,
             query: {
                 format: 'mediawiki'
             }
@@ -32,7 +28,7 @@ describe('errors', function() {
 
     it('missing format in query', function() {
         return preq.get({
-            uri: server.config.q_uri,
+            uri: server.config.qURI,
             query: {
                 search: '123456'
             }
@@ -46,7 +42,7 @@ describe('errors', function() {
     it('bad format in query', function() {
         var format = 'badformat';
         return preq.get({
-            uri: server.config.q_uri,
+            uri: server.config.qURI,
             query: {
                 search: '123456',
                 format: format

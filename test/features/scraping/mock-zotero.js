@@ -5,25 +5,22 @@
  */
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 var zotero = require('../../utils/mockZoteroServer.js');
 
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
-
 describe('mock Zotero service that cannot export', function() {
 
-    this.timeout(40000);
+    this.timeout(20000);
+    const server = new Server();
 
     // Give Zotero port which is it is not running from-
     // Mimics Zotero being down.
     before(() => {
         zotero.start(1968); // Start mock zotero server
-        server.start({ zoteroPort:1968 }); // Start citoid server using mock Zotero location
+        return server.start({ zoteroPort:1968 });
     });
+    after(() => server.stop());
 
     it('Get error for bibtex export', function() {
         return server.query('http://www.example.com', 'bibtex', 'en')

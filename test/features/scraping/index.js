@@ -1,18 +1,16 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('Native scraper: ', function() {
 
+    this.timeout(20000);
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
     it('doi in url with query parameters - uses crossRef', function() {

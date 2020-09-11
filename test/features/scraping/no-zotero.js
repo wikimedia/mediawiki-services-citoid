@@ -5,22 +5,20 @@
  */
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('Zotero service down or disabled: ', function() {
 
     describe('unreachable', function() {
 
-        this.timeout(40000);
+        this.timeout(20000);
+        const server = new Server();
 
         // Give Zotero port which is it is not running from-
         // Mimics Zotero being down.
         before(() => server.start({ zoteroPort:1971 }));
+        after(() => server.stop());
 
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
@@ -276,11 +274,11 @@ describe('Zotero service down or disabled: ', function() {
 
     describe('disabled in conf', function() {
 
+        const server = new Server();
         this.timeout(40000);
 
-        // Give Zotero port which is it is not running from-
-        // Mimics Zotero being down.
         before(() => server.start({ zotero:false }));
+        after(() => server.stop());
 
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,

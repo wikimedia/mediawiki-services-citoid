@@ -2,19 +2,15 @@
 
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('encoding', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     it('javascript in format', function() {
         return server.query('http://www.example.com', 'f<script>alert(1);</script>', 'en')

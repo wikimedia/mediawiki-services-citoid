@@ -2,19 +2,15 @@
 
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start({ pubmed:false }));
+    after(() => server.stop());
 
     describe('PMID ', function() {
         // PMID on NIH website that is not found in the id converter api
@@ -219,8 +215,9 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {
 describe('noPubmed.js - Defaults conf to true if pubmed undefined', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start({ pubmed:undefined }));
+    after(() => server.stop());
 
     it('PMCID available from NIH DB only', function() {
         return server.query('http://rspb.royalsocietypublishing.org/content/267/1453/1627').then(function(res) {

@@ -2,24 +2,16 @@
 
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
-
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
+var Server = require('../../utils/server.js');
 
 describe('Search results where we expect multiple results', function() {
 
-
     describe('Default config (worldcat disabled)', function() {
 
-        before(() => server.start({
-                wskey:false,
-                zotero:true
-            })
-        );
+        this.timeout(20000);
+        const server = new Server();
+        before(() => server.start({ wskey:false }));
+        after(() => server.stop());
 
         // Previously gave error; now passes to search
         it('spaces in url missing http:// and www', function() {
@@ -113,7 +105,10 @@ describe('Search results where we expect multiple results', function() {
     // WSKEY required from worldcat to run these tests
     describe.skip('worldcat enabled', function() {
 
-        before(() => server.start({ zotero:true }));
+        this.timeout(20000);
+        const server = new Server();
+        before(() => server.start());
+        after(() => server.stop());
 
         describe('mediawiki format', function() {
             // Previously gave error; now passes to search

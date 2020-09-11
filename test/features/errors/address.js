@@ -2,18 +2,15 @@
 
 
 const assert = require('../../utils/assert.js');
-const server = require('../../utils/server.js');
+const Server = require('../../utils/server.js');
 
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('address restrictions', function() {
 
     this.timeout(20000);
-
+    const server = new Server();
     before(() => server.start());
+    after(() => server.stop());
 
     it('http://localhost:1970', function() {
         return server.query('http://localhost:1970', 'mediawiki', 'en')

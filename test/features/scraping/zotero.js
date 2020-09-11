@@ -2,19 +2,15 @@
 
 
 var assert = require('../../utils/assert.js');
-var server = require('../../utils/server.js');
+var Server = require('../../utils/server.js');
 
-
-if (!server.stopHookAdded) {
-    server.stopHookAdded = true;
-    after(() => server.stop());
-}
 
 describe('uses zotero', function() {
 
-    this.timeout(40000);
-
+    this.timeout(20000);
+    const server = new Server();
     before(() => server.start({ pubmed:true }));
+    after(() => server.stop());
 
     describe('URL ', function() {
         it('example domain', function() {

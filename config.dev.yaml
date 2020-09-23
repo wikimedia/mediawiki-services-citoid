@@ -78,6 +78,8 @@ services:
       mailto: example@example.com
       # Force certain requests to return with partial data using this timeout in milliseconds
       timeout: false
+      # Max JSON POST body size limit.
+      # max_body_size: 100kb
       # the template used for contacting the MW API
       mwapi_req:
         method: post

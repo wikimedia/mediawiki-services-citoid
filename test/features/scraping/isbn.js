@@ -101,7 +101,7 @@ describe('ISBN tests: ', function() {
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
                 assert.deepEqual(res.body[0].author, [['', 'Barrett, Daniel J.']], 'Unexpected value:' + res.body[0].author);
-                assert.deepEqual(res.body[0].publisher, 'O\'Reilly', 'Unexpected value; expected O\'Reilly, got ' + res.body[0].publisher);
+                assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
                 // assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place); // Not currently working with Worldcat Search API - not present in results
                 // assert.deepEqual(res.body[0].edition, '1st ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition); // Not currently working with Worldcat Search API - present in description tag
                 assert.deepEqual(res.body[0].date, '2009', 'Unexpected value; expected 2009, got ' + res.body[0].date);

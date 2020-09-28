@@ -51,26 +51,26 @@ describe('Search results where we expect multiple results', function() {
         it('Open search for Schrodinger', function() {
             return server.query('E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)').then(function(res) {
                 assert.checkCitation(res, 'Discussion of Probability Relations between Separated Systems');
-                assert.deepEqual(res.body.length, 1); // One from Crossref; Empty results from worldcat for some reason
+                assert.deepEqual(res.body.length, 1); // One from Crossref; Empty results from worldcat as disabled
             });
         });
 
         it('Open search containing <> works; but gets wrong results from crossRef', function() {
             return server.query('Title. Available at: <http://www.example.com>. Accessed on May 19, 1998.').then(function(res) {
                 assert.checkCitation(res);
-                assert.deepEqual(res.body.length, 2); // One from url, one from Crossref; Empty results from Worldcat for some reason
+                assert.deepEqual(res.body.length, 2); // One from url, one from Crossref; Empty results from Worldcat as disabled
             });
         });
 
         it('Open search with www but no protocol', function() {
             return server.query('Title. Available at: <www.example.com>. Accessed on May 19, 1998.').then(function(res) {
-                assert.checkCitation(res);
-                assert.deepEqual(res.body.length, 2); // One from Crossref; Empty results from Worldcat for some reason
+                assert.checkZotCitation(res);
+                assert.deepEqual(res.body.length, 2); // One from url, one from Crossref; Empty results from Worldcat as disabled.
             });
         });
 
         // Timing out due to upstream request response time
-        it.skip('Open search with doi', function() {
+        it('Open search with doi', function() {
             return server.query('Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166').then(function(res) {
                 assert.checkZotCitation(res, 'Data from: The strength of phenotypic selection in natural populations');
                 assert.deepEqual(res.body.length, 1); // One citation from detected DOI

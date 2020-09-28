@@ -58,10 +58,10 @@ services:
       #   - if-match
       #   - user-agent
       #   - x-request-id
-      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
-      zotero: true
       # enable use of NIH PubMed id converter to add pmids and pmcids to citations at the end of a request; defaults to true if undefined
       pubmed: false
+      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      zotero: true
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
       # zotero's server port
@@ -74,7 +74,7 @@ services:
       maxRedirects: 5
       # the user agent to use when issuing requests
       user_agent: citoid-test-env
-      # Contact e-mail address. Used for making crossRef requests
+      # Contact e-mail address. Used for making CrossRef and PubMed requests
       mailto: example@example.com
       # Force certain requests to return with partial data using this timeout in milliseconds
       timeout: false

@@ -23,4 +23,6 @@ pipelines:
         publish:
           image:
             id: '${.imageID}'
-        promote: true
+        promote:
+          - chart: citoid
+

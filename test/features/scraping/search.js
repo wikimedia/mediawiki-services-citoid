@@ -1,8 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 describe('Search results where we expect multiple results', function() {
 
@@ -15,7 +15,7 @@ describe('Search results where we expect multiple results', function() {
 
         // Previously gave error; now passes to search
         it('spaces in url missing http:// and www', function() {
-            var url = 'example.com/spaces in url';
+            const url = 'example.com/spaces in url';
             return server.query(url, 'mediawiki', 'en')
             .then(function(res) {
                 assert.status(res, 200);
@@ -113,7 +113,7 @@ describe('Search results where we expect multiple results', function() {
         describe('mediawiki format', function() {
             // Previously gave error; now passes to search
             it('spaces in url missing http:// and www', function() {
-                var url = 'example.com/spaces in url';
+                const url = 'example.com/spaces in url';
                 return server.query(url, 'mediawiki', 'en')
                 .then(function(res) {
                     assert.status(res, 200);

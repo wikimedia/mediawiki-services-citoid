@@ -1,12 +1,14 @@
+'use strict';
+
 /* Unit tests for the dublinCore translator */
 
-var assert = require('../../../utils/assert.js');
-var dc = require('../../../../lib/translators/dublinCore.js');
+const assert = require('../../../utils/assert.js');
+const dc = require('../../../../lib/translators/dublinCore.js');
 
 describe('dublinCore translator unit', function() {
 
-    var result;
-    var expected;
+    let result;
+    let expected;
 
     it('Creator translate function adds lists of strings', function() {
         expected = {

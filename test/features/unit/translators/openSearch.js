@@ -1,13 +1,15 @@
+'use strict';
+
 /* Unit tests for the xISBN translator */
 
-var assert = require('../../../utils/assert.js');
-var oSearch = require('../../../../lib/translators/openSearch.js');
+const assert = require('../../../utils/assert.js');
+const oSearch = require('../../../../lib/translators/openSearch.js');
 
 describe('openSearch translator unit tests: ', function() {
 
-    var result;
-    var expected;
-    var input = {
+    let result;
+    let expected;
+    const input = {
         author: [ { name: [ 'Barrett, Daniel J.' ] } ],
         title: [ 'MediaWiki' ],
         link: [ { '$': { href: 'http://worldcat.org/oclc/900464810' } } ],

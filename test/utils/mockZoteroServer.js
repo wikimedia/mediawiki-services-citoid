@@ -1,5 +1,7 @@
-var express = require('express');
-var app = express();
+'use strict';
+
+const express = require('express');
+const app = express();
 
 app.post('/export', function(req, res) {
     res.status(500);

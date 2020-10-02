@@ -76,7 +76,7 @@ describe('ISBN tests: ', function() {
         });
 
         it('invalid ISBN', function() {
-            var isbn = '9780596519798';
+            const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
             .then(function(res) {
                 assert.status(res, 404);
@@ -166,7 +166,7 @@ describe('ISBN tests: ', function() {
         });
 
         it('invalid ISBN', function() {
-            var isbn = '9780596519798';
+            const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
             .then(function(res) {
                 assert.status(res, 404);

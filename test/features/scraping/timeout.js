@@ -1,8 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('Tests using a very short timeout - all use crossRef - zotero disabled', function() {

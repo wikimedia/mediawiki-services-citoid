@@ -4,9 +4,9 @@
  * Tests for when Zotero can translate but not export
  */
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
-var zotero = require('../../utils/mockZoteroServer.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
+const zotero = require('../../utils/mockZoteroServer.js');
 
 
 describe('mock Zotero service that cannot export', function() {

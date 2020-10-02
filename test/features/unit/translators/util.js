@@ -1,25 +1,27 @@
+'use strict';
+
 /* Unit tests for the translators/util.js functions */
 
-var assert = require('../../../utils/assert.js');
-var ex = require('../../../../lib/Exporter.js');
-var ut = require('../../../../lib/translators/util/index.js');
+const assert = require('../../../utils/assert.js');
+const ex = require('../../../../lib/Exporter.js');
+const ut = require('../../../../lib/translators/util/index.js');
 
-var makeTranslator = ut.makeTranslator;
-var makePagesTranslator = ut.makePagesTranslator;
-var makeListTranslator = ut.makeListTranslator;
+const makeTranslator = ut.makeTranslator;
+const makePagesTranslator = ut.makePagesTranslator;
+const makeListTranslator = ut.makeListTranslator;
 
-var fixDate = ex.fixDate;
-var fixLang = ex.fixLang;
-var vISBN = ex.validateISBN;
+const fixDate = ex.fixDate;
+const fixLang = ex.fixLang;
+const vISBN = ex.validateISBN;
 
 
 describe('translator utilities: ', function() {
 
-    var result;
-    var expected;
-    var input;
-    var author;
-    var contributor;
+    let result;
+    let expected;
+    let input;
+    let author;
+    let contributor;
 
     describe('makeTranslator function: ', function() {
 
@@ -78,7 +80,7 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly uses issn validate function', function() {
-            var inputISSN = ['1234-5678'];
+            const inputISSN = ['1234-5678'];
             expected = {
                 ISSN: '1234-5678'
             };
@@ -87,8 +89,8 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly adds two issn and one eissn', function() {
-            var inputISSN = ['1111-1111, 4444-4444'];
-            var inputEISSN = ['2222-2222'];
+            const inputISSN = ['1111-1111, 4444-4444'];
+            const inputEISSN = ['2222-2222'];
             expected = {
                 ISSN: '1111-1111, 4444-4444, 2222-2222'
             };
@@ -98,7 +100,7 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly adds two isbn', function() {
-            var inputISBN = ['978-3-16-148410-0', '978-9-99-999999-X'];
+            const inputISBN = ['978-3-16-148410-0', '978-9-99-999999-X'];
             expected = {
                 ISBN: '978-3-16-148410-0, 978-9-99-999999-X'
             };

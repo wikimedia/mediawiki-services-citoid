@@ -32,7 +32,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
 
     describe('polite config', function() {
 
-        let app = {
+        const app = {
             conf: conf.services[0].conf
         };
 
@@ -58,7 +58,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
 
     describe('anonymous config', function() {
 
-        let app = {
+        const app = {
             conf: conf.services[0].conf
         };
 
@@ -84,7 +84,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
 
     describe('open search function', function() {
 
-        let app = {
+        const app = {
             conf: conf.services[0].conf
         };
 
@@ -93,7 +93,7 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function() {
         const crossref = new CrossRefService(app);
 
         it('Gets metadata for open search', function() {
-            let search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
+            const search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
             promise = crossref.search(search, request);
             return promise.then(function(results) {
                 assert.deepEqual(results.DOI, '10.1017/s0305004100013554');

@@ -15,7 +15,7 @@ describe('redirects', function() {
     after(() => server.stop());
 
     // httpbin no longer live, so just mock its behaviour since all it does here is redirect anyway.
-    let redirector = () => {
+    const redirector = () => {
         nock('https://httpbin.org')
         .get('/redirect-to')
         .query(true)
@@ -68,7 +68,7 @@ describe('redirects', function() {
     });
 
     it('five-redirect-max-by-default-under', function() {
-        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
+        const url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 200);
@@ -78,7 +78,7 @@ describe('redirects', function() {
     });
 
     it('five-redirect-max-by-default-equal', function() {
-        var url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
+        const url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 200);

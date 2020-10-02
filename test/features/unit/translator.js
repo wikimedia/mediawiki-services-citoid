@@ -1,3 +1,5 @@
+'use strict';
+
 /* External libraries */
 const meta = require('html-metadata');
 const cheerio = require('cheerio');
@@ -18,7 +20,7 @@ const dc = require('../../../lib/translators/dublinCore.js');
 const gen = require('../../../lib/translators/general.js');
 const og = require('../../../lib/translators/openGraph.js');
 
-/* Static files*/
+/* Static files */
 const movie = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_movie.html'));
 const article = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_article.html'));
 
@@ -40,7 +42,7 @@ const Logger = require('../../../node_modules/service-runner/lib/logger.js');
 const logStream = require('../../utils/logStream.js');
 // const conf = yaml.safeLoad(fs.readFileSync('./config.yaml'));
 
-let app = {
+const app = {
     conf: {}
 };
 
@@ -86,7 +88,7 @@ describe('Tests for Translator.js : ', function() {
                                     assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                                 });
                                 if (citation.creators) {
-                                    for (var c in citation.creators) {
+                                    for (const c in citation.creators) {
                                         result = types.creatorTypesMethods.isValidForType(citation.creators[c].creatorType, itemTypeName);
                                         assert.deepEqual(result, true, 'Citation field "' + citation.creators[c].creatorType + '" is not valid for itemType "' + itemTypeName + '"');
                                     }
@@ -180,7 +182,7 @@ describe('Tests for Translator.js : ', function() {
                             assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                         });
                         if (citation.creators) {
-                            for (var c in citation.creators) {
+                            for (const c in citation.creators) {
                                 result = types.creatorTypesMethods.isValidForType(citation.creators[c].creatorType, itemTypeName);
                                 assert.deepEqual(result, true, 'Citation field "' + citation.creators[c].creatorType + '" is not valid for itemType "' + itemTypeName + '"');
                             }
@@ -194,21 +196,21 @@ describe('Tests for Translator.js : ', function() {
     describe('addItemType function: ', function() {
         it('sets videoRecording itemType', function() {
             return meta.parseAll(movie).then(function(metadata) {
-                let itemType = scraper.addItemType(metadata, {}).itemType;
+                const itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'videoRecording', 'Expected itemType videoRecording, got itemType ' + itemType);
             });
         });
 
         it('sets article itemType', function() {
             return meta.parseAll(article).then(function(metadata) {
-                let itemType = scraper.addItemType(metadata, {}).itemType;
+                const itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'journalArticle', 'Expected itemType journalArticle, got itemType ' + itemType);
             });
         });
 
         it('sets itemType webpage if no relevant metadata available', function() {
-            let metadata = { general:{ title:'Example domain' } };
-            let itemType = scraper.addItemType(metadata, {}).itemType;
+            const metadata = { general:{ title:'Example domain' } };
+            const itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
 
         });
@@ -217,8 +219,8 @@ describe('Tests for Translator.js : ', function() {
     describe('check specific results: ', function() {
         it('sets right info from webpage for general metadata', function() {
             return meta.parseAll(article).then(function(metadata) {
-                let citation = translator.translate({ itemType:'webpage' }, metadata.general, gen.webpage);
-                let expected = {
+                const citation = translator.translate({ itemType:'webpage' }, metadata.general, gen.webpage);
+                const expected = {
                   itemType: "webpage",
                   creators: [
                     {
@@ -237,8 +239,8 @@ describe('Tests for Translator.js : ', function() {
         });
         it('sets right info from webpage for bepress metadata', function() {
             return meta.parseAll(article).then(function(metadata) {
-                let citation = translator.translate({ itemType:'webpage' }, metadata.bePress, bp.webpage);
-                let expected = {
+                const citation = translator.translate({ itemType:'webpage' }, metadata.bePress, bp.webpage);
+                const expected = {
                   itemType: "webpage",
                   creators: [
                     {

@@ -1,17 +1,19 @@
-var assert = require('../../utils/assert.js');
-var exporter = require('../../../lib/Exporter.js');
-var Citation = require('../../../lib/Citation.js');
+'use strict';
+
+const assert = require('../../utils/assert.js');
+const exporter = require('../../../lib/Exporter.js');
+const Citation = require('../../../lib/Citation.js');
 
 
 describe('lib/Exporter.js functions: ', function() {
 
-    var result;
-    var expected;
-    var input;
+    let result;
+    let expected;
+    let input;
 
     describe('validation functions: ', function() {
         describe('fixURL: ', function() {
-            var url;
+            let url;
             it('discards url with no host', function() {
                 url = 'http://www.example.com/path/with/host';
                 expected = { url: url };
@@ -27,7 +29,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('addIDSToCitation: ', function() {
-            var title;
+            let title;
             it('cleans script and html out of title', function() {
                 title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
                 expected = { title: 'falert(1);taggytaggy' };
@@ -37,7 +39,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('stripCitation:', function() {
-            var title;
+            let title;
             it('cleans script and html out of title', function() {
                 title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
                 expected = { title: 'falert(1);taggytaggy' };
@@ -47,7 +49,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('fixDate: ', function() {
-            var date;
+            let date;
 
             it('Contains copyright symbol', function() {
                 date = '©2010';
@@ -221,7 +223,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('fixISBN: ', function() {
-            var isbnStr;
+            let isbnStr;
             it('Correctly hyphenates single ISBN-10', function() {
                 isbnStr = '0810935317';
                 expected = { ISBN: ['0-8109-3531-7'] };
@@ -287,7 +289,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('fixISSN: ', function() {
-            var issn;
+            let issn;
             it('Correctly ignores invalid ISSN', function() {
                 issn = 'None';
                 expected = {};
@@ -340,7 +342,7 @@ describe('lib/Exporter.js functions: ', function() {
         });
 
         describe('replaceCreators:', function() {
-            var creators;
+            let creators;
             it('Correctly adds name with firstName and lastName present', function() {
                 creators = [
                     { creatorType:'author', lastName:'Plath', firstName:'Sylvia' },
@@ -394,9 +396,9 @@ describe('lib/Exporter.js functions: ', function() {
     });
 
     describe('export formats: ', function() {
-        var citation;
-        var app = { conf: {} };
-        var exp = new exporter.Exporter(app);
+        let citation;
+        const app = { conf: {} };
+        const exp = new exporter.Exporter(app);
         describe('wikibase: ', function() {
             describe('different search term types ', function() {
                 it('url from search, doi from result', function() {

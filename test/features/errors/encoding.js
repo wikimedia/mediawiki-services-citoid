@@ -1,8 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('encoding', function() {
@@ -47,7 +47,7 @@ describe('encoding', function() {
     });
 
     it('spaces in fully qualified url', function() {
-        var url = 'http://www.example.com/spaces in url';
+        const url = 'http://www.example.com/spaces in url';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -58,7 +58,7 @@ describe('encoding', function() {
     });
 
     it('spaces in url missing http://', function() {
-        var url = 'www.example.com/spaces in url';
+        const url = 'www.example.com/spaces in url';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);

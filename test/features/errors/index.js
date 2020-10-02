@@ -1,9 +1,9 @@
 'use strict';
 
 
-var preq   = require('preq');
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const preq   = require('preq');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('errors', function() {
@@ -40,7 +40,7 @@ describe('errors', function() {
     });
 
     it('bad format in query', function() {
-        var format = 'badformat';
+        const format = 'badformat';
         return preq.get({
             uri: server.config.qURI,
             query: {
@@ -65,7 +65,7 @@ describe('errors', function() {
     });
 
     it('resource has http errors', function() {
-        var url = 'http://example.com/thisurldoesntexist';
+        const url = 'http://example.com/thisurldoesntexist';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -76,7 +76,7 @@ describe('errors', function() {
     });
 
     it('faulty zotero results', function() {
-        var url = 'http://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
+        const url = 'http://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
         return server.query(url, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -87,7 +87,7 @@ describe('errors', function() {
     });
 
     it('unknown doi', function() {
-        var doi = '10.1000/thisdoidoesntexist';
+        const doi = '10.1000/thisdoidoesntexist';
         return server.query(doi, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -98,7 +98,7 @@ describe('errors', function() {
     });
 
     it('doi url with single quote', function() {
-        var doi = 'http://DOI.org/10.1007/11926078_68\'';
+        const doi = 'http://DOI.org/10.1007/11926078_68\'';
         return server.query(doi, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -109,7 +109,7 @@ describe('errors', function() {
     });
 
     it('doi url with double quote', function() {
-        var doi = 'http://DOI.org/10.1007/11926078_68"';
+        const doi = 'http://DOI.org/10.1007/11926078_68"';
         return server.query(doi, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -120,7 +120,7 @@ describe('errors', function() {
     });
 
     it('doi with single quote', function() {
-        var doi = '10.1007/11926078_68\'';
+        const doi = '10.1007/11926078_68\'';
         return server.query(doi, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -131,7 +131,7 @@ describe('errors', function() {
     });
 
     it('bad pmid', function() {
-        var pmid = '99999999';
+        const pmid = '99999999';
         return server.query(pmid, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);
@@ -141,7 +141,7 @@ describe('errors', function() {
     });
 
     it('bad pmcid', function() {
-        var pmcid = 'PMC9999999';
+        const pmcid = 'PMC9999999';
         return server.query(pmcid, 'mediawiki', 'en')
         .then(function(res) {
             assert.status(res, 404);

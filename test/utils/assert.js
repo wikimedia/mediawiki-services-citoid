@@ -19,6 +19,7 @@ function deepEqual(result, expected, message) {
 
 /**
  * Asserts whether the return status was as expected
+ *
  * @param {Object} res
  * @param {integer} expected
  */
@@ -32,6 +33,7 @@ function status(res, expected) {
 
 /**
  * Asserts whether content type was as expected
+ *
  * @param {Object} res
  * @param {string} expectedRegexString
  */
@@ -124,7 +126,7 @@ function checkCit(res, title) {
 
     status(res, 200);
 
-    var cit = res.body;
+    let cit = res.body;
 
     if (!Array.isArray(cit) || cit.length < 1) {
         throw new Error('Expected to receive an array of at least 1 citation, got: ' + JSON.stringify(cit));
@@ -168,10 +170,9 @@ function checkCitation(res, title) {
 
 function checkBibtex(res, beginning) {
 
-    var cit;
-
     assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
-    cit = res.body.toString();
+
+    const cit = res.body.toString();
     assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
 
 }

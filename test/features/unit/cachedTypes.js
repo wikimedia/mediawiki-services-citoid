@@ -1,11 +1,13 @@
-var assert = require('../../utils/assert.js');
-var CachedTypes = require('../../../lib/zotero/cachedTypes.js');
+'use strict';
+
+const assert = require('../../utils/assert.js');
+const CachedTypes = require('../../../lib/zotero/cachedTypes.js');
 
 describe('type schema data functions', function() {
 
-    var types = new CachedTypes();
-    var result;
-    var expected;
+    const types = new CachedTypes();
+    let result;
+    let expected;
 
     describe('zotero methods', function() {
 

@@ -1,15 +1,17 @@
+'use strict';
+
 /* Unit tests for the coins translator */
 
-var assert = require('../../../utils/assert.js');
-var coins = require('../../../../lib/translators/coins.js');
+const assert = require('../../../utils/assert.js');
+const coins = require('../../../../lib/translators/coins.js');
 
 
 describe('coins metadata', function() {
 
-    var result;
-    var expected;
-    var metadata;
-    var citation;
+    let result;
+    let expected;
+    let metadata;
+    let citation;
 
     it('Correctly adds pages from spage and epage', function() {
         metadata = {

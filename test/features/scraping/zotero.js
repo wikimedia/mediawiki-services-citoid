@@ -1,8 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('uses zotero', function() {
@@ -22,7 +22,7 @@ describe('uses zotero', function() {
 
         // Prefer original url for using native scraper
         it.skip('uses original url', function() {
-            var url = 'http://www.google.com';
+            const url = 'http://www.google.com';
             return server.query(url).then(function(res) {
                 assert.checkZotCitation(res, 'Google');
                 assert.deepEqual(res.body[0].url, url);
@@ -99,7 +99,7 @@ describe('uses zotero', function() {
         // TODO: Add new tests to test this issue
         it.skip('Correctly skips bad authors from Zotero whilst converting to mediawiki format', function() {
             return server.query('http://dx.doi.org/10.1001/jama.296.10.1274').then(function(res) {
-                var expectedAuthor = [
+                const expectedAuthor = [
                     [ '', 'Detsky ME'],
                     ['','McDonald DR'],
                     ['', 'Baerlocher MO'],

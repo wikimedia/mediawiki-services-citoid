@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('../../utils/assert.js');
 const scraper = require('../../../lib/Scraper.js');
 const fs = require('fs');
@@ -7,7 +9,7 @@ describe('lib/Scraper.js functions: ', function() {
 
     let result;
     let expected;
-    let logger = { // Dummy logger
+    const logger = { // Dummy logger
         log: function () {}
     };
 
@@ -118,7 +120,7 @@ describe('lib/Scraper.js functions: ', function() {
     describe('parsing', function() {
 
         it('should scrape meta tag charset content', (done) => {
-            var results = scraper.contentTypeFromBody(cheerio.load(fs.readFileSync('test/utils/static/metacharset.html')));
+            const results = scraper.contentTypeFromBody(cheerio.load(fs.readFileSync('test/utils/static/metacharset.html')));
             if (results !== 'iso-8859-1') {
                 throw new Error('Expected to iso-8859-1; got ' + results);
             }

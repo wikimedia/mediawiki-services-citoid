@@ -12,6 +12,7 @@
     "comma-dangle": "off",
     "comma-spacing": "off",
     "computed-property-spacing": "off",
+    "jsdoc/no-undefined-types": "off",
     "key-spacing": "off",
     "indent": ["off"],
     "max-statements-per-line": ["error", { "max": 2 }],
@@ -25,7 +26,10 @@
         "args": "none"
       }
     ],
+    "no-shadow": "off",
+    "node/no-deprecated-api": "off",
     "operator-linebreak": "off",
+    "prefer-regex-literals": "off",
     "quotes": "off",
     "quote-props": "off",
     "space-before-function-paren": "off",

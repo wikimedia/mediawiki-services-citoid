@@ -4,8 +4,8 @@
  * Tests for when Zotero is down/inaccessible
  */
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('Zotero service down or disabled: ', function() {
@@ -24,7 +24,7 @@ describe('Zotero service down or disabled: ', function() {
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
         // as they have blocked our UA in the past.
         it('PMID not in doi id converter api', function() {
-            var pmid = '14656957';
+            const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
             .then(function(res) {
                 assert.status(res, 404);
@@ -225,7 +225,7 @@ describe('Zotero service down or disabled: ', function() {
 
         // Prefer original url for using native scraper
         it('uses original url', function() {
-            var url = 'http://www.google.com';
+            const url = 'http://www.google.com';
             return server.query(url).then(function(res) {
                 assert.checkCitation(res, 'Google');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
@@ -284,7 +284,7 @@ describe('Zotero service down or disabled: ', function() {
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
         // as they have blocked our UA in the past.
         it('PMID not in doi id converter api', function() {
-            var pmid = '14656957';
+            const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
             .then(function(res) {
                 assert.status(res, 404);

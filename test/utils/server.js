@@ -25,12 +25,13 @@ class TestCitoidRunner extends TestRunner {
 
     /**
      * Overwrites super method in order to provide config vars on start
+     *
      * @param {Object} _options optional config variables
      * @return {ServiceRunner}
      */
     start(_options) {
-        let options = _options || {};
-        let config = extend(true, {}, this.originalConfig); // Deep copy original config
+        const options = _options || {};
+        const config = extend(true, {}, this.originalConfig); // Deep copy original config
         const myServiceIdx = config.conf.services.length - 1;
 
         config.conf.services[myServiceIdx].conf = Object.assign({}, config.conf.services[myServiceIdx].conf, options);
@@ -57,6 +58,7 @@ class TestCitoidRunner extends TestRunner {
 
     /**
      * Copied config function from service-template-node. Only available after service starts.
+     *
      * @return {Object} config
      */
     get config() {
@@ -107,6 +109,7 @@ class TestCitoidRunner extends TestRunner {
 
     /**
      * Wrapper to query the test server api
+     *
      * @param  {string} search     search input
      * @param  {string} format     requested format
      * @param  {string} language   language code

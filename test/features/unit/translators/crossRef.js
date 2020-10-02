@@ -1,16 +1,18 @@
+'use strict';
+
 /* Unit tests for the crossRef translator */
 
 
-var assert = require('../../../utils/assert.js');
-var cr = require('../../../../lib/translators/crossRef.js');
+const assert = require('../../../utils/assert.js');
+const cr = require('../../../../lib/translators/crossRef.js');
 
 
 describe('dublinCore translator unit', function() {
 
 
-    var result;
-    var expected;
-    var input;
+    let result;
+    let expected;
+    let input;
 
     it('Creator translate function adds lists of strings', function() {
         input = {

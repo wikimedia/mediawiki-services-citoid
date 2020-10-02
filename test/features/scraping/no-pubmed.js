@@ -1,8 +1,8 @@
 'use strict';
 
 
-var assert = require('../../utils/assert.js');
-var Server = require('../../utils/server.js');
+const assert = require('../../utils/assert.js');
+const Server = require('../../utils/server.js');
 
 
 describe('noPubmed.js - Disable pubmed requests for extra IDs', function() {

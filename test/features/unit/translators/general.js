@@ -1,12 +1,14 @@
+'use strict';
+
 /* Unit tests for the general translator */
 
-var assert = require('../../../utils/assert.js');
-var gen = require('../../../../lib/translators/general.js');
+const assert = require('../../../utils/assert.js');
+const gen = require('../../../../lib/translators/general.js');
 
 describe('general translator unit', function() {
 
-    var result;
-    var expected;
+    let result;
+    let expected;
 
     it('Author function adds lists of strings', function() {
         expected = {

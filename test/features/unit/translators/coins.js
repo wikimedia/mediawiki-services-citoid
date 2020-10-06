@@ -216,7 +216,7 @@ describe('coins metadata', function () {
             assert.deepEqual(result, expected);
         });
 
-        it('Does not split names in au field', function () {
+        it('Does split names in au field', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -224,13 +224,13 @@ describe('coins metadata', function () {
                 itemType: 'journalArticle',
                 creators: [ {
                     creatorType: 'author',
-                    firstName: '',
-                    lastName: 'A. B. Cdefg'
+                    firstName: 'A. B.',
+                    lastName: 'Cdefg'
                 },
                 {
                     creatorType: 'author',
-                    firstName: '',
-                    lastName: 'H. I. Jklmno'
+                    firstName: 'H. I.',
+                    lastName: 'Jklmno'
                 } ]
             };
             metadata = {

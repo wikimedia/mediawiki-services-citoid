@@ -57,6 +57,13 @@ describe('lib/Exporter.js functions: ', function () {
                 assert.deepEqual(result, expected);
             });
 
+            it('Is in brackets for some unfathomable reason', function () {
+                date = '[2010]';
+                expected = { date: '2010' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
             it('Contains copyright symbol & whitespace', function () {
                 date = ' ©2010';
                 expected = { date: '2010' };
@@ -85,16 +92,16 @@ describe('lib/Exporter.js functions: ', function () {
                 assert.deepEqual(result, expected);
             });
 
-            it('Unable to parse to leaves as written; season', function () { // Partial ISO?
+            it('Unable to parse so leaves as written; season', function () { // Partial ISO?
                 date = 'Fall 1975';
                 expected = { date: 'Fall 1975' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });
 
-            it('Unable to parse so leaves it as written', function () {
+            it('Chooses worldcat publication year', function () {
                 date = '2014, ©2010';
-                expected = { date: '2014, ©2010' };
+                expected = { date: '2014' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });

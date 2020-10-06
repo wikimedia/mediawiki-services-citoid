@@ -115,8 +115,8 @@ describe('translator utilities: ', function () {
             expected = {
                 creators: [ {
                     'creatorType': 'author',
-                    'firstName': '',
-                    'lastName': 'Daniel J. Barrett'
+                    'firstName': 'Daniel J.',
+                    'lastName': 'Barrett'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
@@ -128,8 +128,8 @@ describe('translator utilities: ', function () {
             expected = {
                 creators: [ {
                     'creatorType': 'author',
-                    'firstName': '',
-                    'lastName': 'Barrett, Daniel J.'
+                    'firstName': 'Barrett, Daniel',
+                    'lastName': 'J.'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
@@ -142,13 +142,13 @@ describe('translator utilities: ', function () {
             expected = {
                 creators: [ {
                     'creatorType': 'author',
-                    'firstName': '',
-                    'lastName': 'J.K. Rowling'
+                    'firstName': 'J.K.',
+                    'lastName': 'Rowling'
                 },
                 {
                     'creatorType': 'contributor',
-                    'firstName': '',
-                    'lastName': 'Mary GrandPré'
+                    'firstName': 'Mary',
+                    'lastName': 'GrandPré'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: author }, 'author');

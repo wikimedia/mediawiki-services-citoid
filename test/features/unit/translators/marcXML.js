@@ -1,26 +1,14 @@
 'use strict';
 
-/* Unit tests for the general translator */
+/* Unit tests for the marcXML translator */
 
 const assert = require('../../../utils/assert.js');
-const gen = require('../../../../lib/translators/general.js');
+const marc = require('../../../../lib/translators/marcXML.js');
 
-describe('general translator unit', function () {
+describe('worldcat marcXML translator unit', function () {
 
     let result;
     let expected;
-
-    it('Author function adds lists of strings', function () {
-        expected = {
-            creators: [ {
-                creatorType: 'author',
-                firstName: '',
-                lastName: 'One'
-            } ]
-        };
-        result = gen.generalWithAuthor.author.translate({}, { author: [ 'One' ] }, 'author');
-        assert.deepEqual(result, expected);
-    });
 
     it('Correctly adds an author string with one word', function () {
         expected = {
@@ -30,7 +18,7 @@ describe('general translator unit', function () {
                 lastName: 'One'
             } ]
         };
-        result = gen.generalWithAuthor.author.translate({}, { author: 'One' }, 'author');
+        result = marc.book.c245.translate({}, { author: 'One' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -42,7 +30,7 @@ describe('general translator unit', function () {
                 lastName: 'Two'
             } ]
         };
-        result = gen.generalWithAuthor.author.translate({}, { author: 'One Two' }, 'author');
+        result = marc.book.c245.translate({}, { author: 'Two, One' }, 'author');
         assert.deepEqual(result, expected);
     });
 
@@ -54,19 +42,31 @@ describe('general translator unit', function () {
                 lastName: 'Three'
             } ]
         };
-        result = gen.generalWithAuthor.author.translate({}, { author: 'One Two Three' }, 'author');
+        result = marc.book.c245.translate({}, { author: 'Three, One Two' }, 'author');
         assert.deepEqual(result, expected);
     });
 
-    it('Does something redonk with Harry Potter author field from worldcat', function () {
+    it('Correctly adds an author string with date', function () {
         expected = {
             creators: [ {
                 creatorType: 'author',
-                firstName: 'J.K. Rowling ; illustrations by Mary',
-                lastName: 'GrandPré.'
+                firstName: 'Jeffrey',
+                lastName: 'Silverthorne'
             } ]
         };
-        result = gen.generalWithAuthor.author.translate({}, { author: 'J.K. Rowling ; illustrations by Mary GrandPré.' }, 'author');
+        result = marc.book.c245.translate({}, { author: 'Silverthorne, Jeffrey, 1946-' }, 'author');
+        assert.deepEqual(result, expected);
+    });
+
+    it('Format Last name, first name', function () {
+        expected = {
+            creators: [ {
+                'creatorType': 'author',
+                'firstName': 'Daniel J.',
+                'lastName': 'Barrett'
+            } ]
+        };
+        result =  marc.book.c245.translate({}, { author: 'Barrett, Daniel J.' }, 'author');
         assert.deepEqual(result, expected);
     });
 });

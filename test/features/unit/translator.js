@@ -221,8 +221,8 @@ describe('Tests for Translator.js : ', function () {
             const metadata = { general: { title: 'Example domain' } };
             const itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
-        });
 
+        });
     });
 
     describe('check specific results: ', function () {
@@ -234,8 +234,8 @@ describe('Tests for Translator.js : ', function () {
                   creators: [
                     {
                       creatorType: 'author',
-                      lastName: 'Turtle Lvr',
-                      firstName: ''
+                      lastName: 'Lvr',
+                      firstName: 'Turtle'
                     }
                   ],
                   url: 'http://example.com/turtles',
@@ -254,8 +254,8 @@ describe('Tests for Translator.js : ', function () {
                   creators: [
                     {
                       creatorType: 'author',
-                      lastName: 'Turtle Lvr',
-                      firstName: ''
+                      lastName: 'Lvr',
+                      firstName: 'Turtle'
                     }
                   ],
                   date: '2012',

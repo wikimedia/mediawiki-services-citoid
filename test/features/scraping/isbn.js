@@ -42,7 +42,7 @@ describe('ISBN tests: ', function() {
         //        assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
                 assert.deepEqual(res.body[0].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[0].title);
         //        assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.deepEqual(res.body[0].author, [ [ 'J. K.', 'Rowling' ], [ 'Mary','GrandPré' ] ]);
+                assert.deepEqual(res.body[0].author, [ [ 'J. K.', 'Rowling' ], [ 'Mary', 'GrandPré' ] ]);
                 assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st American ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.isInArray(res.body[0].ISBN, '978-0-439-78454-2');

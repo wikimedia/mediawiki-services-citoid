@@ -94,7 +94,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with list not nested', function() {
             input = {
-                issued:{ 'date-parts':[ '2017', '04','1' ] }
+                issued:{ 'date-parts':[ '2017', '04', '1' ] }
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');

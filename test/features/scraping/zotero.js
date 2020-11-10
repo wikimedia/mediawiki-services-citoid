@@ -101,11 +101,11 @@ describe('uses zotero', function() {
             return server.query('http://dx.doi.org/10.1001/jama.296.10.1274').then(function(res) {
                 const expectedAuthor = [
                     [ '', 'Detsky ME' ],
-                    [ '','McDonald DR' ],
+                    [ '', 'McDonald DR' ],
                     [ '', 'Baerlocher MO' ],
-                    [ '','Tomlinson GA' ],
-                    [ '','McCrory DC' ],
-                    [ '','Booth CM' ]
+                    [ '', 'Tomlinson GA' ],
+                    [ '', 'McCrory DC' ],
+                    [ '', 'Booth CM' ]
                 ];
                 assert.checkZotCitation(res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?'); // Title from crossRef
                 assert.deepEqual(res.body[0].author, expectedAuthor);

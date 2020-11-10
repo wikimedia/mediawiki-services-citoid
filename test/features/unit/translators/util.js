@@ -27,19 +27,19 @@ describe('translator utilities: ', function() {
 
         it('strips leading and trailing whitespace', function() {
             expected = { title: 'Title of the Song' };
-            result = makeTranslator('title').translate({}, { title:[ '\nTitle of the Song \xa0' ] }, 'title');
+            result = makeTranslator('title').translate({}, { title: [ '\nTitle of the Song \xa0' ] }, 'title');
             assert.deepEqual(result, expected);
         });
 
         it('correctly adds date with fixDate validate function', function() {
             expected = { date: '2012-08' };
-            result = makeTranslator('date', fixDate).translate({}, { date:[ 'August 2012' ] }, 'date');
+            result = makeTranslator('date', fixDate).translate({}, { date: [ 'August 2012' ] }, 'date');
             assert.deepEqual(result, expected);
         });
 
         it('correctly uses fixLang validate function', function() {
             expected = { language: 'en-US' };
-            result = makeTranslator('language', fixLang).translate({}, { date:'en_US' }, 'date');
+            result = makeTranslator('language', fixLang).translate({}, { date: 'en_US' }, 'date');
             assert.deepEqual(result, expected);
         });
     });
@@ -66,7 +66,7 @@ describe('translator utilities: ', function() {
             expected = {
                 ISBN: '978-3-16-148410-0'
             };
-            result = makeListTranslator('ISBN').translate({}, { isbn:input }, 'isbn');
+            result = makeListTranslator('ISBN').translate({}, { isbn: input }, 'isbn');
             assert.deepEqual(result, expected);
         });
 
@@ -75,7 +75,7 @@ describe('translator utilities: ', function() {
             expected = {
                 ISBN: '9783161484100'
             };
-            result = makeListTranslator('ISBN', vISBN).translate({}, { isbn:input }, 'isbn');
+            result = makeListTranslator('ISBN', vISBN).translate({}, { isbn: input }, 'isbn');
             assert.deepEqual(result, expected);
         });
 
@@ -84,7 +84,7 @@ describe('translator utilities: ', function() {
             expected = {
                 ISSN: '1234-5678'
             };
-            result = makeListTranslator('ISSN').translate({}, { issn:inputISSN }, 'issn');
+            result = makeListTranslator('ISSN').translate({}, { issn: inputISSN }, 'issn');
             assert.deepEqual(result, expected);
         });
 
@@ -94,8 +94,8 @@ describe('translator utilities: ', function() {
             expected = {
                 ISSN: '1111-1111, 4444-4444, 2222-2222'
             };
-            result = makeListTranslator('ISSN').translate({}, { issn:inputISSN }, 'issn');
-            result = makeListTranslator('ISSN').translate(result, { issn:inputEISSN }, 'issn');
+            result = makeListTranslator('ISSN').translate({}, { issn: inputISSN }, 'issn');
+            result = makeListTranslator('ISSN').translate(result, { issn: inputEISSN }, 'issn');
             assert.deepEqual(result, expected);
         });
 
@@ -104,7 +104,7 @@ describe('translator utilities: ', function() {
             expected = {
                 ISBN: '978-3-16-148410-0, 978-9-99-999999-X'
             };
-            result = makeListTranslator('ISBN').translate({}, { isbn:inputISBN }, 'isbn');
+            result = makeListTranslator('ISBN').translate({}, { isbn: inputISBN }, 'isbn');
             assert.deepEqual(result, expected);
         });
     });
@@ -115,12 +115,12 @@ describe('translator utilities: ', function() {
             input = [ 'Daniel J. Barrett' ];
             expected = {
                 creators: [ {
-                    'creatorType':'author',
+                    'creatorType': 'author',
                     'firstName': '',
                     'lastName': 'Daniel J. Barrett'
                 } ]
             };
-            result = ut.makeCreatorsTranslator('author').translate({}, { author:input }, 'author');
+            result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
             assert.deepEqual(result, expected);
         });
 
@@ -128,12 +128,12 @@ describe('translator utilities: ', function() {
             input = [ 'Barrett, Daniel J.' ];
             expected = {
                 creators: [ {
-                    'creatorType':'author',
+                    'creatorType': 'author',
                     'firstName': '',
                     'lastName': 'Barrett, Daniel J.'
                 } ]
             };
-            result = ut.makeCreatorsTranslator('author').translate({}, { author:input }, 'author');
+            result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
             assert.deepEqual(result, expected);
         });
 
@@ -142,18 +142,18 @@ describe('translator utilities: ', function() {
             contributor = 'Mary GrandPré';
             expected = {
                 creators: [ {
-                    'creatorType':'author',
+                    'creatorType': 'author',
                     'firstName': '',
                     'lastName': 'J.K. Rowling'
                 },
                 {
-                    'creatorType':'contributor',
+                    'creatorType': 'contributor',
                     'firstName': '',
                     'lastName': 'Mary GrandPré'
                 } ]
             };
-            result = ut.makeCreatorsTranslator('author').translate({}, { author:author }, 'author');
-            result = ut.makeCreatorsTranslator('contributor').translate(result, { contributor:contributor }, 'contributor');
+            result = ut.makeCreatorsTranslator('author').translate({}, { author: author }, 'author');
+            result = ut.makeCreatorsTranslator('contributor').translate(result, { contributor: contributor }, 'contributor');
             assert.deepEqual(result, expected);
         });
 

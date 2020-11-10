@@ -18,7 +18,7 @@ describe('ISBN tests: ', function() {
     // Use zotero search endpoint for isbn
     describe('zotero isbn only: ', function() {
 
-        before(() => server.start({ wskey:false }));
+        before(() => server.start({ wskey: false }));
         after(() => server.stop());
 
         it('valid ISBN', function() {
@@ -91,7 +91,7 @@ describe('ISBN tests: ', function() {
     // https://platform.worldcat.org/wskey/keys/manage
     describe.skip('worldcat search api only: ', function() {
 
-        before(() => server.start({ zotero:false }));
+        before(() => server.start({ zotero: false }));
         after(() => server.stop());
 
         it('book ISBN with dashes, type Text', function() {

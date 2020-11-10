@@ -53,7 +53,7 @@ describe('Languages: ', function() {
 
     describe('Using native scraper: ', function() {
 
-        before(() => server.start({ zotero:false }));
+        before(() => server.start({ zotero: false }));
         after(() => server.stop());
 
         it('open graph locale converted to language code', function() {

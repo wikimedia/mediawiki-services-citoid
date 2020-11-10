@@ -10,8 +10,8 @@ describe('Tests using a very short timeout - all use crossRef - zotero disabled'
     this.timeout(20000);
     const server = new Server();
     before(() => server.start({
-        zotero:false,
-        timeout:1
+        zotero: false,
+        timeout: 1
     }));
     after(() => server.stop());
 

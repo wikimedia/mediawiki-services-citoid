@@ -25,17 +25,17 @@ const movie = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/st
 const article = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_article.html'));
 
 const translators = [
-    { value:bp, name: 'bePress' },
-    { value:bp, name: 'highwirePress' }, // Use bp translator on highwire press metadata
-    { value:coins, name:'coins' },
-    { value:dc, name:'dublinCore' },
-    { value:gen, name:'general' },
-    { value:og, name:'openGraph' }
+    { value: bp, name: 'bePress' },
+    { value: bp, name: 'highwirePress' }, // Use bp translator on highwire press metadata
+    { value: coins, name: 'coins' },
+    { value: dc, name: 'dublinCore' },
+    { value: gen, name: 'general' },
+    { value: og, name: 'openGraph' }
 ];
 
 const htmlFiles = [
-    { value:movie, name:'movie' },
-    { value:article, name:'article' }
+    { value: movie, name: 'movie' },
+    { value: article, name: 'article' }
 ];
 
 const Logger = require('../../../node_modules/service-runner/lib/logger.js');
@@ -81,7 +81,7 @@ describe('Tests for Translator.js : ', function() {
                             }
                             // Only test citation if metadata exists for the given translator type
                             if (metadata[metadataType.name]) {
-                                citation = translator.translate({ itemType:itemTypeName }, metadata[metadataType.name], metadataType.value[itemTypeName]);
+                                citation = translator.translate({ itemType: itemTypeName }, metadata[metadataType.name], metadataType.value[itemTypeName]);
                                 // Check that every key in citation is a valid field for given type
                                 Object.keys(citation).forEach(function(citationField) {
                                     result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
@@ -109,7 +109,7 @@ describe('Tests for Translator.js : ', function() {
         let result;
 
         it('sets right info from journal-article crossRef metadata', function() {
-            citation = { itemType:'journalArticle' };
+            citation = { itemType: 'journalArticle' };
             citation = translator.translate(citation, crossRefJSON[0], cr.journalArticle);
             expected = {
                 itemType: "journalArticle",
@@ -143,7 +143,7 @@ describe('Tests for Translator.js : ', function() {
         });
 
         it('sets right info from book-section crossRef metadata', function() {
-            citation = { itemType:'bookSection' };
+            citation = { itemType: 'bookSection' };
             citation = translator.translate(citation, crossRefJSON[1], cr.bookSection);
             expected = {
                 itemType: "bookSection",
@@ -175,7 +175,7 @@ describe('Tests for Translator.js : ', function() {
                         throw new Error('No translator found for itemType ' + itemTypeName);
                     }
                     if (metadata) {
-                        citation = translator.translate({ itemType:itemTypeName }, metadata, cr[itemTypeName]);
+                        citation = translator.translate({ itemType: itemTypeName }, metadata, cr[itemTypeName]);
                         // Check that every key in citation is a valid field for given type
                         Object.keys(citation).forEach(function(citationField) {
                             result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
@@ -209,7 +209,7 @@ describe('Tests for Translator.js : ', function() {
         });
 
         it('sets itemType webpage if no relevant metadata available', function() {
-            const metadata = { general:{ title:'Example domain' } };
+            const metadata = { general: { title: 'Example domain' } };
             const itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
 
@@ -219,7 +219,7 @@ describe('Tests for Translator.js : ', function() {
     describe('check specific results: ', function() {
         it('sets right info from webpage for general metadata', function() {
             return meta.parseAll(article).then(function(metadata) {
-                const citation = translator.translate({ itemType:'webpage' }, metadata.general, gen.webpage);
+                const citation = translator.translate({ itemType: 'webpage' }, metadata.general, gen.webpage);
                 const expected = {
                   itemType: "webpage",
                   creators: [
@@ -239,7 +239,7 @@ describe('Tests for Translator.js : ', function() {
         });
         it('sets right info from webpage for bepress metadata', function() {
             return meta.parseAll(article).then(function(metadata) {
-                const citation = translator.translate({ itemType:'webpage' }, metadata.bePress, bp.webpage);
+                const citation = translator.translate({ itemType: 'webpage' }, metadata.bePress, bp.webpage);
                 const expected = {
                   itemType: "webpage",
                   creators: [

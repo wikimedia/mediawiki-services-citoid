@@ -9,7 +9,7 @@ describe('uses zotero', function() {
 
     this.timeout(20000);
     const server = new Server();
-    before(() => server.start({ pubmed:true }));
+    before(() => server.start({ pubmed: true }));
     after(() => server.stop());
 
     describe('URL ', function() {

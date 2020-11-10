@@ -39,7 +39,7 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     describe(' using native scraper', function() {
 
-        before(() => server.start({ zotero:false }));
+        before(() => server.start({ zotero: false }));
         after(() => server.stop());
 
         it('webpage', function() {

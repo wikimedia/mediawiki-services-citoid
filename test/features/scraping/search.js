@@ -10,7 +10,7 @@ describe('Search results where we expect multiple results', function() {
 
         this.timeout(20000);
         const server = new Server();
-        before(() => server.start({ wskey:false }));
+        before(() => server.start({ wskey: false }));
         after(() => server.stop());
 
         // Previously gave error; now passes to search

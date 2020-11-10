@@ -9,7 +9,6 @@
     ],
     "computed-property-spacing": "off",
     "jsdoc/no-undefined-types": "off",
-    "key-spacing": "off",
     "indent": ["off"],
     "max-statements-per-line": ["error", { "max": 2 }],
     "no-multi-spaces": "off",

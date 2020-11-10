@@ -15,11 +15,11 @@ describe('coins metadata', function() {
 
     it('Correctly adds pages from spage and epage', function() {
         metadata = {
-            spage : '97',
-            epage : '102'
+            spage: '97',
+            epage: '102'
         };
         expected = {
-            itemType : 'bookSection',
+            itemType: 'bookSection',
             pages: '97–102'
         };
         result = coins.other.spage({ itemType: 'bookSection' }, metadata);
@@ -30,7 +30,7 @@ describe('coins metadata', function() {
         expected = {
             pages: '15–44'
         };
-        result = coins.bookSection.pages.translate({}, { pages:'15-44' }, 'pages');
+        result = coins.bookSection.pages.translate({}, { pages: '15-44' }, 'pages');
         assert.deepEqual(result, expected);
     });
 
@@ -38,7 +38,7 @@ describe('coins metadata', function() {
         expected = {
             date: '2010'
         };
-        result = coins.general.date.translate({}, { date:'2010' }, 'date');
+        result = coins.general.date.translate({}, { date: '2010' }, 'date');
         assert.deepEqual(result, expected);
     });
 

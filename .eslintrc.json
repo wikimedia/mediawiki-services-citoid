@@ -1,7 +1,6 @@
 	{
   "extends": "wikimedia/server",
   "rules": {
-    "arrow-parens": "off",
     "camelcase": [
       "error",
       {

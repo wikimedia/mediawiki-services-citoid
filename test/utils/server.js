@@ -128,7 +128,7 @@ class TestCitoidRunner extends TestRunner {
             uri: this.config.qURI,
             query: {
                 format: format,
-                search: search,
+                search: search
             },
             headers: {
                 'accept-language': language

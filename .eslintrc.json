@@ -7,7 +7,6 @@
         "properties": "never"
       }
     ],
-    "comma-dangle": "off",
     "comma-spacing": "off",
     "computed-property-spacing": "off",
     "jsdoc/no-undefined-types": "off",

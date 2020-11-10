@@ -130,7 +130,7 @@ describe('coins metadata', function() {
                 } ]
             };
             metadata = {
-                aulast: 'Lastname',
+                aulast: 'Lastname'
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);
@@ -149,7 +149,7 @@ describe('coins metadata', function() {
                 } ]
             };
             metadata = {
-                aufirst: 'Firstname',
+                aufirst: 'Firstname'
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);
@@ -190,7 +190,7 @@ describe('coins metadata', function() {
             };
             metadata = {
                 aulast: 'Lastname',
-                auinit: 'F. M.',
+                auinit: 'F. M.'
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);

@@ -45,7 +45,7 @@ describe('dublinCore translator unit', function() {
                             23
                         ]
                     ]
-                },
+                }
             };
             expected = {
                 date: '2017-01-23'
@@ -63,7 +63,7 @@ describe('dublinCore translator unit', function() {
                             1
                         ]
                     ]
-                },
+                }
             };
             expected = {
                 date: '2017-01'
@@ -74,7 +74,7 @@ describe('dublinCore translator unit', function() {
 
         it('Translates year only', function() {
             input = {
-                issued:{ 'date-parts':[ [ 2017 ] ] },
+                issued:{ 'date-parts':[ [ 2017 ] ] }
             };
             expected = {
                 date: '2017'
@@ -85,7 +85,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with object', function() {
             input = {
-                issued:{ 'date-parts':[ [ { elephant:"elephant" } ] ] },
+                issued:{ 'date-parts':[ [ { elephant:"elephant" } ] ] }
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');
@@ -94,7 +94,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with list not nested', function() {
             input = {
-                issued:{ 'date-parts':[ '2017', '04','1' ] },
+                issued:{ 'date-parts':[ '2017', '04','1' ] }
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');
@@ -111,7 +111,7 @@ describe('dublinCore translator unit', function() {
                             '23'
                         ]
                     ]
-                },
+                }
             };
             expected = {
                 date: '2017-01-23'
@@ -130,7 +130,7 @@ describe('dublinCore translator unit', function() {
                             '23'
                         ]
                     ]
-                },
+                }
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');

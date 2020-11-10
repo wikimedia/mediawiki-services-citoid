@@ -1,7 +1,6 @@
 	{
   "extends": "wikimedia/server",
   "rules": {
-    "array-bracket-spacing": "off",
     "arrow-parens": "off",
     "camelcase": [
       "error",

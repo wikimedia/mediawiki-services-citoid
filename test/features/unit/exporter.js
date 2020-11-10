@@ -226,63 +226,63 @@ describe('lib/Exporter.js functions: ', function() {
             let isbnStr;
             it('Correctly hyphenates single ISBN-10', function() {
                 isbnStr = '0810935317';
-                expected = { ISBN: ['0-8109-3531-7'] };
+                expected = { ISBN: [ '0-8109-3531-7' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly handles ISBN-13s that have spaces in them', function() {
                 isbnStr = '978 0810935310';
-                expected = { ISBN: ['978-0-8109-3531-0'] };
+                expected = { ISBN: [ '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly extracts two ISBN-10s', function() {
                 isbnStr = '0-8109-3531-7 081093531X';
-                expected = { ISBN: ['0-8109-3531-7', '081093531X'] };
+                expected = { ISBN: [ '0-8109-3531-7', '081093531X' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly extracts ISBN-13', function() {
                 isbnStr = '9780810935310 9780810935310';
-                expected = { ISBN: ['978-0-8109-3531-0', '978-0-8109-3531-0'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly extracts ISBN-10 and ISBN-13', function() {
                 isbnStr = '9780810935310 0810935317 007462542X 9780810935310';
-                expected = { ISBN: ['978-0-8109-3531-0', '0-8109-3531-7', '0-07-462542-X', '978-0-8109-3531-0'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '0-8109-3531-7', '0-07-462542-X', '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly handles and normalizes hyphenated ISBN', function() {
                 isbnStr = '978-0-8109-3531-0 0-8109-3531-7';
-                expected = { ISBN: ['978-0-8109-3531-0', '0-8109-3531-7'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '0-8109-3531-7' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly handles ISBNs with and without hyphens', function() {
                 isbnStr = '978-0-8109-3531-0 0810935317';
-                expected = { ISBN: ['978-0-8109-3531-0', '0-8109-3531-7'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '0-8109-3531-7' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly handles ISBN-13s that have spaces in them', function() {
                 isbnStr = '978 0810935310 007462542X 978 0810935310';
-                expected = { ISBN: ['978-0-8109-3531-0', '0-07-462542-X', '978-0-8109-3531-0'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '0-07-462542-X', '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly handles out comma separated ISBNs', function() {
                 isbnStr = '978 0810935310, 081093531X, 978-0-8109-3531-0, 9780810935310';
-                expected = { ISBN: ['978-0-8109-3531-0', '081093531X', '978-0-8109-3531-0', '978-0-8109-3531-0'] };
+                expected = { ISBN: [ '978-0-8109-3531-0', '081093531X', '978-0-8109-3531-0', '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN:isbnStr });
                 assert.deepEqual(result, expected);
             });
@@ -299,21 +299,21 @@ describe('lib/Exporter.js functions: ', function() {
 
             it('Correctly adds valid ISSN', function() {
                 issn = '0317-8471';
-                expected = { ISSN: ['0317-8471'] };
+                expected = { ISSN: [ '0317-8471' ] };
                 result = exporter.fixISSN({ ISSN:issn });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly adds valid ISSN with X', function() {
                 issn = '2434-561X';
-                expected = { ISSN: ['2434-561X'] };
+                expected = { ISSN: [ '2434-561X' ] };
                 result = exporter.fixISSN({ ISSN:issn });
                 assert.deepEqual(result, expected);
             });
 
             it('Correctly adds valid ISSN with x', function() {
                 issn = '2434-561x';
-                expected = { ISSN: ['2434-561x'] };
+                expected = { ISSN: [ '2434-561x' ] };
                 result = exporter.fixISSN({ ISSN:issn });
                 assert.deepEqual(result, expected);
             });
@@ -349,8 +349,8 @@ describe('lib/Exporter.js functions: ', function() {
                     { creatorType:'author', lastName:'Hughes', firstName:'Langston' }
                 ];
                 expected = { author: [
-                    ['Sylvia', 'Plath'],
-                    ['Langston', 'Hughes']
+                    [ 'Sylvia', 'Plath' ],
+                    [ 'Langston', 'Hughes' ]
                 ] };
                 result = exporter.replaceCreators({ creators:creators });
                 assert.deepEqual(result, expected);
@@ -362,8 +362,8 @@ describe('lib/Exporter.js functions: ', function() {
                     { creatorType:'author', lastName:'Prince', firstName:'' }
                 ];
                 expected = { author: [
-                    ['Madonna', ''],
-                    ['', 'Prince']
+                    [ 'Madonna', '' ],
+                    [ '', 'Prince' ]
                 ] };
                 result = exporter.replaceCreators({ creators:creators });
                 assert.deepEqual(result, expected);
@@ -375,8 +375,8 @@ describe('lib/Exporter.js functions: ', function() {
                     { creatorType:'author', name:'Prince' }
                 ];
                 expected =  { author: [
-                    ['', 'Madonna'],
-                    ['', 'Prince']
+                    [ '', 'Madonna' ],
+                    [ '', 'Prince' ]
                 ] };
                 result = exporter.replaceCreators({ creators:creators });
                 assert.deepEqual(result, expected);
@@ -495,8 +495,8 @@ describe('lib/Exporter.js functions: ', function() {
                         url: 'http://www.example.com'
                     };
                     return exp.convertToWikibase(citation).then(function(citation) {
-                        assert.deepEqual(citation.formattedContent.identifiers.isbn10, ['0-07-462542-X']);
-                        assert.deepEqual(citation.formattedContent.identifiers.isbn13, ['978-0-8109-3531-0']);
+                        assert.deepEqual(citation.formattedContent.identifiers.isbn10, [ '0-07-462542-X' ]);
+                        assert.deepEqual(citation.formattedContent.identifiers.isbn13, [ '978-0-8109-3531-0' ]);
                         assert.deepEqual(citation.formattedContent.identifiers.url, 'http://www.example.com');
                         assert.deepEqual(citation.formattedContent.identifiers.oclc, '1234556');
                         assert.deepEqual(!!citation.formattedContent.ISBN, false);

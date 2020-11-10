@@ -26,7 +26,7 @@ describe('ISBN tests: ', function() {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'MediaWiki');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.deepEqual(res.body[0].author, [['Daniel J.', 'Barrett']], 'Unexpected value; expected [[\'Daniel J.\'], [\'Barrett.\']] ' + res.body[0].author);
+                assert.deepEqual(res.body[0].author, [ [ 'Daniel J.', 'Barrett' ] ], 'Unexpected value; expected [[\'Daniel J.\'], [\'Barrett.\']] ' + res.body[0].author);
                 assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
                 assert.deepEqual(res.body[0].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
@@ -42,7 +42,7 @@ describe('ISBN tests: ', function() {
         //        assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
                 assert.deepEqual(res.body[0].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[0].title);
         //        assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.deepEqual(res.body[0].author, [['J. K.', 'Rowling'], ['Mary','GrandPré']]);
+                assert.deepEqual(res.body[0].author, [ [ 'J. K.', 'Rowling' ], [ 'Mary','GrandPré' ] ]);
                 assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st American ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
                 assert.isInArray(res.body[0].ISBN, '978-0-439-78454-2');
@@ -100,7 +100,7 @@ describe('ISBN tests: ', function() {
                 assert.checkCitation(res, 'MediaWiki');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.isInArray(res.body[0].source, 'WorldCat');
-                assert.deepEqual(res.body[0].author, [['', 'Barrett, Daniel J.']], 'Unexpected value:' + res.body[0].author);
+                assert.deepEqual(res.body[0].author, [ [ '', 'Barrett, Daniel J.' ] ], 'Unexpected value:' + res.body[0].author);
                 assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
                 // assert.deepEqual(res.body[0].place, 'Sebastapool, Calif.', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place); // Not currently working with Worldcat Search API - not present in results
                 // assert.deepEqual(res.body[0].edition, '1st ed.', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition); // Not currently working with Worldcat Search API - present in description tag

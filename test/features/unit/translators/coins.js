@@ -65,7 +65,7 @@ describe('coins metadata', function() {
                 aulast: 'Lastname',
                 aufirst: 'Firstname',
                 ausuffix: 'Jr.',
-                au: ['Firstname Lastname, Jr.']
+                au: [ 'Firstname Lastname, Jr.' ]
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);
@@ -78,17 +78,17 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: 'Firstname',
                     lastName: 'Lastname, Jr.'
-                }]
+                } ]
             };
             metadata = {
                 aulast: 'Lastname',
                 aufirst: 'Firstname',
                 ausuffix: 'Jr.',
-                au: ['Firstname Lastname, Jr.']
+                au: [ 'Firstname Lastname, Jr.' ]
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);
@@ -101,17 +101,17 @@ describe('coins metadata', function() {
             };
             citation = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: 'Firstname',
                     lastName: 'Lastname, Jr.'
-                }]
+                } ]
             };
             metadata = {
                 aulast: 'Lastname',
                 aufirst: 'Firstname',
                 ausuffix: 'Jr.',
-                au: ['Firstname\xa0Lastname,\xa0Jr.'] // Contains nbsp instead of traditional space
+                au: [ 'Firstname\xa0Lastname,\xa0Jr.' ] // Contains nbsp instead of traditional space
             };
             result = coins.other.addCreators(citation, metadata);
             assert.deepEqual(result, expected);
@@ -123,11 +123,11 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: '',
                     lastName: 'Lastname'
-                }]
+                } ]
             };
             metadata = {
                 aulast: 'Lastname',
@@ -142,11 +142,11 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: 'Firstname',
                     lastName: ''
-                }]
+                } ]
             };
             metadata = {
                 aufirst: 'Firstname',
@@ -161,11 +161,11 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: 'F. M.',
                     lastName: 'Lastname'
-                }]
+                } ]
             };
             metadata = {
                 aulast: 'Lastname',
@@ -182,11 +182,11 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: 'F. M.',
                     lastName: 'Lastname'
-                }]
+                } ]
             };
             metadata = {
                 aulast: 'Lastname',
@@ -202,11 +202,11 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: '',
                     lastName: 'Name of corporation'
-                }]
+                } ]
             };
             metadata = {
                 aucorp: [
@@ -223,7 +223,7 @@ describe('coins metadata', function() {
             };
             expected = {
                 itemType: 'journalArticle',
-                creators: [{
+                creators: [ {
                     creatorType: 'author',
                     firstName: '',
                     lastName: 'A. B. Cdefg'
@@ -232,7 +232,7 @@ describe('coins metadata', function() {
                     creatorType: 'author',
                     firstName: '',
                     lastName: 'H. I. Jklmno'
-                }]
+                } ]
             };
             metadata = {
                 au: [

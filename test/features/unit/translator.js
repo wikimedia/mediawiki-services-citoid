@@ -114,7 +114,7 @@ describe('Tests for Translator.js : ', function() {
             expected = {
                 itemType: "journalArticle",
                 creators:
-                    [{
+                    [ {
                         creatorType: "author",
                         firstName: "Rachel C.",
                         lastName: "Glade"
@@ -128,7 +128,7 @@ describe('Tests for Translator.js : ', function() {
                         creatorType: "author",
                         firstName: "Gregory E.",
                         lastName: "Tucker"
-                    }],
+                    } ],
                 issue: "4",
                 volume: "45",
                 pages: "311-314",
@@ -150,11 +150,11 @@ describe('Tests for Translator.js : ', function() {
                 publisher: "Presses Universitaires de France",
                 ISBN: "9782130565727",
                 creators:
-                    [{
+                    [ {
                         creatorType: "author",
                         firstName: "Johanne",
                         lastName: "Prud’homme"
-                    }],
+                    } ],
                 date: "2007",
                 pages: "87",
                 bookTitle: "Harry Potter, ange ou démon ?",

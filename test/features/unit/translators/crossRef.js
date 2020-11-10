@@ -16,18 +16,18 @@ describe('dublinCore translator unit', function() {
 
     it('Creator translate function adds lists of strings', function() {
         input = {
-            author:[{
+            author:[ {
                 given:"Rachel C.",
                 family:"Glade",
                 affiliation:[]
-            }]
+            } ]
         };
         expected = {
-            creators: [{
+            creators: [ {
                 creatorType: 'author',
                 firstName: 'Rachel C.',
                 lastName: 'Glade'
-            }]
+            } ]
         };
         result = cr.journalArticle.author.translate({}, input, 'author');
         assert.deepEqual(result, expected);
@@ -74,7 +74,7 @@ describe('dublinCore translator unit', function() {
 
         it('Translates year only', function() {
             input = {
-                issued:{ 'date-parts':[[2017]] },
+                issued:{ 'date-parts':[ [ 2017 ] ] },
             };
             expected = {
                 date: '2017'
@@ -85,7 +85,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with object', function() {
             input = {
-                issued:{ 'date-parts':[[{ elephant:"elephant" }]] },
+                issued:{ 'date-parts':[ [ { elephant:"elephant" } ] ] },
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');
@@ -94,7 +94,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with list not nested', function() {
             input = {
-                issued:{ 'date-parts':['2017', '04','1'] },
+                issued:{ 'date-parts':[ '2017', '04','1' ] },
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');

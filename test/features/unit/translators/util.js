@@ -27,13 +27,13 @@ describe('translator utilities: ', function() {
 
         it('strips leading and trailing whitespace', function() {
             expected = { title: 'Title of the Song' };
-            result = makeTranslator('title').translate({}, { title:['\nTitle of the Song \xa0'] },'title');
+            result = makeTranslator('title').translate({}, { title:[ '\nTitle of the Song \xa0' ] },'title');
             assert.deepEqual(result, expected);
         });
 
         it('correctly adds date with fixDate validate function', function() {
             expected = { date: '2012-08' };
-            result = makeTranslator('date', fixDate).translate({}, { date:['August 2012'] },'date');
+            result = makeTranslator('date', fixDate).translate({}, { date:[ 'August 2012' ] },'date');
             assert.deepEqual(result, expected);
         });
 
@@ -62,7 +62,7 @@ describe('translator utilities: ', function() {
     describe('makeListTranslator function: ', function() {
 
         it('Correctly adds one isbn', function() {
-            input = ['978-3-16-148410-0'];
+            input = [ '978-3-16-148410-0' ];
             expected = {
                 ISBN: '978-3-16-148410-0'
             };
@@ -71,7 +71,7 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly uses isbn validate function', function() {
-            input = ['978-3-16-148410-0'];
+            input = [ '978-3-16-148410-0' ];
             expected = {
                 ISBN: '9783161484100'
             };
@@ -80,7 +80,7 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly uses issn validate function', function() {
-            const inputISSN = ['1234-5678'];
+            const inputISSN = [ '1234-5678' ];
             expected = {
                 ISSN: '1234-5678'
             };
@@ -89,8 +89,8 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly adds two issn and one eissn', function() {
-            const inputISSN = ['1111-1111, 4444-4444'];
-            const inputEISSN = ['2222-2222'];
+            const inputISSN = [ '1111-1111, 4444-4444' ];
+            const inputEISSN = [ '2222-2222' ];
             expected = {
                 ISSN: '1111-1111, 4444-4444, 2222-2222'
             };
@@ -100,7 +100,7 @@ describe('translator utilities: ', function() {
         });
 
         it('Correctly adds two isbn', function() {
-            const inputISBN = ['978-3-16-148410-0', '978-9-99-999999-X'];
+            const inputISBN = [ '978-3-16-148410-0', '978-9-99-999999-X' ];
             expected = {
                 ISBN: '978-3-16-148410-0, 978-9-99-999999-X'
             };
@@ -112,26 +112,26 @@ describe('translator utilities: ', function() {
     describe('makeCreatorsTranslator function: ', function() {
 
         it('Name as written', function() {
-            input = ['Daniel J. Barrett'];
+            input = [ 'Daniel J. Barrett' ];
             expected = {
-                creators: [{
+                creators: [ {
                     'creatorType':'author',
                     'firstName': '',
                     'lastName': 'Daniel J. Barrett'
-                }]
+                } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author:input }, 'author');
             assert.deepEqual(result, expected);
         });
 
         it('Format Last name, first name', function() {
-            input = ['Barrett, Daniel J.'];
+            input = [ 'Barrett, Daniel J.' ];
             expected = {
-                creators: [{
+                creators: [ {
                     'creatorType':'author',
                     'firstName': '',
                     'lastName': 'Barrett, Daniel J.'
-                }]
+                } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author:input }, 'author');
             assert.deepEqual(result, expected);
@@ -141,7 +141,7 @@ describe('translator utilities: ', function() {
             author = 'J.K. Rowling';
             contributor = 'Mary GrandPré';
             expected = {
-                creators: [{
+                creators: [ {
                     'creatorType':'author',
                     'firstName': '',
                     'lastName': 'J.K. Rowling'
@@ -150,7 +150,7 @@ describe('translator utilities: ', function() {
                     'creatorType':'contributor',
                     'firstName': '',
                     'lastName': 'Mary GrandPré'
-                }]
+                } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author:author }, 'author');
             result = ut.makeCreatorsTranslator('contributor').translate(result, { contributor:contributor }, 'contributor');

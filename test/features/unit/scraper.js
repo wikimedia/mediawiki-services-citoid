@@ -22,10 +22,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 bePress: {
-                    doi: "10.100/example"
+                    doi: '10.100/example'
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -34,10 +34,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 bePress: {
-                    doi: [ "puppies", "10.100/example" ]
+                    doi: [ 'puppies', '10.100/example' ]
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -46,10 +46,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 highwirePress: {
-                    doi: "10.100/example"
+                    doi: '10.100/example'
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -58,10 +58,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 highwirePress: {
-                    doi: [ "puppies", "10.100/example" ]
+                    doi: [ 'puppies', '10.100/example' ]
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -70,10 +70,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 dublinCore: {
-                    identifier: "10.100/example"
+                    identifier: '10.100/example'
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -82,10 +82,10 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 dublinCore: {
-                    identifier: [ "puppies", "10.100/example" ]
+                    identifier: [ 'puppies', '10.100/example' ]
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });
@@ -102,16 +102,16 @@ describe('lib/Scraper.js functions: ', function() {
             citationObj = {};
             metadata = {
                 dublinCore: {
-                    identifier: [ "puppies", "10.100/example" ]
+                    identifier: [ 'puppies', '10.100/example' ]
                 },
                 highwirePress: {
-                    doi: "10.100/example2"
+                    doi: '10.100/example2'
                 },
                 bePress: {
-                    doi: "10.100/example3"
+                    doi: '10.100/example3'
                 }
             };
-            expected = { doi: "10.100/example" };
+            expected = { doi: '10.100/example' };
             result = scraper.matchIDs(citationObj, metadata, logger);
             assert.deepEqual(result, expected);
         });

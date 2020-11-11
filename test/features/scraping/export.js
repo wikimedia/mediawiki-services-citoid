@@ -90,7 +90,7 @@ describe('Exports into non mediawiki formats: ', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
                 assert.status(res, 400);
             }, function(err) {
-                assert.checkError(err, 400, "Invalid format requested mwDeprecated");
+                assert.checkError(err, 400, 'Invalid format requested mwDeprecated');
             });
         });
 

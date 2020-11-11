@@ -20,8 +20,8 @@ describe('type schema data functions', function() {
         it('gets base types - no creators', function() {
             result = types.getBaseFields('webpage');
             expected = {
-                "websiteType": "type",
-                "websiteTitle": "publicationTitle"
+                'websiteType': 'type',
+                'websiteTitle': 'publicationTitle'
             };
             assert.deepEqual(result, expected);
         });
@@ -29,8 +29,8 @@ describe('type schema data functions', function() {
         it('gets base types - with creators', function() {
             result = types.getBaseFields('computerProgram');
             expected = {
-                "company": "publisher",
-                "programmer": "author"
+                'company': 'publisher',
+                'programmer': 'author'
             };
             assert.deepEqual(result, expected);
         });
@@ -42,24 +42,24 @@ describe('type schema data functions', function() {
             result = types.creatorTypesMethods.getTypesForItemType(2);
             expected = [
                 {
-                    "id": 1,
-                    "name": "author"
+                    'id': 1,
+                    'name': 'author'
                 },
                 {
-                    "id": 2,
-                    "name": "contributor"
+                    'id': 2,
+                    'name': 'contributor'
                 },
                 {
-                    "id": 3,
-                    "name": "editor"
+                    'id': 3,
+                    'name': 'editor'
                 },
                 {
-                    "id": 5,
-                    "name": "seriesEditor"
+                    'id': 5,
+                    'name': 'seriesEditor'
                 },
                 {
-                    "id": 4,
-                    "name": "translator"
+                    'id': 4,
+                    'name': 'translator'
                 }
             ];
             assert.deepEqual(result, expected);

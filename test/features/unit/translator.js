@@ -112,32 +112,32 @@ describe('Tests for Translator.js : ', function() {
             citation = { itemType: 'journalArticle' };
             citation = translator.translate(citation, crossRefJSON[0], cr.journalArticle);
             expected = {
-                itemType: "journalArticle",
+                itemType: 'journalArticle',
                 creators:
                     [ {
-                        creatorType: "author",
-                        firstName: "Rachel C.",
-                        lastName: "Glade"
+                        creatorType: 'author',
+                        firstName: 'Rachel C.',
+                        lastName: 'Glade'
                     },
                     {
-                        creatorType: "author",
-                        firstName: "Robert S.",
-                        lastName: "Anderson"
+                        creatorType: 'author',
+                        firstName: 'Robert S.',
+                        lastName: 'Anderson'
                     },
                     {
-                        creatorType: "author",
-                        firstName: "Gregory E.",
-                        lastName: "Tucker"
+                        creatorType: 'author',
+                        firstName: 'Gregory E.',
+                        lastName: 'Tucker'
                     } ],
-                issue: "4",
-                volume: "45",
-                pages: "311-314",
-                date: "2017-01-23",
-                ISSN: "0091-7613, 1943-2682",
-                publicationTitle: "Geology",
-                DOI: "10.1130/g38665.1",
-                url: "http://dx.doi.org/10.1130/g38665.1",
-                title: "Block-controlled hillslope form and persistence of topography in rocky landscapes"
+                issue: '4',
+                volume: '45',
+                pages: '311-314',
+                date: '2017-01-23',
+                ISSN: '0091-7613, 1943-2682',
+                publicationTitle: 'Geology',
+                DOI: '10.1130/g38665.1',
+                url: 'http://dx.doi.org/10.1130/g38665.1',
+                title: 'Block-controlled hillslope form and persistence of topography in rocky landscapes'
             };
             assert.deepEqual(citation, expected);
         });
@@ -146,20 +146,20 @@ describe('Tests for Translator.js : ', function() {
             citation = { itemType: 'bookSection' };
             citation = translator.translate(citation, crossRefJSON[1], cr.bookSection);
             expected = {
-                itemType: "bookSection",
-                publisher: "Presses Universitaires de France",
-                ISBN: "9782130565727",
+                itemType: 'bookSection',
+                publisher: 'Presses Universitaires de France',
+                ISBN: '9782130565727',
                 creators:
                     [ {
-                        creatorType: "author",
-                        firstName: "Johanne",
-                        lastName: "Prud’homme"
+                        creatorType: 'author',
+                        firstName: 'Johanne',
+                        lastName: 'Prud’homme'
                     } ],
-                date: "2007",
-                pages: "87",
-                bookTitle: "Harry Potter, ange ou démon ?",
-                url: "http://dx.doi.org/10.3917/puf.tsch.2007.01.0087",
-                title: "Harry Potter à l’école des juvénistes"
+                date: '2007',
+                pages: '87',
+                bookTitle: 'Harry Potter, ange ou démon ?',
+                url: 'http://dx.doi.org/10.3917/puf.tsch.2007.01.0087',
+                title: 'Harry Potter à l’école des juvénistes'
             };
             assert.deepEqual(citation, expected);
         });
@@ -171,7 +171,7 @@ describe('Tests for Translator.js : ', function() {
                 Object.keys(cr).forEach(function(key) {
                     itemTypeName = types.itemTypeMethods.getName(key);
                     // Ensure every itemType has a corresponding translator
-                    if (!cr[itemTypeName] && key !== "types") { // Don't throw error for types obj
+                    if (!cr[itemTypeName] && key !== 'types') { // Don't throw error for types obj
                         throw new Error('No translator found for itemType ' + itemTypeName);
                     }
                     if (metadata) {
@@ -221,18 +221,18 @@ describe('Tests for Translator.js : ', function() {
             return meta.parseAll(article).then(function(metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.general, gen.webpage);
                 const expected = {
-                  itemType: "webpage",
+                  itemType: 'webpage',
                   creators: [
                     {
-                      creatorType: "author",
-                      lastName: "Turtle Lvr",
-                      firstName: ""
+                      creatorType: 'author',
+                      lastName: 'Turtle Lvr',
+                      firstName: ''
                     }
                   ],
-                  url: "http://example.com/turtles",
-                  abstractNote: "Exposition on the awesomeness of turtles",
-                  title: "Turtles are AWESOME!!1 | Awesome Turtles Website",
-                  language: "en"
+                  url: 'http://example.com/turtles',
+                  abstractNote: 'Exposition on the awesomeness of turtles',
+                  title: 'Turtles are AWESOME!!1 | Awesome Turtles Website',
+                  language: 'en'
                 };
                 assert.deepEqual(citation, expected);
             });
@@ -241,16 +241,16 @@ describe('Tests for Translator.js : ', function() {
             return meta.parseAll(article).then(function(metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.bePress, bp.webpage);
                 const expected = {
-                  itemType: "webpage",
+                  itemType: 'webpage',
                   creators: [
                     {
-                      creatorType: "author",
-                      lastName: "Turtle Lvr",
-                      firstName: ""
+                      creatorType: 'author',
+                      lastName: 'Turtle Lvr',
+                      firstName: ''
                     }
                   ],
-                  date: "2012",
-                  title: "Turtles are AWESOME!!1"
+                  date: '2012',
+                  title: 'Turtles are AWESOME!!1'
                 };
                 assert.deepEqual(citation, expected);
             });

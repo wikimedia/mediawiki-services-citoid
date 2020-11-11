@@ -14,8 +14,8 @@ describe('dublinCore translator unit', function() {
     it('Creator translate function adds lists of strings', function() {
         input = {
             author: [ {
-                given: "Rachel C.",
-                family: "Glade",
+                given: 'Rachel C.',
+                family: 'Glade',
                 affiliation: []
             } ]
         };
@@ -82,7 +82,7 @@ describe('dublinCore translator unit', function() {
 
         it('Fails with object', function() {
             input = {
-                issued: { 'date-parts': [ [ { elephant: "elephant" } ] ] }
+                issued: { 'date-parts': [ [ { elephant: 'elephant' } ] ] }
             };
             expected = {};
             result = cr.journalArticle.issued.translate({}, input, 'issued');

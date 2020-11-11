@@ -23,7 +23,6 @@
     "node/no-deprecated-api": "off",
     "operator-linebreak": "off",
     "prefer-regex-literals": "off",
-    "quotes": "off",
     "quote-props": "off",
     "space-before-function-paren": "off",
     "space-in-parens": ["error", "never"]

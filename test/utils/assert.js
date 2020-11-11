@@ -164,7 +164,7 @@ function checkBibtex(res, beginning) {
     assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
 
     const cit = res.body.toString();
-    assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
+    assert.deepEqual(cit.substring(0, beginning.length), beginning, 'Beginning of citation does not match');
 
 }
 

@@ -4,7 +4,7 @@ const preq   = require('preq');
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('express app', function() {
+describe('express app', function () {
 
     this.timeout(20000);
     const server = new Server();
@@ -22,10 +22,10 @@ describe('express app', function() {
         });
     });
 
-    it.skip('get landing page', function() {
+    it.skip('get landing page', function () {
         return preq.get({
             uri: server.config.uri
-        }).then(function(res) {
+        }).then(function (res) {
             // check that the response is present
             assert.status(res, 200);
             assert.contentType(res, 'text/html');

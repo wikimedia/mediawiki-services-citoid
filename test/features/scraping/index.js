@@ -3,7 +3,7 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('Native scraper: ', function() {
+describe('Native scraper: ', function () {
 
     this.timeout(20000);
     const server = new Server();
@@ -11,8 +11,8 @@ describe('Native scraper: ', function() {
     after(() => server.stop());
 
     // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
-    it('doi in url with query parameters - uses crossRef', function() {
-        return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function(res) {
+    it('doi in url with query parameters - uses crossRef', function () {
+        return server.query('http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473').then(function (res) {
             assert.checkCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
             assert.isInArray(res.body[0].source, 'Crossref');
             assert.deepEqual(res.body[0].issue, '1');

@@ -5,14 +5,14 @@
 const assert = require('../../../utils/assert.js');
 const coins = require('../../../../lib/translators/coins.js');
 
-describe('coins metadata', function() {
+describe('coins metadata', function () {
 
     let result;
     let expected;
     let metadata;
     let citation;
 
-    it('Correctly adds pages from spage and epage', function() {
+    it('Correctly adds pages from spage and epage', function () {
         metadata = {
             spage: '97',
             epage: '102'
@@ -25,7 +25,7 @@ describe('coins metadata', function() {
         assert.deepEqual(result, expected);
     });
 
-    it('Correctly fixes en dash in pages fields', function() {
+    it('Correctly fixes en dash in pages fields', function () {
         expected = {
             pages: '15–44'
         };
@@ -33,7 +33,7 @@ describe('coins metadata', function() {
         assert.deepEqual(result, expected);
     });
 
-    it('Correctly adds date', function() {
+    it('Correctly adds date', function () {
         expected = {
             date: '2010'
         };
@@ -41,9 +41,9 @@ describe('coins metadata', function() {
         assert.deepEqual(result, expected);
     });
 
-    describe('exports.other.addCreators function', function() {
+    describe('exports.other.addCreators function', function () {
 
-        it('Doesn\'t add empty creators field', function() {
+        it('Doesn\'t add empty creators field', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -56,7 +56,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Doesn\'t add creators field if missing itemType', function() {
+        it('Doesn\'t add creators field if missing itemType', function () {
             expected = {
             };
             citation = {};
@@ -71,7 +71,7 @@ describe('coins metadata', function() {
         });
 
         // Regression from not splitting author names by default, see T218125
-        it.skip('Doesn\'t add duplicate author names', function() {
+        it.skip('Doesn\'t add duplicate author names', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -94,7 +94,7 @@ describe('coins metadata', function() {
         });
 
         // Regression from not splitting author names by default, see T218125
-        it.skip('Doesn\'t add duplicate author names with nbsp present', function() {
+        it.skip('Doesn\'t add duplicate author names with nbsp present', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -116,7 +116,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly adds name with missing firstname', function() {
+        it('Correctly adds name with missing firstname', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -135,7 +135,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly adds name with missing lastname', function() {
+        it('Correctly adds name with missing lastname', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -154,7 +154,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly uses auinit1 and auinitm', function() {
+        it('Correctly uses auinit1 and auinitm', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -175,7 +175,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly uses auinit1 and auinitm', function() {
+        it('Correctly uses auinit1 and auinitm', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -195,7 +195,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly adds corporation names', function() {
+        it('Correctly adds corporation names', function () {
             citation = {
                 itemType: 'journalArticle'
             };
@@ -216,7 +216,7 @@ describe('coins metadata', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('Does not split names in au field', function() {
+        it('Does not split names in au field', function () {
             citation = {
                 itemType: 'journalArticle'
             };

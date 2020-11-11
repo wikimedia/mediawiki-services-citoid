@@ -7,19 +7,19 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('ISBN tests: ', function() {
+describe('ISBN tests: ', function () {
 
     this.timeout(40000);
     const server = new Server();
 
     // Use zotero search endpoint for isbn
-    describe('zotero isbn only: ', function() {
+    describe('zotero isbn only: ', function () {
 
         before(() => server.start({ wskey: false }));
         after(() => server.stop());
 
-        it('valid ISBN', function() {
-            return server.query('978-0-596-51979-7').then(function(res) {
+        it('valid ISBN', function () {
+            return server.query('978-0-596-51979-7').then(function (res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'MediaWiki');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -33,8 +33,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('valid ISBN with funky author field', function() {
-            return server.query('978043-9784542').then(function(res) {
+        it('valid ISBN with funky author field', function () {
+            return server.query('978043-9784542').then(function (res) {
                 assert.status(res, 200);
         //        assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
                 assert.deepEqual(res.body[0].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[0].title);
@@ -47,8 +47,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('valid DVD ISBN - type Image', function() {
-            return server.query('978-0756662967').then(function(res) {
+        it('valid DVD ISBN - type Image', function () {
+            return server.query('978-0756662967').then(function (res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Eyewitness DVD.'); // Not great
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -61,8 +61,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('ISBN with 979 prefix; not as good data as worldcat', function() {
-            return server.query('9791029801297').then(function(res) {
+        it('ISBN with 979 prefix; not as good data as worldcat', function () {
+            return server.query('9791029801297').then(function (res) {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Mon jardin tropical: guide de jardinage : Antilles, Réunion');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -72,12 +72,12 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('invalid ISBN', function() {
+        it('invalid ISBN', function () {
             const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
                     'Unexpected error message ' + err.body.Error);
             });
@@ -86,13 +86,13 @@ describe('ISBN tests: ', function() {
 
     // Uses worldcat search api. This requires a working wskey in your config.yaml file. Free temporary keys available here:
     // https://platform.worldcat.org/wskey/keys/manage
-    describe.skip('worldcat search api only: ', function() {
+    describe.skip('worldcat search api only: ', function () {
 
         before(() => server.start({ zotero: false }));
         after(() => server.stop());
 
-        it('book ISBN with dashes, type Text', function() {
-            return server.query('978-0-596-51979-7').then(function(res) {
+        it('book ISBN with dashes, type Text', function () {
+            return server.query('978-0-596-51979-7').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'MediaWiki');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -107,8 +107,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('ISBN with 979 prefix', function() {
-            return server.query('9791029801297').then(function(res) {
+        it('ISBN with 979 prefix', function () {
+            return server.query('9791029801297').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Mon jardin tropical : [guide de jardinage : Antilles [et] Réunion]');
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -119,8 +119,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('DVD ISBN - type Image', function() {
-            return server.query('978-0756662967').then(function(res) {
+        it('DVD ISBN - type Image', function () {
+            return server.query('978-0756662967').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res); // Returns either 'Seashore' or 'Eyewitness DVD. Seashore.' as title
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -134,8 +134,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('DVD ISBN - invalid Type', function() {
-            return server.query('9780783244396').then(function(res) {
+        it('DVD ISBN - invalid Type', function () {
+            return server.query('9780783244396').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res); // Title varies: 'Jaws' or 'Jaws'
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -148,8 +148,8 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('valid ISBN with funky author field', function() {
-            return server.query('9780439784542').then(function(res) {
+        it('valid ISBN with funky author field', function () {
+            return server.query('9780439784542').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res); // Title varies, , 'Harry Potter and the Half-Blood Prince #6.' or 'Harry Potter and the half-blood prince : Year 6'
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
@@ -162,12 +162,12 @@ describe('ISBN tests: ', function() {
             });
         });
 
-        it('invalid ISBN', function() {
+        it('invalid ISBN', function () {
             const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
                     'Unexpected error message ' + err.body.Error);
             });

@@ -24,7 +24,6 @@
     "operator-linebreak": "off",
     "prefer-regex-literals": "off",
     "quote-props": "off",
-    "space-before-function-paren": "off",
     "space-in-parens": ["error", "never"]
   }
 }

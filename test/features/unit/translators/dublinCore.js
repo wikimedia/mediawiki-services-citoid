@@ -5,12 +5,12 @@
 const assert = require('../../../utils/assert.js');
 const dc = require('../../../../lib/translators/dublinCore.js');
 
-describe('dublinCore translator unit', function() {
+describe('dublinCore translator unit', function () {
 
     let result;
     let expected;
 
-    it('Creator translate function adds lists of strings', function() {
+    it('Creator translate function adds lists of strings', function () {
         expected = {
             creators: [ {
                 creatorType: 'author',
@@ -22,7 +22,7 @@ describe('dublinCore translator unit', function() {
         assert.deepEqual(result, expected);
     });
 
-    it('Correctly adds an author string with one word', function() {
+    it('Correctly adds an author string with one word', function () {
         expected = {
             creators: [ {
                 creatorType: 'author',
@@ -34,7 +34,7 @@ describe('dublinCore translator unit', function() {
         assert.deepEqual(result, expected);
     });
 
-    it('Correctly adds an author string with two words', function() {
+    it('Correctly adds an author string with two words', function () {
         expected = {
             creators: [ {
                 creatorType: 'author',
@@ -46,7 +46,7 @@ describe('dublinCore translator unit', function() {
         assert.deepEqual(result, expected);
     });
 
-    it('Correctly adds an author string with three words', function() {
+    it('Correctly adds an author string with three words', function () {
         expected = {
             creators: [ {
                 creatorType: 'author',

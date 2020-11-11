@@ -3,30 +3,30 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('Exports into non mediawiki formats: ', function() {
+describe('Exports into non mediawiki formats: ', function () {
 
     this.timeout(20000);
     const server = new Server();
     before(() => server.start());
     after(() => server.stop());
 
-    describe('Exporting to bibtex: ', function() {
-        it('bibtex from scraper', function() {
-            return server.query('http://example.com', 'bibtex').then(function(res) {
+    describe('Exporting to bibtex: ', function () {
+        it('bibtex from scraper', function () {
+            return server.query('http://example.com', 'bibtex').then(function (res) {
                 assert.status(res, 200);
                 assert.checkBibtex(res, '\n@misc{noauthor_exa');
             });
         });
 
-        it('bibtex from pubmed', function() {
-            return server.query('http://www.ncbi.nlm.nih.gov/pubmed/14656957', 'bibtex').then(function(res) {
+        it('bibtex from pubmed', function () {
+            return server.query('http://www.ncbi.nlm.nih.gov/pubmed/14656957', 'bibtex').then(function (res) {
                 assert.status(res, 200);
                 assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
             });
         });
 
-        it('bibtex from pmid', function() {
-            return server.query('14656957', 'bibtex').then(function(res) {
+        it('bibtex from pmid', function () {
+            return server.query('14656957', 'bibtex').then(function (res) {
                 assert.status(res, 200);
                 assert.checkBibtex(res, '\n@article{chobanian_seventh_20');
             });
@@ -34,10 +34,10 @@ describe('Exports into non mediawiki formats: ', function() {
 
     });
 
-    describe('Exporting to zotero: ', function() {
+    describe('Exporting to zotero: ', function () {
         // May or may not come from zotero depending on version, but asking for it in Zotero format.
-        it('doi', function() {
-            return server.query('10.1007/11926078_68', 'zotero').then(function(res) {
+        it('doi', function () {
+            return server.query('10.1007/11926078_68', 'zotero').then(function (res) {
                 assert.status(res, 200);
                 assert.deepEqual(res.body[0].title, 'Semantic MediaWiki');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
@@ -45,8 +45,8 @@ describe('Exports into non mediawiki formats: ', function() {
                 assert.ok(res.body[0].creators);
             });
         });
-        it('doi with ISSN', function() {
-            return server.query('doi:10.1039/b309952k', 'zotero').then(function(res) {
+        it('doi with ISSN', function () {
+            return server.query('doi:10.1039/b309952k', 'zotero').then(function (res) {
                 assert.status(res, 200);
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
@@ -58,9 +58,9 @@ describe('Exports into non mediawiki formats: ', function() {
         });
     });
 
-    describe('Exporting to wikibase: ', function() {
-        it('valid ISBN', function() {
-            return server.query('978-0-596-51979-7', 'wikibase').then(function(res) {
+    describe('Exporting to wikibase: ', function () {
+        it('valid ISBN', function () {
+            return server.query('978-0-596-51979-7', 'wikibase').then(function (res) {
                 assert.status(res, 200);
                 assert.deepEqual(!!res.body[0].oclc, false);
                 assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
@@ -72,8 +72,8 @@ describe('Exports into non mediawiki formats: ', function() {
             });
         });
 
-        it('doi with ISSN', function() {
-            return server.query('doi:10.1039/b309952k', 'wikibase').then(function(res) {
+        it('doi with ISSN', function () {
+            return server.query('doi:10.1039/b309952k', 'wikibase').then(function (res) {
                 assert.status(res, 200);
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
@@ -85,11 +85,11 @@ describe('Exports into non mediawiki formats: ', function() {
         });
     });
 
-    describe('Exporting to mwDeprecated no longer functioning : ', function() {
-        it('Uses formerly correct parameter', function() {
-            return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
+    describe('Exporting to mwDeprecated no longer functioning : ', function () {
+        it('Uses formerly correct parameter', function () {
+            return server.query('10.1007/11926078_68', 'mwDeprecated').then(function (res) {
                 assert.status(res, 400);
-            }, function(err) {
+            }, function (err) {
                 assert.checkError(err, 400, 'Invalid format requested mwDeprecated');
             });
         });

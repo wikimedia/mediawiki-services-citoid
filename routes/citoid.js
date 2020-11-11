@@ -58,7 +58,7 @@ router.get('/api', (req, res) => {
 
 });
 
-module.exports = function(appObj) {
+module.exports = function (appObj) {
 
     app = appObj;
 

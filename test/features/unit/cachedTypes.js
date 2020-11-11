@@ -3,21 +3,21 @@
 const assert = require('../../utils/assert.js');
 const CachedTypes = require('../../../lib/zotero/cachedTypes.js');
 
-describe('type schema data functions', function() {
+describe('type schema data functions', function () {
 
     const types = new CachedTypes();
     let result;
     let expected;
 
-    describe('zotero methods', function() {
+    describe('zotero methods', function () {
 
-        it('returns false if no base types exist', function() {
+        it('returns false if no base types exist', function () {
             result = types.getBaseFields('note');
             expected = false;
             assert.deepEqual(result, expected);
         });
 
-        it('gets base types - no creators', function() {
+        it('gets base types - no creators', function () {
             result = types.getBaseFields('webpage');
             expected = {
                 'websiteType': 'type',
@@ -26,7 +26,7 @@ describe('type schema data functions', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('gets base types - with creators', function() {
+        it('gets base types - with creators', function () {
             result = types.getBaseFields('computerProgram');
             expected = {
                 'company': 'publisher',
@@ -37,8 +37,8 @@ describe('type schema data functions', function() {
 
     });
 
-    describe('creator types methods', function() {
-        it('gets creator type ids', function() {
+    describe('creator types methods', function () {
+        it('gets creator type ids', function () {
             result = types.creatorTypesMethods.getTypesForItemType(2);
             expected = [
                 {
@@ -65,37 +65,37 @@ describe('type schema data functions', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('returns empty list if no create type ids exist', function() {
+        it('returns empty list if no create type ids exist', function () {
             result = types.creatorTypesMethods.getTypesForItemType(1);
             expected = [];
             assert.deepEqual(result, expected);
         });
 
-        it('gets primary creator id from type', function() {
+        it('gets primary creator id from type', function () {
             result = types.creatorTypesMethods.getPrimaryIDForType('webpage');
             expected = 1;
             assert.deepEqual(result, expected);
         });
 
-        it('gets creator name from id', function() {
+        it('gets creator name from id', function () {
             result = types.creatorTypesMethods.cachedTypeMethods.getName(1);
             expected = 'author';
             assert.deepEqual(result, expected);
         });
 
-        it('gets primary creator id from name', function() {
+        it('gets primary creator id from name', function () {
             result = types.creatorTypesMethods.cachedTypeMethods.getID('author');
             expected = 1;
             assert.deepEqual(result, expected);
         });
 
-        it('determines if creatorType valid for type- true', function() {
+        it('determines if creatorType valid for type- true', function () {
             result = types.creatorTypesMethods.isValidForType('programmer', 'computerProgram');
             expected = true;
             assert.deepEqual(result, expected);
         });
 
-        it('determines if creatorType valid for type- false', function() {
+        it('determines if creatorType valid for type- false', function () {
             result = types.creatorTypesMethods.isValidForType('elephant', 'computerProgram');
             expected = false;
             assert.deepEqual(result, expected);
@@ -103,44 +103,44 @@ describe('type schema data functions', function() {
 
     });
 
-    describe('item fields methods', function() {
-        it('determines if id is valid for type- false', function() {
+    describe('item fields methods', function () {
+        it('determines if id is valid for type- false', function () {
             result = types.itemFieldsMethods.isValidForType('publicationTitle', 'webpage');
             expected = false;
             assert.deepEqual(result, expected);
         });
 
-        it('determines if id is valid for type- true', function() {
+        it('determines if id is valid for type- true', function () {
             result = types.itemFieldsMethods.isValidForType('websiteTitle', 'webpage');
             expected = true;
             assert.deepEqual(result, expected);
         });
 
-        it('determines if creator field is valid for type- true', function() {
+        it('determines if creator field is valid for type- true', function () {
             result = types.itemFieldsMethods.isValidForType('creators', 'webpage');
             expected = true;
             assert.deepEqual(result, expected);
         });
 
-        it('determines if creator field is valid for type- false', function() {
+        it('determines if creator field is valid for type- false', function () {
             result = types.itemFieldsMethods.isValidForType('creators', 'note');
             expected = true;
             assert.deepEqual(result, expected);
         });
 
-        it('get field id from type and base', function() {
+        it('get field id from type and base', function () {
             result = types.itemFieldsMethods.getFieldIDFromTypeAndBase('webpage', 'publicationTitle');
             expected = 91;
             assert.deepEqual(result, expected);
         });
 
-        it('get base id from type and field', function() {
+        it('get base id from type and field', function () {
             result = types.itemFieldsMethods.getBaseIDFromTypeAndField('webpage', 'websiteTitle');
             expected = 12;
             assert.deepEqual(result, expected);
         });
 
-        it('get item type fields', function() {
+        it('get item type fields', function () {
             result = types.itemFieldsMethods.getItemTypeFields('webpage');
             expected = [
                 110,
@@ -159,13 +159,13 @@ describe('type schema data functions', function() {
             assert.deepEqual(result, expected);
         });
 
-        it('gets field name from id', function() {
+        it('gets field name from id', function () {
             result = types.itemFieldsMethods.cachedTypeMethods.getName(1);
             expected = 'url';
             assert.deepEqual(result, expected);
         });
 
-        it('gets id from field name', function() {
+        it('gets id from field name', function () {
             result = types.itemFieldsMethods.cachedTypeMethods.getID('url');
             expected = 1;
             assert.deepEqual(result, expected);

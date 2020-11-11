@@ -5,7 +5,7 @@
 const assert = require('../../../utils/assert.js');
 const oSearch = require('../../../../lib/translators/openSearch.js');
 
-describe('openSearch translator unit tests: ', function() {
+describe('openSearch translator unit tests: ', function () {
 
     let result;
     let expected;
@@ -20,13 +20,13 @@ describe('openSearch translator unit tests: ', function() {
         'oclcterms:recordIdentifier': [ '474668158' ]
     };
 
-    it('title', function() {
+    it('title', function () {
         expected = { title: 'MediaWiki' };
         result = oSearch.book.title.translate({}, input, 'title');
         assert.deepEqual(result, expected);
     });
 
-    it('oclc', function() {
+    it('oclc', function () {
         expected = { oclc: '474668158' };
         result = oSearch.book['oclcterms:recordIdentifier'].translate({}, input, 'oclcterms:recordIdentifier');
         assert.deepEqual(result, expected);

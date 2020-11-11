@@ -8,7 +8,7 @@ const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 const zotero = require('../../utils/mockZoteroServer.js');
 
-describe('mock Zotero service that cannot export', function() {
+describe('mock Zotero service that cannot export', function () {
 
     this.timeout(20000);
     const server = new Server();
@@ -21,19 +21,19 @@ describe('mock Zotero service that cannot export', function() {
     });
     after(() => server.stop());
 
-    it('Get error for bibtex export', function() {
+    it('Get error for bibtex export', function () {
         return server.query('http://www.example.com', 'bibtex', 'en')
-        .then(function(res) {
+        .then(function (res) {
             assert.status(res, 404);
-        }, function(err) {
+        }, function (err) {
             assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
             assert.status(err, 404);
             // assert.checkError(err, 404, 'Unable to serve bibtex at this time');
         });
     });
 
-    it('Success with mediawiki export', function() {
-        return server.query('http://www.example.com').then(function(res) {
+    it('Success with mediawiki export', function () {
+        return server.query('http://www.example.com').then(function (res) {
             assert.status(res, 200);
             assert.checkCitation(res, 'Example Domain');
         });

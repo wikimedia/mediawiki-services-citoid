@@ -7,9 +7,9 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('Zotero service down or disabled: ', function() {
+describe('Zotero service down or disabled: ', function () {
 
-    describe('unreachable', function() {
+    describe('unreachable', function () {
 
         this.timeout(20000);
         const server = new Server();
@@ -22,20 +22,20 @@ describe('Zotero service down or disabled: ', function() {
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
         // as they have blocked our UA in the past.
-        it('PMID not in doi id converter api', function() {
+        it('PMID not in doi id converter api', function () {
             const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.checkError(err, 404); // Exact error may differ as may be interpreted as pmcid or pmid
             });
         });
 
         // PMID on NIH website that is found in the id converter api- should convert to DOI
         // Uses three sources, crossref, pubmed and citoid
-        it('PMCID present in doi id converter api', function() {
-            return server.query('PMC3605911').then(function(res) {
+        it('PMCID present in doi id converter api', function () {
+            return server.query('PMC3605911').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
@@ -49,8 +49,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // JSTOR page, uses crossRef
-        it('JSTOR page', function() {
-            return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function(res) {
+        it('JSTOR page', function () {
+            return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -60,8 +60,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Article with doi within DublinCore metadata + highwire data', function() {
-            return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function(res) {
+        it('Article with doi within DublinCore metadata + highwire data', function () {
+            return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -71,8 +71,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('doi spage and epage fields in crossRef coins data', function() {
-            return server.query('http://doi.org/10.1002/jlac.18571010113').then(function(res) {
+        it('doi spage and epage fields in crossRef coins data', function () {
+            return server.query('http://doi.org/10.1002/jlac.18571010113').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Ueber einige Derivate des Naphtylamins');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -83,8 +83,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('successfully uses highwire press metadata', function() {
-            return server.query('http://mic.microbiologyresearch.org/content/journal/micro/10.1099/mic.0.082289-0').then(function(res) {
+        it('successfully uses highwire press metadata', function () {
+            return server.query('http://mic.microbiologyresearch.org/content/journal/micro/10.1099/mic.0.082289-0').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Resistance to bacteriocins produced by Gram-positive bacteria');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -98,8 +98,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('successfully uses bepress press metadata alone', function() {
-            return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function(res) {
+        it('successfully uses bepress press metadata alone', function () {
+            return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
@@ -110,8 +110,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-        it('Article with doi and DublinCore metadata', function() {
-            return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function(res) {
+        it('Article with doi and DublinCore metadata', function () {
+            return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function (res) {
                 assert.status(res, 200);
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.checkCitation(res, 'Increased transcription rates correlate with increased reversion rates in leuB and argH Escherichia coli auxotrophs'); // Title from crossRef
@@ -121,19 +121,19 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Get error for bibtex export', function() {
+        it('Get error for bibtex export', function () {
             return server.query('http://www.example.com', 'bibtex', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
                 // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });
         });
 
-        it('requires cookie handling', function() {
-            return server.query('www.jstor.org/discover/10.2307/3677029').then(function(res) {
+        it('requires cookie handling', function () {
+            return server.query('www.jstor.org/discover/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -142,9 +142,9 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page where scraping fails
-        it('DOI pointing to resource that can\'t be scraped - uses crossRef', function() {
+        it('DOI pointing to resource that can\'t be scraped - uses crossRef', function () {
             return server.query('10.1038/scientificamerican0200-90')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -158,8 +158,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('dx.DOI link - uses crossRef', function() {
-            return server.query('http://dx.DOI.org/10.2307/3677029').then(function(res) {
+        it('dx.DOI link - uses crossRef', function () {
+            return server.query('http://dx.DOI.org/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -172,8 +172,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function() {
-            return server.query('10.14344/IOC.ML.4.4').then(function(res) {
+        it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function () {
+            return server.query('10.14344/IOC.ML.4.4').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'IOC World Bird List 4.4');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -181,8 +181,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets date from crossRef REST API', function() {
-            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+        it('gets date from crossRef REST API', function () {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function (res) { // Not sending the correct link to zotero - investigate
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
                 assert.deepEqual(res.body[0].date, '1998-05');
@@ -191,8 +191,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets editors from crossRef REST API for book-tract type', function() {
-            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function(res) {
+        it('gets editors from crossRef REST API for book-tract type', function () {
+            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
                 assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
@@ -202,8 +202,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets proceedings from crossRef REST API', function() {
-            return server.query('10.4271/2015-01-0821').then(function(res) {
+        it('gets proceedings from crossRef REST API', function () {
+            return server.query('10.4271/2015-01-0821').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
                 assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
@@ -214,8 +214,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // itemType from open graph
-        it('itemType from open graph', function() {
-            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function(res) {
+        it('itemType from open graph', function () {
+            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Pinlig for Skåber');
                 assert.deepEqual(res.body[0].itemType, 'newspaperArticle');
@@ -223,17 +223,17 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Prefer original url for using native scraper
-        it('uses original url', function() {
+        it('uses original url', function () {
             const url = 'http://www.google.com';
-            return server.query(url).then(function(res) {
+            return server.query(url).then(function (res) {
                 assert.checkCitation(res, 'Google');
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(res.body[0].url, url);
             });
         });
 
-        it('websiteTitle but no publicationTitle', function() {
-            return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function(res) {
+        it('websiteTitle but no publicationTitle', function () {
+            return server.query('http://blog.woorank.com/2013/04/dublin-core-metadata-for-seo-and-usability/').then(function (res) {
                 assert.checkCitation(res);
                 assert.deepEqual(!!res.body[0].accessDate, true, 'No accessDate present');
                 assert.deepEqual(!!res.body[0].websiteTitle, true, 'Missing websiteTitle field');
@@ -241,8 +241,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('dublinCore data with multiple identifiers in array', function() {
-            return server.query('http://apps.who.int/iris/handle/10665/70863').then(function(res) {
+        it('dublinCore data with multiple identifiers in array', function () {
+            return server.query('http://apps.who.int/iris/handle/10665/70863').then(function (res) {
                 assert.checkCitation(res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
                 assert.deepEqual(res.body[0].publisher, undefined); // TODO: Investigate why this is undefined
@@ -250,8 +250,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('has page range in direct scrape', function() {
-            return server.query('10.1017/s0305004100013554').then(function(res) {
+        it('has page range in direct scrape', function () {
+            return server.query('10.1017/s0305004100013554').then(function (res) {
                 assert.checkCitation(res, 'Discussion of Probability Relations between Separated Systems');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
                 assert.deepEqual(res.body[0].pages, '555–563', 'Wrong pages item; expected 555–563, got ' + res.body[0].pages);
@@ -260,8 +260,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Unable to scrape and ends up with crossRef data
-        it('DOI with redirect - Wiley', function() {
-            return server.query('10.1029/94WR00436').then(function(res) {
+        it('DOI with redirect - Wiley', function () {
+            return server.query('10.1029/94WR00436').then(function (res) {
                 assert.checkCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
                 assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
@@ -271,7 +271,7 @@ describe('Zotero service down or disabled: ', function() {
         });
     });
 
-    describe('disabled in conf', function() {
+    describe('disabled in conf', function () {
 
         const server = new Server();
         this.timeout(40000);
@@ -282,20 +282,20 @@ describe('Zotero service down or disabled: ', function() {
         // PMID on NIH website that is not found in the id converter api
         // This will fail when Zotero is disabled because we no longer directly scrape pubMed central URLs,
         // as they have blocked our UA in the past.
-        it('PMID not in doi id converter api', function() {
+        it('PMID not in doi id converter api', function () {
             const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.checkError(err, 404); // Error may be for pmcid or pmid
             });
         });
 
         // PMID on NIH website that is found in the id converter api- should convert to DOI
         // Uses three sources, crossref, pubmed and citoid
-        it('PMCID present in doi id converter api', function() {
-            return server.query('PMC3605911').then(function(res) {
+        it('PMCID present in doi id converter api', function () {
+            return server.query('PMC3605911').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Viral Phylodynamics');
                 assert.deepEqual(res.body[0].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947');
@@ -309,8 +309,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // JSTOR page with tabs in natively scraped title
-        it('JSTOR page with tabs in natively scraped title', function() {
-            return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function(res) {
+        it('JSTOR page with tabs in natively scraped title', function () {
+            return server.query('http://www.jstor.org/discover/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -320,8 +320,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Article with doi within DublinCore metadata + highwire data', function() {
-            return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function(res) {
+        it('Article with doi within DublinCore metadata + highwire data', function () {
+            return server.query('http://www.sciencemag.org/content/303/5656/387.short').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -331,8 +331,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('doi spage and epage fields in crossRef coins data', function() {
-            return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function(res) {
+        it('doi spage and epage fields in crossRef coins data', function () {
+            return server.query('http://dx.doi.org/10.1002/jlac.18571010113').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Ueber einige Derivate des Naphtylamins');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -343,8 +343,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('successfully uses highwire press metadata', function() {
-            return server.query('http://mic.microbiologyresearch.org/content/journal/micro/10.1099/mic.0.082289-0').then(function(res) {
+        it('successfully uses highwire press metadata', function () {
+            return server.query('http://mic.microbiologyresearch.org/content/journal/micro/10.1099/mic.0.082289-0').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Resistance to bacteriocins produced by Gram-positive bacteria');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -358,8 +358,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('successfully uses bepress press metadata alone', function() {
-            return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function(res) {
+        it('successfully uses bepress press metadata alone', function () {
+            return server.query('http://uknowledge.uky.edu/upk_african_history/1/').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'South Africa and the World: The Foreign Policy of Apartheid');
                 assert.deepEqual(res.body[0].author.length, 1, 'Should have 1 author');
@@ -370,8 +370,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-        it('Article with doi and DublinCore metadata', function() {
-            return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function(res) {
+        it('Article with doi and DublinCore metadata', function () {
+            return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function (res) {
                 assert.status(res, 200);
                 assert.isInArray(res.body[0].source, 'Crossref');
                 assert.checkCitation(res, 'Increased transcription rates correlate with increased reversion rates in leuB and argH Escherichia coli auxotrophs'); // Title from crossRef
@@ -381,19 +381,19 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Get error for bibtex export', function() {
+        it('Get error for bibtex export', function () {
             return server.query('http://www.example.com', 'bibtex', 'en')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 404);
-            }, function(err) {
+            }, function (err) {
                 assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
                 assert.status(err, 404);
                 // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
             });
         });
 
-        it('requires cookie handling', function() {
-            return server.query('www.jstor.org/discover/10.2307/3677029').then(function(res) {
+        it('requires cookie handling', function () {
+            return server.query('www.jstor.org/discover/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -402,9 +402,9 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page where scraping fails
-        it('DOI pointing to resource that can\'t be scraped - uses crossRef', function() {
+        it('DOI pointing to resource that can\'t be scraped - uses crossRef', function () {
             return server.query('10.1038/scientificamerican0200-90')
-            .then(function(res) {
+            .then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res);
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -418,8 +418,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
-        it('dx.DOI link - uses crossRef', function() {
-            return server.query('http://dx.DOI.org/10.2307/3677029').then(function(res) {
+        it('dx.DOI link - uses crossRef', function () {
+            return server.query('http://dx.DOI.org/10.2307/3677029').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Flight Feather Moult in the Red-Necked Nightjar Caprimulgus ruficollis');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -432,8 +432,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function() {
-            return server.query('10.14344/IOC.ML.4.4').then(function(res) {
+        it('Case sensitive DOI with 5 digit registrant code and unknown genre in crossRef', function () {
+            return server.query('10.14344/IOC.ML.4.4').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'IOC World Bird List 4.4');
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -441,8 +441,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets date from crossRef REST API', function() {
-            return server.query('10.1016/S0305-0491(98)00022-4').then(function(res) { // Not sending the correct link to zotero - investigate
+        it('gets date from crossRef REST API', function () {
+            return server.query('10.1016/S0305-0491(98)00022-4').then(function (res) { // Not sending the correct link to zotero - investigate
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
                 assert.deepEqual(res.body[0].date, '1998-05');
@@ -451,8 +451,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets editors from crossRef REST API for book-tract type', function() {
-            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function(res) {
+        it('gets editors from crossRef REST API for book-tract type', function () {
+            return server.query('10.1017/isbn-9780511132971.eh1-7').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Population of the slave states, by state, race, and slave status: 1860-1870');
                 assert.deepEqual(!!res.body[0].date, false); // null date in crossRef
@@ -462,8 +462,8 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('gets proceedings from crossRef REST API', function() {
-            return server.query('10.4271/2015-01-0821').then(function(res) {
+        it('gets proceedings from crossRef REST API', function () {
+            return server.query('10.4271/2015-01-0821').then(function (res) {
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Simulating a Complete Performance Map of an Ethanol-Fueled Boosted HCCI Engine');
                 assert.deepEqual(res.body[0].date, '2015-04-14'); // null date in crossRef
@@ -473,11 +473,11 @@ describe('Zotero service down or disabled: ', function() {
             });
         });
 
-        it('PMCID but no PMID', function() {
+        it('PMCID but no PMID', function () {
 
-            it('webpage', function() {
+            it('webpage', function () {
                 return server.query('PMC2096233',
-                    'mediawiki', 'en', 'true').then(function(res) {
+                    'mediawiki', 'en', 'true').then(function (res) {
                     assert.status(res, 200);
                     assert.deepEqual(!!res.body[0].PMCID, true, '2096233');
                     assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
@@ -487,8 +487,8 @@ describe('Zotero service down or disabled: ', function() {
         });
 
         // Unable to scrape and ends up with crossRef data
-        it('DOI with redirect - Wiley', function() {
-            return server.query('10.1029/94WR00436').then(function(res) {
+        it('DOI with redirect - Wiley', function () {
+            return server.query('10.1029/94WR00436').then(function (res) {
                 assert.checkCitation(res, 'A distributed hydrology-vegetation model for complex terrain');
                 assert.deepEqual(res.body[0].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[0].publicationTitle);
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');

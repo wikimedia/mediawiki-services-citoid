@@ -5,7 +5,7 @@ const scraper = require('../../../lib/Scraper.js');
 const fs = require('fs');
 const cheerio = require('cheerio');
 
-describe('lib/Scraper.js functions: ', function() {
+describe('lib/Scraper.js functions: ', function () {
 
     let result;
     let expected;
@@ -13,7 +13,7 @@ describe('lib/Scraper.js functions: ', function() {
         log: function () {}
     };
 
-    describe('matchIDs function: ', function() {
+    describe('matchIDs function: ', function () {
 
         let metadata = {};
         let citationObj = {};
@@ -117,7 +117,7 @@ describe('lib/Scraper.js functions: ', function() {
         });
     });
 
-    describe('parsing', function() {
+    describe('parsing', function () {
 
         it('should scrape meta tag charset content', (done) => {
             const results = scraper.contentTypeFromBody(cheerio.load(fs.readFileSync('test/utils/static/metacharset.html')));

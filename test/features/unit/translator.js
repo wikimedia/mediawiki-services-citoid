@@ -57,23 +57,23 @@ app.logger = new Logger(app.conf.logging);
 const translator = new Translator(app);
 const types = new CachedTypes();
 
-describe('Tests for Translator.js : ', function() {
+describe('Tests for Translator.js : ', function () {
 
-    describe('translate function on html: ', function() {
+    describe('translate function on html: ', function () {
 
         let citation;
         let result;
         let itemTypeName;
 
         // Cycle through every translator
-        translators.forEach(function(metadataType) {
+        translators.forEach(function (metadataType) {
             // Cycle through every sample html file
-            htmlFiles.forEach(function(file) {
-                it('translates ' + metadataType.name + ' metadata from ' + file.name + ' file', function() {
+            htmlFiles.forEach(function (file) {
+                it('translates ' + metadataType.name + ' metadata from ' + file.name + ' file', function () {
                     // Get metadata from html file
-                    return meta.parseAll(file.value).then(function(metadata) {
+                    return meta.parseAll(file.value).then(function (metadata) {
                         // For every valid Zotero item type, check corresponding translator on file
-                        Object.keys(itemTypes).forEach(function(key) {
+                        Object.keys(itemTypes).forEach(function (key) {
                             itemTypeName = types.itemTypeMethods.getName(key);
                             // Ensure every itemType has a corresponding translator
                             if (!metadataType.value[itemTypeName]) {
@@ -83,7 +83,7 @@ describe('Tests for Translator.js : ', function() {
                             if (metadata[metadataType.name]) {
                                 citation = translator.translate({ itemType: itemTypeName }, metadata[metadataType.name], metadataType.value[itemTypeName]);
                                 // Check that every key in citation is a valid field for given type
-                                Object.keys(citation).forEach(function(citationField) {
+                                Object.keys(citation).forEach(function (citationField) {
                                     result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
                                     assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                                 });
@@ -101,14 +101,14 @@ describe('Tests for Translator.js : ', function() {
         });
     });
 
-    describe('translate function on json: ', function() {
+    describe('translate function on json: ', function () {
         const crossRefJSON = JSON.parse(fs.readFileSync('./test/utils/static/crossRef.json'));
         let citation;
         let expected;
         let itemTypeName;
         let result;
 
-        it('sets right info from journal-article crossRef metadata', function() {
+        it('sets right info from journal-article crossRef metadata', function () {
             citation = { itemType: 'journalArticle' };
             citation = translator.translate(citation, crossRefJSON[0], cr.journalArticle);
             expected = {
@@ -142,7 +142,7 @@ describe('Tests for Translator.js : ', function() {
             assert.deepEqual(citation, expected);
         });
 
-        it('sets right info from book-section crossRef metadata', function() {
+        it('sets right info from book-section crossRef metadata', function () {
             citation = { itemType: 'bookSection' };
             citation = translator.translate(citation, crossRefJSON[1], cr.bookSection);
             expected = {
@@ -164,11 +164,11 @@ describe('Tests for Translator.js : ', function() {
             assert.deepEqual(citation, expected);
         });
 
-        it('tests every itemType for crossRef translator on every sample crossRef file', function() {
+        it('tests every itemType for crossRef translator on every sample crossRef file', function () {
             // Cycle through every crossRef sample metadata in file
-            crossRefJSON.forEach(function(metadata) {
+            crossRefJSON.forEach(function (metadata) {
                 // For every valid Zotero item type, check corresponding object in the crossRef translator
-                Object.keys(cr).forEach(function(key) {
+                Object.keys(cr).forEach(function (key) {
                     itemTypeName = types.itemTypeMethods.getName(key);
                     // Ensure every itemType has a corresponding translator
                     if (!cr[itemTypeName] && key !== 'types') { // Don't throw error for types obj
@@ -177,7 +177,7 @@ describe('Tests for Translator.js : ', function() {
                     if (metadata) {
                         citation = translator.translate({ itemType: itemTypeName }, metadata, cr[itemTypeName]);
                         // Check that every key in citation is a valid field for given type
-                        Object.keys(citation).forEach(function(citationField) {
+                        Object.keys(citation).forEach(function (citationField) {
                             result = types.itemFieldsMethods.isValidForType(citationField, itemTypeName);
                             assert.deepEqual(result, true, 'Citation field "' + citationField + '" is not valid for itemType "' + itemTypeName + '"');
                         });
@@ -193,22 +193,22 @@ describe('Tests for Translator.js : ', function() {
         });
     });
 
-    describe('addItemType function: ', function() {
-        it('sets videoRecording itemType', function() {
-            return meta.parseAll(movie).then(function(metadata) {
+    describe('addItemType function: ', function () {
+        it('sets videoRecording itemType', function () {
+            return meta.parseAll(movie).then(function (metadata) {
                 const itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'videoRecording', 'Expected itemType videoRecording, got itemType ' + itemType);
             });
         });
 
-        it('sets article itemType', function() {
-            return meta.parseAll(article).then(function(metadata) {
+        it('sets article itemType', function () {
+            return meta.parseAll(article).then(function (metadata) {
                 const itemType = scraper.addItemType(metadata, {}).itemType;
                 assert.deepEqual(itemType, 'journalArticle', 'Expected itemType journalArticle, got itemType ' + itemType);
             });
         });
 
-        it('sets itemType webpage if no relevant metadata available', function() {
+        it('sets itemType webpage if no relevant metadata available', function () {
             const metadata = { general: { title: 'Example domain' } };
             const itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
@@ -216,9 +216,9 @@ describe('Tests for Translator.js : ', function() {
         });
     });
 
-    describe('check specific results: ', function() {
-        it('sets right info from webpage for general metadata', function() {
-            return meta.parseAll(article).then(function(metadata) {
+    describe('check specific results: ', function () {
+        it('sets right info from webpage for general metadata', function () {
+            return meta.parseAll(article).then(function (metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.general, gen.webpage);
                 const expected = {
                   itemType: 'webpage',
@@ -237,8 +237,8 @@ describe('Tests for Translator.js : ', function() {
                 assert.deepEqual(citation, expected);
             });
         });
-        it('sets right info from webpage for bepress metadata', function() {
-            return meta.parseAll(article).then(function(metadata) {
+        it('sets right info from webpage for bepress metadata', function () {
+            return meta.parseAll(article).then(function (metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.bePress, bp.webpage);
                 const expected = {
                   itemType: 'webpage',

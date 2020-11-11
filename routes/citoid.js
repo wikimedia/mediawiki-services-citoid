@@ -1,6 +1,5 @@
 'use strict';
 
-
 const sUtil = require('../lib/util');
 const CitoidRequest = require('../lib/CitoidRequest.js');
 const CitoidService = require('../lib/CitoidService');
@@ -59,7 +58,6 @@ router.get('/api', (req, res) => {
 
 });
 
-
 module.exports = function(appObj) {
 
     app = appObj;
@@ -86,4 +84,3 @@ module.exports = function(appObj) {
     };
 
 };
-

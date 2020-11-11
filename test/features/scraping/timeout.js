@@ -1,9 +1,7 @@
 'use strict';
 
-
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-
 
 describe('Tests using a very short timeout - all use crossRef - zotero disabled', function() {
 
@@ -85,7 +83,6 @@ describe('Tests using a very short timeout - all use crossRef - zotero disabled'
                 assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
             });
         });
-
 
         it('doi pointing to conferencePaper', function() {
             return server.query('10.1007/11926078_68').then(function(res) {

@@ -3,7 +3,6 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-
 describe('correctly gets base fields instead of more specific fields', function() {
 
     this.timeout(20000);
@@ -54,6 +53,3 @@ describe('correctly gets base fields instead of more specific fields', function(
 
     });
 });
-
-
-

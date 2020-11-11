@@ -5,7 +5,6 @@
 const assert = require('../../../utils/assert.js');
 const coins = require('../../../../lib/translators/coins.js');
 
-
 describe('coins metadata', function() {
 
     let result;

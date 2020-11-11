@@ -12,7 +12,6 @@
     "indent": ["off"],
     "max-statements-per-line": ["error", { "max": 2 }],
     "no-multi-spaces": "off",
-    "no-multiple-empty-lines": "off",
     "no-underscore-dangle": "off",
     "no-unused-vars": [
       "error",

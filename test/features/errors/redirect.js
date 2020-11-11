@@ -1,11 +1,9 @@
 'use strict';
 
-
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 const nock   = require('nock');
 const parse  = require('url').parse;
-
 
 describe('redirects', function() {
 
@@ -98,4 +96,3 @@ describe('redirects', function() {
     });
 
 });
-

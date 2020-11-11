@@ -258,4 +258,3 @@ describe('Tests for Translator.js : ', function() {
     });
 
 });
-

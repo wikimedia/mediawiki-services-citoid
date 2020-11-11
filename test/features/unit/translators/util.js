@@ -14,7 +14,6 @@ const fixDate = ex.fixDate;
 const fixLang = ex.fixLang;
 const vISBN = ex.validateISBN;
 
-
 describe('translator utilities: ', function() {
 
     let result;
@@ -156,8 +155,6 @@ describe('translator utilities: ', function() {
             result = ut.makeCreatorsTranslator('contributor').translate(result, { contributor: contributor }, 'contributor');
             assert.deepEqual(result, expected);
         });
-
-
 
     });
 });

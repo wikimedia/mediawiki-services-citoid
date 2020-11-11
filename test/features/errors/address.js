@@ -1,9 +1,7 @@
 'use strict';
 
-
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-
 
 describe('address restrictions', function() {
 

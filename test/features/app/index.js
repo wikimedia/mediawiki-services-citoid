@@ -1,10 +1,8 @@
 'use strict';
 
-
 const preq   = require('preq');
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-
 
 describe('express app', function() {
 
@@ -67,4 +65,3 @@ describe('express app', function() {
     });
 
 });
-

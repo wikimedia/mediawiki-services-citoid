@@ -1,8 +1,6 @@
 'use strict';
 
-
 const assert = require('assert');
-
 
 function deepEqual(result, expected, message) {
 
@@ -15,7 +13,6 @@ function deepEqual(result, expected, message) {
     }
 
 }
-
 
 /**
  * Asserts whether the return status was as expected
@@ -30,7 +27,6 @@ function status(res, expected) {
 
 }
 
-
 /**
  * Asserts whether content type was as expected
  *
@@ -44,7 +40,6 @@ function contentType(res, expectedRegexString) {
             `Expected content-type to match ${expectedRegexString}, but was ${actual}`);
 }
 
-
 function isDeepEqual(result, expected, message) {
 
     try {
@@ -55,7 +50,6 @@ function isDeepEqual(result, expected, message) {
     }
 
 }
-
 
 function notDeepEqual(result, expected, message) {
 
@@ -68,7 +62,6 @@ function notDeepEqual(result, expected, message) {
     }
 
 }
-
 
 function fails(promise, onRejected) {
 
@@ -120,7 +113,6 @@ function isNotInArray(arr, expected, message) {
     assert.deepEqual(arr.indexOf(expected), -1, message);
 }
 
-
 // Used by checkCitation and checkZotCitation
 function checkCit(res, title) {
 
@@ -167,7 +159,6 @@ function checkCitation(res, title) {
     assert.notDeepEqual(res.body[0].accessDate, 'CURRENT_TIMESTAMP', 'Access date uncorrected');
 }
 
-
 function checkBibtex(res, beginning) {
 
     assert.deepEqual(Buffer.isBuffer(res.body), true, 'Expected the body to be a Buffer!');
@@ -176,7 +167,6 @@ function checkBibtex(res, beginning) {
     assert.deepEqual(cit.substring(0, beginning.length), beginning, "Beginning of citation does not match");
 
 }
-
 
 module.exports.ok             = assert.ok;
 module.exports.fails          = fails;
@@ -191,4 +181,3 @@ module.exports.isNotInArray     = isNotInArray;
 module.exports.checkCitation    = checkCitation;
 module.exports.checkZotCitation = checkZotCitation;
 module.exports.checkBibtex      = checkBibtex;
-

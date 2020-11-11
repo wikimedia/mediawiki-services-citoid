@@ -7,7 +7,6 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-
 describe('Zotero service down or disabled: ', function() {
 
     describe('unreachable', function() {

@@ -1,14 +1,11 @@
-
 /**
  * Tests ISBN which uses worldcat service
  */
 
 'use strict';
 
-
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-
 
 describe('ISBN tests: ', function() {
 

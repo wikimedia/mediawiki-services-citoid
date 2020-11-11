@@ -1,6 +1,5 @@
 'use strict';
 
-
 const extend = require('extend');
 const fs = require('fs');
 const preq   = require('preq');
@@ -8,7 +7,6 @@ const yaml = require('js-yaml');
 
 const P = require('bluebird');
 const TestRunner = require('service-runner/test/TestServer');
-
 
 class TestCitoidRunner extends TestRunner {
     constructor(configPath = `${__dirname}/../../config.yaml`) {

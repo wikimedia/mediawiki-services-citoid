@@ -2,13 +2,10 @@
 
 /* Unit tests for the crossRef translator */
 
-
 const assert = require('../../../utils/assert.js');
 const cr = require('../../../../lib/translators/crossRef.js');
 
-
 describe('dublinCore translator unit', function() {
-
 
     let result;
     let expected;

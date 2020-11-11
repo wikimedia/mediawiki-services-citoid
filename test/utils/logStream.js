@@ -1,6 +1,5 @@
 'use strict';
 
-
 const bunyan = require('bunyan');
 
 function logStream(logStdout) {

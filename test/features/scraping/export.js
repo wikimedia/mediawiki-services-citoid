@@ -1,9 +1,7 @@
 'use strict';
 
-
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-
 
 describe('Exports into non mediawiki formats: ', function() {
 
@@ -60,7 +58,6 @@ describe('Exports into non mediawiki formats: ', function() {
         });
     });
 
-
     describe('Exporting to wikibase: ', function() {
         it('valid ISBN', function() {
             return server.query('978-0-596-51979-7', 'wikibase').then(function(res) {
@@ -88,7 +85,6 @@ describe('Exports into non mediawiki formats: ', function() {
         });
     });
 
-
     describe('Exporting to mwDeprecated no longer functioning : ', function() {
         it('Uses formerly correct parameter', function() {
             return server.query('10.1007/11926078_68', 'mwDeprecated').then(function(res) {
@@ -100,4 +96,3 @@ describe('Exports into non mediawiki formats: ', function() {
 
     });
 });
-

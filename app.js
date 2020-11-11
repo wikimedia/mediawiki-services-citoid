@@ -1,6 +1,5 @@
 'use strict';
 
-
 const http = require('http');
 const BBPromise = require('bluebird');
 const express = require('express');
@@ -13,7 +12,6 @@ const packageInfo = require('./package.json');
 const yaml = require('js-yaml');
 const addShutdown = require('http-shutdown');
 const path = require('path');
-
 
 /**
  * Creates an express app and initialises it
@@ -154,7 +152,6 @@ function initApp(options) {
 
 }
 
-
 /**
  * Loads all routes declared in routes/ into the app
  *
@@ -212,7 +209,6 @@ function loadRoutes(app, dir) {
 
 }
 
-
 /**
  * Creates and start the service's web server
  *
@@ -248,7 +244,6 @@ function createServer(app) {
 
 }
 
-
 /**
  * The service's entry point. It takes over the configuration
  * options and the logger- and metrics-reporting objects from
@@ -268,4 +263,3 @@ module.exports = (options) => {
         return app;
     }).then(createServer);
 };
-

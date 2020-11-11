@@ -4,7 +4,6 @@ const assert = require('../../utils/assert.js');
 const exporter = require('../../../lib/Exporter.js');
 const Citation = require('../../../lib/Citation.js');
 
-
 describe('lib/Exporter.js functions: ', function() {
 
     let result;

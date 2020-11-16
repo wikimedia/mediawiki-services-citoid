@@ -23,6 +23,7 @@ const og = require('../../../lib/translators/openGraph.js');
 /* Static files */
 const movie = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_movie.html'));
 const article = cheerio.load(fs.readFileSync('./node_modules/html-metadata/test/static/turtle_article.html'));
+const song = cheerio.load(fs.readFileSync('test/utils/static/metacharset.html'));
 
 const translators = [
     { value: bp, name: 'bePress' },
@@ -35,7 +36,8 @@ const translators = [
 
 const htmlFiles = [
     { value: movie, name: 'movie' },
-    { value: article, name: 'article' }
+    { value: article, name: 'article' },
+    { value: song, name: 'song' }
 ];
 
 const Logger = require('../../../node_modules/service-runner/lib/logger.js');
@@ -208,12 +210,19 @@ describe('Tests for Translator.js : ', function () {
             });
         });
 
+        it('sets audioRecording itemType from openGraph', function () {
+            return meta.parseAll(song).then(function (metadata) {
+                const itemType = scraper.addItemType(metadata, {}).itemType;
+                assert.deepEqual(itemType, 'audioRecording', 'Expected itemType audioRecording, got itemType ' + itemType);
+            });
+        });
+
         it('sets itemType webpage if no relevant metadata available', function () {
             const metadata = { general: { title: 'Example domain' } };
             const itemType = scraper.addItemType(metadata, {}).itemType;
             assert.deepEqual(itemType, 'webpage', 'Expected itemType webpages, got itemType ' + itemType);
-
         });
+
     });
 
     describe('check specific results: ', function () {

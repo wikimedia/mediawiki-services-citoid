@@ -213,15 +213,6 @@ describe('Zotero service down or disabled: ', function () {
             });
         });
 
-        // itemType from open graph
-        it('itemType from open graph', function () {
-            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function (res) {
-                assert.status(res, 200);
-                assert.checkCitation(res, 'Pinlig for Skåber');
-                assert.deepEqual(res.body[0].itemType, 'newspaperArticle');
-            });
-        });
-
         // Prefer original url for using native scraper
         it('uses original url', function () {
             const url = 'http://www.google.com';

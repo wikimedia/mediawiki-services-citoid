@@ -34,16 +34,6 @@ describe('uses zotero', function () {
             });
         });
 
-        // Webpage from zotero
-        it('itemType', function () {
-            return server.query('http://www.aftenposten.no/kultur/Pinlig-for-Skaber-555558b.html').then(function (res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Pinlig for Skåber');
-                assert.deepEqual(res.body[0].itemType, 'webpage');
-                assert.deepEqual(res.body[0].websiteTitle, 'www.aftenposten.no');
-            });
-        });
-
         it('dublinCore data but no highWire metadata', function () {
             return server.query('https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00').then(function (res) {
                 assert.checkZotCitation(res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)');

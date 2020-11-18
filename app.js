@@ -181,8 +181,8 @@ function loadRoutes(app, dir) {
                 return undefined;
             }
             // check that the route exports the object we need
-            if (route.constructor !== Object || !route.path || !route.router
-                || !(route.api_version || route.skip_domain)) {
+            if (route.constructor !== Object || !route.path || !route.router ||
+                !(route.api_version || route.skip_domain)) {
                 throw new TypeError(`routes/${fname} does not export the correct object!`);
             }
             // normalise the path to be used as the mount point

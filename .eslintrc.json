@@ -21,7 +21,6 @@
     ],
     "no-shadow": "off",
     "node/no-deprecated-api": "off",
-    "operator-linebreak": "off",
     "prefer-regex-literals": "off",
     "quote-props": "off",
     "space-in-parens": ["error", "never"]

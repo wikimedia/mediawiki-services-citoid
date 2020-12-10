@@ -7,7 +7,7 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('Zotero service down or disabled: ', function () {
+describe('Zotero service down or disabled:', function () {
 
     describe('unreachable', function () {
 
@@ -109,8 +109,7 @@ describe('Zotero service down or disabled: ', function () {
             });
         });
 
-        // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-        it('Article with doi and DublinCore metadata', function () {
+        it('Dead url with correct doi', function () {
             return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function (res) {
                 assert.status(res, 200);
                 assert.isInArray(res.body[0].source, 'Crossref');
@@ -360,8 +359,7 @@ describe('Zotero service down or disabled: ', function () {
             });
         });
 
-        // Article with publisher field filled in with dublinCore metadata (general has it too as fallback)
-        it('Article with doi and DublinCore metadata', function () {
+        it('Dead url with doi', function () {
             return server.query('http://mic.sgmjournals.org/content/journal/micro/10.1099/mic.0.26954-0').then(function (res) {
                 assert.status(res, 200);
                 assert.isInArray(res.body[0].source, 'Crossref');

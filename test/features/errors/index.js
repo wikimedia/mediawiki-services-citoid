@@ -74,7 +74,7 @@ describe('errors', function () {
     });
 
     it('faulty zotero results', function () {
-        const url = 'http://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
+        const url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
         return server.query(url, 'mediawiki', 'en')
         .then(function (res) {
             assert.status(res, 404);
@@ -101,7 +101,7 @@ describe('errors', function () {
         .then(function (res) {
             assert.status(res, 404);
         }, function (err) {
-            assert.checkError(err, 404, 'Unable to load URL http://DOI.org/10.1007/11926078_68\'',
+            assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
                 'Unexpected error message ' + err.body.Error);
         });
     });
@@ -112,7 +112,7 @@ describe('errors', function () {
         .then(function (res) {
             assert.status(res, 404);
         }, function (err) {
-            assert.checkError(err, 404, 'Unable to load URL http://DOI.org/10.1007/11926078_68%22',
+            assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%22',
                 'Unexpected error message ' + err.body.Error);
         });
     });

@@ -10,7 +10,7 @@ describe('uses zotero', function () {
     before(() => server.start({ pubmed: true }));
     after(() => server.stop());
 
-    describe('URL ', function () {
+    describe('URL', function () {
         it('example domain', function () {
             return server.query('example.com').then(function (res) {
                 assert.status(res, 200);

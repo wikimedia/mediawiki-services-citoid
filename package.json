@@ -41,7 +41,7 @@
 	},
 	"devDependencies": {
 		"ajv": "^6.5.4",
-		"eslint": "^7.10.0",
+		"eslint": "7.16.0",
 		"eslint-config-wikimedia": "^0.17.0",
 		"eslint-plugin-jsdoc": "^30.6.2",
 		"eslint-plugin-json": "^2.1.2",

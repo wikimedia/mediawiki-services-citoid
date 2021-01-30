@@ -34,6 +34,8 @@
 		"space-in-parens": [
 			"error",
 			"never"
-		]
+		],
+		"no-mixed-spaces-and-tabs": "warn",
+		"no-useless-escape": "warn"
 	}
 }

@@ -63,7 +63,7 @@ describe('Search results where we expect multiple results', function () {
 
         it('Open search with www but no protocol', function () {
             return server.query('Title. Available at: <www.example.com>. Accessed on May 19, 1998.').then(function (res) {
-                assert.checkZotCitation(res);
+                assert.status(res, 200);
                 assert.deepEqual(res.body.length, 2); // One from url, one from Crossref; Empty results from Worldcat as disabled.
             });
         });
@@ -102,7 +102,7 @@ describe('Search results where we expect multiple results', function () {
     });
 
     // WSKEY required from worldcat to run these tests
-    describe.skip('worldcat enabled', function () {
+    describe('worldcat enabled', function () {
 
         this.timeout(20000);
         const server = new Server();

@@ -3,7 +3,7 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('Exports into non mediawiki formats: ', function () {
+describe('Exports into non mediawiki formats:', function () {
 
     this.timeout(20000);
     const server = new Server();
@@ -58,11 +58,11 @@ describe('Exports into non mediawiki formats: ', function () {
         });
     });
 
-    describe('Exporting to wikibase: ', function () {
+    describe('Exporting to wikibase:', function () {
         it('valid ISBN', function () {
             return server.query('978-0-596-51979-7', 'wikibase').then(function (res) {
                 assert.status(res, 200);
-                assert.deepEqual(!!res.body[0].oclc, false);
+                assert.deepEqual(!!res.body[0].oclc, false, 'Unexpected oclc ' + res.body[0].oclc);
                 assert.deepEqual(res.body[0].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[0].publisher);
                 assert.deepEqual(res.body[0].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);

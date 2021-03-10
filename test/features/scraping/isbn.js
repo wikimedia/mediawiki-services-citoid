@@ -7,13 +7,13 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 
-describe('ISBN tests: ', function () {
+describe('ISBN tests:', function () {
 
     this.timeout(40000);
     const server = new Server();
 
     // Use zotero search endpoint for isbn
-    describe('zotero isbn only: ', function () {
+    describe('zotero isbn only:', function () {
 
         before(() => server.start({ wskey: false }));
         after(() => server.stop());
@@ -57,17 +57,6 @@ describe('ISBN tests: ', function () {
         //        assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '978-0-7566-6296-7');
-                assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
-            });
-        });
-
-        it('ISBN with 979 prefix; not as good data as worldcat', function () {
-            return server.query('9791029801297').then(function (res) {
-                assert.status(res, 200);
-                assert.checkZotCitation(res, 'Mon jardin tropical: guide de jardinage : Antilles, Réunion');
-                assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-                assert.deepEqual(res.body[0].date, '2016', 'Unexpected value; expected 2002, got ' + res.body[0].date);
-                assert.isInArray(res.body[0].ISBN, '979-10-298-0129-7');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
             });
         });

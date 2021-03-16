@@ -9,7 +9,7 @@ describe('redirects', function () {
 
     this.timeout(20000);
     const server = new Server();
-    before(() => server.start());
+    before(() => server.start({ maxRedirects: 5 }));
     after(() => server.stop());
 
     // httpbin no longer live, so just mock its behaviour since all it does here is redirect anyway.

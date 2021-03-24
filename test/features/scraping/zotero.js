@@ -78,7 +78,7 @@ describe('uses zotero', function () {
         it('removes null issn', function () {
             return server.query('http://chroniclingamerica.loc.gov/lccn/sn85040224/').then(function (res) {
                 assert.checkZotCitation(res, 'The Daily Palo Alto times. [volume]');
-                assert.deepEqual(res.body[0].ISSN, null, 'ISSN found');
+                assert.deepEqual(res.body[0].ISSN, undefined, 'ISSN found');
                 assert.deepEqual(res.body[0].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[0].itemType);
             });
         });

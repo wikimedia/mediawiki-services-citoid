@@ -3,7 +3,7 @@
 const assert = require('../../utils/assert.js');
 const CachedTypes = require('../../../lib/zotero/cachedTypes.js');
 
-describe('type schema data functions', function () {
+describe('cachedTypes', function () {
 
     const types = new CachedTypes();
     let result;

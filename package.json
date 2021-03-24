@@ -41,6 +41,7 @@
 	},
 	"devDependencies": {
 		"ajv": "^6.5.4",
+		"chai": "^4.3.0",
 		"eslint": "7.16.0",
 		"eslint-config-wikimedia": "0.19.0",
 		"mocha": "^5.2.0",

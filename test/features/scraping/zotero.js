@@ -182,7 +182,7 @@ describe('uses zotero', function () {
         it('Needs to follow several redirects before Zotero request', function () {
             return server.query('10.1016/S0305-0491(98)00022-4').then(function (res) {
                 assert.checkZotCitation(res, 'Energetics and biomechanics of locomotion by red kangaroos (Macropus rufus)');
-                assert.deepEqual(res.body[0].date, '1998-05');
+                assert.deepEqual(res.body[0].date, '1998-05-XX');
                 assert.deepEqual(res.body[0].itemType, 'journalArticle');
             });
         });

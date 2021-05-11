@@ -171,14 +171,14 @@ describe('lib/Exporter.js functions: ', function () {
 
             it('Year first date', function () {
                 date = '1975 Nov-Dec';
-                expected = { date: '1975-11-XX' };
+                expected = { date: '1975-11' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });
 
             it('Partial ISO date no preceeding 0', function () {
                 date = '1975-2';
-                expected = { date: '1975-02-XX' };
+                expected = { date: '1975-02' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });
@@ -199,7 +199,7 @@ describe('lib/Exporter.js functions: ', function () {
 
             it('Partial ISO date proceeding 0', function () {
                 date = '1975-02';
-                expected = { date: '1975-02-XX' };
+                expected = { date: '1975-02' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });

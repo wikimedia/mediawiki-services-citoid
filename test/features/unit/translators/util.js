@@ -31,7 +31,7 @@ describe('translator utilities: ', function () {
         });
 
         it('correctly adds date with fixDate validate function', function () {
-            expected = { date: '2012-08-XX' };
+            expected = { date: '2012-08' };
             result = makeTranslator('date', fixDate).translate({}, { date: [ 'August 2012' ] }, 'date');
             assert.deepEqual(result, expected);
         });

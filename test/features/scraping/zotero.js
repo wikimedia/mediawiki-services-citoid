@@ -150,6 +150,14 @@ describe('uses zotero', function () {
             });
         });
 
+        // DOI with angle brackets
+        it('DOI with angle brackets', function () {
+            return server.query('10.1002/1096-8628(20000612)96:3<302::aid-ajmg13>3.0.co;2-i').then(function (res) {
+                assert.checkZotCitation(res, 'The TaqI A1 allele of the dopamine D2 receptor gene and alcoholism in Brazil: Association and interaction with stress and harm avoidance on severity prediction');
+                assert.deepEqual(res.body[0].DOI, '10.1002/1096-8628(20000612)96:3<302::AID-AJMG13>3.0.CO;2-I', 'Incorrect DOI');
+            });
+        });
+
         // DOI extracted from within a string
         it('DOI with space', function () {
             return server.query('DOI: 10.1017/s0305004100013554').then(function (res) {

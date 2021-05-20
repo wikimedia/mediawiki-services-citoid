@@ -45,6 +45,14 @@ describe('lib/Exporter.js functions: ', function () {
                 result = exporter.stripCitation({ title: title });
                 assert.deepEqual(result, expected);
             });
+
+            let doi;
+            it('does not clean doi', function () {
+                doi = '10.1175/1520-0485(1995)025<0855:IEODC>2.0.CO;2';
+                expected = { DOI: '10.1175/1520-0485(1995)025<0855:IEODC>2.0.CO;2' };
+                result = exporter.stripCitation({ DOI: doi });
+                assert.deepEqual(result, expected);
+            });
         });
 
         describe('fixDate: ', function () {

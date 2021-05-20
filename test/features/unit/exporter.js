@@ -205,12 +205,55 @@ describe('lib/Exporter.js functions: ', function () {
                 assert.deepEqual(result, expected);
             });
 
-            it('Partial ISO date proceeding 0', function () {
-                date = '1975-02';
+            it('Slashes full date', function () {
+                date = '1975/02/04';
+                expected = { date: '1975-02-04' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Slashes partial date', function () {
+                date = '1975/02';
                 expected = { date: '1975-02' };
                 result = exporter.fixDate({ date: date });
                 assert.deepEqual(result, expected);
             });
+
+            it('Slashes partial date with 0 month', function () {
+                date = '1975/00';
+                expected = { date: '1975' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Slashes partial date with 00s', function () {
+                date = '1975/02/00';
+                expected = { date: '1975-02' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Slashes partial year with 00s', function () {
+                date = '1975/00/00';
+                expected = { date: '1975' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('XX partial date', function () {
+                date = '1975-02-XX';
+                expected = { date: '1975-02' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('XX partial year', function () {
+                date = '1975-XX-XX';
+                expected = { date: '1975' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
         });
 
         describe('fixDOI: ', function () {

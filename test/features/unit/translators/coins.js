@@ -154,7 +154,7 @@ describe('coins metadata', function () {
             assert.deepEqual(result, expected);
         });
 
-        it('Correctly uses auinit1 and auinitm', function () {
+        it('Correctly uses aulast, auinit1 and auinitm', function () {
             citation = {
                 itemType: 'journalArticle'
             };

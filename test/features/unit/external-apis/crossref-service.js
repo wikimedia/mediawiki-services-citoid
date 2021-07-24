@@ -14,30 +14,36 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function () {
     let doi;
     let onreject;
     let promise;
+    let conf;
+    let logConf;
+    let request;
+    let crossref;
+    let app;
 
-    const conf = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../../config.yaml'));
-
-    // Dummy logger
-    const logConf = {
+    before(() => {
+        // Dummy logger
+        logConf = {
             name: 'test-log',
             level: 'trace',
             stream: logStream()
         };
 
-    const request = {
-        logger: new Logger(logConf),
-        issueRequest: preq // use preq as standin for issueRequest, as they're the same except some headers will be missing, i.e. user-agent
-    };
+        request = {
+            logger: new Logger(logConf),
+            issueRequest: preq // use preq as standin for issueRequest, as they're the same except some headers will be missing, i.e. user-agent
+        };
+    });
 
     describe('polite config', function () {
 
-        const app = {
-            conf: conf.services[0].conf
-        };
-
-        app.conf.mailto = 'example@example.com';
-
-        const crossref = new CrossRefService(app);
+        before(() => {
+            conf = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../../config.yaml'));
+            app = {
+                conf: conf.services[0].conf
+            };
+            app.conf.mailto = 'example@example.com';
+            crossref = new CrossRefService(app);
+        });
 
         it('Gets metadata for doi', function () {
             doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
@@ -57,13 +63,14 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function () {
 
     describe('anonymous config', function () {
 
-        const app = {
-            conf: conf.services[0].conf
-        };
-
-        delete app.conf.mailto;
-
-        const crossref = new CrossRefService(app);
+        before(() => {
+            conf = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../../config.yaml'));
+            app = {
+                conf: conf.services[0].conf
+            };
+            delete app.conf.mailto;
+            crossref = new CrossRefService(app);
+        });
 
         it('Gets metadata for doi', function () {
             doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
@@ -83,13 +90,14 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function () {
 
     describe('open search function', function () {
 
-        const app = {
-            conf: conf.services[0].conf
-        };
-
-        app.conf.mailto = 'example@example.com';
-
-        const crossref = new CrossRefService(app);
+        before(() => {
+            conf = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../../config.yaml'));
+            app = {
+                conf: conf.services[0].conf
+            };
+            app.conf.mailto = 'example@example.com';
+            crossref = new CrossRefService(app);
+        });
 
         it('Gets metadata for open search', function () {
             const search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';

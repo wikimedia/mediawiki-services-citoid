@@ -68,8 +68,10 @@ describe('Tests for Translator.js : ', function () {
         let itemTypeName;
 
         // Cycle through every translator
+        // eslint-disable-next-line mocha/no-setup-in-describe
         translators.forEach(function (metadataType) {
             // Cycle through every sample html file
+            // eslint-disable-next-line mocha/no-setup-in-describe
             htmlFiles.forEach(function (file) {
                 it('translates ' + metadataType.name + ' metadata from ' + file.name + ' file', function () {
                     // Get metadata from html file
@@ -104,11 +106,15 @@ describe('Tests for Translator.js : ', function () {
     });
 
     describe('translate function on json: ', function () {
-        const crossRefJSON = JSON.parse(fs.readFileSync('./test/utils/static/crossRef.json'));
+        let crossRefJSON;
         let citation;
         let expected;
         let itemTypeName;
         let result;
+
+        before(() => {
+            crossRefJSON = JSON.parse(fs.readFileSync('./test/utils/static/crossRef.json'));
+        });
 
         it('sets right info from journal-article crossRef metadata', function () {
             citation = { itemType: 'journalArticle' };

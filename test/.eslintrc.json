@@ -1,12 +1,11 @@
 {
-  "extends": [
-  	"../.eslintrc.json"
-  ],
-  "env":
-  	{ "mocha": "true" },
-  "rules": {
-    "no-console": "off",
-    "no-invalid-this": "off",
-    "max-len": "off"
-  }
+	"extends": [
+		"../.eslintrc.json",
+		"wikimedia/mocha"
+	],
+	"rules": {
+		"no-console": "off",
+		"no-invalid-this": "off",
+		"max-len": "off"
+	}
 }

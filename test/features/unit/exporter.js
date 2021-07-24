@@ -287,7 +287,7 @@ describe('lib/Exporter.js functions: ', function () {
                 assert.deepEqual(result, expected);
             });
 
-            it('Correctly handles ISBN-13s that have spaces in them', function () {
+            it('Correctly handles multiple ISBN-13s that have spaces in them', function () {
                 isbnStr = '978 0810935310 007462542X 978 0810935310';
                 expected = { ISBN: [ '978-0-8109-3531-0', '0-07-462542-X', '978-0-8109-3531-0' ] };
                 result = exporter.fixISBN({ ISBN: isbnStr });
@@ -304,7 +304,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('fixISSN: ', function () {
             let issn;
-            it('Correctly ignores invalid ISSN', function () {
+            it('Correctly ignores None ISSN', function () {
                 issn = 'None';
                 expected = {};
                 result = exporter.fixISSN({ ISSN: issn });
@@ -411,8 +411,12 @@ describe('lib/Exporter.js functions: ', function () {
 
     describe('export formats: ', function () {
         let citation;
-        const app = { conf: {} };
-        const exp = new exporter.Exporter(app);
+        let exp;
+        before(() => {
+            const app = { conf: {} };
+            exp = new exporter.Exporter(app);
+        });
+
         describe('wikibase: ', function () {
             describe('different search term types ', function () {
                 it('url from search, doi from result', function () {

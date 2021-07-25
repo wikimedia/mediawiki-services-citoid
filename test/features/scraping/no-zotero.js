@@ -465,16 +465,12 @@ describe('Zotero service down or disabled: ', function () {
         });
 
         it('PMCID but no PMID', function () {
-
-            it('webpage', function () {
-                return server.query('PMC2096233',
-                    'mediawiki', 'en', 'true').then(function (res) {
-                    assert.status(res, 200);
-                    assert.deepEqual(!!res.body[0].PMCID, true, '2096233');
-                    assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
-                });
+            return server.query('PMC2096233',
+                'mediawiki', 'en', 'true').then(function (res) {
+                assert.status(res, 200);
+                assert.deepEqual(!!res.body[0].PMCID, true, '2096233');
+                assert.deepEqual(res.body[0].PMID, undefined, 'PMID is null');
             });
-
         });
 
         // Unable to scrape and ends up with crossRef data

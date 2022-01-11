@@ -18,11 +18,13 @@ logging:
     prefix: '@cee: '
     name: node
 
-# Statsd metrics reporter
+# Metrics reporters
 metrics:
-  type: statsd
-  host: statsd.eqiad.wmnet
-  port: 8125
+ - type: prometheus
+   port: 9102
+#  - type: statsd
+#    host: localhost
+#    port: 8125
 
 services:
   - name: citoid

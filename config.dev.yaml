@@ -16,7 +16,7 @@ logging:
 # Metrics reporters
 metrics:
 #  - type: prometheus
-#    port: 9000
+#    port: 9100
 #  - type: statsd
 #    host: localhost
 #    port: 8125

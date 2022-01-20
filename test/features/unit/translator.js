@@ -71,7 +71,6 @@ describe('Tests for Translator.js : ', function () {
         // eslint-disable-next-line mocha/no-setup-in-describe
         translators.forEach(function (metadataType) {
             // Cycle through every sample html file
-            // eslint-disable-next-line mocha/no-setup-in-describe
             htmlFiles.forEach(function (file) {
                 it('translates ' + metadataType.name + ' metadata from ' + file.name + ' file', function () {
                     // Get metadata from html file

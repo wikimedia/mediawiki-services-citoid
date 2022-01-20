@@ -41,7 +41,7 @@ function initApp(options) {
     // backwards compatibility for configurations which predate use of 'pubmed' keyword in conf
     if (app.conf.pubmed === undefined) { app.conf.pubmed = true; }
 
-    // ensure some sane defaults
+    // ensure some reasonable defaults
     if (!app.conf.port) { app.conf.port = 1970; }
     if (!app.conf.interface) { app.conf.interface = '0.0.0.0'; }
     if (app.conf.compression_level === undefined) { app.conf.compression_level = 3; }

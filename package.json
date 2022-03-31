@@ -7,7 +7,7 @@
 	"main": "./app.js",
 	"scripts": {
 		"start": "service-runner",
-		"lint": "eslint --max-warnings 0 --ext .js --cache .",
+		"lint": "eslint --max-warnings 0 --cache .",
 		"lint:fix": "eslint --fix .",
 		"test": "npm run lint && mocha ./test/features/unit/*",
 		"coverage": "nyc --reporter=lcov _mocha"

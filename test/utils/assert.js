@@ -9,7 +9,7 @@ module.exports = use(function (_chai, _utils) {
      * Asserts whether the return status was as expected
      *
      * @param {Object} res
-     * @param {integer} expected
+     * @param {number} expected
      */
     assert.status = (res, expected) => {
         const msg = `Expected status to be ${expected}, but was ${res.status}`;

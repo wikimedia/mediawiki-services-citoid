@@ -9,7 +9,6 @@
 			}
 		],
 		"computed-property-spacing": "off",
-		"jsdoc/no-undefined-types": "off",
 		"indent": [
 			"off"
 		],
@@ -35,5 +34,17 @@
 			"error",
 			"never"
 		]
+	},
+	"settings": {
+		"jsdoc": {
+			"preferredTypes": {
+				"Application": "Application",
+				"bluebird": "bluebird",
+				"Citation": "Citation",
+				"Request": "Request",
+				"Router": "Router",
+				"ServiceRunner": "ServiceRunner"
+			}
+		}
 	}
 }

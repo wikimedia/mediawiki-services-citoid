@@ -236,18 +236,18 @@ describe('Tests for Translator.js : ', function () {
             return meta.parseAll(article).then(function (metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.general, gen.webpage);
                 const expected = {
-                  itemType: 'webpage',
-                  creators: [
-                    {
-                      creatorType: 'author',
-                      lastName: 'Lvr',
-                      firstName: 'Turtle'
-                    }
-                  ],
-                  url: 'http://example.com/turtles',
-                  abstractNote: 'Exposition on the awesomeness of turtles',
-                  title: 'Turtles are AWESOME!!1 | Awesome Turtles Website',
-                  language: 'en'
+                    itemType: 'webpage',
+                    creators: [
+                        {
+                            creatorType: 'author',
+                            lastName: 'Lvr',
+                            firstName: 'Turtle'
+                        }
+                    ],
+                    url: 'http://example.com/turtles',
+                    abstractNote: 'Exposition on the awesomeness of turtles',
+                    title: 'Turtles are AWESOME!!1 | Awesome Turtles Website',
+                    language: 'en'
                 };
                 assert.deepEqual(citation, expected);
             });
@@ -256,16 +256,16 @@ describe('Tests for Translator.js : ', function () {
             return meta.parseAll(article).then(function (metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.bePress, bp.webpage);
                 const expected = {
-                  itemType: 'webpage',
-                  creators: [
-                    {
-                      creatorType: 'author',
-                      lastName: 'Lvr',
-                      firstName: 'Turtle'
-                    }
-                  ],
-                  date: '2012',
-                  title: 'Turtles are AWESOME!!1'
+                    itemType: 'webpage',
+                    creators: [
+                        {
+                            creatorType: 'author',
+                            lastName: 'Lvr',
+                            firstName: 'Turtle'
+                        }
+                    ],
+                    date: '2012',
+                    title: 'Turtles are AWESOME!!1'
                 };
                 assert.deepEqual(citation, expected);
             });

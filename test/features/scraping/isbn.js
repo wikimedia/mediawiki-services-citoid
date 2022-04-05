@@ -36,9 +36,9 @@ describe('ISBN tests:', function () {
         it('valid ISBN with funky author field', function () {
             return server.query('978043-9784542').then(function (res) {
                 assert.status(res, 200);
-        //        assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
+                // assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
                 assert.deepEqual(res.body[0].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[0].title);
-        //        assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
+                // assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
                 assert.deepEqual(res.body[0].author, [ [ 'J. K.', 'Rowling' ], [ 'Mary', 'GrandPré' ] ]);
                 assert.deepEqual(res.body[0].place, 'New York, NY', 'Unexpected value; expected New York, NY, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].edition, '1st American ed', 'Unexpected value; expected 1st ed., got ' + res.body[0].edition);
@@ -52,9 +52,9 @@ describe('ISBN tests:', function () {
                 assert.status(res, 200);
                 assert.checkZotCitation(res, 'Eyewitness DVD.'); // Not great
                 assert.deepEqual(!!res.body[0].oclc, true, 'Missing OCLC');
-        //        assert.deepEqual(!!res.body[0].author, true, 'Missing author');
+                // assert.deepEqual(!!res.body[0].author, true, 'Missing author');
                 assert.deepEqual(res.body[0].publisher, 'DK Publishing', 'Unexpected value; expected DK Pub., got ' + res.body[0].publisher);
-        //        assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
+                // assert.deepEqual(res.body[0].place, 'New York', 'Unexpected value; expected New York, got ' + res.body[0].place);
                 assert.deepEqual(res.body[0].date, '2010', 'Unexpected value; expected 2010, got ' + res.body[0].date);
                 assert.isInArray(res.body[0].ISBN, '978-0-7566-6296-7');
                 assert.deepEqual(res.body[0].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[0].itemType);
@@ -64,12 +64,12 @@ describe('ISBN tests:', function () {
         it('invalid ISBN', function () {
             const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
-                    'Unexpected error message ' + err.body.Error);
-            });
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
+                        'Unexpected error message ' + err.body.Error);
+                });
         });
     });
 
@@ -156,12 +156,12 @@ describe('ISBN tests:', function () {
         it('invalid ISBN', function () {
             const isbn = '9780596519798';
             return server.query(isbn, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
-                    'Unexpected error message ' + err.body.Error);
-            });
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.checkError(err, 404, 'Unable to retrieve data from ISBN ' + isbn,
+                        'Unexpected error message ' + err.body.Error);
+                });
         });
     });
 

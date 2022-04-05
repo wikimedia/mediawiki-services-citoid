@@ -54,99 +54,99 @@ describe('errors', function () {
 
     it('bad domain', function () {
         return server.query('example./com', 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 400);
-        }, function (err) {
-            assert.status(err, 400);
-            assert.deepEqual(err.body.Error, 'Invalid host supplied');
-        });
+            .then(function (res) {
+                assert.status(res, 400);
+            }, function (err) {
+                assert.status(err, 400);
+                assert.deepEqual(err.body.Error, 'Invalid host supplied');
+            });
     });
 
     it('resource has http errors', function () {
         const url = 'http://example.com/thisurldoesntexist';
         return server.query(url, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.status(err, 404);
-            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.status(err, 404);
+                assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
+            });
     });
 
     it('faulty zotero results', function () {
         const url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
         return server.query(url, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.status(err, 404);
-            assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.status(err, 404);
+                assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
+            });
     });
 
     it('unknown doi', function () {
         const doi = '10.1000/thisdoidoesntexist';
         return server.query(doi, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404, 'Unable to resolve DOI ' + doi,
-                'Unexpected error message ' + err.body.Error);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404, 'Unable to resolve DOI ' + doi,
+                    'Unexpected error message ' + err.body.Error);
+            });
     });
 
     it('doi url with single quote', function () {
         const doi = 'http://DOI.org/10.1007/11926078_68\'';
         return server.query(doi, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
-                'Unexpected error message ' + err.body.Error);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
+                    'Unexpected error message ' + err.body.Error);
+            });
     });
 
     it('doi url with double quote', function () {
         const doi = 'http://DOI.org/10.1007/11926078_68"';
         return server.query(doi, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%22',
-                'Unexpected error message ' + err.body.Error);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%22',
+                    'Unexpected error message ' + err.body.Error);
+            });
     });
 
     it('doi with single quote', function () {
         const doi = '10.1007/11926078_68\'';
         return server.query(doi, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404, 'Unable to resolve DOI 10.1007/11926078_68%27',
-                'Unexpected error message ' + err.body.Error);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404, 'Unable to resolve DOI 10.1007/11926078_68%27',
+                    'Unexpected error message ' + err.body.Error);
+            });
     });
 
     it('bad pmid', function () {
         const pmid = '99999999';
         return server.query(pmid, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404); // May be interpreted as PMID or PMCID
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404); // May be interpreted as PMID or PMCID
+            });
     });
 
     it('bad pmcid', function () {
         const pmcid = 'PMC9999999';
         return server.query(pmcid, 'mediawiki', 'en')
-        .then(function (res) {
-            assert.status(res, 404);
-        }, function (err) {
-            assert.checkError(err, 404, 'Unable to locate resource with pmcid ' + pmcid,
-                'Unexpected error message ' + err.body.Error);
-        });
+            .then(function (res) {
+                assert.status(res, 404);
+            }, function (err) {
+                assert.checkError(err, 404, 'Unable to locate resource with pmcid ' + pmcid,
+                    'Unexpected error message ' + err.body.Error);
+            });
     });
 
 });

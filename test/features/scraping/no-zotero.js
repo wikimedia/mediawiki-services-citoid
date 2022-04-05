@@ -25,11 +25,11 @@ describe('Zotero service down or disabled:', function () {
         it('PMID not in doi id converter api', function () {
             const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.checkError(err, 404); // Exact error may differ as may be interpreted as pmcid or pmid
-            });
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.checkError(err, 404); // Exact error may differ as may be interpreted as pmcid or pmid
+                });
         });
 
         // PMID on NIH website that is found in the id converter api- should convert to DOI
@@ -122,13 +122,13 @@ describe('Zotero service down or disabled:', function () {
 
         it('Get error for bibtex export', function () {
             return server.query('http://www.example.com', 'bibtex', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
-                assert.status(err, 404);
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
+                    assert.status(err, 404);
                 // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
-            });
+                });
         });
 
         it('requires cookie handling', function () {
@@ -143,17 +143,17 @@ describe('Zotero service down or disabled:', function () {
         // Ensure DOI is present in non-zotero scraped page where scraping fails
         it('DOI pointing to resource that can\'t be scraped - uses crossRef', function () {
             return server.query('10.1038/scientificamerican0200-90')
-            .then(function (res) {
-                assert.status(res, 200);
-                assert.checkCitation(res);
-                assert.isInArray(res.body[0].source, 'Crossref');
-                assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
-                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                    assert.checkCitation(res);
+                    assert.isInArray(res.body[0].source, 'Crossref');
+                    assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
+                    assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+                    assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+                    assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                    assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
+                    assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+                });
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link
@@ -275,11 +275,11 @@ describe('Zotero service down or disabled:', function () {
         it('PMID not in doi id converter api', function () {
             const pmid = '14656957';
             return server.query(pmid, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.checkError(err, 404); // Error may be for pmcid or pmid
-            });
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.checkError(err, 404); // Error may be for pmcid or pmid
+                });
         });
 
         // PMID on NIH website that is found in the id converter api- should convert to DOI
@@ -372,13 +372,13 @@ describe('Zotero service down or disabled:', function () {
 
         it('Get error for bibtex export', function () {
             return server.query('http://www.example.com', 'bibtex', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
-                assert.status(err, 404);
+                .then(function (res) {
+                    assert.status(res, 404);
+                }, function (err) {
+                    assert.deepEqual(err.body.Error, 'Unable to serve bibtex format at this time');
+                    assert.status(err, 404);
                 // assert.checkError(err, 404, 'Unable to serve bibtex format at this time');
-            });
+                });
         });
 
         it('requires cookie handling', function () {
@@ -393,17 +393,17 @@ describe('Zotero service down or disabled:', function () {
         // Ensure DOI is present in non-zotero scraped page where scraping fails
         it('DOI pointing to resource that can\'t be scraped - uses crossRef', function () {
             return server.query('10.1038/scientificamerican0200-90')
-            .then(function (res) {
-                assert.status(res, 200);
-                assert.checkCitation(res);
-                assert.isInArray(res.body[0].source, 'Crossref');
-                assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
-                assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
-                assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
-                assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
-                assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                    assert.checkCitation(res);
+                    assert.isInArray(res.body[0].source, 'Crossref');
+                    assert.deepEqual(!!res.body[0].author, true, 'Missing authors');
+                    assert.deepEqual(!!res.body[0].issue, true, 'Missing issue');
+                    assert.deepEqual(!!res.body[0].volume, true, 'Missing volume');
+                    assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
+                    assert.deepEqual(res.body[0].websiteTitle, undefined, 'Unexpected field websiteTitle');
+                    assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
+                });
         });
 
         // Ensure DOI is present in non-zotero scraped page when request from DOI link

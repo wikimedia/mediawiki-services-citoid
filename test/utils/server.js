@@ -40,18 +40,18 @@ class TestCitoidRunner extends TestRunner {
         }
 
         return this._runner.start(config.conf)
-        .tap((result) => {
-            this._running = true;
-            this._services = result;
-        })
-        .catch((e) => {
-            if (this._startupRetriesRemaining > 0 && /EADDRINUSE/.test(e.message)) {
-                console.log('Execution of the previous test might have not finished yet. Retry startup');
-                this._startupRetriesRemaining--;
-                return P.delay(1000).then(() => this.start());
-            }
-            throw e;
-        });
+            .tap((result) => {
+                this._running = true;
+                this._services = result;
+            })
+            .catch((e) => {
+                if (this._startupRetriesRemaining > 0 && /EADDRINUSE/.test(e.message)) {
+                    console.log('Execution of the previous test might have not finished yet. Retry startup');
+                    this._startupRetriesRemaining--;
+                    return P.delay(1000).then(() => this.start());
+                }
+                throw e;
+            });
     }
 
     /**
@@ -74,26 +74,26 @@ class TestCitoidRunner extends TestRunner {
         if (!this._spec) {
             // We only want to load this once.
             preq.get(`${uri}?spec`)
-            .then((res) => {
-                if (!res.body) {
-                    throw new Error('Failed to get spec');
-                }
-                // save a copy
-                this._spec = res.body;
-            })
-            .catch((err) => {
+                .then((res) => {
+                    if (!res.body) {
+                        throw new Error('Failed to get spec');
+                    }
+                    // save a copy
+                    this._spec = res.body;
+                })
+                .catch((err) => {
                 // this error will be detected later, so ignore it
-                this._spec = { paths: {}, 'x-default-params': {} };
-            })
-            .then(() => {
-                return {
-                    uri,
-                    qURI,
-                    service: myService,
-                    conf: this._runner._impl.config,
-                    spec: this._spec
-                };
-            });
+                    this._spec = { paths: {}, 'x-default-params': {} };
+                })
+                .then(() => {
+                    return {
+                        uri,
+                        qURI,
+                        service: myService,
+                        conf: this._runner._impl.config,
+                        spec: this._spec
+                    };
+                });
         }
 
         return {

@@ -16,35 +16,35 @@ describe('Search results where we expect multiple results', function () {
         it('spaces in url missing http:// and www', function () {
             const url = 'example.com/spaces in url';
             return server.query(url, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 200);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                });
         });
 
         // Uses json as plain text search term; previously gave error
         it('json in search', function () {
             return server.query('{"json":"object"}', 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 200);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                });
         });
 
         // Uses search; previously gave error
         it('javascript in search', function () {
             return server.query('f<script>alert(1);</script>', 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 200);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                });
         });
 
         // Uses search; previously gave error
         it('localhost:1970', function () {
             return server.query('localhost:1970', 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 200);
-            }, function (err, res) {
-                assert.status(err, 200);
-            });
+                .then(function (res) {
+                    assert.status(res, 200);
+                }, function (err, res) {
+                    assert.status(err, 200);
+                });
         });
 
         it('Open search for Schrodinger', function () {
@@ -114,35 +114,35 @@ describe('Search results where we expect multiple results', function () {
             it('spaces in url missing http:// and www', function () {
                 const url = 'example.com/spaces in url';
                 return server.query(url, 'mediawiki', 'en')
-                .then(function (res) {
-                    assert.status(res, 200);
-                });
+                    .then(function (res) {
+                        assert.status(res, 200);
+                    });
             });
 
             // Uses json as plain text search term; previously gave error
             it('json in search', function () {
                 return server.query('{"json":"object"}', 'mediawiki', 'en')
-                .then(function (res) {
-                    assert.status(res, 200);
-                });
+                    .then(function (res) {
+                        assert.status(res, 200);
+                    });
             });
 
             // Uses search; previously gave error
             it('javascript in search', function () {
                 return server.query('f<script>alert(1);</script>', 'mediawiki', 'en')
-                .then(function (res) {
-                    assert.status(res, 200);
-                });
+                    .then(function (res) {
+                        assert.status(res, 200);
+                    });
             });
 
             // Uses search; previously gave error
             it('localhost:1970', function () {
                 return server.query('localhost:1970', 'mediawiki', 'en')
-                .then(function (res) {
-                    assert.status(res, 200);
-                }, function (err, res) {
-                    assert.status(err, 200);
-                });
+                    .then(function (res) {
+                        assert.status(res, 200);
+                    }, function (err, res) {
+                        assert.status(err, 200);
+                    });
             });
 
             it('Open search for Schrodinger', function () {

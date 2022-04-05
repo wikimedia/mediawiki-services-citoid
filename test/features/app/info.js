@@ -14,9 +14,9 @@ describe('service information', function () {
 
     before(() => {
         return server.start()
-        .then(() => {
-            infoUri = `${server.config.uri}_info/`;
-        });
+            .then(() => {
+                infoUri = `${server.config.uri}_info/`;
+            });
     });
 
     after(() => server.stop());

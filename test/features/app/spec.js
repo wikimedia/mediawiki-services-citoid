@@ -95,8 +95,8 @@ function constructTests(spec) {
                     ex.title,
                     uri.toString({
                         params: Object.assign({},
-                        defParams,
-                        ex.request.params || {})
+                            defParams,
+                            ex.request.params || {})
                     }),
                     method,
                     ex.request,
@@ -209,7 +209,7 @@ function validateBody(resBody, expBody) {
     if (expBody.constructor === Object) {
         Object.keys(expBody).forEach((key) => {
             const val = expBody[key];
-             // eslint-disable-next-line
+            // eslint-disable-next-line
             assert.deepEqual(resBody.hasOwnProperty(key), true, `Body field ${key} not found in response!`);
             if (val.constructor === Object) {
                 validateBody(resBody[key], val);
@@ -254,45 +254,45 @@ describe('Swagger spec', function () {
     it('get the spec', () => {
         baseUrl = server.config.uri;
         return preq.get(`${baseUrl}?spec`)
-        .then((res) => {
-            assert.status(200);
-            assert.contentType(res, 'application/json');
-            assert.notDeepEqual(res.body, undefined, 'No body received!');
-            // save a copy
-            spec = res.body;
-            return spec;
-        })
-        .then((spec) => {
-            const routeTests = () => {
+            .then((res) => {
+                assert.status(200);
+                assert.contentType(res, 'application/json');
+                assert.notDeepEqual(res.body, undefined, 'No body received!');
+                // save a copy
+                spec = res.body;
+                return spec;
+            })
+            .then((spec) => {
+                const routeTests = () => {
                 // eslint-disable-next-line mocha/no-sibling-hooks
-                before(() => server.start());
-                // eslint-disable-next-line mocha/no-sibling-hooks
-                after(() => server.stop());
+                    before(() => server.start());
+                    // eslint-disable-next-line mocha/no-sibling-hooks
+                    after(() => server.stop());
 
-                constructTests(spec).forEach((testCase) => {
+                    constructTests(spec).forEach((testCase) => {
                     // eslint-disable-next-line mocha/handle-done-callback, mocha/no-nested-tests
-                    it(testCase.title, function (done) {
-                    // eslint-disable-next-line mocha/no-return-and-callback
-                        return preq(testCase.request)
-                        .then((res) => {
-                            assert.status(res, testCase.response.status);
-                            validateTestResponse(testCase, res);
-                        }, (err) => {
-                            assert.status(err, testCase.response.status);
-                            validateTestResponse(testCase, err);
+                        it(testCase.title, function (done) {
+                            // eslint-disable-next-line mocha/no-return-and-callback
+                            return preq(testCase.request)
+                                .then((res) => {
+                                    assert.status(res, testCase.response.status);
+                                    validateTestResponse(testCase, res);
+                                }, (err) => {
+                                    assert.status(err, testCase.response.status);
+                                    validateTestResponse(testCase, err);
+                                });
                         });
                     });
-                });
-            };
-            parallel('Monitoring routes', routeTests);
-        });
+                };
+                parallel('Monitoring routes', routeTests);
+            });
     });
 
     it('should expose valid OpenAPI spec', () => {
         return preq.get({ uri: `${server.config.uri}?spec` })
-        .then((res) => {
-            assert.deepEqual({ errors: [] }, validator.validate(res.body), 'Spec must have no validation errors');
-        });
+            .then((res) => {
+                assert.deepEqual({ errors: [] }, validator.validate(res.body), 'Spec must have no validation errors');
+            });
     });
 
     it('spec validation', () => {

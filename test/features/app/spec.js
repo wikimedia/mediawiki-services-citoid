@@ -1,10 +1,10 @@
 'use strict';
 
 const parallel = require('mocha.parallel');
-const preq   = require('preq');
+const preq = require('preq');
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
-const URI    = require('swagger-router').URI;
+const URI = require('swagger-router').URI;
 const OpenAPISchemaValidator = require('openapi-schema-validator').default;
 const validator = new OpenAPISchemaValidator({ version: 3 });
 
@@ -290,7 +290,7 @@ describe('Swagger spec', function () {
 
     it('should expose valid OpenAPI spec', () => {
         return preq.get({ uri: `${server.config.uri}?spec` })
-        .then((res) =>  {
+        .then((res) => {
             assert.deepEqual({ errors: [] }, validator.validate(res.body), 'Spec must have no validation errors');
         });
     });

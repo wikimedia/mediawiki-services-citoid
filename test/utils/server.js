@@ -2,7 +2,7 @@
 
 const extend = require('extend');
 const fs = require('fs');
-const preq   = require('preq');
+const preq = require('preq');
 const yaml = require('js-yaml');
 
 const P = require('bluebird');

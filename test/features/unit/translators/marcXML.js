@@ -66,7 +66,7 @@ describe('worldcat marcXML translator unit', function () {
                 'lastName': 'Barrett'
             } ]
         };
-        result =  marc.book.c245.translate({}, { author: 'Barrett, Daniel J.' }, 'author');
+        result = marc.book.c245.translate({}, { author: 'Barrett, Daniel J.' }, 'author');
         assert.deepEqual(result, expected);
     });
 });

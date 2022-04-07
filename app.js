@@ -25,10 +25,14 @@ function initApp(options) {
     const app = express();
 
     // get the options and make them available in the app
-    app.logger = options.logger;    // the logging device
-    app.metrics = options.metrics;  // the metrics
-    app.conf = options.config;      // this app's config options
-    app.info = packageInfo;         // this app's package info
+    // the logging device
+    app.logger = options.logger;
+    // the metrics
+    app.metrics = options.metrics;
+    // this app's config options
+    app.conf = options.config;
+    // this app's package info
+    app.info = packageInfo;
 
     app.conf.userAgent = app.conf.user_agent || app.conf.userAgent || `Citoid/${app.info.version}`;
 

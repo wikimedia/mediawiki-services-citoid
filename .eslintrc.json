@@ -18,7 +18,6 @@
 				"max": 2
 			}
 		],
-		"no-multi-spaces": "off",
 		"no-underscore-dangle": "off",
 		"no-unused-vars": [
 			"error",

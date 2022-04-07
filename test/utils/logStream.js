@@ -38,7 +38,7 @@ function logStream(logStdout) {
     function slice() {
 
         const begin = log.length;
-        let end   = null;
+        let end = null;
 
         function halt() {
             if (end === null) {

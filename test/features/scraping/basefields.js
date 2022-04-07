@@ -17,7 +17,7 @@ describe('correctly gets base fields instead of more specific fields', function 
                 assert.status(res, 200);
                 assert.isInArray(res.body[0].source, 'Zotero', 'Expected response from Zotero');
                 assert.deepEqual(!!res.body[0].publicationTitle, true, 'Missing publicationTitle field');
-                assert.deepEqual(!!res.body[0].proceedingsTitle, false,   'Missing proceedingsTitle field');
+                assert.deepEqual(!!res.body[0].proceedingsTitle, false, 'Missing proceedingsTitle field');
             });
         });
 

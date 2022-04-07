@@ -431,7 +431,7 @@ describe('lib/Exporter.js functions: ', function () {
                     { creatorType: 'author', name: 'Madonna' },
                     { creatorType: 'author', name: 'Prince' }
                 ];
-                expected =  { author: [
+                expected = { author: [
                     [ '', 'Madonna' ],
                     [ '', 'Prince' ]
                 ] };

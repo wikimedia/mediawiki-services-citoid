@@ -53,7 +53,7 @@ describe('translator utilities: ', function () {
 
         it('Uses optional pages arg and converts - to en dash', function () {
             expected = { pages: '12–13' };
-            result = makePagesTranslator('pages', 'spage', 'epage', 'pages').translate({}, { spage: '32', epage: '45', 'pages': '12-13' }, 'spage');
+            result = makePagesTranslator('pages', 'spage', 'epage', 'pages').translate({}, { spage: '32', epage: '45', pages: '12-13' }, 'spage');
             assert.deepEqual(result, expected);
         });
     });
@@ -114,9 +114,9 @@ describe('translator utilities: ', function () {
             input = [ 'Daniel J. Barrett' ];
             expected = {
                 creators: [ {
-                    'creatorType': 'author',
-                    'firstName': 'Daniel J.',
-                    'lastName': 'Barrett'
+                    creatorType: 'author',
+                    firstName: 'Daniel J.',
+                    lastName: 'Barrett'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
@@ -127,9 +127,9 @@ describe('translator utilities: ', function () {
             input = [ 'Barrett, Daniel J.' ];
             expected = {
                 creators: [ {
-                    'creatorType': 'author',
-                    'firstName': 'Barrett, Daniel',
-                    'lastName': 'J.'
+                    creatorType: 'author',
+                    firstName: 'Barrett, Daniel',
+                    lastName: 'J.'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: input }, 'author');
@@ -141,14 +141,14 @@ describe('translator utilities: ', function () {
             contributor = 'Mary GrandPré';
             expected = {
                 creators: [ {
-                    'creatorType': 'author',
-                    'firstName': 'J.K.',
-                    'lastName': 'Rowling'
+                    creatorType: 'author',
+                    firstName: 'J.K.',
+                    lastName: 'Rowling'
                 },
                 {
-                    'creatorType': 'contributor',
-                    'firstName': 'Mary',
-                    'lastName': 'GrandPré'
+                    creatorType: 'contributor',
+                    firstName: 'Mary',
+                    lastName: 'GrandPré'
                 } ]
             };
             result = ut.makeCreatorsTranslator('author').translate({}, { author: author }, 'author');

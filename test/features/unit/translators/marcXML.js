@@ -61,9 +61,9 @@ describe('worldcat marcXML translator unit', function () {
     it('Format Last name, first name', function () {
         expected = {
             creators: [ {
-                'creatorType': 'author',
-                'firstName': 'Daniel J.',
-                'lastName': 'Barrett'
+                creatorType: 'author',
+                firstName: 'Daniel J.',
+                lastName: 'Barrett'
             } ]
         };
         result = marc.book.c245.translate({}, { author: 'Barrett, Daniel J.' }, 'author');

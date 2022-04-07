@@ -19,7 +19,7 @@ describe('redirects', function () {
         .query(true)
         .reply((uri) => {
             redirector(); // call again to enable the recursive behaviour below
-            return [ 302, undefined, { 'Location': parse(uri, true).query.url } ];
+            return [ 302, undefined, { Location: parse(uri, true).query.url } ];
         });
     };
 

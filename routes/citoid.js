@@ -64,13 +64,13 @@ module.exports = function (appObj) {
 
     // set allowed export formats and expected response type
     app.nativeFormats = {
-        'mediawiki': 'application/json',
-        'zotero': 'application/json',
+        mediawiki: 'application/json',
+        zotero: 'application/json',
         'mediawiki-basefields': 'application/json',
-        'wikibase': 'application/json'
+        wikibase: 'application/json'
     };
     app.zoteroFormats = {
-        'bibtex': 'application/x-bibtex'
+        bibtex: 'application/x-bibtex'
     };
     app.formats = Object.assign({}, app.nativeFormats, app.zoteroFormats);
 

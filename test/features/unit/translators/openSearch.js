@@ -12,7 +12,7 @@ describe('openSearch translator unit tests: ', function () {
     const input = {
         author: [ { name: [ 'Barrett, Daniel J.' ] } ],
         title: [ 'MediaWiki' ],
-        link: [ { '$': { href: 'http://worldcat.org/oclc/900464810' } } ],
+        link: [ { $: { href: 'http://worldcat.org/oclc/900464810' } } ],
         id: [ 'http://worldcat.org/oclc/474668158' ],
         updated: [ '2016-08-20T01:20:27Z' ],
         summary: [ 'MediaWiki is the world\'s most popular wiki platform, the software that runs Wikipedia and thousands of other websites. In corporate environments, MediaWiki can transform the way teams write and collaborate. This comprehensive book covers MediaWiki\'s rich (and sometimes subtle) features, helping you become a wiki expert' ],

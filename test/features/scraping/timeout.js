@@ -107,7 +107,7 @@ describe('Tests using a very short timeout - all use crossRef - zotero disabled'
                 assert.status(res, 200);
                 assert.checkCitation(res, 'Management of Children With Autism Spectrum Disorders');
                 assert.deepEqual(!!res.body[0].DOI, true, 'Missing DOI');
-                assert.deepEqual(res.body[0].date, '2007-10-29', 'Incorrect date; expected 2007-10-29, got ' + res.body[0].date); // Crossref "issued" data is incorrect here; should be 11-01
+                assert.deepEqual(res.body[0].date, '2007-11-01', 'Incorrect date; expected 2007-11-01, got ' + res.body[0].date);
                 assert.deepEqual(res.body[0].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[0].itemType);
 
             });

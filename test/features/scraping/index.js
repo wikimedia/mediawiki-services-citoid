@@ -16,7 +16,7 @@ describe('Native scraper:', function () {
             assert.checkZotCitation(res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System');
             assert.deepEqual(res.body[0].issue, '1');
             assert.deepEqual(res.body[0].volume, '47');
-            assert.deepEqual(res.body[0].date, '2004-04');
+            assert.deepEqual(res.body[0].date, '2004-04-01');
             assert.deepEqual(res.body[0].DOI, '10.1086/378695');
             assert.deepEqual(res.body[0].author.length, 1);
         });

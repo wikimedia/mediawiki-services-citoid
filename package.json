@@ -12,6 +12,9 @@
 		"test": "npm run lint && mocha ./test/features/unit/*",
 		"coverage": "nyc --reporter=lcov _mocha"
 	},
+	"engines": {
+		"node": "12"
+	},
 	"dependencies": {
 		"bluebird": "^3.7.1",
 		"body-parser": "^1.19.0",

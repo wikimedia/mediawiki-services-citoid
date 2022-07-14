@@ -11,9 +11,10 @@ worker_heap_limit_mb: 250
 logging:
   level: trace
   streams:
-   - type: stdout
+    - type: stdout
 
 # Metrics reporters
+# eslint-disable-next-line yml/no-empty-mapping-value
 metrics:
 #  - type: prometheus
 #    port: 9100
@@ -37,7 +38,7 @@ services:
       # the location of the spec, defaults to spec.yaml if not specified
       # spec: ./spec.template.yaml
       # allow cross-domain requests to the API (default '*')
-      cors: '*'
+      cors: "*"
       # to disable use:
       # cors: false
       # to restrict to a particular domain, use:
@@ -60,9 +61,11 @@ services:
       #   - if-match
       #   - user-agent
       #   - x-request-id
-      # enable use of NIH PubMed id converter to add pmids and pmcids to citations at the end of a request; defaults to true if undefined
+      # enable use of NIH PubMed id converter to add pmids and pmcids to citations
+      # at the end of a request; defaults to true if undefined
       pubmed: false
-      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      # enable use of zotero's translation-server service to query for URLs;
+      # defaults to true if undefined
       zotero: true
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
@@ -87,12 +90,12 @@ services:
         method: post
         uri: https://{{domain}}/w/api.php
         headers:
-          user-agent: '{{user-agent}}'
-        body: '{{ default(request.query, {}) }}'
+          user-agent: "{{user-agent}}"
+        body: "{{ default(request.query, {}) }}"
       # the template used for contacting RESTBase
       restbase_req:
-        method: '{{request.method}}'
+        method: "{{request.method}}"
         uri: https://{{domain}}/api/rest_v1/{+path}
-        query: '{{ default(request.query, {}) }}'
-        headers: '{{request.headers}}'
-        body: '{{request.body}}'
+        query: "{{ default(request.query, {}) }}"
+        headers: "{{request.headers}}"
+        body: "{{request.body}}"

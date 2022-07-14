@@ -17,10 +17,11 @@ logging:
 #    port: 12201
 
 # Statsd metrics reporter
+# eslint-disable-next-line yml/no-empty-mapping-value
 metrics:
-  #type: log
-  #host: localhost
-  #port: 8125
+# type: log
+# host: localhost
+# port: 8125
 
 services:
   - name: citoid
@@ -38,7 +39,7 @@ services:
       # the location of the spec, defaults to spec.yaml if not specified
       # spec: ./spec.template.yaml
       # allow cross-domain requests to the API (default '*')
-      cors: '*'
+      cors: "*"
       # to disable use:
       # cors: false
       # to restrict to a particular domain, use:
@@ -63,7 +64,8 @@ services:
       #   - x-request-id
       # User-Agent HTTP header to use for requests
       userAgent: Citoid
-      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      # enable use of zotero's translation-server service to query for URLs;
+      # defaults to true if undefined
       zotero: true
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
@@ -80,12 +82,12 @@ services:
         method: post
         uri: https://{{domain}}/w/api.php
         headers:
-          user-agent: '{{user-agent}}'
-        body: '{{ default(request.query, {}) }}'
+          user-agent: "{{user-agent}}"
+        body: "{{ default(request.query, {}) }}"
       # the template used for contacting RESTBase
       restbase_req:
-        method: '{{request.method}}'
+        method: "{{request.method}}"
         uri: https://{{domain}}/api/rest_v1/{+path}
-        query: '{{ default(request.query, {}) }}'
-        headers: '{{request.headers}}'
-        body: '{{request.body}}'
+        query: "{{ default(request.query, {}) }}"
+        headers: "{{request.headers}}"
+        body: "{{request.body}}"

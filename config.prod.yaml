@@ -11,17 +11,17 @@ worker_heap_limit_mb: 500
 logging:
   level: warn
   streams:
-  # Use syslog -> logstash
-  - type: syslog
-    host: localhost
-    port: 10514
-    prefix: '@cee: '
-    name: node
+    # Use syslog -> logstash
+    - type: syslog
+      host: localhost
+      port: 10514
+      prefix: "@cee: "
+      name: node
 
 # Metrics reporters
 metrics:
- - type: prometheus
-   port: 9102
+  - type: prometheus
+    port: 9102
 #  - type: statsd
 #    host: localhost
 #    port: 8125
@@ -40,7 +40,7 @@ services:
       # the location of the spec, defaults to spec.yaml if not specified
       # spec: ./spec.template.yaml
       # allow cross-domain requests to the API (default '*')
-      cors: '*'
+      cors: "*"
       # to disable use:
       # cors: false
       # to restrict to a particular domain, use:
@@ -66,9 +66,11 @@ services:
       # the user agent to use when issuing requests
       # user_agent: service-template-node
       # the template used for contacting the MW API
-      # enable use of NIH PubMed id converter to add pmids and pmcids to citations at the end of a request; defaults to true if undefined
+      # enable use of NIH PubMed id converter to add pmids and pmcids to citations
+      # at the end of a request; defaults to true if undefined
       pubmed: false
-      # enable use of zotero's translation-server service to query for URLs; defaults to true if undefined
+      # enable use of zotero's translation-server service to query for URLs;
+      # defaults to true if undefined
       zotero: true
       # URL where to contact Zotero
       zoteroInterface: 127.0.0.1
@@ -77,7 +79,7 @@ services:
       # whether the proxy should be used to contact zotero
       zoteroUseProxy: false
       # enable use of worldcat Search API; requires wskey & subscription to access
-      wskey: 'somestring'
+      wskey: somestring
       # Contact e-mail address. Used for making CrossRef and PubMed requests
       mailto: services@lists.wikimedia.org
       # Force certain requests to return with partial data using this timeout in milliseconds
@@ -86,13 +88,13 @@ services:
         method: post
         uri: http://api.svc.eqiad.wmnet/w/api.php
         headers:
-          host: '{{request.params.domain}}'
-          user-agent: '{{user-agent}}'
-        body: '{{ default(request.query, {}) }}'
+          host: "{{request.params.domain}}"
+          user-agent: "{{user-agent}}"
+        body: "{{ default(request.query, {}) }}"
       # the template used for contacting RESTBase
       restbase_req:
-        method: '{{request.method}}'
+        method: "{{request.method}}"
         uri: http://restbase.svc.eqiad.wmnet/{{domain}}/v1/{+path}
-        query: '{{ default(request.query, {}) }}'
-        headers: '{{request.headers}}'
-        body: '{{request.body}}'
+        query: "{{ default(request.query, {}) }}"
+        headers: "{{request.headers}}"
+        body: "{{request.body}}"

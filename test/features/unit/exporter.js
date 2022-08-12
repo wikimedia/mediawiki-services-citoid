@@ -254,6 +254,20 @@ describe('lib/Exporter.js functions: ', function () {
                 assert.deepEqual(result, expected);
             });
 
+            it('unix timestamp', function () {
+                date = '1660329624';
+                expected = { date: '2022-08-12' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
+            it('unix timestamp with space', function () {
+                date = ' 1660329624 ';
+                expected = { date: '2022-08-12' };
+                result = exporter.fixDate({ date: date });
+                assert.deepEqual(result, expected);
+            });
+
         });
 
         describe('fixDOI: ', function () {

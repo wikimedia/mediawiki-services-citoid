@@ -27,6 +27,31 @@ describe('lib/Exporter.js functions: ', function () {
             });
         });
 
+        describe('fixWebsiteTitle: ', function () {
+            let url;
+            it('Adds missing website title', function () {
+                url = 'http://www.example.com';
+                expected = { url: url, itemType: 'webpage', websiteTitle: 'www.example.com' };
+                result = exporter.fixWebsiteTitle({ url: 'http://www.example.com', itemType: 'webpage' });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Does not add missing website title if itemType is missing', function () {
+                url = 'http://www.example.com';
+                expected = { url: url };
+                result = exporter.fixWebsiteTitle({ url: 'http://www.example.com' });
+                assert.deepEqual(result, expected);
+            });
+
+            it('Does not add missing website title if url is relative', function () {
+                url = '/relative/path/';
+                expected = { url: url };
+                result = exporter.fixWebsiteTitle({ url: '/relative/path/' });
+                assert.deepEqual(result, expected);
+            });
+
+        });
+
         describe('addIDSToCitation: ', function () {
             let title;
             it('cleans script and html out of title', function () {

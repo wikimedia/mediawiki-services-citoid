@@ -112,7 +112,7 @@ describe('errors', function () {
             .then(function (res) {
                 assert.status(res, 404);
             }, function (err) {
-                assert.checkError(err, 404, 'Unable to resolve DOI 10.1007/11926078_68%27',
+                assert.checkError(err, 404, "Unable to resolve DOI 10.1007/11926078_68'",
                     'Unexpected error message ' + err.body.Error);
             });
     });

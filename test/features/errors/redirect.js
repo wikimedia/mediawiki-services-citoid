@@ -3,7 +3,6 @@
 const assert = require('../../utils/assert.js');
 const Server = require('../../utils/server.js');
 const nock = require('nock');
-const parse = require('url').parse;
 
 describe('redirects', function () {
 
@@ -14,12 +13,14 @@ describe('redirects', function () {
 
     // httpbin no longer live, so just mock its behaviour since all it does here is redirect anyway.
     const redirector = () => {
-        nock('https://httpbin.org')
+        const base = 'https://httpbin.org';
+        nock(base)
             .get('/redirect-to')
             .query(true)
             .reply((uri) => {
                 redirector(); // call again to enable the recursive behaviour below
-                return [ 302, undefined, { Location: parse(uri, true).query.url } ];
+                const parsed = new URL(uri, base);
+                return [ 302, undefined, { Location: parsed.searchParams.get('url') } ];
             });
     };
 
@@ -53,6 +54,15 @@ describe('redirects', function () {
                 assert.status(res, 400);
             }, function (err) {
                 assert.status(err, 400);
+            });
+    });
+
+    it('follows relative redirects', function () {
+        return server.query('https://httpbin.org/redirect-to?url=/redirect-to?url=http://example.com', 'mediawiki', 'en')
+            .then(function (res) {
+                assert.status(res, 200);
+            }, function (err) {
+                assert.status(err, 200);
             });
     });
 

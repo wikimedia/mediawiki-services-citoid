@@ -26,7 +26,6 @@
 			}
 		],
 		"no-shadow": "off",
-		"node/no-deprecated-api": "off",
 		"prefer-regex-literals": "off",
 		"space-in-parens": [
 			"error",

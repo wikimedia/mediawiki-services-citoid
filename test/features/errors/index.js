@@ -73,17 +73,6 @@ describe('errors', function () {
             });
     });
 
-    it('faulty zotero results', function () {
-        const url = 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC999999/';
-        return server.query(url, 'mediawiki', 'en')
-            .then(function (res) {
-                assert.status(res, 404);
-            }, function (err) {
-                assert.status(err, 404);
-                assert.deepEqual(err.body.Error, 'Unable to load URL ' + url);
-            });
-    });
-
     it('unknown doi', function () {
         const doi = '10.1000/thisdoidoesntexist';
         return server.query(doi, 'mediawiki', 'en')

@@ -78,8 +78,6 @@ services:
       zoteroPort: 1969
       # whether the proxy should be used to contact zotero
       zoteroUseProxy: false
-      # enable use of worldcat Search API; requires wskey & subscription to access
-      wskey: somestring
       # Contact e-mail address. Used for making CrossRef and PubMed requests
       mailto: services@lists.wikimedia.org
       # Force certain requests to return with partial data using this timeout in milliseconds

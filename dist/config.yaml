@@ -73,8 +73,6 @@ services:
       zoteroPort: 1969
       # whether the proxy should be used to contact zotero
       zoteroUseProxy: false
-      # enable use of worldcat Search API; requires wskey & subscription to access
-      # wskey:
       allowPrivateAddresses: true
       maxRedirects: 10
       # the template used for contacting the MW API

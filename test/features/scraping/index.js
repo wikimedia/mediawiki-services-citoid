@@ -7,7 +7,9 @@ describe('Native scraper:', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start());
+
     after(() => server.stop());
 
     // Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef

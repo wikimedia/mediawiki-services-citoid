@@ -11,6 +11,7 @@ describe('Languages:', function () {
     describe('Using zotero results: ', function () {
 
         before(() => server.start());
+
         after(() => server.stop());
 
         it('invalid language code', function () {
@@ -52,6 +53,7 @@ describe('Languages:', function () {
     describe('Using native scraper: ', function () {
 
         before(() => server.start({ zotero: false }));
+
         after(() => server.stop());
 
         it('open graph locale converted to language code', function () {

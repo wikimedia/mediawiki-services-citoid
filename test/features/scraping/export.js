@@ -7,7 +7,9 @@ describe('Exports into non mediawiki formats:', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start());
+
     after(() => server.stop());
 
     describe('Exporting to bibtex: ', function () {
@@ -45,6 +47,7 @@ describe('Exports into non mediawiki formats:', function () {
                 assert.ok(res.body[0].creators);
             });
         });
+
         it('doi with ISSN', function () {
             return server.query('doi:10.1039/b309952k', 'zotero').then(function (res) {
                 assert.status(res, 200);

@@ -17,6 +17,7 @@ describe('Zotero service down or disabled:', function () {
         // Give Zotero port which is it is not running from-
         // Mimics Zotero being down.
         before(() => server.start({ zoteroPort: 1971 }));
+
         after(() => server.stop());
 
         // PMID on NIH website that is not found in the id converter api
@@ -267,6 +268,7 @@ describe('Zotero service down or disabled:', function () {
         this.timeout(40000);
 
         before(() => server.start({ zotero: false }));
+
         after(() => server.stop());
 
         // PMID on NIH website that is not found in the id converter api

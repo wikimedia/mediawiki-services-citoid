@@ -7,7 +7,9 @@ describe('address restrictions', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start());
+
     after(() => server.stop());
 
     it('http://localhost:1970', function () {

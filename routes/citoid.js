@@ -16,7 +16,9 @@ let app;
 
 // Coerces 'false'-> false, '0'-> false, 'True' ->true, '1'->true, etc
 function getBool(val) {
-    if (!val) { return false; }
+    if (!val) {
+        return false;
+    }
     return !!JSON.parse(String(val).toLowerCase());
 }
 
@@ -38,13 +40,15 @@ router.get('/api', (req, res) => {
         return;
     } else if (!app.formats[cr.format]) { // Use encoded format
         res.status(400).type('application/json');
-        res.send({ Error: `Invalid format requested ${cr.format}` || '' });
+        // eslint-disable-next-line no-constant-binary-expression
+        res.send({ Error: `Invalid format requested ${ cr.format }` || '' });
         return;
     } else if (getBool(cr.baseFields) && !(getBool(cr.baseFields) &&
             // Ensure format supports baseFields - mediawiki & mediawiki-basefields formats only
             (cr.format === 'mediawiki' || cr.format === 'mediawiki-basefields'))) {
         res.status(400).type('application/json');
-        res.send({ Error: `Base fields are not supported for format ${cr.format}` || '' });
+        // eslint-disable-next-line no-constant-binary-expression
+        res.send({ Error: `Base fields are not supported for format ${ cr.format }` || '' });
         return;
     }
 

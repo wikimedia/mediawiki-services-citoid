@@ -8,7 +8,9 @@ describe('errors', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start());
+
     after(() => server.stop());
 
     it('missing search in query', function () {

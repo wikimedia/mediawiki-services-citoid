@@ -251,6 +251,7 @@ describe('Tests for Translator.js : ', function () {
                 assert.deepEqual(citation, expected);
             });
         });
+
         it('sets right info from webpage for bepress metadata', function () {
             return meta.parseAll(article).then(function (metadata) {
                 const citation = translator.translate({ itemType: 'webpage' }, metadata.bePress, bp.webpage);

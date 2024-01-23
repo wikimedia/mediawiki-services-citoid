@@ -7,7 +7,9 @@ describe('encoding', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start());
+
     after(() => server.stop());
 
     it('javascript in format', function () {

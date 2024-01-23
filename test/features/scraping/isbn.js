@@ -16,6 +16,7 @@ describe('ISBN tests:', function () {
     describe('zotero isbn:', function () {
 
         before(() => server.start());
+
         after(() => server.stop());
 
         it('valid ISBN', function () {

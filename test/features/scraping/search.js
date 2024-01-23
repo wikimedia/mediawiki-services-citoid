@@ -9,7 +9,9 @@ describe('Freetext or ambiguous search, classified as "any" input type, i.e. tit
 
         this.timeout(20000);
         const server = new Server();
+
         before(() => server.start());
+
         after(() => server.stop());
 
         // Previously gave error; now passes to search

@@ -34,18 +34,30 @@ function initApp(options) {
     // this app's package info
     app.info = packageInfo;
 
-    app.conf.userAgent = app.conf.user_agent || app.conf.userAgent || `Citoid/${app.info.version}`;
+    app.conf.userAgent = app.conf.user_agent || app.conf.userAgent || `Citoid/${ app.info.version }`;
 
     // backwards compatibility for configurations which predate use of 'zotero' keyword in conf
-    if (app.conf.zotero === undefined) { app.conf.zotero = true; }
+    if (app.conf.zotero === undefined) {
+        app.conf.zotero = true;
+    }
     // backwards compatibility for configurations which predate use of 'pubmed' keyword in conf
-    if (app.conf.pubmed === undefined) { app.conf.pubmed = true; }
+    if (app.conf.pubmed === undefined) {
+        app.conf.pubmed = true;
+    }
 
     // ensure some reasonable defaults
-    if (!app.conf.port) { app.conf.port = 1970; }
-    if (!app.conf.interface) { app.conf.interface = '0.0.0.0'; }
-    if (app.conf.compression_level === undefined) { app.conf.compression_level = 3; }
-    if (app.conf.cors === undefined) { app.conf.cors = '*'; }
+    if (!app.conf.port) {
+        app.conf.port = 1970;
+    }
+    if (!app.conf.interface) {
+        app.conf.interface = '0.0.0.0';
+    }
+    if (app.conf.compression_level === undefined) {
+        app.conf.compression_level = 3;
+    }
+    if (app.conf.cors === undefined) {
+        app.conf.cors = '*';
+    }
     if (app.conf.csp === undefined) {
         app.conf.csp = "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'";
     }
@@ -85,22 +97,23 @@ function initApp(options) {
             'user-agent', 'x-request-id'
         ];
     }
-    app.conf.log_header_whitelist = new RegExp(`^(?:${app.conf.log_header_whitelist.map((item) => {
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    app.conf.log_header_whitelist = new RegExp(`^(?:${ app.conf.log_header_whitelist.map((item) => {
         return item.trim();
-    }).join('|')})$`, 'i');
+    }).join('|') })$`, 'i');
 
     // set up the request templates for the APIs
     apiUtil.setupApiTemplates(app);
 
     // set up the spec
     if (!app.conf.spec) {
-        app.conf.spec = `${__dirname}/spec.yaml`;
+        app.conf.spec = `${ __dirname }/spec.yaml`;
     }
     if (app.conf.spec.constructor !== Object) {
         try {
             app.conf.spec = yaml.safeLoad(fs.readFileSync(app.conf.spec));
         } catch (e) {
-            app.logger.log('warn/spec', `Could not load the spec: ${e}`);
+            app.logger.log('warn/spec', `Could not load the spec: ${ e }`);
             app.conf.spec = {};
         }
     }
@@ -174,11 +187,13 @@ function loadRoutes(app, dir) {
                 loadRoutes(app, resolvedPath);
             } else if (/\.js$/.test(fname)) {
                 // import the route file
-                const route = require(`${dir}/${fname}`);
+                // eslint-disable-next-line security/detect-non-literal-require
+                const route = require(`${ dir }/${ fname }`);
                 return route(app);
             }
             // import the route file
-            const route = require(`${__dirname}/routes/${fname}`);
+            // eslint-disable-next-line security/detect-non-literal-require
+            const route = require(`${ __dirname }/routes/${ fname }`);
             return route(app);
         }).then((route) => {
             if (route === undefined) {
@@ -187,17 +202,17 @@ function loadRoutes(app, dir) {
             // check that the route exports the object we need
             if (route.constructor !== Object || !route.path || !route.router ||
                 !(route.api_version || route.skip_domain)) {
-                throw new TypeError(`routes/${fname} does not export the correct object!`);
+                throw new TypeError(`routes/${ fname } does not export the correct object!`);
             }
             // normalise the path to be used as the mount point
             if (route.path[0] !== '/') {
-                route.path = `/${route.path}`;
+                route.path = `/${ route.path }`;
             }
             if (route.path[route.path.length - 1] !== '/') {
-                route.path = `${route.path}/`;
+                route.path = `${ route.path }/`;
             }
             if (!route.skip_domain) {
-                route.path = `/:domain/v${route.api_version}${route.path}`;
+                route.path = `/:domain/v${ route.api_version }${ route.path }`;
             }
             // wrap the route handlers with Promise.try() blocks
             sUtil.wrapRouteHandlers(route, app);
@@ -234,7 +249,7 @@ function createServer(app) {
         server = addShutdown(server);
     }).then(() => {
         app.logger.log('info',
-            `Worker ${process.pid} listening on ${app.conf.interface || '*'}:${app.conf.port}`);
+            `Worker ${ process.pid } listening on ${ app.conf.interface || '*' }:${ app.conf.port }`);
 
         // Don't delay incomplete packets for 40ms (Linux default) on
         // pipelined HTTP sockets. We write in large chunks or buffers, so
@@ -260,10 +275,10 @@ function createServer(app) {
 module.exports = (options) => {
 
     return initApp(options)
-        .then((app) => loadRoutes(app, `${__dirname}/routes`))
+        .then((app) => loadRoutes(app, `${ __dirname }/routes`))
         .then((app) => {
         // serve static files from static/
-            app.use('/static', express.static(`${__dirname}/static`));
+            app.use('/static', express.static(`${ __dirname }/static`));
             return app;
         }).then(createServer);
 };

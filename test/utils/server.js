@@ -9,13 +9,13 @@ const P = require('bluebird');
 const TestRunner = require('service-runner/test/TestServer');
 
 class TestCitoidRunner extends TestRunner {
-    constructor(configPath = `${__dirname}/../../config.yaml`) {
+    constructor(configPath = `${ __dirname }/../../config.yaml`) {
         super(configPath);
         this._spec = null;
 
         // set up the inital configuration
         this.originalConfig = {
-            conf: yaml.safeLoad(fs.readFileSync(`${__dirname}/../../config.yaml`))
+            conf: yaml.safeLoad(fs.readFileSync(`${ __dirname }/../../config.yaml`))
         };
         this.originalConfig.conf.num_workers = 0;
         this.originalConfig.conf.logging = {}; // Dummy logger, suppresses logging during tests
@@ -68,12 +68,12 @@ class TestCitoidRunner extends TestRunner {
         // is the last one in the 'services' list in the config file
         const myServiceIdx = this._runner._impl.config.services.length - 1;
         const myService = this._runner._impl.config.services[myServiceIdx];
-        const uri = `http://localhost:${myService.conf.port}/`;
-        const qURI = `${uri}api`;
+        const uri = `http://localhost:${ myService.conf.port }/`;
+        const qURI = `${ uri }api`;
 
         if (!this._spec) {
             // We only want to load this once.
-            preq.get(`${uri}?spec`)
+            preq.get(`${ uri }?spec`)
                 .then((res) => {
                     if (!res.body) {
                         throw new Error('Failed to get spec');

@@ -13,6 +13,7 @@ describe('lib/Exporter.js functions: ', function () {
     describe('validation functions: ', function () {
         describe('fixURL: ', function () {
             let url;
+
             it('discards url with no host', function () {
                 url = 'http://www.example.com/path/with/host';
                 expected = { url: url };
@@ -29,6 +30,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('fixWebsiteTitle: ', function () {
             let url;
+
             it('Adds missing website title', function () {
                 url = 'http://www.example.com';
                 expected = { url: url, itemType: 'webpage', websiteTitle: 'www.example.com' };
@@ -54,6 +56,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('addIDSToCitation: ', function () {
             let title;
+
             it('cleans script and html out of title', function () {
                 title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
                 expected = { title: 'falert(1);taggytaggy' };
@@ -64,6 +67,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('stripCitation:', function () {
             let title;
+
             it('cleans script and html out of title', function () {
                 title = 'f<script>alert(1);</script><i>taggytaggy</i></i>';
                 expected = { title: 'falert(1);taggytaggy' };
@@ -72,6 +76,7 @@ describe('lib/Exporter.js functions: ', function () {
             });
 
             let doi;
+
             it('does not clean doi', function () {
                 doi = '10.1175/1520-0485(1995)025<0855:IEODC>2.0.CO;2';
                 expected = { DOI: '10.1175/1520-0485(1995)025<0855:IEODC>2.0.CO;2' };
@@ -320,6 +325,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('fixISBN: ', function () {
             let isbnStr;
+
             it('Correctly hyphenates single ISBN-10', function () {
                 isbnStr = '0810935317';
                 expected = { ISBN: [ '0-8109-3531-7' ] };
@@ -386,6 +392,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('fixISSN: ', function () {
             let issn;
+
             it('Correctly ignores None ISSN', function () {
                 issn = 'None';
                 expected = {};
@@ -439,6 +446,7 @@ describe('lib/Exporter.js functions: ', function () {
 
         describe('replaceCreators:', function () {
             let creators;
+
             it('Correctly adds name with firstName and lastName present', function () {
                 creators = [
                     { creatorType: 'author', lastName: 'Plath', firstName: 'Sylvia' },
@@ -494,6 +502,7 @@ describe('lib/Exporter.js functions: ', function () {
     describe('export formats: ', function () {
         let citation;
         let exp;
+
         before(() => {
             const app = { conf: {} };
             exp = new exporter.Exporter(app);

@@ -19,6 +19,7 @@ describe('mock Zotero service that cannot export', function () {
         zotero.start(1968); // Start mock zotero server
         return server.start({ zoteroPort: 1968 });
     });
+
     after(() => server.stop());
 
     it('Get error for bibtex export', function () {

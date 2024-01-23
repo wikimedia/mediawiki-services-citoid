@@ -56,7 +56,9 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function () {
         it('Doesn\'t get metadata for invalid doi', function () {
             doi = 'www.example.com';
             promise = crossref.doi(doi, request);
-            onreject = function (e) { return; };
+            onreject = function (e) {
+                return;
+            };
             return assert.fails(promise, onreject);
         });
     });
@@ -83,7 +85,9 @@ describe('lib/externalAPIs/CrossRefService.js functions: ', function () {
         it('Doesn\'t get metadata for invalid doi', function () {
             doi = 'www.example.com';
             promise = crossref.doi(doi, request);
-            onreject = function (e) { return; };
+            onreject = function (e) {
+                return;
+            };
             return assert.fails(promise, onreject);
         });
     });

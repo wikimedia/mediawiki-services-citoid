@@ -7,7 +7,9 @@ describe('noPubmed.js - Disable pubmed requests for extra IDs', function () {
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start({ pubmed: false }));
+
     after(() => server.stop());
 
     describe('PMID ', function () {
@@ -214,7 +216,9 @@ describe('noPubmed.js - Defaults conf to true if pubmed undefined', function () 
 
     this.timeout(20000);
     const server = new Server();
+
     before(() => server.start({ pubmed: undefined }));
+
     after(() => server.stop());
 
     it('PMCID available from NIH DB only', function () {

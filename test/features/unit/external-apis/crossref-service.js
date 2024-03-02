@@ -20,6 +20,8 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 	let crossref;
 	let app;
 
+	this.timeout( 20000 );
+
 	before( () => {
 		// Dummy logger
 		logConf = {

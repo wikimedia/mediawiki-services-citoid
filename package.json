@@ -23,7 +23,7 @@
 		"chrono-node": "^2.7.5",
 		"compression": "^1.7.4",
 		"content-type": "1.0.2",
-		"express": "^4.17.1",
+		"express": "^4.19.2",
 		"extend": "^3.0.1",
 		"html-metadata": "1.7.1",
 		"http-shutdown": "^1.2.1",
@@ -39,8 +39,7 @@
 		"swagger-router": "^0.7.4",
 		"swagger-ui-dist": "^3.22.3",
 		"tough-cookie": "2.3.3",
-		"uuid": "^8.3.0",
-		"xml2js": "0.4.19"
+		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
 		"ajv": "^6.5.4",

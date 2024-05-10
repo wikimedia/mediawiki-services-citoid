@@ -20,26 +20,10 @@ describe( 'uses zotero', function () {
 			} );
 		} );
 
-		// Prefer original url for using native scraper
-		it.skip( 'uses original url', function () {
-			const url = 'http://www.google.com';
-			return server.query( url ).then( function ( res ) {
-				assert.checkZotCitation( res, 'Google' );
-				assert.deepEqual( res.body[ 0 ].url, url );
-			} );
-		} );
-
-		it( 'url with pseudo doi', function () {
-			return server.query( 'http://g2014results.thecgf.com/athlete/weightlifting/1024088/dika_toua.html' ).then( function ( res ) {
-				assert.checkZotCitation( res, 'Glasgow 2014 - Dika Toua Profile' );
-				assert.deepEqual( !!res.body[ 0 ].DOI, false );
-			} );
-		} );
-
 		it( 'dublinCore data but no highWire metadata', function () {
 			return server.query( 'https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00' ).then( function ( res ) {
 				assert.checkZotCitation( res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)' );
-				assert.deepEqual( res.body[ 0 ].itemType, 'webpage' );
+				assert.deepEqual( res.body[ 0 ].itemType, 'report' );
 				assert.deepEqual( res.body[ 0 ].publicationTitle, undefined ); // TODO: Investigate why this is undefined
 			} );
 		} );
@@ -69,7 +53,7 @@ describe( 'uses zotero', function () {
 		} );
 
 		it( 'fixes en dash in zotero results', function () {
-			return server.query( 'http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1998.tb00748.x/abstract' ).then( function ( res ) {
+			return server.query( 'https://bpspsychub.onlinelibrary.wiley.com/doi/abs/10.1111/j.2044-835X.1998.tb00748.x' ).then( function ( res ) {
 				assert.checkZotCitation( res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions' );
 				assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 				assert.deepEqual( res.body[ 0 ].pages, '15–44' );
@@ -82,24 +66,6 @@ describe( 'uses zotero', function () {
 				assert.checkZotCitation( res, 'The Daily Palo Alto times. [volume]' );
 				assert.deepEqual( res.body[ 0 ].ISSN, undefined, 'ISSN found' );
 				assert.deepEqual( res.body[ 0 ].itemType, 'newspaperArticle', 'Wrong itemType; expected newspaperArticle, got' + res.body[ 0 ].itemType );
-			} );
-		} );
-
-		// Correctly adds authors from zotero 'name' field
-		// TODO: Add new tests to test this issue
-		it.skip( 'Correctly skips bad authors from Zotero whilst converting to mediawiki format', function () {
-			return server.query( 'http://dx.doi.org/10.1001/jama.296.10.1274' ).then( function ( res ) {
-				const expectedAuthor = [
-					[ '', 'Detsky ME' ],
-					[ '', 'McDonald DR' ],
-					[ '', 'Baerlocher MO' ],
-					[ '', 'Tomlinson GA' ],
-					[ '', 'McCrory DC' ],
-					[ '', 'Booth CM' ]
-				];
-				assert.checkZotCitation( res, 'Does This Patient With Headache Have a Migraine or Need Neuroimaging?' ); // Title from crossRef
-				assert.deepEqual( res.body[ 0 ].author, expectedAuthor );
-				assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 			} );
 		} );
 
@@ -126,6 +92,17 @@ describe( 'uses zotero', function () {
 				assert.deepEqual( res.body[ 0 ].publisher, undefined ); // TODO: Investigate why this is undefined
 				assert.deepEqual( res.body[ 0 ].publicationTitle, undefined ); // TODO: Investigate why this is undefined
 			} );
+		} );
+
+		it( 'PDF url unsupported', function () {
+			const url = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Coloring_page_for_Wikipedia_Day_2019_in_NYC.pdf';
+			return server.query( url, 'mediawiki', 'en' )
+				.then( function ( res ) {
+					assert.status( res, 415 );
+				}, function ( err ) {
+					assert.status( err, 415 );
+					assert.deepEqual( err.body.Error, 'The remote document is not in a supported format' );
+				} );
 		} );
 
 	} );

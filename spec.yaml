@@ -127,7 +127,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/result"
         "404":
-          description: Citation data was not found.
+          description: Citation data was not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problem"
+        "415":
+          description: Could not get citation data from unsupported media type
           content:
             application/problem+json:
               schema:

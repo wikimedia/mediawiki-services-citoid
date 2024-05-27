@@ -29,7 +29,10 @@ function initApp( options ) {
 	app.logger = options.logger;
 	// Add custom serialisers to the native bunyan logger
 	app.logger._logger.addSerializers( {
-		outgoingReqResult: sUtil.outgoingReqResult
+		err: sUtil.errForLog,
+		outgoingReqResult: sUtil.outgoingReqResult,
+		uri: sUtil.uriForLog,
+		cr: sUtil.crForLog
 	} );
 
 	// the metrics

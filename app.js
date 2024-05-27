@@ -27,6 +27,11 @@ function initApp( options ) {
 	// get the options and make them available in the app
 	// the logging device
 	app.logger = options.logger;
+	// Add custom serialisers to the native bunyan logger
+	app.logger._logger.addSerializers( {
+		outgoingReqResult: sUtil.outgoingReqResult
+	} );
+
 	// the metrics
 	app.metrics = options.metrics;
 	// this app's config options

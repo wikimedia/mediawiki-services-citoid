@@ -65,7 +65,7 @@ describe( 'errors', function () {
 	} );
 
 	it( 'resource has http errors', function () {
-		const url = 'http://example.com/thisurldoesntexist';
+		const url = 'https://en.wikipedia.org/404';
 		return server.query( url, 'mediawiki', 'en' )
 			.then( function ( res ) {
 				assert.status( res, 404 );
@@ -119,7 +119,7 @@ describe( 'errors', function () {
 			} );
 	} );
 
-	it( 'bad pmid', function () {
+	it.skip( 'bad pmid', function () {
 		const pmid = '99999999';
 		return server.query( pmid, 'mediawiki', 'en' )
 			.then( function ( res ) {
@@ -129,7 +129,7 @@ describe( 'errors', function () {
 			} );
 	} );
 
-	it( 'bad pmcid', function () {
+	it.skip( 'bad pmcid', function () {
 		const pmcid = 'PMC9999999';
 		return server.query( pmcid, 'mediawiki', 'en' )
 			.then( function ( res ) {

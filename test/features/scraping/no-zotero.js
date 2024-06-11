@@ -61,14 +61,11 @@ describe( 'Zotero service down or disabled:', function () {
 			} );
 		} );
 
-		it( 'Article with doi within DublinCore metadata + highwire data', function () {
+		it( 'requires JS to be enabled', function () {
 			return server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( function ( res ) {
-				assert.status( res, 200 );
-				assert.checkCitation( res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife' );
-				assert.isInArray( res.body[ 0 ].source, 'Crossref' );
-				assert.deepEqual( res.body[ 0 ].date, '2004-01-16' ); // Field uses highwire data with bePress translator
-				assert.deepEqual( res.body[ 0 ].DOI, '10.1126/science.1092528' ); // DOI from DC metadata
-				assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+				assert.status( res, 404 );
+			}, function ( err ) {
+				assert.status( err, 404 );
 			} );
 		} );
 
@@ -250,10 +247,19 @@ describe( 'Zotero service down or disabled:', function () {
 			} );
 		} );
 
+		it( 'Only PMCID but no PMID or DOI; does not scrape', function () {
+			return server.query( 'PMC2096233',
+				'mediawiki', 'en', 'true' ).then( function ( res ) {
+				assert.status( res, 404 );
+			}, function ( err ) {
+				assert.checkError( err, 404 );
+			} );
+		} );
+
 		// Unable to scrape and ends up with crossRef data
 		it( 'DOI with redirect - Wiley', function () {
 			return server.query( '10.1029/94WR00436' ).then( function ( res ) {
-				assert.checkCitation( res, 'A distributed hydrology-vegetation model for complex terrain' );
+				assert.checkCitation( res, 'A distributed hydrology‐vegetation model for complex terrain' );
 				assert.deepEqual( res.body[ 0 ].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[ 0 ].publicationTitle );
 				assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 				assert.deepEqual( !!res.body[ 0 ].issue, true, 'Missing issue' );
@@ -312,14 +318,11 @@ describe( 'Zotero service down or disabled:', function () {
 			} );
 		} );
 
-		it( 'Article with doi within DublinCore metadata + highwire data', function () {
+		it( 'requires JS to be enabled', function () {
 			return server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( function ( res ) {
-				assert.status( res, 200 );
-				assert.checkCitation( res, 'Multiple Ebola Virus Transmission Events and Rapid Decline of Central African Wildlife' );
-				assert.isInArray( res.body[ 0 ].source, 'Crossref' );
-				assert.deepEqual( res.body[ 0 ].date, '2004-01-16' ); // Field uses highwire data with bePress translator
-				assert.deepEqual( res.body[ 0 ].DOI, '10.1126/science.1092528' ); // DOI from DC metadata
-				assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+				assert.status( res, 404 );
+			}, function ( err ) {
+				assert.status( err, 404 );
 			} );
 		} );
 
@@ -464,19 +467,19 @@ describe( 'Zotero service down or disabled:', function () {
 			} );
 		} );
 
-		it( 'PMCID but no PMID', function () {
+		it( 'No PMID or DOI; does not scrape', function () {
 			return server.query( 'PMC2096233',
 				'mediawiki', 'en', 'true' ).then( function ( res ) {
-				assert.status( res, 200 );
-				assert.deepEqual( !!res.body[ 0 ].PMCID, true, '2096233' );
-				assert.deepEqual( res.body[ 0 ].PMID, undefined, 'PMID is null' );
+				assert.status( res, 404 );
+			}, function ( err ) {
+				assert.checkError( err, 404 );
 			} );
 		} );
 
 		// Unable to scrape and ends up with crossRef data
 		it( 'DOI with redirect - Wiley', function () {
 			return server.query( '10.1029/94WR00436' ).then( function ( res ) {
-				assert.checkCitation( res, 'A distributed hydrology-vegetation model for complex terrain' );
+				assert.checkCitation( res, 'A distributed hydrology‐vegetation model for complex terrain' );
 				assert.deepEqual( res.body[ 0 ].publicationTitle, 'Water Resources Research', 'Incorrect publicationTitle; Expected "Water Resources Research", got' + res.body[ 0 ].publicationTitle );
 				assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 				assert.deepEqual( !!res.body[ 0 ].issue, true, 'Missing issue' );

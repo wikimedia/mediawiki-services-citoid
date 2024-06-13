@@ -17,7 +17,7 @@ describe( 'redirects', function () {
 	const redirector = () => {
 		const base = 'https://httpbin.org';
 		nock( base )
-			.get( '/redirect-to' )
+			.head( '/redirect-to' )
 			.query( true )
 			.reply( ( uri ) => {
 				redirector(); // call again to enable the recursive behaviour below

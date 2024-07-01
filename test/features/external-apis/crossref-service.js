@@ -4,10 +4,10 @@ const fs = require( 'fs' );
 const yaml = require( 'js-yaml' );
 const preq = require( 'preq' );
 
-const assert = require( '../../../utils/assert.js' );
-const CrossRefService = require( '../../../../lib/external-apis/CrossRefService.js' );
-const Logger = require( '../../../../node_modules/service-runner/lib/logger.js' );
-const logStream = require( '../../../utils/logStream.js' );
+const assert = require( '../../utils/assert.js' );
+const CrossRefService = require( '../../../lib/external-apis/CrossRefService.js' );
+const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
+const logStream = require( '../../utils/logStream.js' );
 
 describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 
@@ -39,7 +39,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 	describe( 'polite config', function () {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../../config.yaml' ) );
+			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};
@@ -68,7 +68,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 	describe( 'anonymous config', function () {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../../config.yaml' ) );
+			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};
@@ -97,7 +97,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 	describe( 'open search function', function () {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../../config.yaml' ) );
+			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};

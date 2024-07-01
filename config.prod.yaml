@@ -66,6 +66,8 @@ services:
       # the user agent to use when issuing requests
       # user_agent: service-template-node
       # the template used for contacting the MW API
+      # enable use of wayback machine from archive.org if initial url request fails
+      wayback: true
       # enable use of NIH PubMed id converter to add pmids and pmcids to citations
       # at the end of a request; defaults to true if undefined
       pubmed: false

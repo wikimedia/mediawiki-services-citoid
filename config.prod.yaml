@@ -79,7 +79,7 @@ services:
       # whether the proxy should be used to contact zotero
       zoteroUseProxy: false
       # Contact e-mail address. Used for making CrossRef and PubMed requests
-      mailto: services@lists.wikimedia.org
+      mailto: example@example.com
       # Force certain requests to return with partial data using this timeout in milliseconds
       timeout: 5000
       mwapi_req:

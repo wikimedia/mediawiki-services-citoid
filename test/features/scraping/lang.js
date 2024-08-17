@@ -25,7 +25,7 @@ describe( 'Languages:', function () {
 		it( 'redirects to french dolphin emulator page', function () {
 			return server.query( 'http://dolphin-emu.org', 'mediawiki', 'fr' ).then( function ( res ) {
 				assert.status( res, 200 );
-				assert.checkZotCitation( res, 'Dolphin Emulator' );
+				assert.checkZotCitation( res, 'Émulateur Dolphin - Jouez à la GameCube/Wii sur PC' );
 				assert.deepEqual( res.body[ 0 ].url, 'https://fr.dolphin-emu.org/?cr=fr' );
 			} );
 		} );

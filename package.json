@@ -38,7 +38,6 @@
 		"striptags": "^3.2.0",
 		"swagger-router": "^0.7.4",
 		"swagger-ui-dist": "^3.52.0",
-		"tough-cookie": "2.3.3",
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {

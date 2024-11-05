@@ -13,7 +13,7 @@
 		"coverage": "nyc --reporter=lcov _mocha"
 	},
 	"engines": {
-		"node": "16"
+		"node": "18"
 	},
 	"dependencies": {
 		"bluebird": "^3.7.1",
@@ -34,7 +34,7 @@
 		"nock": "^13.0.2",
 		"preq": "^0.5.12",
 		"request": "^2.88.0",
-		"service-runner": "^5.0.0",
+		"service-runner": "^6.0.0",
 		"striptags": "^3.2.0",
 		"swagger-router": "^0.7.4",
 		"swagger-ui-dist": "^3.52.0",

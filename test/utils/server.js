@@ -68,7 +68,7 @@ class TestCitoidRunner extends TestRunner {
 		// is the last one in the 'services' list in the config file
 		const myServiceIdx = this._runner._impl.config.services.length - 1;
 		const myService = this._runner._impl.config.services[ myServiceIdx ];
-		const uri = `http://localhost:${ myService.conf.port }/`;
+		const uri = `http://127.0.0.1:${ myService.conf.port }/`;
 		const qURI = `${ uri }api`;
 
 		if ( !this._spec ) {

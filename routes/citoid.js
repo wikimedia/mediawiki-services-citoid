@@ -22,12 +22,7 @@ function getBool( val ) {
 	return !!JSON.parse( String( val ).toLowerCase() );
 }
 
-/**
- * GET /api
- * Endpoint for retrieving citations based on search term (URL, DOI).
- */
-router.get( '/api', ( req, res ) => {
-
+function citoidRequest( req, res ) {
 	const cr = new CitoidRequest( req, app );
 
 	if ( !req.query.search ) {
@@ -59,6 +54,34 @@ router.get( '/api', ( req, res ) => {
 		res.status( cReq.response.responseCode ).type( app.formats[ cReq.format ] );
 		res.send( cReq.response.body );
 	} );
+}
+
+/**
+ * GET /api
+ * Endpoint for retrieving citations based on search term or url.
+ */
+router.get( '/api', ( req, res ) => {
+
+	return citoidRequest( req, res );
+
+} );
+
+/**
+ * GET /{format}/{query}
+ * Endpoint for retrieving citations based on search term or url.
+ * Restbase shim / backwards compatibility following restbase removal
+ */
+router.get( '/*/*', ( req, res, next ) => {
+
+	// exclude _info/, _info/name etc.
+	if ( req.params.length < 2 || req.params[ 0 ] === '_info' ) {
+		return next();
+	}
+
+	req.query.format = req.params[ 0 ]; // pick format out of url
+	req.query.search = req.params[ 1 ]; // pick search out of url
+
+	return citoidRequest( req, res );
 
 } );
 

@@ -25,17 +25,15 @@ router.get( '/robots.txt', ( req, res ) => {
 
 /**
  * GET /
- * Main entry point. Currently it only responds if the spec or doc query
- * parameter is given, otherwise lets the next middleware handle it
+ * Main entry point. Serves docs if root, ?doc, or any param is requested
+ * other than ?spec
  */
 router.get( '/', ( req, res, next ) => {
 
 	if ( {}.hasOwnProperty.call( req.query || {}, 'spec' ) ) {
 		res.json( app.conf.spec );
-	} else if ( {}.hasOwnProperty.call( req.query || {}, 'doc' ) ) {
-		return swaggerUi.processRequest( app, req, res );
 	} else {
-		next();
+		return swaggerUi.processRequest( app, req, res );
 	}
 
 } );

@@ -22,7 +22,7 @@ describe( 'express app', function () {
 		} );
 	} );
 
-	it.skip( 'get landing page', function () {
+	it( 'get landing page', function () {
 		return preq.get( {
 			uri: server.config.uri
 		} ).then( function ( res ) {

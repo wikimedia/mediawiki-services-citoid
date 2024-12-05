@@ -44,10 +44,10 @@ describe( 'availability API :', function () {
 	} );
 
 	it( 'Gets archived url', function () {
-		url = 'http://www.vangoghmuseum.nl/vgm/index.jsp?page=2122&lang=en';
+		url = 'http://emlab.berkeley.edu/~dahn/C103/index.html';
+		expected = 'http://web.archive.org/web/20050413135927/http://emlab.berkeley.edu:80/~dahn/C103/index.html';
 		return wayback.availability( url, request ).then( function ( results ) {
-			console.log( results.url );
-			assert.deepEqual( !!results.url, true );
+			assert.deepEqual( results.url, expected );
 		} );
 	} );
 
@@ -64,7 +64,6 @@ describe( 'availability API :', function () {
 		url = 'http://www.vangoghmuseum.nl/vgm/index.jsp?page=2122&lang=en';
 		expected = 'http://web.archive.org/web/20140323172316/http://www.vangoghmuseum.nl/vgm/index.jsp?page=2122&lang=en';
 		return wayback.availability( url, request ).then( function ( results ) {
-			console.log( results.url );
 			assert.deepEqual( results.url, expected );
 		} );
 	} );

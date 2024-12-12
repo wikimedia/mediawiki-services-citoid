@@ -123,6 +123,19 @@ describe( 'translator utilities: ', function () {
 			assert.deepEqual( result, expected );
 		} );
 
+		it( 'Has multiple authors in the field', function () {
+			input = [ 'Stu Woo and Clarence Leong in Singapore, and Micah Maidenberg in New York' ];
+			expected = {
+				creators: [ {
+					creatorType: 'author',
+					firstName: '',
+					lastName: 'Stu Woo and Clarence Leong in Singapore, and Micah Maidenberg in New York'
+				} ]
+			};
+			result = ut.makeCreatorsTranslator( 'author' ).translate( {}, { author: input }, 'author' );
+			assert.deepEqual( result, expected );
+		} );
+
 		it( 'Format Last name, first name', function () {
 			input = [ 'Barrett, Daniel J.' ];
 			expected = {

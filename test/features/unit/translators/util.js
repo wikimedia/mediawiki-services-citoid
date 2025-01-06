@@ -30,6 +30,12 @@ describe( 'translator utilities: ', function () {
 			assert.deepEqual( result, expected );
 		} );
 
+		it( 'replaces nonbreaking space characters with spaces', function () {
+			expected = { title: 'Title of the Song' };
+			result = makeTranslator( 'title' ).translate( {}, { title: [ 'Title\xa0of\xa0the\xa0Song' ] }, 'title' );
+			assert.deepEqual( result, expected );
+		} );
+
 		it( 'correctly adds date with fixDate validate function', function () {
 			expected = { date: '2012-08' };
 			result = makeTranslator( 'date', fixDate ).translate( {}, { date: [ 'August 2012' ] }, 'date' );

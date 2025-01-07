@@ -58,12 +58,12 @@ describe( 'general translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	it( 'Does something redonk with Harry Potter author field from worldcat', function () {
+	it( 'Does not try to split Harry Potter author field from worldcat', function () {
 		expected = {
 			creators: [ {
 				creatorType: 'author',
-				firstName: 'J.K. Rowling ; illustrations by Mary',
-				lastName: 'GrandPré.'
+				firstName: '',
+				lastName: 'J.K. Rowling ; illustrations by Mary GrandPré.'
 			} ]
 		};
 		result = gen.generalWithAuthor.author.translate( {}, { author: 'J.K. Rowling ; illustrations by Mary GrandPré.' }, 'author' );

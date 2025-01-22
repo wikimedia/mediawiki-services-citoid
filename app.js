@@ -155,6 +155,10 @@ function initApp( options ) {
 			res.header( 'x-content-security-policy', app.conf.csp );
 			res.header( 'x-webkit-csp', app.conf.csp );
 		}
+		// Required by api gateway
+		res.header( 'cache-control', 'private, max-age=0, s-maxage=0, must-revalidate' );
+		app.set( 'etag', true );
+
 		sUtil.initAndLogRequest( req, app );
 		next();
 	} );

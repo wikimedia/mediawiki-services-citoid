@@ -60,11 +60,7 @@ function citoidRequest( req, res ) {
  * GET /api
  * Endpoint for retrieving citations based on search term or url.
  */
-router.get( '/api', ( req, res ) => {
-
-	return citoidRequest( req, res );
-
-} );
+router.get( '/api', ( req, res ) => citoidRequest( req, res ) );
 
 /**
  * GET /{format}/{query}

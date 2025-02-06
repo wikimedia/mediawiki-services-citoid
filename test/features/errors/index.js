@@ -13,33 +13,29 @@ describe( 'errors', function () {
 
 	after( () => server.stop() );
 
-	it( 'missing search in query', function () {
-		return preq.get( {
-			uri: server.config.qURI,
-			query: {
-				format: 'mediawiki'
-			}
-		} ).then( function ( res ) {
-			assert.status( res, 400 );
-		}, function ( err ) {
-			assert.checkError( err, 400, "No 'search' value specified" );
-		} );
-	} );
+	it( 'missing search in query', () => preq.get( {
+		uri: server.config.qURI,
+		query: {
+			format: 'mediawiki'
+		}
+	} ).then( ( res ) => {
+		assert.status( res, 400 );
+	}, ( err ) => {
+		assert.checkError( err, 400, "No 'search' value specified" );
+	} ) );
 
-	it( 'missing format in query', function () {
-		return preq.get( {
-			uri: server.config.qURI,
-			query: {
-				search: '123456'
-			}
-		} ).then( function ( res ) {
-			assert.status( res, 400 );
-		}, function ( err ) {
-			assert.checkError( err, 400, "No 'format' value specified" );
-		} );
-	} );
+	it( 'missing format in query', () => preq.get( {
+		uri: server.config.qURI,
+		query: {
+			search: '123456'
+		}
+	} ).then( ( res ) => {
+		assert.status( res, 400 );
+	}, ( err ) => {
+		assert.checkError( err, 400, "No 'format' value specified" );
+	} ) );
 
-	it( 'bad format in query', function () {
+	it( 'bad format in query', () => {
 		const format = 'badformat';
 		return preq.get( {
 			uri: server.config.qURI,
@@ -47,94 +43,92 @@ describe( 'errors', function () {
 				search: '123456',
 				format: format
 			}
-		} ).then( function ( res ) {
+		} ).then( ( res ) => {
 			assert.status( res, 400 );
-		}, function ( err ) {
+		}, ( err ) => {
 			assert.checkError( err, 400, 'Invalid format requested ' + format );
 		} );
 	} );
 
-	it( 'bad domain', function () {
-		return server.query( 'example./com', 'mediawiki', 'en' )
-			.then( function ( res ) {
-				assert.status( res, 400 );
-			}, function ( err ) {
-				assert.status( err, 400 );
-				assert.deepEqual( err.body.Error, 'Invalid host supplied' );
-			} );
-	} );
+	it( 'bad domain', () => server.query( 'example./com', 'mediawiki', 'en' )
+		.then( ( res ) => {
+			assert.status( res, 400 );
+		}, ( err ) => {
+			assert.status( err, 400 );
+			assert.deepEqual( err.body.Error, 'Invalid host supplied' );
+		} ) );
 
-	it( 'resource has http errors', function () {
+	it( 'resource has http errors', () => {
 		const url = 'https://en.wikipedia.org/404';
 		return server.query( url, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.status( err, 404 );
 				assert.deepEqual( err.body.Error, 'Unable to load URL ' + url );
 			} );
 	} );
 
-	it( 'unknown doi', function () {
+	it( 'unknown doi', () => {
 		const doi = '10.1000/thisdoidoesntexist';
 		return server.query( doi, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to resolve DOI ' + doi,
 					'Unexpected error message ' + err.body.Error );
 			} );
 	} );
 
-	it( 'doi url with single quote', function () {
+	it( 'doi url with single quote', () => {
 		const doi = 'http://DOI.org/10.1007/11926078_68\'';
 		return server.query( doi, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
 					'Unexpected error message ' + err.body.Error );
 			} );
 	} );
 
-	it( 'doi url with double quote', function () {
+	it( 'doi url with double quote', () => {
 		const doi = 'http://DOI.org/10.1007/11926078_68"';
 		return server.query( doi, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%22',
 					'Unexpected error message ' + err.body.Error );
 			} );
 	} );
 
-	it( 'doi with single quote', function () {
+	it( 'doi with single quote', () => {
 		const doi = '10.1007/11926078_68\'';
 		return server.query( doi, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404, "Unable to resolve DOI 10.1007/11926078_68'",
 					'Unexpected error message ' + err.body.Error );
 			} );
 	} );
 
-	it.skip( 'bad pmid', function () {
+	it.skip( 'bad pmid', () => {
 		const pmid = '99999999';
 		return server.query( pmid, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404 ); // May be interpreted as PMID or PMCID
 			} );
 	} );
 
-	it.skip( 'bad pmcid', function () {
+	it.skip( 'bad pmcid', () => {
 		const pmcid = 'PMC9999999';
 		return server.query( pmcid, 'mediawiki', 'en' )
-			.then( function ( res ) {
+			.then( ( res ) => {
 				assert.status( res, 404 );
-			}, function ( err ) {
+			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to locate resource with pmcid ' + pmcid,
 					'Unexpected error message ' + err.body.Error );
 			} );

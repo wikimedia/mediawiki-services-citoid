@@ -2,7 +2,7 @@
 
 const { use } = require( 'chai' );
 
-module.exports = use( function ( _chai, _utils ) {
+module.exports = use( ( _chai, _utils ) => {
 	const { assert } = _chai;
 
 	/**

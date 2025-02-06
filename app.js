@@ -106,9 +106,7 @@ function initApp( options ) {
 		];
 	}
 	// eslint-disable-next-line security/detect-non-literal-regexp
-	app.conf.log_header_whitelist = new RegExp( `^(?:${ app.conf.log_header_whitelist.map( ( item ) => {
-		return item.trim();
-	} ).join( '|' ) })$`, 'i' );
+	app.conf.log_header_whitelist = new RegExp( `^(?:${ app.conf.log_header_whitelist.map( ( item ) => item.trim() ).join( '|' ) })$`, 'i' );
 
 	// set up the request templates for the APIs
 	apiUtil.setupApiTemplates( app );
@@ -191,48 +189,46 @@ function initApp( options ) {
 function loadRoutes( app, dir ) {
 
 	// recursively load routes from .js files under routes/
-	return fs.readdirAsync( dir ).map( ( fname ) => {
-		return BBPromise.try( () => {
-			let route;
-			const resolvedPath = path.resolve( dir, fname );
-			const isDirectory = fs.statSync( resolvedPath ).isDirectory();
-			if ( isDirectory ) {
-				loadRoutes( app, resolvedPath );
-			} else if ( /\.js$/.test( fname ) ) {
-				// import the route file
-				// eslint-disable-next-line security/detect-non-literal-require
-				route = require( `${ dir }/${ fname }` );
-				return route( app );
-			}
+	return fs.readdirAsync( dir ).map( ( fname ) => BBPromise.try( () => {
+		let route;
+		const resolvedPath = path.resolve( dir, fname );
+		const isDirectory = fs.statSync( resolvedPath ).isDirectory();
+		if ( isDirectory ) {
+			loadRoutes( app, resolvedPath );
+		} else if ( /\.js$/.test( fname ) ) {
 			// import the route file
 			// eslint-disable-next-line security/detect-non-literal-require
-			route = require( `${ __dirname }/routes/${ fname }` );
+			route = require( `${ dir }/${ fname }` );
 			return route( app );
-		} ).then( ( route ) => {
-			if ( route === undefined ) {
-				return undefined;
-			}
-			// check that the route exports the object we need
-			if ( route.constructor !== Object || !route.path || !route.router ||
+		}
+		// import the route file
+		// eslint-disable-next-line security/detect-non-literal-require
+		route = require( `${ __dirname }/routes/${ fname }` );
+		return route( app );
+	} ).then( ( route ) => {
+		if ( route === undefined ) {
+			return undefined;
+		}
+		// check that the route exports the object we need
+		if ( route.constructor !== Object || !route.path || !route.router ||
                 !( route.api_version || route.skip_domain ) ) {
-				throw new TypeError( `routes/${ fname } does not export the correct object!` );
-			}
-			// normalise the path to be used as the mount point
-			if ( route.path[ 0 ] !== '/' ) {
-				route.path = `/${ route.path }`;
-			}
-			if ( route.path[ route.path.length - 1 ] !== '/' ) {
-				route.path = `${ route.path }/`;
-			}
-			if ( !route.skip_domain ) {
-				route.path = `/:domain/v${ route.api_version }${ route.path }`;
-			}
-			// wrap the route handlers with Promise.try() blocks
-			sUtil.wrapRouteHandlers( route, app );
-			// all good, use that route
-			app.use( route.path, route.router );
-		} );
-	} ).then( () => {
+			throw new TypeError( `routes/${ fname } does not export the correct object!` );
+		}
+		// normalise the path to be used as the mount point
+		if ( route.path[ 0 ] !== '/' ) {
+			route.path = `/${ route.path }`;
+		}
+		if ( route.path[ route.path.length - 1 ] !== '/' ) {
+			route.path = `${ route.path }/`;
+		}
+		if ( !route.skip_domain ) {
+			route.path = `/:domain/v${ route.api_version }${ route.path }`;
+		}
+		// wrap the route handlers with Promise.try() blocks
+		sUtil.wrapRouteHandlers( route, app );
+		// all good, use that route
+		app.use( route.path, route.router );
+	} ) ).then( () => {
 		// catch errors
 		sUtil.setErrorHandler( app );
 		// route loading is now complete, return the app object
@@ -285,13 +281,10 @@ function createServer( app ) {
  * @param {Object} options
  * @return {bluebird}
  */
-module.exports = ( options ) => {
-
-	return initApp( options )
-		.then( ( app ) => loadRoutes( app, `${ __dirname }/routes` ) )
-		.then( ( app ) => {
-			// serve static files from static/
-			app.use( '/static', express.static( `${ __dirname }/static` ) );
-			return app;
-		} ).then( createServer );
-};
+module.exports = ( options ) => initApp( options )
+	.then( ( app ) => loadRoutes( app, `${ __dirname }/routes` ) )
+	.then( ( app ) => {
+		// serve static files from static/
+		app.use( '/static', express.static( `${ __dirname }/static` ) );
+		return app;
+	} ).then( createServer );

@@ -85,15 +85,13 @@ class TestCitoidRunner extends TestRunner {
 					// this error will be detected later, so ignore it
 					this._spec = { paths: {}, 'x-default-params': {} };
 				} )
-				.then( () => {
-					return {
-						uri,
-						qURI,
-						service: myService,
-						conf: this._runner._impl.config,
-						spec: this._spec
-					};
-				} );
+				.then( () => ( {
+					uri,
+					qURI,
+					service: myService,
+					conf: this._runner._impl.config,
+					spec: this._spec
+				} ) );
 		}
 
 		return {

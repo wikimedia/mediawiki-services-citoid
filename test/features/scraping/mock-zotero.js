@@ -22,22 +22,18 @@ describe( 'mock Zotero service that cannot export', function () {
 
 	after( () => server.stop() );
 
-	it( 'Get error for bibtex export', function () {
-		return server.query( 'http://www.example.com', 'bibtex', 'en' )
-			.then( function ( res ) {
-				assert.status( res, 404 );
-			}, function ( err ) {
-				assert.deepEqual( err.body.Error, 'Unable to serve bibtex format at this time' );
-				assert.status( err, 404 );
-				// assert.checkError(err, 404, 'Unable to serve bibtex at this time');
-			} );
-	} );
+	it( 'Get error for bibtex export', () => server.query( 'http://www.example.com', 'bibtex', 'en' )
+		.then( ( res ) => {
+			assert.status( res, 404 );
+		}, ( err ) => {
+			assert.deepEqual( err.body.Error, 'Unable to serve bibtex format at this time' );
+			assert.status( err, 404 );
+			// assert.checkError(err, 404, 'Unable to serve bibtex at this time');
+		} ) );
 
-	it( 'Success with mediawiki export', function () {
-		return server.query( 'http://www.example.com' ).then( function ( res ) {
-			assert.status( res, 200 );
-			assert.checkCitation( res, 'Example Domain' );
-		} );
-	} );
+	it( 'Success with mediawiki export', () => server.query( 'http://www.example.com' ).then( ( res ) => {
+		assert.status( res, 200 );
+		assert.checkCitation( res, 'Example Domain' );
+	} ) );
 
 } );

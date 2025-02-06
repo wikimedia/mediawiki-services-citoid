@@ -36,7 +36,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 		};
 	} );
 
-	describe( 'polite config', function () {
+	describe( 'polite config', () => {
 
 		before( () => {
 			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
@@ -47,15 +47,15 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 			crossref = new CrossRefService( app );
 		} );
 
-		it( 'Gets metadata for doi', function () {
+		it( 'Gets metadata for doi', () => {
 			doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
 			promise = crossref.doi( doi, request );
-			return promise.then( function ( results ) {
+			return promise.then( ( results ) => {
 				assert.deepEqual( results.DOI, doi );
 			} );
 		} );
 
-		it( 'Doesn\'t get metadata for invalid doi', function () {
+		it( 'Doesn\'t get metadata for invalid doi', () => {
 			doi = 'www.example.com';
 			promise = crossref.doi( doi, request );
 			onreject = function ( e ) {
@@ -65,7 +65,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 		} );
 	} );
 
-	describe( 'anonymous config', function () {
+	describe( 'anonymous config', () => {
 
 		before( () => {
 			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
@@ -76,15 +76,15 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 			crossref = new CrossRefService( app );
 		} );
 
-		it( 'Gets metadata for doi', function () {
+		it( 'Gets metadata for doi', () => {
 			doi = '10.1037/0003-066x.59.1.29'; // Case sensitive
 			promise = crossref.doi( doi, request );
-			return promise.then( function ( results ) {
+			return promise.then( ( results ) => {
 				assert.deepEqual( results.DOI, doi );
 			} );
 		} );
 
-		it( 'Doesn\'t get metadata for invalid doi', function () {
+		it( 'Doesn\'t get metadata for invalid doi', () => {
 			doi = 'www.example.com';
 			promise = crossref.doi( doi, request );
 			onreject = function ( e ) {
@@ -94,7 +94,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 		} );
 	} );
 
-	describe( 'open search function', function () {
+	describe( 'open search function', () => {
 
 		before( () => {
 			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
@@ -105,10 +105,10 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 			crossref = new CrossRefService( app );
 		} );
 
-		it( 'Gets metadata for open search', function () {
+		it( 'Gets metadata for open search', () => {
 			const search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
 			promise = crossref.search( search, request );
-			return promise.then( function ( results ) {
+			return promise.then( ( results ) => {
 				assert.deepEqual( results.DOI, '10.1017/s0305004100013554' );
 			} );
 		} );

@@ -13,25 +13,21 @@ describe( 'express app', function () {
 
 	after( () => server.stop() );
 
-	it( 'should get robots.txt', () => {
-		return preq.get( {
-			uri: `${ server.config.uri }robots.txt`
-		} ).then( ( res ) => {
-			assert.deepEqual( res.status, 200 );
-			assert.deepEqual( res.body, 'User-agent: *\nDisallow: /\n' );
-		} );
-	} );
+	it( 'should get robots.txt', () => preq.get( {
+		uri: `${ server.config.uri }robots.txt`
+	} ).then( ( res ) => {
+		assert.deepEqual( res.status, 200 );
+		assert.deepEqual( res.body, 'User-agent: *\nDisallow: /\n' );
+	} ) );
 
-	it( 'get landing page', function () {
-		return preq.get( {
-			uri: server.config.uri
-		} ).then( function ( res ) {
-			// check that the response is present
-			assert.status( res, 200 );
-			assert.contentType( res, 'text/html' );
-			assert.notDeepEqual( res.body.length, 0, 'Empty response' );
-		} );
-	} );
+	it( 'get landing page', () => preq.get( {
+		uri: server.config.uri
+	} ).then( ( res ) => {
+		// check that the response is present
+		assert.status( res, 200 );
+		assert.contentType( res, 'text/html' );
+		assert.notDeepEqual( res.body.length, 0, 'Empty response' );
+	} ) );
 
 	it( 'should set CORS headers', () => {
 		if ( server.config.service.conf.cors === false ) {

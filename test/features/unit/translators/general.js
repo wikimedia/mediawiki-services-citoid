@@ -5,12 +5,12 @@
 const assert = require( '../../../utils/assert.js' );
 const gen = require( '../../../../lib/translators/general.js' );
 
-describe( 'general translator unit', function () {
+describe( 'general translator unit', () => {
 
 	let result;
 	let expected;
 
-	it( 'Author function adds lists of strings', function () {
+	it( 'Author function adds lists of strings', () => {
 		expected = {
 			creators: [ {
 				creatorType: 'author',
@@ -22,7 +22,7 @@ describe( 'general translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	it( 'Correctly adds an author string with one word', function () {
+	it( 'Correctly adds an author string with one word', () => {
 		expected = {
 			creators: [ {
 				creatorType: 'author',
@@ -34,7 +34,7 @@ describe( 'general translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	it( 'Correctly adds an author string with two words', function () {
+	it( 'Correctly adds an author string with two words', () => {
 		expected = {
 			creators: [ {
 				creatorType: 'author',
@@ -46,7 +46,7 @@ describe( 'general translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	it( 'Correctly adds an author string with three words', function () {
+	it( 'Correctly adds an author string with three words', () => {
 		expected = {
 			creators: [ {
 				creatorType: 'author',
@@ -58,7 +58,7 @@ describe( 'general translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	it( 'Does not try to split Harry Potter author field from worldcat', function () {
+	it( 'Does not try to split Harry Potter author field from worldcat', () => {
 		expected = {
 			creators: [ {
 				creatorType: 'author',

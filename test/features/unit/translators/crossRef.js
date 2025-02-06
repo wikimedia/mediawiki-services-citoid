@@ -5,13 +5,13 @@
 const assert = require( '../../../utils/assert.js' );
 const cr = require( '../../../../lib/translators/crossRef.js' );
 
-describe( 'crossRef translator unit', function () {
+describe( 'crossRef translator unit', () => {
 
 	let result;
 	let expected;
 	let input;
 
-	it( 'Creator translate function adds lists of strings', function () {
+	it( 'Creator translate function adds lists of strings', () => {
 		input = {
 			author: [ {
 				given: 'Rachel C.',
@@ -30,9 +30,9 @@ describe( 'crossRef translator unit', function () {
 		assert.deepEqual( result, expected );
 	} );
 
-	describe( 'dateParts function', function () {
+	describe( 'dateParts function', () => {
 
-		it( 'Translates full date', function () {
+		it( 'Translates full date', () => {
 			input = {
 				issued: {
 					'date-parts': [
@@ -51,7 +51,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it( 'Translates year and day', function () {
+		it( 'Translates year and day', () => {
 			input = {
 				issued: {
 					'date-parts': [
@@ -69,7 +69,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it( 'Translates year only', function () {
+		it( 'Translates year only', () => {
 			input = {
 				issued: { 'date-parts': [ [ 2017 ] ] }
 			};
@@ -80,7 +80,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it( 'Fails with object', function () {
+		it( 'Fails with object', () => {
 			input = {
 				issued: { 'date-parts': [ [ { elephant: 'elephant' } ] ] }
 			};
@@ -89,7 +89,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it( 'Fails with list not nested', function () {
+		it( 'Fails with list not nested', () => {
 			input = {
 				issued: { 'date-parts': [ '2017', '04', '1' ] }
 			};
@@ -98,7 +98,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it( 'Works with strings date', function () {
+		it( 'Works with strings date', () => {
 			input = {
 				issued: {
 					'date-parts': [
@@ -117,7 +117,7 @@ describe( 'crossRef translator unit', function () {
 			assert.deepEqual( result, expected );
 		} );
 
-		it.skip( 'Does not work with unexpected input', function () { // chrono-node no longer validates at this level
+		it.skip( 'Does not work with unexpected input', () => { // chrono-node no longer validates at this level
 			input = {
 				issued: {
 					'date-parts': [

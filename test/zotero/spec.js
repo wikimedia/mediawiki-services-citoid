@@ -277,29 +277,27 @@ describe( 'Swagger spec', function () {
 
 					constructTests( spec ).forEach( ( testCase ) => {
 						// eslint-disable-next-line mocha/handle-done-callback, mocha/no-nested-tests
-						it( testCase.title, function ( done ) {
-							// eslint-disable-next-line mocha/no-return-and-callback
-							return preq( testCase.request )
+						it( testCase.title, ( done ) =>
+							// eslint-disable-next-line mocha/no-return-and-callback, implicit-arrow-linebreak
+							preq( testCase.request )
 								.then( ( res ) => {
 									assert.status( res, testCase.response.status );
 									validateTestResponse( testCase, res );
 								}, ( err ) => {
 									assert.status( err, testCase.response.status );
 									validateTestResponse( testCase, err );
-								} );
-						} );
+								} )
+						);
 					} );
 				};
 				parallel( 'Monitoring routes', routeTests );
 			} );
 	} );
 
-	it( 'should expose valid OpenAPI spec', () => {
-		return preq.get( { uri: `${ server.config.uri }?spec` } )
-			.then( ( res ) => {
-				assert.deepEqual( { errors: [] }, validator.validate( res.body ), 'Spec must have no validation errors' );
-			} );
-	} );
+	it( 'should expose valid OpenAPI spec', () => preq.get( { uri: `${ server.config.uri }?spec` } )
+		.then( ( res ) => {
+			assert.deepEqual( { errors: [] }, validator.validate( res.body ), 'Spec must have no validation errors' );
+		} ) );
 
 	it( 'spec validation', () => {
 		// check the high-level attributes

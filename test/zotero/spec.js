@@ -1,7 +1,6 @@
 'use strict';
 
 const parallel = require( 'mocha.parallel' );
-const preq = require( 'preq' );
 const assert = require( '../utils/assert.js' );
 const Server = require( '../utils/server.js' );
 const URI = require( 'swagger-router' ).URI;
@@ -9,7 +8,6 @@ const OpenAPISchemaValidator = require( 'openapi-schema-validator' ).default;
 const validator = new OpenAPISchemaValidator( { version: 3 } );
 
 let spec = null;
-let baseUrl = null;
 const server = new Server();
 
 function validateExamples( pathStr, defParams, mSpec ) {
@@ -44,16 +42,15 @@ function validateExamples( pathStr, defParams, mSpec ) {
 	} );
 
 	return true;
-
 }
 
 function constructTestCase( title, path, method, request, response ) {
 	return {
 		title,
 		request: {
-			uri: ( baseUrl || server.config.uri ) + ( path[ 0 ] === '/' ? path.slice( 1 ) : path ),
+			uri: ( server.config.uri ) + ( path[ 0 ] === '/' ? path.slice( 1 ) : path ),
 			method,
-			headers: request.headers || {},
+			headers: request.headers || { 'Content-Type': 'application/json' },
 			query: request.query,
 			body: request.body,
 			followRedirect: false
@@ -64,7 +61,6 @@ function constructTestCase( title, path, method, request, response ) {
 			body: response.body
 		}
 	};
-
 }
 
 function constructTests( spec ) {
@@ -163,7 +159,6 @@ function cmp( result, expected, errMsg ) {
 
 	assert.deepEqual( result, expected, errMsg );
 	return true;
-
 }
 
 function validateArray( val, resVal, key ) {
@@ -232,21 +227,22 @@ function validateBody( resBody, expBody ) {
 	return true;
 }
 
-function validateTestResponse( testCase, res ) {
+function validateTestResponse( testCase, res, resText ) {
 	const expRes = testCase.response;
 
 	assert.deepEqual( res.status, expRes.status );
 
-    if (expRes.headers && !res.headers) {return false; } // eslint-disable-line
+	if ( expRes.headers && !res.headers ) {
+		return false;
+	}
 
 	Object.keys( expRes.headers ).forEach( ( key ) => {
 		const val = expRes.headers[ key ];
-		// eslint-disable-next-line
-        assert.deepEqual(res.headers.hasOwnProperty(key), true, `Header ${key} not found in response!`);
-		cmp( res.headers[ key ], val, `${ key } header mismatch!` );
+		assert.deepEqual( !!res.headers.get( key ), true, `Header ${ key } not found in response!` );
+		cmp( res.headers.get( key ), val, `${ key } header mismatch!` );
 	} );
 
-	validateBody( res.body || '', expRes.body );
+	return validateBody( resText || '', expRes.body );
 }
 
 describe( 'Swagger spec', function () {
@@ -257,67 +253,83 @@ describe( 'Swagger spec', function () {
 
 	after( () => server.stop() );
 
-	it( 'get the spec', () => {
-		baseUrl = server.config.uri;
-		return preq.get( `${ baseUrl }?spec` )
-			.then( ( res ) => {
-				assert.status( 200 );
-				assert.contentType( res, 'application/json' );
-				assert.notDeepEqual( res.body, undefined, 'No body received!' );
-				// save a copy
-				spec = res.body;
-				return spec;
-			} )
-			.then( ( spec ) => {
-				const routeTests = () => {
-					// eslint-disable-next-line mocha/no-sibling-hooks
-					before( () => server.start() );
-					// eslint-disable-next-line mocha/no-sibling-hooks
-					after( () => server.stop() );
-
-					constructTests( spec ).forEach( ( testCase ) => {
-						// eslint-disable-next-line mocha/handle-done-callback, mocha/no-nested-tests
-						it( testCase.title, ( done ) =>
-							// eslint-disable-next-line mocha/no-return-and-callback, implicit-arrow-linebreak
-							preq( testCase.request )
-								.then( ( res ) => {
-									assert.status( res, testCase.response.status );
-									validateTestResponse( testCase, res );
-								}, ( err ) => {
-									assert.status( err, testCase.response.status );
-									validateTestResponse( testCase, err );
-								} )
-						);
-					} );
-				};
-				parallel( 'Monitoring routes', routeTests );
-			} );
-	} );
-
-	it( 'should expose valid OpenAPI spec', () => preq.get( { uri: `${ server.config.uri }?spec` } )
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	it( 'get the spec', () => fetch( `${ server.config.uri }?spec` )
 		.then( ( res ) => {
-			assert.deepEqual( { errors: [] }, validator.validate( res.body ), 'Spec must have no validation errors' );
+			assert.status( 200 );
+			assert.contentType( res, 'application/json; charset=utf-8' );
+			assert.notDeepEqual( res.body, undefined, 'No body received!' );
+			spec = res.json();
+			return spec;
+		} )
+		.then( ( spec ) => {
+			const routeTests = () => {
+				// eslint-disable-next-line mocha/no-sibling-hooks
+				before( () => server.start() );
+				// eslint-disable-next-line mocha/no-sibling-hooks
+				after( () => server.stop() );
+
+				constructTests( spec ).forEach( ( testCase ) => {
+					// eslint-disable-next-line mocha/handle-done-callback, mocha/no-nested-tests
+					it( testCase.title, ( done ) => {
+						let uri = testCase.request.uri;
+						const options = {
+							method: testCase.request.method.toUpperCase(),
+							headers: testCase.request.headers,
+							redirect: 'manual'
+						};
+						if ( options.method === 'POST' && testCase.request.body ) {
+							options.body = JSON.stringify( testCase.request.body );
+						} else {
+							uri = `${ uri }?${ new URLSearchParams( testCase.request.query ).toString() }`;
+						}
+						// eslint-disable-next-line n/no-unsupported-features/node-builtins, mocha/no-return-and-callback
+						return fetch( uri, testCase.request )
+							.then( ( res ) => {
+								assert.status( res, testCase.response.status );
+								return res.text().then( ( resText ) => validateTestResponse( testCase, res, resText ) );
+							}, ( err ) => {
+								assert.status( err, testCase.response.status );
+								return err.text().then( ( errText ) => validateTestResponse( testCase, err, errText ) );
+							} );
+					}
+					);
+				} );
+			};
+			parallel( 'Monitoring routes', routeTests );
 		} ) );
 
-	it( 'spec validation', () => {
-		// check the high-level attributes
-		[ 'info', 'openapi', 'paths' ].forEach( ( prop ) => {
-			assert.deepEqual( !!spec[ prop ], true, `No ${ prop } field present!` );
-		} );
-		// no paths - no love
-		assert.deepEqual( !!Object.keys( spec.paths ), true, 'No paths given in the spec!' );
-		// now check each path
-		Object.keys( spec.paths ).forEach( ( pathStr ) => {
-			assert.deepEqual( !!pathStr, true, 'A path cannot have a length of zero!' );
-			const path = spec.paths[ pathStr ];
-			assert.deepEqual( !!Object.keys( path ), true, `No methods defined for path: ${ pathStr }` );
-			Object.keys( path ).forEach( ( method ) => {
-				const mSpec = path[ method ];
-				if ( {}.hasOwnProperty.call( mSpec, 'x-monitor' ) && !mSpec[ 'x-monitor' ] ) {
-					return;
-				}
-				validateExamples( pathStr, spec[ 'x-default-params' ] || {}, mSpec[ 'x-amples' ] );
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	it( 'should expose valid OpenAPI spec', () => fetch( `${ server.config.uri }?spec` )
+		.then( ( res ) => res.json() )
+		.then( ( spec ) => {
+			assert.deepEqual( { errors: [] }, validator.validate( spec ), 'Spec must have no validation errors' );
+		} ) );
+
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	it( 'spec validation', () => fetch( `${ server.config.uri }?spec` )
+		.then( ( res ) => res.json() )
+		.then( ( spec ) => {
+			// check the high-level attributes
+			[ 'info', 'openapi', 'paths', 'components' ].forEach( ( prop ) => {
+				assert.deepEqual( Object.keys( spec ).includes( prop ), true, `No ${ prop } field present!` );
 			} );
-		} );
-	} );
+			// no paths - no love
+			assert.deepEqual( !!Object.keys( spec.paths ), true, 'No paths given in the spec!' );
+			// now check each path
+			Object.keys( spec.paths ).forEach( ( pathStr ) => {
+				assert.deepEqual( !!pathStr, true, 'A path cannot have a length of zero!' );
+				const path = spec.paths[ pathStr ];
+				assert.deepEqual( !!Object.keys( path ), true, `No methods defined for path: ${ pathStr }` );
+				Object.keys( path ).forEach( ( method ) => {
+					const mSpec = path[ method ];
+					if ( {}.hasOwnProperty.call( mSpec, 'x-monitor' ) && !mSpec[ 'x-monitor' ] ) {
+						return;
+					}
+					validateExamples( pathStr, spec[ 'x-default-params' ] || {}, mSpec[ 'x-amples' ] );
+				} );
+			} );
+
+		} )
+	);
 } );

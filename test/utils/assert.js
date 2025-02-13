@@ -23,7 +23,7 @@ module.exports = use( ( _chai, _utils ) => {
 	 * @param {string} expectedRegexString
 	 */
 	assert.contentType = ( res, expectedRegexString ) => {
-		const actual = res.headers[ 'content-type' ];
+		const actual = res.headers[ 'content-type' ] || res.headers.get( 'content-type' ); // Headers objects will return undefined without using .get
 		const msg = `Expected content-type to match ${ expectedRegexString }, but was ${ actual }`;
 		new _chai.Assertion( actual, msg, assert.contentType, true ).to.match( RegExp( expectedRegexString ) );
 	};

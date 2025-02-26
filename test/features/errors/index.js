@@ -1,6 +1,5 @@
 'use strict';
 
-const preq = require( 'preq' );
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
@@ -13,41 +12,31 @@ describe( 'errors', function () {
 
 	after( () => server.stop() );
 
-	it( 'missing search in query', () => preq.get( {
-		uri: server.config.qURI,
-		query: {
-			format: 'mediawiki'
-		}
-	} ).then( ( res ) => {
-		assert.status( res, 400 );
-	}, ( err ) => {
-		assert.checkError( err, 400, "No 'search' value specified" );
-	} ) );
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	it( 'missing search in query', () => fetch( `${ server.config.qURI }?format=mediawiki` )
+		.then( ( res ) => {
+			assert.status( res, 400 );
+		}, ( err ) => {
+			assert.checkError( err, 400, "No 'search' value specified" );
+		} ) );
 
-	it( 'missing format in query', () => preq.get( {
-		uri: server.config.qURI,
-		query: {
-			search: '123456'
-		}
-	} ).then( ( res ) => {
-		assert.status( res, 400 );
-	}, ( err ) => {
-		assert.checkError( err, 400, "No 'format' value specified" );
-	} ) );
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	it( 'missing format in query', () => fetch( `${ server.config.qURI }?search=123456` )
+		.then( ( res ) => {
+			assert.status( res, 400 );
+		}, ( err ) => {
+			assert.checkError( err, 400, "No 'format' value specified" );
+		} ) );
 
 	it( 'bad format in query', () => {
 		const format = 'badformat';
-		return preq.get( {
-			uri: server.config.qURI,
-			query: {
-				search: '123456',
-				format: format
-			}
-		} ).then( ( res ) => {
-			assert.status( res, 400 );
-		}, ( err ) => {
-			assert.checkError( err, 400, 'Invalid format requested ' + format );
-		} );
+		// eslint-disable-next-line n/no-unsupported-features/node-builtins
+		return fetch( `${ server.config.qURI }?search=123456&format=${ format }` )
+			.then( ( res ) => {
+				assert.status( res, 400 );
+			}, ( err ) => {
+				assert.checkError( err, 400, 'Invalid format requested ' + format );
+			} );
 	} );
 
 	it( 'bad domain', () => server.query( 'example./com', 'mediawiki', 'en' )

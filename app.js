@@ -142,7 +142,7 @@ function initApp( options ) {
 	app.all( '*', ( req, res, next ) => {
 		if ( app.conf.cors !== false ) {
 			res.header( 'access-control-allow-origin', app.conf.cors );
-			res.header( 'access-control-allow-headers', 'accept, x-requested-with, content-type' );
+			res.header( 'access-control-allow-headers', 'accept, x-requested-with, content-type, user-agent, api-user-agent, accept-language, referer' );
 			res.header( 'access-control-expose-headers', 'etag' );
 		}
 		if ( app.conf.csp !== false ) {

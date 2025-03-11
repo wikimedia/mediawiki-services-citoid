@@ -8,7 +8,7 @@ describe( 'Exports into non mediawiki formats:', function () {
 	this.timeout( 20000 );
 	const server = new Server();
 
-	before( () => server.start() );
+	before( () => server.start( { zotero: true } ) );
 
 	after( () => server.stop() );
 

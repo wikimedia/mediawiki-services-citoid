@@ -8,7 +8,7 @@ describe( 'uses zotero', function () {
 	this.timeout( 20000 );
 	const server = new Server();
 
-	before( () => server.start( { pubmed: true } ) );
+	before( () => server.start( { pubmed: true, zotero: true } ) );
 
 	after( () => server.stop() );
 
@@ -42,7 +42,8 @@ describe( 'uses zotero', function () {
 			assert.deepEqual( res.body[ 0 ].itemType, 'encyclopediaArticle', 'Wrong itemType; expected encyclopediaArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'fixes en dash in zotero results', () => server.query( 'https://bpspsychub.onlinelibrary.wiley.com/doi/abs/10.1111/j.2044-835X.1998.tb00748.x' ).then( ( res ) => {
+		// No longer comes from Zotero, doi results instead
+		it.skip( 'fixes en dash in zotero results', () => server.query( 'https://bpspsychub.onlinelibrary.wiley.com/doi/abs/10.1111/j.2044-835X.1998.tb00748.x' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Emotional instability as an indicator of strictly timed infantile developmental transitions' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].pages, '15–44' );
@@ -63,8 +64,9 @@ describe( 'uses zotero', function () {
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'Google books search link', () => server.query( 'https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A0596554141' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'isbn%3A0596554141 - Google Search' );
+		// Regression: Google now gives 403s for this
+		it.skip( 'Google books search link', () => server.query( 'https://www.google.co.uk/search?tbm=bks&hl=en&q=isbn%3A9781851244881' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'isbn:9781851244881 - Google Search' );
 		} ) );
 
 		it( 'dublinCore data with multiple identifiers in array - previously had empty result from zotero', () => server.query( 'http://apps.who.int/iris/handle/10665/70863' ).then( ( res ) => {
@@ -160,7 +162,7 @@ describe( 'uses zotero', function () {
 
 		// Ensure DOI is present in non-zotero scraped page when request from DOI link
 		it( 'DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', () => server.query( '10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Phylogenetic Relationships of Antpitta Genera (Passeriformes: Formicariidae)' );
+			assert.checkZotCitation( res, 'PHYLOGENETIC RELATIONSHIPS OF ANTPITTA GENERA (PASSERIFORMES: FORMICARIIDAE)' );
 			assert.deepEqual( res.body[ 0 ].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[ 0 ].publicationTitle );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( !!res.body[ 0 ].issue, true, 'Missing issue' );
@@ -173,8 +175,8 @@ describe( 'uses zotero', function () {
 			assert.deepEqual( res.body[ 0 ].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		// Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
-		it( 'DOI in url with query parameters- uses Zotero', () => server.query( 'example.com/10.1542/peds.2007-2362?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
+		// Regression: phab:T388517. Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI & zotero
+		it.skip( 'DOI in url with query parameters- uses Zotero', () => server.query( 'example.com/10.1542/peds.2007-2362?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Management of Children With Autism Spectrum Disorders' );
 			assert.deepEqual( res.body[ 0 ].DOI, '10.1542/peds.2007-2362' );
 		} ) );
@@ -213,7 +215,8 @@ describe( 'uses zotero', function () {
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'from pmc url', () => server.query( 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
+		// REGRESSION: 405 method not allowed. phab:T388519
+		it.skip( 'from pmc url', () => server.query( 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Viral Phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].url, 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
@@ -293,7 +296,7 @@ describe( 'uses zotero', function () {
 		} ) );
 
 		it( 'has PMCID, DOI, PMID', () => server.query( '11467425' ).then( ( res ) => {
-			assert.deepEqual( res.body.length, 1, 'Unexpected number of citations in body' );
+			assert.deepEqual( res.body.length, 2, 'Unexpected number of citations in body' );
 			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );

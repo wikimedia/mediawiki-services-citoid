@@ -8,7 +8,7 @@ describe( 'uses zotero', function () {
 	this.timeout( 20000 );
 	const server = new Server();
 
-	before( () => server.start( { pubmed: true, zotero: true } ) );
+	before( () => server.start( { pubmed: true, zotero: true, wayback: false } ) );
 
 	after( () => server.stop() );
 
@@ -58,7 +58,7 @@ describe( 'uses zotero', function () {
 
 		it( 'Has PMCID, PMID, DOI', () => server.query( 'https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2000.1188' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
-			assert.deepEqual( res.body[ 0 ].PMCID, 'PMC1690724' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '1690724' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
@@ -93,7 +93,7 @@ describe( 'uses zotero', function () {
 		// Times out
 		it( 'DOI has poor resolving time', () => server.query( '10.1098/rspb.2000.1188' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
-			assert.deepEqual( res.body[ 0 ].PMCID, 'PMC1690724', 'Missing PMCID' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '1690724', 'Missing PMCID' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
@@ -209,16 +209,34 @@ describe( 'uses zotero', function () {
 	describe( 'PMCID ', () => {
 		it( 'with prefix', () => server.query( 'PMC3605911' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Viral Phylodynamics' );
-			assert.deepEqual( res.body[ 0 ].url, 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		// REGRESSION: 405 method not allowed. phab:T388519
-		it.skip( 'from pmc url', () => server.query( 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
+		it( 'from pmc url (old)', () => server.query( 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Viral Phylodynamics' );
-			assert.deepEqual( res.body[ 0 ].url, 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
+			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
+			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+		} ) );
+
+		it( 'from pmc url (new)', () => server.query( 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3605911/' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
+			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
+			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+		} ) );
+
+		it( 'from pmc url (new); no protocol', () => server.query( 'pmc.ncbi.nlm.nih.gov/articles/PMC3605911/' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
+			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
+			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+		} ) );
+
+		it( 'from pmc url (old); no protocol', () => server.query( 'www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'Viral Phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
@@ -239,7 +257,7 @@ describe( 'uses zotero', function () {
 		} ) );
 
 		it( 'which requires PMC prefix to retrieve DOI from id converter', () => server.query( 'PMC1690724' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.' );
+			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '1690724' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
@@ -278,7 +296,15 @@ describe( 'uses zotero', function () {
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'from url', () => server.query( 'http://pubmed.ncbi.nlm.nih.gov/20729678/56567' ).then( ( res ) => {
+		it( 'from new url pattern with extra numbers causing redirect', () => server.query( 'http://pubmed.ncbi.nlm.nih.gov/20729678/56567' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'Zotero: harnessing the power of a personal bibliographic manager' );
+			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' ); // From Zotero
+			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' ); // From Zotero
+			assert.deepEqual( !!res.body[ 0 ].PMCID, false, 'Missing PMCID' ); // Missing PMC as unable to retrieve from ID converter api
+			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
+		} ) );
+
+		it( 'from old url pattern with extra numbers causing redirect', () => server.query( 'http://www.ncbi.nlm.nih.gov/pubmed/20729678/56567' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Zotero: harnessing the power of a personal bibliographic manager' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' ); // From Zotero
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' ); // From Zotero

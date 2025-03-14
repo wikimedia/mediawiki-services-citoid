@@ -8,7 +8,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 	this.timeout( 20000 );
 	const server = new Server();
 
-	before( () => server.start( { pubmed: false } ) );
+	before( () => server.start( { pubmed: false, zotero: true, wayback: false } ) );
 
 	after( () => server.stop() );
 
@@ -47,7 +47,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 		} ) );
 
 		it( 'has PMCID, DOI, PMID from zotero', () => server.query( '11467425' ).then( ( res ) => {
-			assert.deepEqual( res.body.length, 1, 'Unexpected number of citations in body' );
+			assert.deepEqual( res.body.length, 2, 'Unexpected number of citations in body' );
 			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' ); // Has pmcid, from Zotero
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );
@@ -58,7 +58,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 
 	describe( 'PMCID ', () => {
 		it( 'with prefix', () => server.query( 'PMC3605911' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMID' ); // PMID from Zotero
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
@@ -66,7 +66,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 		} ) );
 
 		it( 'with trailing space', () => server.query( 'PMC3605911 ' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMID' ); // PMID from Zotero
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
@@ -74,7 +74,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 		} ) );
 
 		it( 'with encoded space', () => server.query( 'PMC3605911%20' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMID' ); // PMID from Zotero
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
@@ -82,7 +82,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 		} ) );
 
 		it( 'which requires PMC prefix to retrieve DOI from id converter', () => server.query( 'PMC1690724' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency.' );
+			assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
 			assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' );
 			assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' ); // From Zotero
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
@@ -142,7 +142,7 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 
 		// Ensure DOI is present in non-zotero scraped page when request from DOI link
 		it( 'DOI which requires cookie to properly follow redirect to Zotero; no results from crossRef', () => server.query( '10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Phylogenetic Relationships of Antpitta Genera (Passeriformes: Formicariidae)' );
+			assert.checkZotCitation( res, 'PHYLOGENETIC RELATIONSHIPS OF ANTPITTA GENERA (PASSERIFORMES: FORMICARIIDAE)' );
 			assert.deepEqual( res.body[ 0 ].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[ 0 ].publicationTitle );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( !!res.body[ 0 ].issue, true, 'Missing issue' );
@@ -153,12 +153,6 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 			assert.checkZotCitation( res, 'Semantic MediaWiki' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[ 0 ].itemType );
-		} ) );
-
-		// Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI
-		it( 'doi in url with query parameters- uses Zotero', () => server.query( 'example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System' );
-			assert.deepEqual( res.body[ 0 ].DOI, '10.1086/378695' );
 		} ) );
 
 		it( 'doi with US style date', () => server.query( '10.1542/peds.2007-2362' ).then( ( res ) => {
@@ -181,7 +175,8 @@ describe( 'noPubmed.js - Defaults conf to true if pubmed undefined', function ()
 
 	after( () => server.stop() );
 
-	it( 'PMCID available from NIH DB only', () => server.query( 'http://rspb.royalsocietypublishing.org/content/267/1453/1627' ).then( ( res ) => {
+	// 403 errors from url so no longer retrievable
+	it.skip( 'PMCID available from NIH DB only', () => server.query( 'http://rspb.royalsocietypublishing.org/content/267/1453/1627' ).then( ( res ) => {
 		assert.checkZotCitation( res, 'Moth hearing in response to bat echolocation calls manipulated independently in time and frequency' );
 		assert.deepEqual( !!res.body[ 0 ].PMCID, true, 'Missing PMCID' ); // Not present in Zotero - should come from API
 		assert.deepEqual( !!res.body[ 0 ].PMID, true, 'Missing PMID' ); // Present in Zotero

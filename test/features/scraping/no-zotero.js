@@ -41,7 +41,7 @@ describe( 'Zotero service down or disabled:', () => {
 			assert.deepEqual( res.body[ 0 ].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947' );
 			assert.isInArray( res.body[ 0 ].source, 'Crossref' );
 			assert.isInArray( res.body[ 0 ].source, 'PubMed' );
-			assert.deepEqual( res.body[ 0 ].PMCID, 'PMC3605911' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( !!res.body[ 0 ].ISSN, true, 'Should contain ISSN' ); // From highwire
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
@@ -258,7 +258,7 @@ describe( 'Zotero service down or disabled:', () => {
 			assert.deepEqual( res.body[ 0 ].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947' );
 			assert.isInArray( res.body[ 0 ].source, 'Crossref' );
 			assert.isInArray( res.body[ 0 ].source, 'PubMed' );
-			assert.deepEqual( res.body[ 0 ].PMCID, 'PMC3605911' );
+			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( !!res.body[ 0 ].ISSN, true, 'Should contain ISSN' ); // From highwire
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );

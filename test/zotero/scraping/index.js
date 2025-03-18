@@ -208,49 +208,49 @@ describe( 'uses zotero', function () {
 
 	describe( 'PMCID ', () => {
 		it( 'with prefix', () => server.query( 'PMC3605911' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'from pmc url (old)', () => server.query( 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'from pmc url (new)', () => server.query( 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3605911/' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'from pmc url (new); no protocol', () => server.query( 'pmc.ncbi.nlm.nih.gov/articles/PMC3605911/' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'from pmc url (old); no protocol', () => server.query( 'www.ncbi.nlm.nih.gov/pmc/articles/PMC3605911/' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'with trailing space', () => server.query( 'PMC3605911 ' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
 		it( 'with encoded space', () => server.query( 'PMC3605911%20' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Viral Phylodynamics' );
+			assert.checkZotCitation( res, 'Viral phylodynamics' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );

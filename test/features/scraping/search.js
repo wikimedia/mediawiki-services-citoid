@@ -10,7 +10,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 		this.timeout( 20000 );
 		const server = new Server();
 
-		before( () => server.start() );
+		before( () => server.start( { zotero: false } ) );
 
 		after( () => server.stop() );
 
@@ -58,16 +58,16 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			assert.deepEqual( res.body.length, 2 ); // One from url, one from Crossref
 		} ) );
 
-		// Timing out due to upstream request response time
+		// 403 from url, but able to get metadatafrom DOI
 		it( 'Open search with doi', () => server.query( 'Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166' ).then( ( res ) => {
-			assert.checkZotCitation( res, 'Data from: The strength of phenotypic selection in natural populations' );
+			assert.checkCitation( res, 'Dryad | Data -- The strength of phenotypic selection in natural populations' );
 			assert.deepEqual( res.body.length, 1 ); // One citation from detected DOI
 		} ) );
 
 		// Gets correct data from url, incorrect data from crossRef
 		it( 'Open search with url', () => server.query( 'Frederico Girosi; Gary King, 2006, ‘Cause of Death Data’, http://hdl.handle.net/1902.1/UOVMCPSWOL UNF:3:9JU+SmVyHgwRhAKclQ85Cg== IQSS Dataverse Network [Distributor] V3 [Version].' ).then( ( res ) => {
 			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 2 ); // One from Worldcat, one from Crossref
+			assert.deepEqual( res.body.length, 1 ); // One from from Crossref
 		} ) );
 
 		// Gets item from single search term

@@ -9,7 +9,8 @@
 		"start": "service-runner",
 		"lint": "eslint --max-warnings 0 --cache .",
 		"lint:fix": "eslint --fix .",
-		"test": "npm run lint && mocha ./test/features/unit/* && mocha ./test/features/errors/* && mocha ./test/features/app/*",
+		"test": "npm run lint && mocha ./test/features/unit/* && mocha ./test/features/errors/* && mocha ./test/features/app/* && mocha --exit ./test/features/scraping/*",
+		"test:zotero": "npm run lint && mocha --exit ./test* ",
 		"coverage": "nyc --reporter=lcov _mocha"
 	},
 	"engines": {

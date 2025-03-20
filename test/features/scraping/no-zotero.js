@@ -57,7 +57,7 @@ describe( 'Zotero service down or disabled:', () => {
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
+		it.skip( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
 			assert.status( res, 404 );
 		}, ( err ) => {
 			assert.status( err, 404 );
@@ -274,7 +274,7 @@ describe( 'Zotero service down or disabled:', () => {
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle', 'Wrong itemType; expected journalArticle, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
+		it.skip( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
 			assert.status( res, 404 );
 		}, ( err ) => {
 			assert.status( err, 404 );

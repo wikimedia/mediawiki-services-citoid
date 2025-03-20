@@ -21,18 +21,30 @@ describe( 'ISBN tests:', function () {
 
 		it( 'valid ISBN', () => server.query( '978-0-596-51979-7' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.checkZotCitation( res, 'MediaWiki' );
-			assert.deepEqual( !!res.body[ 0 ].oclc, true, 'Missing OCLC' );
-			assert.deepEqual( res.body[ 0 ].author, [ [ 'Daniel J.', 'Barrett' ] ], 'Unexpected value; expected [[\'Daniel J.\'], [\'Barrett.\']] ' + res.body[ 0 ].author );
-			assert.deepEqual( res.body[ 0 ].publisher, 'O\'Reilly Media', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[ 0 ].publisher );
-			assert.deepEqual( res.body[ 0 ].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[ 0 ].place );
-			assert.deepEqual( res.body[ 0 ].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[ 0 ].edition );
-			assert.deepEqual( res.body[ 0 ].date, '2009', 'Unexpected value; expected 2009, got ' + res.body[ 0 ].date );
+			assert.deepEqual( res.body[ 0 ].title, 'MediaWiki: Wikipedia and beyond' );
+			assert.deepEqual( !!res.body[ 0 ].oclc, false, 'Unexpected OCLC' );
+			assert.deepEqual( res.body[ 0 ].author, [ [ 'Daniel J.', 'Barrett' ] ] );
+			assert.deepEqual( res.body[ 0 ].publisher, 'O\'Reilly' );
+			assert.deepEqual( res.body[ 0 ].place, 'Beijing Köln' );
+			assert.deepEqual( res.body[ 0 ].edition, '1. ed' );
+			assert.deepEqual( res.body[ 0 ].date, '2009' );
 			assert.isInArray( res.body[ 0 ].ISBN, '978-0-596-51979-7' );
+			assert.deepEqual( res.body[ 0 ].itemType, 'book' );
+		} ) );
+
+		it( 'valid ISBN from BnF', () => server.query( '979 1029801297' ).then( ( res ) => {
+			assert.status( res, 200 );
+			assert.deepEqual( res.body[ 0 ].title, 'Mon jardin tropical: guide de jardinage Antilles, Réunion' );
+			assert.deepEqual( !!res.body[ 0 ].oclc, false, 'Unexpected OCLC' );
+			assert.deepEqual( res.body[ 0 ].publisher, 'Orphie' );
+			assert.deepEqual( res.body[ 0 ].place, 'Saint-Denis (Réunion)' );
+			assert.deepEqual( res.body[ 0 ].date, '2016' );
+			assert.isInArray( res.body[ 0 ].ISBN, '979-10-298-0129-7' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[ 0 ].itemType );
 		} ) );
 
-		it( 'valid ISBN with funky author field', () => server.query( '978043-9784542' ).then( ( res ) => {
+		// Skip as Zotero can't retrieve it
+		it.skip( 'valid ISBN with funky author field', () => server.query( '9780439784542' ).then( ( res ) => {
 			assert.status( res, 200 );
 			// assert.checkZotCitation(res, 'Harry Potter and the half-blood prince'); // No url
 			assert.deepEqual( res.body[ 0 ].title, 'Harry Potter and the Half-Blood Prince', 'Unexpected value; expected "Harry Potter and the Half-blood Prince," got ' + res.body[ 0 ].title );

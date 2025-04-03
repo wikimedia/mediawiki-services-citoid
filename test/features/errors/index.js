@@ -44,7 +44,7 @@ describe( 'errors', function () {
 			assert.status( res, 400 );
 		}, ( err ) => {
 			assert.status( err, 400 );
-			assert.deepEqual( err.body.Error, 'Invalid host supplied' );
+			assert.deepEqual( err.body.error, 'Invalid host supplied' );
 		} ) );
 
 	it( 'resource has http errors', () => {
@@ -54,7 +54,7 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.status( err, 404 );
-				assert.deepEqual( err.body.Error, 'Unable to load URL ' + url );
+				assert.deepEqual( err.body.error, 'Unable to load URL ' + url );
 			} );
 	} );
 
@@ -65,7 +65,7 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to resolve DOI ' + doi,
-					'Unexpected error message ' + err.body.Error );
+					'Unexpected error message ' + err.body.error );
 			} );
 	} );
 
@@ -76,7 +76,7 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
-					'Unexpected error message ' + err.body.Error );
+					'Unexpected error message ' + err.body.error );
 			} );
 	} );
 
@@ -87,7 +87,7 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%22',
-					'Unexpected error message ' + err.body.Error );
+					'Unexpected error message ' + err.body.error );
 			} );
 	} );
 
@@ -98,7 +98,19 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.checkError( err, 404, "Unable to resolve DOI 10.1007/11926078_68'",
-					'Unexpected error message ' + err.body.Error );
+					'Unexpected error message ' + err.body.error );
+			} );
+	} );
+
+	it( 'PDF contentType unsupported', () => {
+		const url = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Coloring_page_for_Wikipedia_Day_2019_in_NYC.pdf';
+		return server.query( url, 'mediawiki', 'en' )
+			.then( ( res ) => {
+				assert.status( res, 415 );
+			}, ( err ) => {
+				assert.status( err, 415 );
+				assert.deepEqual( err.body.error, 'The remote document is not in a supported format' );
+				assert.deepEqual( err.body.contentType, 'application/pdf' );
 			} );
 	} );
 
@@ -119,7 +131,7 @@ describe( 'errors', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.checkError( err, 404, 'Unable to locate resource with pmcid ' + pmcid,
-					'Unexpected error message ' + err.body.Error );
+					'Unexpected error message ' + err.body.error );
 			} );
 	} );
 

@@ -83,7 +83,8 @@ describe( 'uses zotero', function () {
 					assert.status( res, 415 );
 				}, ( err ) => {
 					assert.status( err, 415 );
-					assert.deepEqual( err.body.Error, 'The remote document is not in a supported format' );
+					assert.deepEqual( err.body.error, 'The remote document is not in a supported format' );
+					assert.deepEqual( err.body.contentType, 'application/pdf' );
 				} );
 		} );
 

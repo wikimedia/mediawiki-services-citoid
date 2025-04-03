@@ -27,23 +27,23 @@ function citoidRequest( req, res ) {
 
 	if ( !req.query.search ) {
 		res.status( 400 ).type( 'application/json' );
-		res.send( { Error: "No 'search' value specified" } );
+		res.send( { error: "No 'search' value specified" } );
 		return;
 	} else if ( !req.query.format ) {
 		res.status( 400 ).type( 'application/json' );
-		res.send( { Error: "No 'format' value specified" } );
+		res.send( { error: "No 'format' value specified" } );
 		return;
 	} else if ( !app.formats[ cr.format ] ) { // Use encoded format
 		res.status( 400 ).type( 'application/json' );
 		// eslint-disable-next-line no-constant-binary-expression
-		res.send( { Error: `Invalid format requested ${ cr.format }` || '' } );
+		res.send( { error: `Invalid format requested ${ cr.format }` || '' } );
 		return;
 	} else if ( getBool( cr.baseFields ) && !( getBool( cr.baseFields ) &&
             // Ensure format supports baseFields - mediawiki & mediawiki-basefields formats only
             ( cr.format === 'mediawiki' || cr.format === 'mediawiki-basefields' ) ) ) {
 		res.status( 400 ).type( 'application/json' );
 		// eslint-disable-next-line no-constant-binary-expression
-		res.send( { Error: `Base fields are not supported for format ${ cr.format }` || '' } );
+		res.send( { error: `Base fields are not supported for format ${ cr.format }` || '' } );
 		return;
 	}
 

@@ -84,7 +84,7 @@ describe( 'redirects', function () {
 				assert.status( res, 200 );
 			}, ( err ) => {
 				assert.status( err, 200 );
-				assert.deepEqual( err.body.Error, 'Unable to load URL ' + url );
+				assert.deepEqual( err.body.error, 'Unable to load URL ' + url );
 			} );
 	} );
 

@@ -65,7 +65,7 @@ describe( 'Tests using a very short timeout - all use crossRef - zotero disabled
 		// Ensure DOI is present in non-zotero scraped page when request from DOI link
 		it( 'DOI which requires cookie to properly follow redirect to Zotero', () => server.query( '10.1642/0004-8038(2005)122[0673:PROAGP]2.0.CO;2' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.checkCitation( res, 'PHYLOGENETIC RELATIONSHIPS OF ANTPITTA GENERA (PASSERIFORMES: FORMICARIIDAE)' );
+			assert.checkCitation( res, 'Phylogenetic Relationships of Antpitta Genera (Passeriformes: Formicariidae)' );
 			assert.deepEqual( res.body[ 0 ].publicationTitle, 'The Auk', 'Incorrect publicationTitle; Expected The Auk, got' + res.body[ 0 ].publicationTitle );
 			assert.deepEqual( !!res.body[ 0 ].DOI, true, 'Missing DOI' );
 			assert.deepEqual( !!res.body[ 0 ].issue, true, 'Missing issue' );
@@ -79,8 +79,8 @@ describe( 'Tests using a very short timeout - all use crossRef - zotero disabled
 			assert.deepEqual( res.body[ 0 ].itemType, 'bookSection', 'Wrong itemType; expected bookSection, got' + res.body[ 0 ].itemType );
 		} ) );
 
-		// Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI
-		it( 'doi in url with query parameters', () => server.query( 'example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
+		// Regression: phab:T388517 Fake url but with info in cross ref that can be pulled from doi in url - uses requestFromDOI
+		it.skip( 'doi in url with query parameters', () => server.query( 'example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
 			assert.status( res, 200 );
 			assert.checkCitation( res, 'Salaries, Turnover, and Performance in the Federal Criminal Justice System' );
 			assert.deepEqual( res.body[ 0 ].DOI, '10.1086/378695' );

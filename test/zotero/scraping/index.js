@@ -18,6 +18,14 @@ describe( 'uses zotero', function () {
 			assert.checkZotCitation( res, 'Example Domain' );
 		} ) );
 
+		it( 'does not use zotero for archive.org', () => server.query( 'http://wayback.archive.org/web/20050316221324/http://www.thewbalchannel.com/politics/4281055/detail.html' ).then( ( res ) => {
+			assert.checkCitation( res, 'TheWBALChannel.com - Politics - Civil Rights Leader Announces Bid For U.S. Senate' );
+			assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
+			assert.deepEqual( !!res.body[ 0 ].archiveUrl, true );
+			assert.deepEqual( res.body[ 0 ].websiteTitle, 'www.thewbalchannel.com' );
+			assert.deepEqual( res.body[ 0 ].itemType, 'webpage' );
+		} ) );
+
 		it( 'dublinCore data but no highWire metadata', () => server.query( 'https://tools.ietf.org/html/draft-kamath-pppext-peapv0-00' ).then( ( res ) => {
 			assert.checkZotCitation( res, 'Microsoft\'s PEAP version 0 (Implementation in Windows XP SP1)' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'report' );

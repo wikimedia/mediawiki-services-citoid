@@ -62,7 +62,7 @@ services:
       #   - user-agent
       #   - x-request-id
       # enable use of wayback machine from archive.org if initial url request fails
-      wayback: true
+      wayback: false
       # enable use of NIH PubMed id converter to add pmids and pmcids to citations
       # at the end of a request; defaults to true if undefined
       pubmed: false

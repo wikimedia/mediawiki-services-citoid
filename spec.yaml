@@ -58,91 +58,10 @@ paths:
               version: /.+/
               home: /.+/
   # from routes/citoid.js
-  /api:
-    get:
-      tags:
-        - Citations (Query strings) (deprecated)
-      description: Converts URLs, DOIs, ISBNs, PMIDs, etc into citations
-      parameters:
-        - name: format
-          in: query
-          description: The format to use for the resulting citation data
-          schema:
-            type: string
-            enum:
-              - mediawiki
-              - mediawiki-basefields
-              - zotero
-              - bibtex
-              - wikibase
-          required: true
-        - name: search
-          in: query
-          description: >
-            URL of an article, DOI, ISBN, PMCID or PMID in the URL-encoded format.
-            Note that on the Swagger-UI doc page you don't need to URI-encode the
-            parameter manually, it will be done by the docs engine.
-          schema:
-            type: string
-          required: true
-        - name: Accept-Language
-          in: header
-          schema:
-            type: string
-          required: false
-          description: >
-            Provides citation metadata in the requested language, if it is available.
-      x-amples:
-        - title: bad URL
-          request:
-            query:
-              format: mediawiki
-              search: https://en.wikipedia.org/404
-            headers:
-              accept-language: en
-          response:
-            status: 404
-        - title: Zotero and citoid alive
-          request:
-            query:
-              format: mediawiki
-              search: https://en.wikipedia.org/wiki/Darth_Vader
-          response:
-            status: 200
-            headers:
-              content-type: /^application\/json/
-            body:
-              - title: Darth Vader
-                language: en
-                itemType: encyclopediaArticle
-                encyclopediaTitle: Wikipedia
-      responses:
-        "200":
-          description: The citation data in the requested format
-          content:
-            application/json; charset=utf-8;:
-              schema:
-                $ref: "#/components/schemas/result"
-            application/x-bibtex; charset=utf-8:
-              schema:
-                $ref: "#/components/schemas/result"
-        "404":
-          description: Citation data was not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/problem"
-        "415":
-          description: Could not get citation data from unsupported media type
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/problem"
-  # from routes/citoid.js
   /{format}/{query}:
     get:
       tags:
-        - Citations (Restbase shim)
+        - Citations
       summary: Get citation data given an article identifier.
       description: |
         Generates citation data given a URL, DOI, ISBN, PMID, or PMCID.

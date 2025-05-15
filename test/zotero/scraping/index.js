@@ -87,6 +87,15 @@ describe( 'uses zotero', function () {
 				} );
 		} );
 
+		it( 'doi that points to pdf', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.checkZotCitation( res, 'Comparison of selected local honey with Manuka honey based on their nutritional and antioxidant properties' );
+			assert.deepEqual( res.body[ 0 ].issue, 'S1' );
+			assert.deepEqual( res.body[ 0 ].volume, '4' );
+			assert.deepEqual( res.body[ 0 ].date, '2020-02-10' );
+			assert.deepEqual( res.body[ 0 ].DOI, '10.26656/fr.2017.4(S1).S12' );
+			assert.deepEqual( res.body[ 0 ].author.length, 7 );
+		} ) );
+
 	} );
 
 	describe( 'DOI  - uses /search endpoint', () => {

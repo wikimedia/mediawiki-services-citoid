@@ -33,6 +33,15 @@ describe( 'Zotero service down or disabled:', () => {
 				} );
 		} );
 
+		it( 'doi that points to pdf', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.checkCitation( res, 'Comparison of selected local honey with Manuka honey based on their nutritional and antioxidant properties' );
+			assert.deepEqual( res.body[ 0 ].issue, 'S1' );
+			assert.deepEqual( res.body[ 0 ].volume, '4' );
+			assert.deepEqual( res.body[ 0 ].date, '2020-02-10' );
+			assert.deepEqual( res.body[ 0 ].DOI, '10.26656/fr.2017.4(s1).s12' );
+			assert.deepEqual( res.body[ 0 ].author.length, 7 );
+		} ) );
+
 		// PMID on NIH website that is found in the id converter api- should convert to DOI
 		// Uses three sources, crossref, pubmed and citoid
 		it( 'PMCID present in doi id converter api', () => server.query( 'PMC3605911' ).then( ( res ) => {
@@ -249,6 +258,15 @@ describe( 'Zotero service down or disabled:', () => {
 					assert.checkError( err, 404 ); // Error may be for pmcid or pmid
 				} );
 		} );
+
+		it( 'doi that points to pdf', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.checkCitation( res, 'Comparison of selected local honey with Manuka honey based on their nutritional and antioxidant properties' );
+			assert.deepEqual( res.body[ 0 ].issue, 'S1' );
+			assert.deepEqual( res.body[ 0 ].volume, '4' );
+			assert.deepEqual( res.body[ 0 ].date, '2020-02-10' );
+			assert.deepEqual( res.body[ 0 ].DOI, '10.26656/fr.2017.4(s1).s12' );
+			assert.deepEqual( res.body[ 0 ].author.length, 7 );
+		} ) );
 
 		// PMID on NIH website that is found in the id converter api- should convert to DOI
 		// Uses three sources, crossref, pubmed and citoid

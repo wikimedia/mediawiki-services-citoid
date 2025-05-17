@@ -22,4 +22,11 @@ describe( 'Native scraper:', function () {
 		assert.deepEqual( res.body[ 0 ].author.length, 1 );
 	} ) );
 
+	it( 'Adds extra parameters for archive.org', () => server.query( 'https://web.archive.org/web/20131021085548/http://www.nbcnews.com/health/75-percent-breast-milk-bought-online-contaminated-analysis-shows-8C11421794' ).then( ( res ) => {
+		assert.checkCitation( res, 'Much breast milk bought online is contaminated, analysis shows - NBC News.com' );
+		assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
+		assert.deepEqual( !!res.body[ 0 ].archiveUrl, true );
+		assert.deepEqual( res.body[ 0 ].itemType, 'newspaperArticle' );
+	} ) );
+
 } );

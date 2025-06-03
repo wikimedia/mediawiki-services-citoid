@@ -4,9 +4,8 @@ const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 const nock = require( 'nock' );
 
-describe( 'redirects', function () {
+describe( 'redirects', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { maxRedirects: 5 } ) );

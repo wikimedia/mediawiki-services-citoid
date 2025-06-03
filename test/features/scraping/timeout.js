@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'Tests using a very short timeout - all use crossRef - zotero disabled', function () {
+describe( 'Tests using a very short timeout - all use crossRef - zotero disabled', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( {

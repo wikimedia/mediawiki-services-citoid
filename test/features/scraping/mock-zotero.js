@@ -8,9 +8,8 @@ const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 const zotero = require( '../../utils/mockZoteroServer.js' );
 
-describe( 'mock Zotero service that cannot export', function () {
+describe( 'mock Zotero service that cannot export', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	// Give Zotero port which is it is not running from-

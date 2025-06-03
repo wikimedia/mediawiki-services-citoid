@@ -245,9 +245,7 @@ function validateTestResponse( testCase, res, resText ) {
 	return validateBody( resText || '', expRes.body );
 }
 
-describe( 'Swagger spec', function () {
-
-	this.timeout( 20000 );
+describe( 'Swagger spec', () => {
 
 	before( () => server.start() );
 

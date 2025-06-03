@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'Exports into non mediawiki formats:', function () {
+describe( 'Exports into non mediawiki formats:', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { zotero: true } ) );

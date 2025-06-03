@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'citoid routing', function () {
+describe( 'citoid routing', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start() );

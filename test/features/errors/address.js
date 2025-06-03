@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'address restrictions', function () {
+describe( 'address restrictions', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start() );

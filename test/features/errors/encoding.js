@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'encoding', function () {
+describe( 'encoding', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start() );

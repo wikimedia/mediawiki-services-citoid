@@ -5,9 +5,8 @@ const Server = require( '../../utils/server.js' );
 
 describe( 'Wayback fallback scraping tests: ', () => {
 
-	describe( 'Zotero inaccessible', function () {
+	describe( 'Zotero inaccessible', () => {
 
-		this.timeout( 20000 );
 		const server = new Server();
 		before( () => server.start( { zotero: 1971, wayback: true } ) );
 		after( () => server.stop() );
@@ -39,9 +38,8 @@ describe( 'Wayback fallback scraping tests: ', () => {
 
 	} );
 
-	describe( 'Zotero disabled', function () {
+	describe( 'Zotero disabled', () => {
 
-		this.timeout( 20000 );
 		const server = new Server();
 		before( () => server.start( { zotero: false, wayback: true } ) );
 		after( () => server.stop() );
@@ -66,9 +64,8 @@ describe( 'Wayback fallback scraping tests: ', () => {
 
 	} );
 
-	describe( 'Wayback disabled', function () {
+	describe( 'Wayback disabled', () => {
 
-		this.timeout( 20000 );
 		const server = new Server();
 		before( () => server.start( { zotero: false, wayback: false } ) );
 		after( () => server.stop() );

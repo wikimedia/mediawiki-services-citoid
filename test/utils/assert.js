@@ -52,7 +52,7 @@ module.exports = use( ( _chai, _utils ) => {
 			'Expected status to be ' + status + ', but was ' + res.status );
 
 		if ( message ) {
-			assert.deepEqual( res.body.Error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.Error + '"' );
+			assert.deepEqual( res.body.error, message, 'Wrong error message, expected "' + message + '", got "' + res.body.error + '"' );
 		}
 
 		assert.deepEqual( res.body.name, undefined, 'Unexpected parameter "name" in error response' );

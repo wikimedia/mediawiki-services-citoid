@@ -58,8 +58,8 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			assert.deepEqual( res.body.length, 2 ); // One from url, one from Crossref
 		} ) );
 
-		// 403 from url, but able to get metadatafrom DOI
-		it( 'Open search with doi', () => server.query( 'Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166' ).then( ( res ) => {
+		// 403 from url, but was previously able to get metadatafrom DOI - no longer in crossref
+		it.skip( 'Open search with doi', () => server.query( 'Kingsolver JG, Hoekstra HE, Hoekstra JM, Berrigan D, Vignieri SN, Hill CE, Hoang A, Gibert P, Beerli P (2001) Data from: The strength of phenotypic selection in natural populations. Dryad Digital Repository. doi:10.5061/dryad.166' ).then( ( res ) => {
 			assert.checkCitation( res, 'Dryad | Data -- The strength of phenotypic selection in natural populations' );
 			assert.deepEqual( res.body.length, 1 ); // One citation from detected DOI
 		} ) );

@@ -17,7 +17,7 @@ describe( 'encoding', function () {
 			assert.status( res, 400 );
 		}, ( err ) => {
 			assert.status( err, 400 );
-			assert.deepEqual( err.body.Error,
+			assert.deepEqual( err.body.error,
 				'Invalid format requested f%3Cscript%3Ealert(1)%3B%3C%2Fscript%3E' );
 		} ) );
 
@@ -26,9 +26,9 @@ describe( 'encoding', function () {
 			assert.status( res, 404 );
 		}, ( err ) => {
 			assert.status( err, 404 );
-			assert.deepEqual( err.body.Error,
+			assert.deepEqual( err.body.error,
 				'Unable to resolve DOI 10.1000/f%3Cscript%3Ealert(1);%3C/script%3E',
-				'Unexpected error message ' + err.body.Error );
+				'Unexpected error message ' + err.body.error );
 		} ) );
 
 	it( 'json in format', () => server.query( 'http://www.example.com/', '{"json":"object"}', 'en' )
@@ -36,7 +36,7 @@ describe( 'encoding', function () {
 			assert.status( res, 400 );
 		}, ( err ) => {
 			assert.status( err, 400 );
-			assert.deepEqual( err.body.Error,
+			assert.deepEqual( err.body.error,
 				'Invalid format requested %7B%22json%22%3A%22object%22%7D' );
 		} ) );
 
@@ -47,7 +47,7 @@ describe( 'encoding', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.status( err, 404 );
-				assert.deepEqual( err.body.Error, 'Unable to load URL ' + encodeURI( url ) );
+				assert.deepEqual( err.body.error, 'Unable to load URL ' + encodeURI( url ) );
 			} );
 	} );
 
@@ -58,7 +58,7 @@ describe( 'encoding', function () {
 				assert.status( res, 404 );
 			}, ( err ) => {
 				assert.status( err, 404 );
-				assert.deepEqual( err.body.Error, 'Unable to load URL http://' + encodeURI( url ) );
+				assert.deepEqual( err.body.error, 'Unable to load URL http://' + encodeURI( url ) );
 			} );
 	} );
 

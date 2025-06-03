@@ -76,7 +76,7 @@ describe( 'ISBN tests:', function () {
 					assert.status( res, 404 );
 				}, ( err ) => {
 					assert.checkError( err, 404, 'Unable to retrieve data from ISBN ' + isbn,
-						'Unexpected error message ' + err.body.Error );
+						'Unexpected error message ' + err.body.error );
 				} );
 		} );
 	} );

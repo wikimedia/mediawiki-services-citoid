@@ -9,9 +9,8 @@ const Server = require( '../../utils/server.js' );
 
 describe( 'Zotero service down or disabled:', () => {
 
-	describe( 'unreachable', function () {
+	describe( 'unreachable', () => {
 
-		this.timeout( 20000 );
 		const server = new Server();
 
 		// Give Zotero port which is it is not running from-

@@ -9,7 +9,7 @@ const CrossRefService = require( '../../../lib/external-apis/CrossRefService.js'
 const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
 const logStream = require( '../../utils/logStream.js' );
 
-describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
+describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 
 	let doi;
 	let onreject;
@@ -19,8 +19,6 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', function () {
 	let request;
 	let crossref;
 	let app;
-
-	this.timeout( 20000 );
 
 	before( () => {
 		// Dummy logger

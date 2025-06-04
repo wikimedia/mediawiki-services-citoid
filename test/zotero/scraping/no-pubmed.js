@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
+describe( 'noPubmed.js - Disable pubmed requests for extra IDs', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { pubmed: false, zotero: true, wayback: false } ) );
@@ -166,9 +165,8 @@ describe( 'noPubmed.js - Disable pubmed requests for extra IDs', function () {
 
 } );
 
-describe( 'noPubmed.js - Defaults conf to true if pubmed undefined', function () {
+describe( 'noPubmed.js - Defaults conf to true if pubmed undefined', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { pubmed: undefined } ) );

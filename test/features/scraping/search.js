@@ -5,9 +5,8 @@ const Server = require( '../../utils/server.js' );
 
 describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. title or citation', () => {
 
-	describe( 'Default config', function () {
+	describe( 'Default config', () => {
 
-		this.timeout( 20000 );
 		const server = new Server();
 
 		before( () => server.start( { zotero: false } ) );

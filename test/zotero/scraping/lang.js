@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'Languages (uses zotero):', function () {
+describe( 'Languages (uses zotero):', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { zotero: true } ) );

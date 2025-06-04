@@ -3,9 +3,8 @@
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
 
-describe( 'correctly gets base fields instead of more specific fields (no zotero)', function () {
+describe( 'correctly gets base fields instead of more specific fields (no zotero)', () => {
 
-	this.timeout( 20000 );
 	const server = new Server();
 
 	before( () => server.start( { zotero: false } ) );

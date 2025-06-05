@@ -2,7 +2,6 @@
 
 const extend = require( 'extend' );
 const fs = require( 'fs' );
-const preq = require( 'preq' );
 const yaml = require( 'js-yaml' );
 
 const P = require( 'bluebird' );
@@ -73,13 +72,17 @@ class TestCitoidRunner extends TestRunner {
 
 		if ( !this._spec ) {
 			// We only want to load this once.
-			preq.get( `${ uri }?spec` )
+			// eslint-disable-next-line n/no-unsupported-features/node-builtins
+			fetch( `${ uri }?spec` )
 				.then( ( res ) => {
-					if ( !res.body ) {
+					if ( !res.ok ) {
 						throw new Error( 'Failed to get spec' );
 					}
+					return res.json();
+				} )
+				.then( ( body ) => {
 					// save a copy
-					this._spec = res.body;
+					this._spec = body;
 				} )
 				.catch( ( err ) => {
 					// this error will be detected later, so ignore it
@@ -120,16 +123,27 @@ class TestCitoidRunner extends TestRunner {
 			language = 'en';
 		}
 
-		return preq.get( {
-			uri: this.config.qURI,
-			query: {
-				format: format,
-				search: search
-			},
+		const url = new URL( this.config.qURI );
+		url.searchParams.set( 'format', format );
+		url.searchParams.set( 'search', search );
+
+		// eslint-disable-next-line n/no-unsupported-features/node-builtins
+		return fetch( url.toString(), {
 			headers: {
 				'accept-language': language
 			}
-		} );
+		} ).then( ( res ) => res.json().then( ( body ) => {
+			if ( !res.ok ) {
+				const error = new Error( `HTTP ${ res.status }: ${ res.statusText }` );
+				error.status = res.status;
+				error.body = body;
+				throw error;
+			}
+			return {
+				status: res.status,
+				body: body
+			};
+		} ) );
 
 	}
 

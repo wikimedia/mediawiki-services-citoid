@@ -12,7 +12,7 @@ describe( 'citoid routing', () => {
 	after( () => server.stop() );
 
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should get restbase style shim request for uri', () => fetch( `${ server.config.uri }mediawiki/http%3A%2F%2Fwww.example.com` )
+	it( 'should get query style request for uri', () => fetch( `${ server.config.qURI }?format=mediawiki&search=http%3A%2F%2Fwww.example.com` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 200 );
 			return res.json().then( ( body ) => {
@@ -21,7 +21,7 @@ describe( 'citoid routing', () => {
 		} ) );
 
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should error for missing search param', () => fetch( `${ server.config.uri }mediawiki/` )
+	it( 'should error for missing search param query style request', () => fetch( `${ server.config.qURI }?format=mediawiki` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 400 );
 		} )
@@ -30,7 +30,7 @@ describe( 'citoid routing', () => {
 		} ) );
 
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should get restbase style shim request for doi', () => fetch( `${ server.config.uri }mediawiki/10.1371%2Fjournal.pcbi.1002947` )
+	it( 'should get query style request for doi', () => fetch( `${ server.config.qURI }?format=mediawiki&search=10.1371%2Fjournal.pcbi.1002947` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 200 );
 			return res.json().then( ( body ) => {
@@ -38,7 +38,7 @@ describe( 'citoid routing', () => {
 			} );
 		} ) );
 
-	it( 'should get non-restbase style request for uri', () => server.query( 'http://example.com' ).then( ( res ) => {
+	it( 'should get restbase style request for uri', () => server.query( 'http://example.com' ).then( ( res ) => {
 		assert.status( res, 200 );
 		assert.deepEqual( res.body[ 0 ].title, 'Example Domain' );
 	} ) );

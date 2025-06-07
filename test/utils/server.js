@@ -107,7 +107,7 @@ class TestCitoidRunner extends TestRunner {
 	}
 
 	/**
-	 * Wrapper to query the test server api
+	 * Wrapper to query the test server api using the restful pattern
 	 *
 	 * @param  {string} search     search input
 	 * @param  {string} format     requested format
@@ -123,12 +123,12 @@ class TestCitoidRunner extends TestRunner {
 			language = 'en';
 		}
 
-		const url = new URL( this.config.qURI );
-		url.searchParams.set( 'format', format );
-		url.searchParams.set( 'search', search );
+		search = encodeURIComponent( search );
+
+		const url = `${ this.config.uri }${ format }/${ search }`;
 
 		// eslint-disable-next-line n/no-unsupported-features/node-builtins
-		return fetch( url.toString(), {
+		return fetch( url, {
 			headers: {
 				'accept-language': language
 			}

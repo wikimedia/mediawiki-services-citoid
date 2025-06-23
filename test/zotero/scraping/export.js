@@ -55,8 +55,8 @@ describe( 'Exports into non mediawiki formats:', () => {
 			assert.status( res, 200 );
 			assert.deepEqual( !!res.body[ 0 ].oclc, false, 'Unexpected oclc ' + res.body[ 0 ].oclc );
 			assert.deepEqual( res.body[ 0 ].publisher, 'O\'Reilly', 'Unexpected value; expected O\'Reilly Media, got ' + res.body[ 0 ].publisher );
-			assert.deepEqual( res.body[ 0 ].place, 'Beijing Köln', 'Unexpected value; expected Beijing Köln, got ' + res.body[ 0 ].place );
-			assert.deepEqual( res.body[ 0 ].edition, '1. ed', 'Unexpected value; expected 1. ed, got ' + res.body[ 0 ].edition );
+			assert.deepEqual( res.body[ 0 ].place, 'Sebastapool, Calif', 'Unexpected value; expected Sebastapool, Calif., got ' + res.body[ 0 ].place );
+			assert.deepEqual( res.body[ 0 ].edition, '1st ed', 'Unexpected value; expected 1st ed., got ' + res.body[ 0 ].edition );
 			assert.deepEqual( res.body[ 0 ].date, '2009', 'Unexpected value; expected 2009, got ' + res.body[ 0 ].date );
 			assert.isInArray( res.body[ 0 ].identifiers.isbn13, '978-0-596-51979-7' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'book', 'Wrong itemType; expected book, got ' + res.body[ 0 ].itemType );

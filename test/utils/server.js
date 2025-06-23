@@ -132,32 +132,18 @@ class TestCitoidRunner extends TestRunner {
 			headers: {
 				'accept-language': language
 			}
-		} ).then( ( res ) => {
-			const contentType = res.headers.get( 'content-type' );
-			const isJson = contentType && contentType.includes( 'application/json' );
-
-			return ( isJson ? res.json() : res.text() ).then( ( body ) => {
-				if ( !res.ok ) {
-					const error = new Error( `HTTP ${ res.status }: ${ res.statusText }` );
-					error.status = res.status;
-					// Try to parse JSON for error responses if it's a string that looks like JSON
-					if ( typeof body === 'string' && body.startsWith( '{' ) ) {
-						try {
-							error.body = JSON.parse( body );
-						} catch ( e ) {
-							error.body = body;
-						}
-					} else {
-						error.body = body;
-					}
-					throw error;
-				}
-				return {
-					status: res.status,
-					body: isJson ? body : Buffer.from( body )
-				};
-			} );
-		} );
+		} ).then( ( res ) => res.json().then( ( body ) => {
+			if ( !res.ok ) {
+				const error = new Error( `HTTP ${ res.status }: ${ res.statusText }` );
+				error.status = res.status;
+				error.body = body;
+				throw error;
+			}
+			return {
+				status: res.status,
+				body: body
+			};
+		} ) );
 
 	}
 

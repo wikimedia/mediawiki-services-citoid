@@ -12,30 +12,9 @@ describe( 'citoid routing', () => {
 	after( () => server.stop() );
 
 	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should get query style request for uri', () => fetch( `${ server.config.qURI }?format=mediawiki&search=http%3A%2F%2Fwww.example.com` )
-		.then( ( res ) => {
-			assert.deepEqual( res.status, 200 );
-			return res.json().then( ( body ) => {
-				assert.deepEqual( body[ 0 ].title, 'Example Domain' );
-			} );
-		} ) );
-
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should error for missing search param query style request', () => fetch( `${ server.config.qURI }?format=mediawiki` )
+	it( 'should not get deprecated query style request for uri', () => fetch( `${ server.config.uri }api?format=mediawiki&search=http%3A%2F%2Fwww.example.com` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 400 );
-		} )
-		.catch( ( err ) => {
-			assert.checkError( err, 400, "No 'search' value specified" );
-		} ) );
-
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'should get query style request for doi', () => fetch( `${ server.config.qURI }?format=mediawiki&search=10.1371%2Fjournal.pcbi.1002947` )
-		.then( ( res ) => {
-			assert.deepEqual( res.status, 200 );
-			return res.json().then( ( body ) => {
-				assert.deepEqual( body[ 0 ].title, 'Viral Phylodynamics' );
-			} );
 		} ) );
 
 	it( 'should get restbase style request for uri', () => server.query( 'http://example.com' ).then( ( res ) => {

@@ -68,7 +68,6 @@ class TestCitoidRunner extends TestRunner {
 		const myServiceIdx = this._runner._impl.config.services.length - 1;
 		const myService = this._runner._impl.config.services[ myServiceIdx ];
 		const uri = `http://127.0.0.1:${ myService.conf.port }/`;
-		const qURI = `${ uri }api`;
 
 		if ( !this._spec ) {
 			// We only want to load this once.
@@ -90,7 +89,6 @@ class TestCitoidRunner extends TestRunner {
 				} )
 				.then( () => ( {
 					uri,
-					qURI,
 					service: myService,
 					conf: this._runner._impl.config,
 					spec: this._spec
@@ -99,7 +97,6 @@ class TestCitoidRunner extends TestRunner {
 
 		return {
 			uri,
-			qURI,
 			service: myService,
 			conf: this._runner._impl.config,
 			spec: this._spec

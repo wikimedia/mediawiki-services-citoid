@@ -139,7 +139,7 @@ function initApp( options ) {
 	}
 
 	// set the CORS and CSP headers
-	app.all( '*', ( req, res, next ) => {
+	app.all( '/{*catchall}', ( req, res, next ) => {
 		if ( app.conf.cors !== false ) {
 			res.header( 'access-control-allow-origin', app.conf.cors );
 			res.header( 'access-control-allow-headers', 'accept, x-requested-with, content-type, user-agent, api-user-agent, accept-language, referer' );

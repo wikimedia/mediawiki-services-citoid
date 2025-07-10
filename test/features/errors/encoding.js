@@ -17,7 +17,7 @@ describe( 'encoding', () => {
 		}, ( err ) => {
 			assert.status( err, 400 );
 			assert.deepEqual( err.body.error,
-				'Invalid format requested f%3Cscript%3Ealert(1)%3B%3C%2Fscript%3E' );
+				'Invalid format requested f%3Cscript%3Ealert(1)%3B%3C' );
 		} ) );
 
 	it( 'javascript in doi', () => server.query( '10.1000/f<script>alert(1);</script>', 'mediawiki', 'en' )

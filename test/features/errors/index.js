@@ -11,31 +11,36 @@ describe( 'errors', () => {
 
 	after( () => server.stop() );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'missing search in query', () => fetch( `${ server.config.qURI }?format=mediawiki` )
-		.then( ( res ) => {
-			assert.status( res, 400 );
-		}, ( err ) => {
-			assert.checkError( err, 400, "No 'search' value specified" );
-		} ) );
-
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
-	it( 'missing format in query', () => fetch( `${ server.config.qURI }?search=123456` )
-		.then( ( res ) => {
-			assert.status( res, 400 );
-		}, ( err ) => {
-			assert.checkError( err, 400, "No 'format' value specified" );
-		} ) );
-
-	it( 'bad format in query', () => {
-		const format = 'badformat';
+	describe( 'deprecated api: ', () => {
 		// eslint-disable-next-line n/no-unsupported-features/node-builtins
-		return fetch( `${ server.config.qURI }?search=123456&format=${ format }` )
+		it( 'format only', () => fetch( `${ server.config.uri }api?format=mediawiki` )
 			.then( ( res ) => {
 				assert.status( res, 400 );
-			}, ( err ) => {
-				assert.checkError( err, 400, 'Invalid format requested ' + format );
-			} );
+				return res.json().then( ( body ) => {
+					assert.deepEqual( body.error, 'Api endpoint unavailable as of 2.0.0.; use path parameters instead.' );
+				} );
+			} ) );
+
+		// eslint-disable-next-line n/no-unsupported-features/node-builtins
+		it( 'search only', () => fetch( `${ server.config.uri }api?search=123456` )
+			.then( ( res ) => {
+				assert.status( res, 400 );
+				return res.json().then( ( body ) => {
+					assert.deepEqual( body.error, 'Api endpoint unavailable as of 2.0.0.; use path parameters instead.' );
+				} );
+			} ) );
+
+		it( 'valid search and format', () => {
+			const format = 'badformat';
+			// eslint-disable-next-line n/no-unsupported-features/node-builtins
+			return fetch( `${ server.config.uri }api?search=123456&format=${ format }` )
+				.then( ( res ) => {
+					assert.status( res, 400 );
+					return res.json().then( ( body ) => {
+						assert.deepEqual( body.error, 'Api endpoint unavailable as of 2.0.0.; use path parameters instead.' );
+					} );
+				} );
+		} );
 	} );
 
 	it( 'bad domain', () => server.query( 'example./com', 'mediawiki', 'en' )

@@ -22,16 +22,23 @@ function getBool( val ) {
 	return !!JSON.parse( String( val ).toLowerCase() );
 }
 
-function citoidRequest( req, res ) {
+/**
+ * Endpoint for retrieving citations based on search term or url.
+ */
+
+router.get( '/*format/*search', ( req, res, next ) => {
 	const cr = new CitoidRequest( req, app );
 
-	if ( !req.query.search ) {
-		res.status( 400 ).type( 'application/json' );
-		res.send( { error: "No 'search' value specified" } );
-		return;
-	} else if ( !req.query.format ) {
+	if ( !req.params.format || !req.params.format[ 0 ] ) {
 		res.status( 400 ).type( 'application/json' );
 		res.send( { error: "No 'format' value specified" } );
+		return;
+	} else if ( req.params.format[ 0 ] === '_info' ) {
+		next();
+		return;
+	} else if ( !req.params.search || !req.params.search[ 0 ] ) {
+		res.status( 400 ).type( 'application/json' );
+		res.send( { error: "No 'search' value specified" } );
 		return;
 	} else if ( !app.formats[ cr.format ] ) { // Use encoded format
 		res.status( 400 ).type( 'application/json' );
@@ -39,8 +46,8 @@ function citoidRequest( req, res ) {
 		res.send( { error: `Invalid format requested ${ cr.format }` || '' } );
 		return;
 	} else if ( getBool( cr.baseFields ) && !( getBool( cr.baseFields ) &&
-            // Ensure format supports baseFields - mediawiki & mediawiki-basefields formats only
-            ( cr.format === 'mediawiki' || cr.format === 'mediawiki-basefields' ) ) ) {
+		// Ensure format supports baseFields - mediawiki & mediawiki-basefields formats only
+		( cr.format === 'mediawiki' || cr.format === 'mediawiki-basefields' ) ) ) {
 		res.status( 400 ).type( 'application/json' );
 		// eslint-disable-next-line no-constant-binary-expression
 		res.send( { error: `Base fields are not supported for format ${ cr.format }` || '' } );
@@ -54,31 +61,16 @@ function citoidRequest( req, res ) {
 		res.status( cReq.response.responseCode ).type( app.formats[ cReq.format ] );
 		res.send( cReq.response.body );
 	} );
-}
+} );
 
 /**
- * GET /api
- * Endpoint for retrieving citations based on search term or url.
+ * Endpoint removal notification for api endpoint
  */
-router.get( '/api', ( req, res ) => citoidRequest( req, res ) );
 
-/**
- * GET /{format}/{query}
- * Endpoint for retrieving citations based on search term or url.
- * Restbase shim / backwards compatibility following restbase removal
- */
-router.get( '/*/*', ( req, res, next ) => {
-
-	// exclude _info/, _info/name etc.
-	if ( req.params.length < 2 || req.params[ 0 ] === '_info' ) {
-		return next();
-	}
-
-	req.query.format = req.params[ 0 ]; // pick format out of url
-	req.query.search = req.params[ 1 ]; // pick search out of url
-
-	return citoidRequest( req, res );
-
+router.get( '/api', ( req, res, next ) => {
+	res.status( 400 ).type( 'application/json' );
+	res.send( { error: 'Api endpoint unavailable as of 2.0.0.; use path parameters instead.' } );
+	next();
 } );
 
 module.exports = function ( appObj ) {

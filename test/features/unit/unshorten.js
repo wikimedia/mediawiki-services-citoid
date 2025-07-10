@@ -23,7 +23,7 @@ describe( 'lib/unshorten.js', () => {
 			conf: conf.services[ 0 ].conf,
 			citoid: { exporter: {} } // Dummy exporter
 		};
-		cr = new CitoidRequest( { query: { format: 'mediawiki' }, headers: {}, logger: console }, app );
+		cr = new CitoidRequest( { params: { format: [ 'mediawiki' ], search: [ 'placeholder' ] }, headers: {}, logger: console }, app );
 	} );
 
 	it( 'Returns successful Promise if already unshortened', () => {

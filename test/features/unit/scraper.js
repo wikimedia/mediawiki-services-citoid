@@ -2,13 +2,13 @@
 
 const assert = require( '../../utils/assert.js' );
 const scraper = require( '../../../lib/Scraper.js' );
+const Citation = require( '../../../lib/Citation.js' );
 const fs = require( 'fs' );
 const cheerio = require( 'cheerio' );
 
 describe( 'lib/Scraper.js functions: ', () => {
 
 	let result;
-	let expected;
 	const logger = { // Dummy logger
 		log: function () {}
 	};
@@ -19,87 +19,80 @@ describe( 'lib/Scraper.js functions: ', () => {
 		let citationObj = {};
 
 		it( 'gets doi from bePress string', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				bePress: {
 					doi: '10.100/example'
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'gets doi from bePress Array', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				bePress: {
 					doi: [ 'puppies', '10.100/example' ]
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'gets doi from highwirePress string', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				highwirePress: {
 					doi: '10.100/example'
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'gets doi from highwirePress Array', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				highwirePress: {
 					doi: [ 'puppies', '10.100/example' ]
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'gets doi from dublinCore string', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				dublinCore: {
 					identifier: '10.100/example'
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'gets doi from dublinCore Array', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				dublinCore: {
 					identifier: [ 'puppies', '10.100/example' ]
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 
 		it( 'Returns empty metadata from empty object', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {};
-			expected = {};
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, null );
 		} );
 
 		it( 'Multiple metadata types', () => {
-			citationObj = {};
+			citationObj = new Citation();
 			metadata = {
 				dublinCore: {
 					identifier: [ 'puppies', '10.100/example' ]
@@ -111,9 +104,8 @@ describe( 'lib/Scraper.js functions: ', () => {
 					doi: '10.100/example3'
 				}
 			};
-			expected = { doi: '10.100/example' };
 			result = scraper.matchIDs( citationObj, metadata, logger );
-			assert.deepEqual( result, expected );
+			assert.deepEqual( result.doi, '10.100/example' );
 		} );
 	} );
 

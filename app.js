@@ -175,6 +175,16 @@ function initApp( options ) {
 	// use the application/x-www-form-urlencoded parser
 	app.use( bodyParser.urlencoded( { extended: true } ) );
 
+	// Catch URI decoding errors
+	app.use( ( err, req, res, next ) => {
+		if ( err instanceof URIError && err.message && err.message.includes( 'Failed to decode param' ) ) {
+			res.status( 400 ).type( 'application/json' );
+			res.send( { error: 'Invalid URL encoding in request parameters' } );
+			return;
+		}
+		next( err );
+	} );
+
 	return BBPromise.resolve( app );
 
 }

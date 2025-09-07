@@ -47,6 +47,24 @@ describe( 'translator utilities: ', () => {
 			result = makeTranslator( 'language', fixLang ).translate( {}, { date: 'en_US' }, 'date' );
 			assert.deepEqual( result, expected );
 		} );
+
+		it( 'removes line feed characters from title field', () => {
+			expected = { title: 'Title with line breaks  removed' };
+			result = makeTranslator( 'title' ).translate( {}, { title: [ 'Title with\nline\rbreaks\r\nremoved' ] }, 'title' );
+			assert.deepEqual( result, expected );
+		} );
+
+		it( 'preserves line feed characters in abstractNote field', () => {
+			expected = { abstractNote: 'Abstract with\nline\rbreaks\r\npreserved' };
+			result = makeTranslator( 'abstractNote' ).translate( {}, { abstract: [ 'Abstract with\nline\rbreaks\r\npreserved' ] }, 'abstract' );
+			assert.deepEqual( result, expected );
+		} );
+
+		it( 'removes line feed characters from other fields', () => {
+			expected = { url: 'http://example.com/path with spaces' };
+			result = makeTranslator( 'url' ).translate( {}, { url: [ 'http://example.com/path\nwith\rspaces' ] }, 'url' );
+			assert.deepEqual( result, expected );
+		} );
 	} );
 
 	describe( 'makePagesTranslator function: ', () => {

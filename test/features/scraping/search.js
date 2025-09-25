@@ -80,6 +80,15 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			assert.checkCitation( res );
 			assert.deepEqual( res.body.length, 1 ); // One from Crossref
 		} ) );
+
+		// Test that empty results from crossRef returns 404
+		it( 'No results returns 404', () => server.query( 'User:L' ).then( ( res ) => {
+			assert.status( res, 404 );
+			assert.deepEqual( res.body, { error: 'No results for search term User:L' } );
+		}, ( err ) => {
+			assert.status( err, 404 );
+			assert.deepEqual( err.body, { error: 'No results for search term User:L' } );
+		} ) );
 	} );
 
 } );

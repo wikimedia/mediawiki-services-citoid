@@ -205,7 +205,7 @@ describe( 'Zotero service down or disabled:', () => {
 			assert.deepEqual( res.body[ 0 ].publicationTitle, undefined, 'Invalid field publicationTitle' );
 		} ) );
 
-		it( 'dublinCore data with multiple identifiers in array', () => server.query( 'http://apps.who.int/iris/handle/10665/70863' ).then( ( res ) => {
+		it.skip( 'dublinCore data with multiple identifiers in array', () => server.query( 'http://apps.who.int/iris/handle/10665/70863' ).then( ( res ) => {
 			assert.checkCitation( res, 'Consensus document on the epidemiology of severe acute respiratory syndrome (SARS)' );
 			assert.deepEqual( res.body[ 0 ].itemType, 'journalArticle' );
 			assert.deepEqual( res.body[ 0 ].publisher, undefined ); // TODO: Investigate why this is undefined

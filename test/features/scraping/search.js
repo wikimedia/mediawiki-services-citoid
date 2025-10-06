@@ -97,6 +97,14 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 				assert.deepEqual( res.body.length, 2 );
 			} );
 		} );
+
+		it( 'should only get open search results as url cannot be extracted', () => {
+			const citationTemplate = '<ref>{{cite+web+|url=http://www.example.com+|access-date=January+22,+2022}}</ref>';
+			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {
+				assert.status( res, 200 );
+				assert.deepEqual( res.body.length, 1 );
+			} );
+		} );
 	} );
 
 } );

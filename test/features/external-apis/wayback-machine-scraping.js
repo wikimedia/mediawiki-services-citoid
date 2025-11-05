@@ -36,6 +36,10 @@ describe( 'Wayback fallback scraping tests: ', () => {
 			assert.status( res, 200 ); // TODO: Ideally should be 415
 		} ) );
 
+		it( 'Doi to PDF', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.status( res, 200 );
+		} ) );
+
 	} );
 
 	describe( 'Zotero disabled', () => {
@@ -60,6 +64,40 @@ describe( 'Wayback fallback scraping tests: ', () => {
 
 		it( 'Dead PDF url', () => server.query( 'https://www.foxtel.com.au/content/dam/foxtel/support/pdf/channel-packs.pdf' ).then( ( res ) => {
 			assert.status( res, 200 ); // TODO: Ideally should be 415
+		} ) );
+
+		it( 'Doi to PDF', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.status( res, 200 );
+		} ) );
+
+	} );
+
+	describe( 'Zotero enabled', () => {
+
+		const server = new Server();
+		before( () => server.start( { zotero: true, wayback: true } ) );
+		after( () => server.stop() );
+
+		it( 'Does not find archive url for live page', () => server.query( 'http://example.com' ).then( ( res ) => {
+			assert.status( res, 200 );
+			assert.checkCitation( res, 'Example Domain' );
+			assert.deepEqual( !!res.body[ 0 ].archiveDate, false );
+			assert.deepEqual( !!res.body[ 0 ].archiveUrl, false, 'archiveUrl present' );
+		} ) );
+
+		it( 'Dead url that 404s', () => server.query( 'http://emlab.berkeley.edu/~dahn/C103/index.html' ).then( ( res ) => {
+			assert.status( res, 200 );
+			assert.checkCitation( res, 'David Ahn - Economics/Mathematics C103' );
+			assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
+			assert.deepEqual( !!res.body[ 0 ].accessDate, true, 'No accessDate present' );
+		} ) );
+
+		it( 'Dead PDF url', () => server.query( 'https://www.foxtel.com.au/content/dam/foxtel/support/pdf/channel-packs.pdf' ).then( ( res ) => {
+			assert.status( res, 200 ); // TODO: Ideally should be 415
+		} ) );
+
+		it( 'Doi to PDF', () => server.query( '10.26656/fr.2017.4(s1).s12' ).then( ( res ) => {
+			assert.status( res, 200 );
 		} ) );
 
 	} );

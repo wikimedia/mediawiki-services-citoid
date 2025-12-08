@@ -90,6 +90,14 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			assert.deepEqual( err.body, { error: 'No results for search term User:L' } );
 		} ) );
 
+		it( 'should fail for whitespace-only query', () => server.query( ' ' ).then( ( res ) => {
+			assert.status( res, 400 );
+			assert.deepEqual( res.body, { error: "No 'search' value specified" } );
+		}, ( err ) => {
+			assert.status( err, 400 );
+			assert.deepEqual( err.body, { error: "No 'search' value specified" } );
+		} ) );
+
 		it( 'should extract URL from citation template with pipes', () => {
 			const citationTemplate = '<ref>{{cite web |url=http://www.example.com |access-date=January 22, 2022}}</ref>';
 			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {

@@ -36,7 +36,7 @@ router.get( '/*format/*search', ( req, res, next ) => {
 	} else if ( req.params.format[ 0 ] === '_info' ) {
 		next();
 		return;
-	} else if ( !req.params.search || !req.params.search[ 0 ] ) {
+	} else if ( !req.params.search || !req.params.search[ 0 ].trim() ) {
 		res.status( 400 ).type( 'application/json' );
 		res.send( { error: "No 'search' value specified" } );
 		return;

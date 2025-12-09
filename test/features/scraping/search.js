@@ -13,12 +13,12 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		after( () => server.stop() );
 
-		// Previously gave error; now passes to search
 		it( 'spaces in url missing http:// and www', () => {
 			const url = 'example.com/spaces in url';
 			return server.query( url, 'mediawiki', 'en' )
 				.then( ( res ) => {
 					assert.status( res, 200 );
+					assert.deepEqual( res.body.length, 1 ); // One from Crossref as url 404s
 				} );
 		} );
 

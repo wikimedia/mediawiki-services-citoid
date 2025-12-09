@@ -12,7 +12,7 @@ describe( 'uses zotero', () => {
 	after( () => server.stop() );
 
 	describe( 'URL', () => {
-		it( 'example domain', () => server.query( 'example.com' ).then( ( res ) => {
+		it( 'missing protocol', () => server.query( 'example.com' ).then( ( res ) => {
 			assert.status( res, 200 );
 			assert.checkZotCitation( res, 'Example Domain' );
 		} ) );

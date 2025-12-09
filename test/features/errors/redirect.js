@@ -8,7 +8,7 @@ describe( 'redirects', () => {
 
 	const server = new Server();
 
-	before( () => server.start( { maxRedirects: 5 } ) );
+	before( () => server.start( { maxRedirects: 5, zotero: false } ) );
 
 	after( () => server.stop() );
 

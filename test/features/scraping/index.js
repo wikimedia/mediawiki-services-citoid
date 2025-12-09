@@ -28,4 +28,20 @@ describe( 'Native scraper:', () => {
 		assert.deepEqual( res.body[ 0 ].itemType, 'newspaperArticle' );
 	} ) );
 
+	it( 'missing protocol', () => server.query( 'example.com' ).then( ( res ) => {
+		assert.checkCitation( res, 'Example Domain' );
+		assert.status( res, 200 );
+		assert.deepEqual( res.body.length, 1 ); // One result from url, none from crossref
+	} ) );
+
+	it( 'case sensitive url', () => server.query( 'https://www.mediawiki.org/wiki/Citoid/Enabling_Citoid_on_your_wiki' ).then( ( res ) => {
+		assert.checkCitation( res, 'Citoid/Enabling Citoid on your wiki - MediaWiki' );
+		assert.status( res, 200 );
+	} ) );
+
+	it( 'case sensitive url missing protocol', () => server.query( 'www.mediawiki.org/wiki/Citoid/Enabling_Citoid_on_your_wiki' ).then( ( res ) => {
+		assert.checkCitation( res, 'Citoid/Enabling Citoid on your wiki - MediaWiki' );
+		assert.status( res, 200 );
+		assert.deepEqual( res.body.length, 1 ); // One result from url, none from crossref
+	} ) );
 } );

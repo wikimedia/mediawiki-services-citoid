@@ -49,7 +49,7 @@ describe( 'translator utilities: ', () => {
 		} );
 
 		it( 'removes line feed characters from title field', () => {
-			expected = { title: 'Title with line breaks  removed' };
+			expected = { title: 'Title with line breaks removed' };
 			result = makeTranslator( 'title' ).translate( {}, { title: [ 'Title with\nline\rbreaks\r\nremoved' ] }, 'title' );
 			assert.deepEqual( result, expected );
 		} );

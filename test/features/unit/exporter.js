@@ -408,6 +408,13 @@ describe( 'lib/Exporter.js functions: ', () => {
 				assert.deepEqual( result, expected );
 			} );
 
+			it( 'Correctly adds valid ISSN with spaces', () => {
+				issn = ' 0317-8471 ';
+				expected = { ISSN: [ '0317-8471' ] };
+				result = exporter.fixISSN( { ISSN: issn } );
+				assert.deepEqual( result, expected );
+			} );
+
 			it( 'Correctly adds valid ISSN with X', () => {
 				issn = '2434-561X';
 				expected = { ISSN: [ '2434-561X' ] };
@@ -433,6 +440,59 @@ describe( 'lib/Exporter.js functions: ', () => {
 				issn = '123456789';
 				expected = {};
 				result = exporter.fixISSN( { ISSN: issn } );
+				assert.deepEqual( result, expected );
+			} );
+		} );
+
+		describe( 'validateISSN: ', () => {
+			let issn;
+
+			it( 'Correctly ignores None ISSN', () => {
+				issn = 'None';
+				expected = false;
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly adds valid ISSN', () => {
+				issn = '0317-8471';
+				expected = '0317-8471';
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly adds valid ISSN with spaces', () => {
+				issn = ' 0317-8471 ';
+				expected = '0317-8471';
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly adds valid ISSN with X', () => {
+				issn = '2434-561X';
+				expected = '2434-561X';
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly adds valid ISSN with x', () => {
+				issn = '2434-561x';
+				expected = '2434-561x';
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly ignores invalid ISSN without hyphen', () => {
+				issn = '12345678';
+				expected = false;
+				result = exporter.validateISSN( issn );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'Correctly ignores invalid ISSN', () => {
+				issn = '123456789';
+				expected = false;
+				result = exporter.validateISSN( issn );
 				assert.deepEqual( result, expected );
 			} );
 		} );

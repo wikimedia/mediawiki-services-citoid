@@ -116,13 +116,13 @@ describe( 'Wayback fallback scraping tests: ', () => {
 		} ) );
 
 		it( 'Dead url that 404s', () => server.query( 'http://emlab.berkeley.edu/~dahn/C103/index.html' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'Dead PDF url', () => server.query( 'https://www.foxtel.com.au/content/dam/foxtel/support/pdf/channel-packs.pdf' ).then( ( res ) => {
-			assert.status( res, 404 ); // TODO: Ideally should be 415
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );

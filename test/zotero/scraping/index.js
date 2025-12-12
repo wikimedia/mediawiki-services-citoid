@@ -87,7 +87,7 @@ describe( 'uses zotero', () => {
 			const url = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Coloring_page_for_Wikipedia_Day_2019_in_NYC.pdf';
 			return server.query( url, 'mediawiki', 'en' )
 				.then( ( res ) => {
-					assert.status( res, 415 );
+					assert.fail();
 				}, ( err ) => {
 					assert.status( err, 415 );
 					assert.deepEqual( err.body.error, 'The remote document is not in a supported format' );

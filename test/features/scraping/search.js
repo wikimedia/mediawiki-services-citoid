@@ -39,7 +39,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			}, ( err, res ) => {
-				assert.status( err, 200 );
+				assert.fail();
 			} ) );
 
 		it( 'Open search for Schrodinger', () => server.query( 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)' ).then( ( res ) => {
@@ -83,16 +83,14 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		// Test that empty results from crossRef returns 404
 		it( 'No results returns 404', () => server.query( 'User:L' ).then( ( res ) => {
-			assert.status( res, 404 );
-			assert.deepEqual( res.body, { error: 'No results for search term User:L' } );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 			assert.deepEqual( err.body, { error: 'No results for search term User:L' } );
 		} ) );
 
 		it( 'should fail for whitespace-only query', () => server.query( ' ' ).then( ( res ) => {
-			assert.status( res, 400 );
-			assert.deepEqual( res.body, { error: "No 'search' value specified" } );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 			assert.deepEqual( err.body, { error: "No 'search' value specified" } );

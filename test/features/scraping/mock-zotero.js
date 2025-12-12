@@ -23,7 +23,7 @@ describe( 'mock Zotero service that cannot export', () => {
 
 	it( 'Get error for bibtex export', () => server.query( 'http://www.example.com', 'bibtex', 'en' )
 		.then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.deepEqual( err.body.error, 'Unable to serve bibtex format at this time' );
 			assert.status( err, 404 );

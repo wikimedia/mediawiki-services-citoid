@@ -32,20 +32,20 @@ describe( 'Exports into non mediawiki formats:', () => {
 		} ) );
 
 		it( '404', () => server.query( url, 'bibtex' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid DOI', () => server.query( doi, 'bibtex' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid address', () => server.query( localhost, 'bibtex', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err, res ) => {
 				assert.status( err, 400 );
 			} ) );
@@ -73,20 +73,20 @@ describe( 'Exports into non mediawiki formats:', () => {
 		} ) );
 
 		it( '404', () => server.query( url, 'zotero' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid DOI ', () => server.query( doi, 'zotero' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid address', () => server.query( localhost, 'zotero', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err, res ) => {
 				assert.status( err, 400 );
 			} ) );
@@ -113,20 +113,20 @@ describe( 'Exports into non mediawiki formats:', () => {
 		} ) );
 
 		it( '404', () => server.query( url, 'bibtex' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid DOI', () => server.query( doi, 'wikibase' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
 
 		it( 'invalid address', () => server.query( localhost, 'wikibase', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err, res ) => {
 				assert.status( err, 400 );
 			} ) );

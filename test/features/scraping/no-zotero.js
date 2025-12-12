@@ -26,7 +26,7 @@ describe( 'Zotero service down or disabled:', () => {
 			const pmid = '14656957';
 			return server.query( pmid, 'mediawiki', 'en' )
 				.then( ( res ) => {
-					assert.status( res, 404 );
+					assert.fail();
 				}, ( err ) => {
 					assert.checkError( err, 404 ); // Exact error may differ as may be interpreted as pmcid or pmid
 				} );
@@ -66,7 +66,7 @@ describe( 'Zotero service down or disabled:', () => {
 		} ) );
 
 		it.skip( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
@@ -114,7 +114,7 @@ describe( 'Zotero service down or disabled:', () => {
 
 		it( 'Get error for bibtex export', () => server.query( 'http://www.example.com', 'bibtex', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 404 );
+				assert.fail();
 			}, ( err ) => {
 				assert.deepEqual( err.body.error, 'Unable to serve bibtex format at this time' );
 				assert.status( err, 404 );
@@ -221,7 +221,7 @@ describe( 'Zotero service down or disabled:', () => {
 
 		it( 'Only PMCID but no PMID or DOI; does not scrape', () => server.query( 'PMC2096233',
 			'mediawiki', 'en', 'true' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.checkError( err, 404 );
 		} ) );
@@ -292,7 +292,7 @@ describe( 'Zotero service down or disabled:', () => {
 		} ) );
 
 		it.skip( 'requires JS to be enabled', () => server.query( 'http://www.sciencemag.org/content/303/5656/387.short' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 		} ) );
@@ -340,7 +340,7 @@ describe( 'Zotero service down or disabled:', () => {
 
 		it( 'Get error for bibtex export', () => server.query( 'http://www.example.com', 'bibtex', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 404 );
+				assert.fail();
 			}, ( err ) => {
 				assert.deepEqual( err.body.error, 'Unable to serve bibtex format at this time' );
 				assert.status( err, 404 );
@@ -416,7 +416,7 @@ describe( 'Zotero service down or disabled:', () => {
 
 		it( 'No PMID or DOI; does not scrape', () => server.query( 'PMC2096233',
 			'mediawiki', 'en', 'true' ).then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.checkError( err, 404 );
 		} ) );

@@ -13,7 +13,7 @@ describe( 'encoding', () => {
 
 	it( 'javascript in format', () => server.query( 'http://www.example.com', 'f<script>alert(1);</script>', 'en' )
 		.then( ( res ) => {
-			assert.status( res, 400 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 			assert.deepEqual( err.body.error,
@@ -22,7 +22,7 @@ describe( 'encoding', () => {
 
 	it( 'javascript in doi', () => server.query( '10.1000/f<script>alert(1);</script>', 'mediawiki', 'en' )
 		.then( ( res ) => {
-			assert.status( res, 404 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 404 );
 			assert.deepEqual( err.body.error,
@@ -32,7 +32,7 @@ describe( 'encoding', () => {
 
 	it( 'json in format', () => server.query( 'http://www.example.com/', '{"json":"object"}', 'en' )
 		.then( ( res ) => {
-			assert.status( res, 400 );
+			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 			assert.deepEqual( err.body.error,
@@ -43,7 +43,7 @@ describe( 'encoding', () => {
 		const url = 'http://www.example.com/spaces in url';
 		return server.query( url, 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 404 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 404 );
 				assert.deepEqual( err.body.error, 'Unable to load URL ' + encodeURI( url ) );
@@ -54,7 +54,7 @@ describe( 'encoding', () => {
 		const url = 'www.example.com/spaces in url';
 		return server.query( url, 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 404 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 404 );
 				assert.deepEqual( err.body.error, 'Unable to load URL http://' + encodeURI( url ) );

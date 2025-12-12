@@ -42,14 +42,14 @@ describe( 'redirects', () => {
 
 		it( 'redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );
 
 		it( 'redir-to-redir-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );
@@ -58,12 +58,12 @@ describe( 'redirects', () => {
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			}, ( err ) => {
-				assert.status( err, 200 );
+				assert.fail();
 			} ) );
 
 		it( 'redir-to-redir-to-redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );
@@ -74,7 +74,7 @@ describe( 'redirects', () => {
 				.then( ( res ) => {
 					assert.status( res, 200 );
 				}, ( err ) => {
-					assert.status( err, 200 );
+					assert.fail();
 				} );
 		} );
 
@@ -84,14 +84,13 @@ describe( 'redirects', () => {
 				.then( ( res ) => {
 					assert.status( res, 200 );
 				}, ( err ) => {
-					assert.status( err, 200 );
-					assert.deepEqual( err.body.error, 'Unable to load URL ' + url );
+					assert.fail();
 				} );
 		} );
 
 		it( 'five-redirect-max-by-default-over', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero', 'mediawiki', 'en' )
 			.then( ( res ) => {
-				assert.status( res, 400 );
+				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );

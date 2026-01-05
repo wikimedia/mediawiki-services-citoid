@@ -18,7 +18,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			return server.query( url, 'mediawiki', 'en' )
 				.then( ( res ) => {
 					assert.status( res, 200 );
-					assert.deepEqual( res.body.length, 1 ); // One from Crossref as url 404s
+					assert.deepEqual( res.body.length, 2 ); // Two from Crossref as url 404s
 				} );
 		} );
 
@@ -44,17 +44,17 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		it( 'Open search for Schrodinger', () => server.query( 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)' ).then( ( res ) => {
 			assert.checkCitation( res, 'Discussion of Probability Relations between Separated Systems' );
-			assert.deepEqual( res.body.length, 1 ); // One from Crossref
+			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 		} ) );
 
 		it( 'Open search containing <> works; but gets wrong results from crossRef', () => server.query( 'Title. Available at: <http://www.example.com>. Accessed on May 19, 1998.' ).then( ( res ) => {
 			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 2 ); // One from url, one from Crossref
+			assert.deepEqual( res.body.length, 3 ); // One from url, two from Crossref
 		} ) );
 
 		it( 'Open search with www but no protocol', () => server.query( 'Title. Available at: <www.example.com>. Accessed on May 19, 1998.' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.deepEqual( res.body.length, 2 ); // One from url, one from Crossref
+			assert.deepEqual( res.body.length, 3 ); // One from url, two from Crossref
 		} ) );
 
 		// 403 from url, but was previously able to get metadatafrom DOI - no longer in crossref
@@ -66,19 +66,19 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 		// Gets correct data from url, incorrect data from crossRef
 		it( 'Open search with url', () => server.query( 'Frederico Girosi; Gary King, 2006, ‘Cause of Death Data’, http://hdl.handle.net/1902.1/UOVMCPSWOL UNF:3:9JU+SmVyHgwRhAKclQ85Cg== IQSS Dataverse Network [Distributor] V3 [Version].' ).then( ( res ) => {
 			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 1 ); // One from from Crossref
+			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 		} ) );
 
 		// Gets item from single search term
 		it( 'Open search with single term', () => server.query( 'Mediawiki' ).then( ( res ) => {
 			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 1 ); // One from Crossref
+			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 		} ) );
 
 		// Gets item from single search term
 		it( 'Harry Potter', () => server.query( 'Mediawiki' ).then( ( res ) => {
 			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 1 ); // One from Crossref
+			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 		} ) );
 
 		// Test that empty results from crossRef returns 404
@@ -100,7 +100,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			const citationTemplate = '<ref>{{cite web |url=http://www.example.com |access-date=January 22, 2022}}</ref>';
 			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {
 				assert.status( res, 200 );
-				assert.deepEqual( res.body.length, 2 );
+				assert.deepEqual( res.body.length, 3 ); // One from url, two from Crossref
 			} );
 		} );
 
@@ -108,7 +108,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			const citationTemplate = '<ref>{{cite+web+|url=http://www.example.com+|access-date=January+22,+2022}}</ref>';
 			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {
 				assert.status( res, 200 );
-				assert.deepEqual( res.body.length, 1 );
+				assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 			} );
 		} );
 	} );

@@ -107,7 +107,9 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 			const search = 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)';
 			promise = crossref.search( search, request );
 			return promise.then( ( results ) => {
-				assert.deepEqual( results.DOI, '10.1017/s0305004100013554' );
+				assert.ok( Array.isArray( results ) );
+				assert.ok( results.length > 0 );
+				assert.deepEqual( results[ 0 ].DOI, '10.1017/s0305004100013554' );
 			} );
 		} );
 	} );

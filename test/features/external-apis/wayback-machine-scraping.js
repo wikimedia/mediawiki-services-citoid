@@ -8,7 +8,7 @@ describe( 'Wayback fallback scraping tests: ', () => {
 	describe( 'Zotero inaccessible', () => {
 
 		const server = new Server();
-		before( () => server.start( { zotero: 1971, wayback: true } ) );
+		before( () => server.start( { zoteroPort: 1971, wayback: true } ) );
 		after( () => server.stop() );
 
 		it( 'Does not find archive url for live page', () => server.query( 'http://example.com' ).then( ( res ) => {
@@ -27,7 +27,7 @@ describe( 'Wayback fallback scraping tests: ', () => {
 
 		it( 'Dead url that 404s but redirects- scrapes redirected page', () => server.query( 'http://www.vangoghmuseum.nl/vgm/index.jsp?page=2122&lang=en' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.checkCitation( res, 'Hét museum over Vincent van Gogh in Amsterdam' );
+			assert.checkCitation( res, 'Het museum over Vincent van Gogh in Amsterdam' );
 			assert.deepEqual( !!res.body[ 0 ].archiveDate, false );
 			assert.deepEqual( !!res.body[ 0 ].accessDate, true, 'No accessDate present' );
 		} ) );
@@ -80,14 +80,14 @@ describe( 'Wayback fallback scraping tests: ', () => {
 
 		it( 'Does not find archive url for live page', () => server.query( 'http://example.com' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.checkCitation( res, 'Example Domain' );
+			assert.checkZotCitation( res, 'Example Domain' );
 			assert.deepEqual( !!res.body[ 0 ].archiveDate, false );
 			assert.deepEqual( !!res.body[ 0 ].archiveUrl, false, 'archiveUrl present' );
 		} ) );
 
 		it( 'Dead url that 404s', () => server.query( 'http://emlab.berkeley.edu/~dahn/C103/index.html' ).then( ( res ) => {
 			assert.status( res, 200 );
-			assert.checkCitation( res, 'David Ahn - Economics/Mathematics C103' );
+			assert.checkZotCitation( res, 'David Ahn - Economics/Mathematics C103' );
 			assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
 			assert.deepEqual( !!res.body[ 0 ].accessDate, true, 'No accessDate present' );
 		} ) );

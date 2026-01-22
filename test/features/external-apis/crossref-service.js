@@ -2,12 +2,12 @@
 
 const fs = require( 'fs' );
 const yaml = require( 'js-yaml' );
-const preq = require( 'preq' );
 
 const assert = require( '../../utils/assert.js' );
 const CrossRefService = require( '../../../lib/external-apis/CrossRefService.js' );
 const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
 const logStream = require( '../../utils/logStream.js' );
+const { issueRequest } = require( '../../../lib/util.js' );
 
 describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 
@@ -30,7 +30,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 
 		request = {
 			logger: new Logger( logConf ),
-			issueRequest: preq // use preq as standin for issueRequest, as they're the same except some headers will be missing, i.e. user-agent
+			issueRequest: issueRequest
 		};
 	} );
 

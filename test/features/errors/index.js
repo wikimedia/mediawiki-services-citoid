@@ -79,7 +79,7 @@ describe( 'errors', () => {
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
-				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68%27',
+				assert.checkError( err, 404, 'Unable to load URL https://doi.org/10.1007/11926078_68\'',
 					'Unexpected error message ' + err.body.error );
 			} );
 	} );
@@ -115,6 +115,18 @@ describe( 'errors', () => {
 				assert.status( err, 415 );
 				assert.deepEqual( err.body.error, 'The remote document is not in a supported format' );
 				assert.deepEqual( err.body.contentType, 'application/pdf' );
+			} );
+	} );
+
+	it( 'JSON contentType unsupported', () => {
+		const url = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/5/query?where=STATE=\'34\'&outFields=NAME,STATE,PLACE,AREALAND,AREAWATER,LSADC,CENTLAT,CENTLON&orderByFields=PLACE&returnGeometry=false&returnTrueCurves=false&f=json';
+		return server.query( url, 'mediawiki', 'en' )
+			.then( ( res ) => {
+				assert.status( res, 415 );
+			}, ( err ) => {
+				assert.status( err, 415 );
+				assert.deepEqual( err.body.error, 'The remote document is not in a supported format' );
+				assert.deepEqual( err.body.contentType, 'application/json' );
 			} );
 	} );
 

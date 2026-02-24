@@ -37,7 +37,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 	describe( 'polite config', () => {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
+			conf = yaml.load( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};
@@ -66,7 +66,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 	describe( 'anonymous config', () => {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
+			conf = yaml.load( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};
@@ -95,7 +95,7 @@ describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 	describe( 'open search function', () => {
 
 		before( () => {
-			conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
+			conf = yaml.load( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 			app = {
 				conf: conf.services[ 0 ].conf
 			};

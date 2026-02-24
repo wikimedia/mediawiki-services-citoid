@@ -24,7 +24,7 @@ describe( 'availability API :', function () {
 	before( () => {
 
 		app = {
-			conf: yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) )
+			conf: yaml.load( fs.readFileSync( __dirname + '/../../../config.yaml' ) )
 		};
 
 		// Dummy logger

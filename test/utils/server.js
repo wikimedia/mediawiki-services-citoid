@@ -14,7 +14,7 @@ class TestCitoidRunner extends TestRunner {
 
 		// set up the inital configuration
 		this.originalConfig = {
-			conf: yaml.safeLoad( fs.readFileSync( `${ __dirname }/../../config.yaml` ) )
+			conf: yaml.load( fs.readFileSync( `${ __dirname }/../../config.yaml` ) )
 		};
 		this.originalConfig.conf.num_workers = 0;
 		this.originalConfig.conf.logging = {}; // Dummy logger, suppresses logging during tests

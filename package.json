@@ -31,7 +31,7 @@
 		"iconv-lite": "0.7.2",
 		"ip": "2.0.1",
 		"isbn3": "2.0.5",
-		"js-yaml": "^3.13.1",
+		"js-yaml": "4.1.1",
 		"preq": "0.5.14",
 		"service-runner": "6.0.0",
 		"striptags": "3.2.0",

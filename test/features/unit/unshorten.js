@@ -18,7 +18,7 @@ describe( 'lib/unshorten.js', () => {
 	let citation;
 
 	before( () => {
-		conf = yaml.safeLoad( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
+		conf = yaml.load( fs.readFileSync( __dirname + '/../../../config.yaml' ) );
 		app = {
 			conf: conf.services[ 0 ].conf,
 			citoid: { exporter: {} } // Dummy exporter

@@ -11,7 +11,6 @@ describe( 'express app', () => {
 
 	after( () => server.stop() );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should get robots.txt', () => fetch( `${ server.config.uri }robots.txt` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 200 );
@@ -20,7 +19,6 @@ describe( 'express app', () => {
 			} );
 		} ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'get landing page', () => fetch( server.config.uri )
 		.then( ( res ) => {
 			// check that the response is present
@@ -35,7 +33,6 @@ describe( 'express app', () => {
 		if ( server.config.service.conf.cors === false ) {
 			return true;
 		}
-		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		return fetch( `${ server.config.uri }robots.txt` )
 			.then( ( res ) => {
 				assert.deepEqual( res.status, 200 );
@@ -49,7 +46,6 @@ describe( 'express app', () => {
 		if ( server.config.service.conf.csp === false ) {
 			return true;
 		}
-		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		return fetch( `${ server.config.uri }robots.txt` )
 			.then( ( res ) => {
 				assert.deepEqual( res.status, 200 );

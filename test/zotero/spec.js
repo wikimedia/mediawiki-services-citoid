@@ -251,7 +251,6 @@ describe( 'Swagger spec', () => {
 
 	after( () => server.stop() );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'get the spec', () => fetch( `${ server.config.uri }?spec` )
 		.then( ( res ) => {
 			assert.status( 200 );
@@ -281,7 +280,7 @@ describe( 'Swagger spec', () => {
 						} else {
 							uri = `${ uri }?${ new URLSearchParams( testCase.request.query ).toString() }`;
 						}
-						// eslint-disable-next-line n/no-unsupported-features/node-builtins, mocha/no-return-and-callback
+						// eslint-disable-next-line mocha/no-return-and-callback
 						return fetch( uri, testCase.request )
 							.then( ( res ) => {
 								assert.status( res, testCase.response.status );
@@ -297,14 +296,12 @@ describe( 'Swagger spec', () => {
 			parallel( 'Monitoring routes', routeTests );
 		} ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should expose valid OpenAPI spec', () => fetch( `${ server.config.uri }?spec` )
 		.then( ( res ) => res.json() )
 		.then( ( spec ) => {
 			assert.deepEqual( { errors: [] }, validator.validate( spec ), 'Spec must have no validation errors' );
 		} ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'spec validation', () => fetch( `${ server.config.uri }?spec` )
 		.then( ( res ) => res.json() )
 		.then( ( spec ) => {

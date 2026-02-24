@@ -1,5 +1,5 @@
 version: v4
-base: docker-registry.wikimedia.org/nodejs22-slim
+base: docker-registry.wikimedia.org/nodejs24-slim
 lives:
   in: /srv/service
 runs:
@@ -7,11 +7,11 @@ runs:
 
 variants:
   build:
-    base: docker-registry.wikimedia.org/nodejs22-slim
+    base: docker-registry.wikimedia.org/nodejs24-slim
     copies: [local]
-    apt: { packages: [git, python-is-python3, pkg-config, build-essential] }
+    apt: { packages: [git, python-is-python3, pkg-config, build-essential, ca-certificates] }
     node: { requirements: [package.json, package-lock.json]}
-    runs: { environment: { LINK: g++ } }
+    runs: { environment: { LINK: g++, NODE_OPTIONS: --use-openssl-ca } }
     entrypoint: [npm, ci]
   development:
     includes: [build]

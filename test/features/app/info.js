@@ -19,7 +19,6 @@ describe( 'service information', () => {
 	// common function used for generating requests
 	// and checking their return values
 	function checkRet( fieldName ) {
-		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		return fetch( infoUri + fieldName )
 			.then( ( res ) => {
 				// check the returned Content-Type header
@@ -38,14 +37,12 @@ describe( 'service information', () => {
 
 	it( 'should get the service version', () => checkRet( 'version' ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should redirect to the service home page', () => fetch( `${ infoUri }home`, { redirect: 'manual' } )
 		.then( ( res ) => {
 			// check the status
 			assert.status( res, 301 );
 		} ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should get the service info', () => fetch( infoUri )
 		.then( ( res ) => {
 			// check the status
@@ -62,7 +59,6 @@ describe( 'service information', () => {
 			} );
 		} ) );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should fail to get the service info for invalid endpoint', () => fetch( `${ infoUri }zzz` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 404 );

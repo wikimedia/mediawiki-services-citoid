@@ -61,7 +61,7 @@ describe( 'encoding', () => {
 			} );
 	} );
 
-	it( 'Handles weird encoding', () => fetch( `${ server.config.uri }/mediawiki/web.xml%C0%80.jsp` ).then( ( res ) => { // eslint-disable-line n/no-unsupported-features/node-builtins
+	it( 'Handles weird encoding', () => fetch( `${ server.config.uri }/mediawiki/web.xml%C0%80.jsp` ).then( ( res ) => {
 		assert.status( res, 400 );
 	} ) );
 

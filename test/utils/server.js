@@ -71,7 +71,6 @@ class TestCitoidRunner extends TestRunner {
 
 		if ( !this._spec ) {
 			// We only want to load this once.
-			// eslint-disable-next-line n/no-unsupported-features/node-builtins
 			fetch( `${ uri }?spec` )
 				.then( ( res ) => {
 					if ( !res.ok ) {
@@ -124,7 +123,6 @@ class TestCitoidRunner extends TestRunner {
 
 		const url = `${ this.config.uri }${ format }/${ search }`;
 
-		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		return fetch( url, {
 			headers: {
 				'accept-language': language

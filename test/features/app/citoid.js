@@ -11,7 +11,6 @@ describe( 'citoid routing', () => {
 
 	after( () => server.stop() );
 
-	// eslint-disable-next-line n/no-unsupported-features/node-builtins
 	it( 'should not get deprecated query style request for uri', () => fetch( `${ server.config.uri }api?format=mediawiki&search=http%3A%2F%2Fwww.example.com` )
 		.then( ( res ) => {
 			assert.deepEqual( res.status, 400 );

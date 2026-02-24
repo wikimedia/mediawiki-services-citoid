@@ -3,10 +3,10 @@
 const assert = require( '../../utils/assert.js' );
 const fs = require( 'fs' );
 const logStream = require( '../../utils/logStream' );
-const preq = require( 'preq' );
 const WaybackMachine = require( '../../../lib/external-apis/WaybackMachine.js' );
 const yaml = require( 'js-yaml' );
 const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
+const { issueRequest } = require( '../../../lib/util.js' );
 
 describe( 'availability API :', function () {
 
@@ -38,7 +38,7 @@ describe( 'availability API :', function () {
 
 		request = {
 			logger: new Logger( logConf ),
-			issueRequest: preq // use preq as standin for issueRequest, as they're the same except some headers will be missing, i.e. user-agent
+			issueRequest: issueRequest
 		};
 
 	} );

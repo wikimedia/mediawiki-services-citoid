@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require( 'http' );
+http.setGlobalProxyFromEnv();
 const BBPromise = require( 'bluebird' );
 const express = require( 'express' );
 const compression = require( 'compression' );

@@ -10,8 +10,9 @@ variants:
     base: docker-registry.wikimedia.org/nodejs22-slim
     copies: [local]
     apt: { packages: [git, python-is-python3, pkg-config, build-essential] }
-    node: { requirements: [package.json]}
+    node: { requirements: [package.json, package-lock.json]}
     runs: { environment: { LINK: g++ } }
+    entrypoint: [npm, ci]
   development:
     includes: [build]
     entrypoint: [node, server.js]

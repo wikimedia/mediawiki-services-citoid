@@ -27,4 +27,5 @@ variants:
     copies: [prep]
     node: { env: production }
     apt: { packages: [ca-certificates] }
+    runs: { environment: { NODE_OPTIONS: --use-openssl-ca } }
     entrypoint: [node, server.js]

@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require( 'http' );
-http.setGlobalProxyFromEnv();
 const BBPromise = require( 'bluebird' );
 const express = require( 'express' );
 const compression = require( 'compression' );
@@ -97,6 +96,7 @@ function initApp( options ) {
 			}
 			process.env.NO_PROXY += app.conf.zoteroInterface;
 		}
+		http.setGlobalProxyFromEnv();
 	}
 
 	// set up header whitelisting for logging

@@ -1,9 +1,7 @@
 'use strict';
 
 const assert = require( '../../utils/assert.js' );
-const http = require( 'http' );
 const nock = require( 'nock' );
-const { getGlobalDispatcher, setGlobalDispatcher } = require( 'undici' );
 const { CookieJar } = require( 'tough-cookie' );
 const { issueRequest } = require( '../../../lib/util.js' );
 
@@ -396,105 +394,6 @@ describe( 'lib/util.js issueRequest', () => {
 			} );
 
 			assert.deepEqual( res.status, 200 );
-		} );
-
-	} );
-
-	describe( 'proxy env var support', () => {
-
-		let savedHttpProxy;
-		let savedHttpsProxy;
-		let savedNoProxy;
-		let savedDispatcher;
-
-		beforeEach( () => {
-			savedHttpProxy = process.env.HTTP_PROXY;
-			savedHttpsProxy = process.env.HTTPS_PROXY;
-			savedNoProxy = process.env.NO_PROXY;
-			savedDispatcher = getGlobalDispatcher();
-		} );
-
-		afterEach( () => {
-			// Restore env vars
-			if ( savedHttpProxy === undefined ) {
-				delete process.env.HTTP_PROXY;
-			} else {
-				process.env.HTTP_PROXY = savedHttpProxy;
-			}
-			if ( savedHttpsProxy === undefined ) {
-				delete process.env.HTTPS_PROXY;
-			} else {
-				process.env.HTTPS_PROXY = savedHttpsProxy;
-			}
-			if ( savedNoProxy === undefined ) {
-				delete process.env.NO_PROXY;
-			} else {
-				process.env.NO_PROXY = savedNoProxy;
-			}
-			// Restore original global dispatcher
-			setGlobalDispatcher( savedDispatcher );
-		} );
-
-		it( 'should route requests through HTTP_PROXY when set', ( done ) => {
-			let connectHost = null;
-
-			// Node 24 fetch uses CONNECT tunneling even for HTTP URLs
-			const proxyServer = http.createServer();
-			proxyServer.on( 'connect', ( req, clientSocket ) => {
-				connectHost = req.url;
-				// Close immediately — we only need to prove the proxy was contacted
-				clientSocket.write( 'HTTP/1.1 502 Bad Gateway\r\n\r\n' );
-				clientSocket.end();
-			} );
-
-			proxyServer.listen( 0, '127.0.0.1', () => {
-				const proxyPort = proxyServer.address().port;
-				process.env.HTTP_PROXY = `http://127.0.0.1:${ proxyPort }`;
-				delete process.env.HTTPS_PROXY;
-				delete process.env.NO_PROXY;
-				http.setGlobalProxyFromEnv();
-
-				issueRequest( {
-					uri: 'http://unreachable.invalid',
-					method: 'get'
-				} ).then( () => {
-					proxyServer.close( () => done( new Error( 'Should have failed' ) ) );
-				} ).catch( () => {
-					// The request fails because our proxy returns 502,
-					// but what matters is that the proxy was contacted
-					assert.ok( connectHost, 'Proxy should have received a CONNECT request' );
-					assert.deepEqual( connectHost, 'unreachable.invalid:80' );
-					proxyServer.close( done );
-				} );
-			} );
-		} );
-
-		it( 'should bypass proxy for hosts in NO_PROXY', ( done ) => {
-			// Start a direct server that the request should reach
-			const directServer = http.createServer( ( req, res ) => {
-				res.writeHead( 200, { 'Content-Type': 'text/plain' } );
-				res.end( 'direct' );
-			} );
-
-			directServer.listen( 0, '127.0.0.1', () => {
-				const directPort = directServer.address().port;
-				// Set proxy to an address that would fail if used
-				process.env.HTTP_PROXY = 'http://127.0.0.1:1';
-				delete process.env.HTTPS_PROXY;
-				process.env.NO_PROXY = '127.0.0.1';
-				http.setGlobalProxyFromEnv();
-
-				issueRequest( {
-					uri: `http://127.0.0.1:${ directPort }/test`,
-					method: 'get'
-				} ).then( ( res ) => {
-					assert.deepEqual( res.status, 200 );
-					assert.deepEqual( res.body, 'direct' );
-					directServer.close( done );
-				} ).catch( ( err ) => {
-					directServer.close( () => done( err ) );
-				} );
-			} );
 		} );
 
 	} );

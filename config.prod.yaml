@@ -82,8 +82,6 @@ services:
       zoteroUseProxy: false
       # Contact e-mail address. Used for making CrossRef and PubMed requests
       mailto: example@example.com
-      # Force certain requests to return with partial data using this timeout in milliseconds
-      timeout: 5000
       mwapi_req:
         method: post
         uri: https://mw-api-int-ro.discovery.wmnet:4446/w/api.php

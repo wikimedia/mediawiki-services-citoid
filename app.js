@@ -12,6 +12,7 @@ const packageInfo = require( './package.json' );
 const yaml = require( 'js-yaml' );
 const addShutdown = require( 'http-shutdown' );
 const path = require( 'path' );
+const { EnvHttpProxyAgent, setGlobalDispatcher } = require( 'undici' );
 
 /**
  * Creates an express app and initialises it
@@ -96,7 +97,7 @@ function initApp( options ) {
 			}
 			process.env.NO_PROXY += app.conf.zoteroInterface;
 		}
-		http.setGlobalProxyFromEnv();
+		setGlobalDispatcher( new EnvHttpProxyAgent() );
 	}
 
 	// set up header whitelisting for logging

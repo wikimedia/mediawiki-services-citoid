@@ -79,6 +79,7 @@ function initApp( options ) {
 	// set outgoing proxy
 	if ( app.conf.proxy ) {
 		process.env.HTTP_PROXY = app.conf.proxy;
+		process.env.HTTPS_PROXY = app.conf.proxy;
 		// if there is a list of domains which should
 		// not be proxied, set it
 		if ( app.conf.no_proxy_list ) {

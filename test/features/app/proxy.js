@@ -127,4 +127,28 @@ describe( 'proxy with HTTPS-only CONNECT', () => {
 		} );
 	} );
 
+	it( 'should use CONNECT for HTTPS targets', () => {
+		let httpsConnectSeen = false;
+		const origConnect = proxyServer.listeners( 'connect' )[ 0 ];
+		const connectTracker = ( req, clientSocket, head ) => {
+			const parts = req.url.split( ':' );
+			const targetPort = parseInt( parts[ 1 ] ) || 443;
+			if ( targetPort === 443 ) {
+				httpsConnectSeen = true;
+			}
+			origConnect( req, clientSocket, head );
+		};
+		proxyServer.removeListener( 'connect', origConnect );
+		proxyServer.on( 'connect', connectTracker );
+
+		return server.query( 'https://example.com' )
+			.catch( () => {} )
+			.then( () => {
+				proxyServer.removeListener( 'connect', connectTracker );
+				proxyServer.on( 'connect', origConnect );
+				assert.ok( httpsConnectSeen,
+					'CONNECT should have been used for HTTPS target' );
+			} );
+	} );
+
 } );

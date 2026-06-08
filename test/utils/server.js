@@ -4,7 +4,6 @@ const extend = require( 'extend' );
 const fs = require( 'fs' );
 const yaml = require( 'js-yaml' );
 
-const P = require( 'bluebird' );
 const TestRunner = require( 'service-runner/test/TestServer' );
 
 class TestCitoidRunner extends TestRunner {
@@ -35,19 +34,22 @@ class TestCitoidRunner extends TestRunner {
 
 		if ( this._running ) {
 			console.log( 'The test server is already running. Skipping start.' );
-			return P.resolve( this._services );
+			return Promise.resolve( this._services );
 		}
 
 		return this._runner.start( config.conf )
-			.tap( ( result ) => {
+			.then( ( result ) => {
 				this._running = true;
 				this._services = result;
+				return result;
 			} )
 			.catch( ( e ) => {
 				if ( this._startupRetriesRemaining > 0 && /EADDRINUSE/.test( e.message ) ) {
 					console.log( 'Execution of the previous test might have not finished yet. Retry startup' );
 					this._startupRetriesRemaining--;
-					return P.delay( 1000 ).then( () => this.start() );
+					return new Promise( ( resolve ) => {
+						setTimeout( resolve, 1000 );
+					} ).then( () => this.start() );
 				}
 				throw e;
 			} );

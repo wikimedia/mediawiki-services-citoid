@@ -14,7 +14,8 @@
 			{
 				"args": "none"
 			}
-		]
+		],
+		"unicorn/no-useless-promise-resolve-reject": "off"
 	},
 	"settings": {
 		"jsdoc": {

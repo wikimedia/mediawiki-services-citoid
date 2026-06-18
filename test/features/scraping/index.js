@@ -2,6 +2,7 @@
 
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
+const nock = require( 'nock' );
 
 describe( 'Native scraper:', () => {
 
@@ -10,6 +11,10 @@ describe( 'Native scraper:', () => {
 	before( () => server.start( { zotero: false } ) );
 
 	after( () => server.stop() );
+
+	afterEach( () => {
+		nock.cleanAll();
+	} );
 
 	// Regression: phab:T388517 Fake url but with info in crossRef that can be pulled from doi in url - uses requestFromURL & crossRef
 	it.skip( 'doi in url with query parameters', () => server.query( 'http://www.example.com/10.1086/378695?uid=3739832&uid=2&uid=4&uid=3739256&sid=21105503736473' ).then( ( res ) => {
@@ -21,12 +26,29 @@ describe( 'Native scraper:', () => {
 		assert.deepEqual( res.body[ 0 ].author.length, 1 );
 	} ) );
 
-	it( 'Adds extra parameters for archive.org', () => server.query( 'https://web.archive.org/web/20131021085548/http://www.nbcnews.com/health/75-percent-breast-milk-bought-online-contaminated-analysis-shows-8C11421794' ).then( ( res ) => {
-		assert.checkCitation( res, 'Much breast milk bought online is contaminated, analysis shows - NBC News.com' );
-		assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
-		assert.deepEqual( !!res.body[ 0 ].archiveUrl, true );
-		assert.deepEqual( res.body[ 0 ].itemType, 'newspaperArticle' );
-	} ) );
+	it( 'Adds extra parameters for archive.org', () => {
+		const archivePath = '/web/20131021085548/http://www.nbcnews.com/health/75-percent-breast-milk-bought-online-contaminated-analysis-shows-8C11421794';
+		const archiveHtml = `
+		<html>
+			<head>
+				<meta property="og:type" content="article">
+				<meta property="og:title" content="Much breast milk bought online is contaminated, analysis shows">
+			</head>
+		</html>`;
+
+		nock( 'https://web.archive.org' )
+			.head( archivePath )
+			.reply( 200, undefined, { 'Content-Type': 'text/html' } )
+			.get( archivePath )
+			.reply( 200, archiveHtml, { 'Content-Type': 'text/html' } );
+
+		return server.query( 'https://web.archive.org' + archivePath ).then( ( res ) => {
+			assert.checkCitation( res, 'Much breast milk bought online is contaminated, analysis shows' );
+			assert.deepEqual( !!res.body[ 0 ].archiveDate, true );
+			assert.deepEqual( !!res.body[ 0 ].archiveUrl, true );
+			assert.deepEqual( res.body[ 0 ].itemType, 'newspaperArticle' );
+		} );
+	} );
 
 	it( 'missing protocol', () => server.query( 'example.com' ).then( ( res ) => {
 		assert.checkCitation( res, 'Example Domain' );

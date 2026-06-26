@@ -558,4 +558,39 @@ describe( 'util/util.js issueRequest', () => {
 
 	} );
 
+	describe( 'size limit', () => {
+
+		it( 'returns 413 when content-length header exceeds size limit', async () => {
+			const base = 'https://example.com';
+			nock( base )
+				.get( '/large-header' )
+				.reply( 200, 'Some body', { 'content-length': '1000' } );
+
+			const res = await issueRequest( {
+				uri: `${ base }/large-header`,
+				logger: { log: () => {} }
+			}, 500 );
+
+			assert.deepEqual( res.status, 413 );
+			assert.deepEqual( res.body, { size: 1000 } );
+		} );
+
+		it( 'returns 413 when response stream exceeds size limit', async () => {
+			const base = 'https://example.com';
+			const largeBody = 'A'.repeat( 700 );
+			nock( base )
+				.get( '/large-body' )
+				.reply( 200, largeBody );
+
+			const res = await issueRequest( {
+				uri: `${ base }/large-body`,
+				logger: { log: () => {} }
+			}, 500 );
+
+			assert.deepEqual( res.status, 413 );
+			assert.deepEqual( res.body.size >= 500 && res.body.size <= 1000, true );
+		} );
+
+	} );
+
 } );

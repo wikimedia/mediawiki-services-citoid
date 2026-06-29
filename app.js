@@ -5,7 +5,7 @@ const BBPromise = require( 'bluebird' );
 const express = require( 'express' );
 const compression = require( 'compression' );
 const bodyParser = require( 'body-parser' );
-const fs = BBPromise.promisifyAll( require( 'fs' ) );
+const fs = require( 'fs' );
 const sUtil = require( './lib/util' );
 const apiUtil = require( './lib/api-util' );
 const packageInfo = require( './package.json' );
@@ -18,7 +18,7 @@ const { EnvHttpProxyAgent, setGlobalDispatcher } = require( 'undici' );
  * Creates an express app and initialises it
  *
  * @param {Object} options the options to initialise the app with
- * @return {bluebird} the promise resolving to the app object
+ * @return {Promise} the promise resolving to the app object
  */
 function initApp( options ) {
 
@@ -120,6 +120,7 @@ function initApp( options ) {
 	}
 	if ( app.conf.spec.constructor !== Object ) {
 		try {
+			// eslint-disable-next-line security/detect-non-literal-fs-filename
 			app.conf.spec = yaml.load( fs.readFileSync( app.conf.spec ) );
 		} catch ( e ) {
 			app.logger.log( 'warn/spec', `Could not load the spec: ${ e }` );
@@ -188,7 +189,7 @@ function initApp( options ) {
 		next( err );
 	} );
 
-	return BBPromise.resolve( app );
+	return Promise.resolve( app );
 
 }
 
@@ -197,55 +198,58 @@ function initApp( options ) {
  *
  * @param {Application} app the application object to load routes into
  * @param {string} dir routes folder
- * @return {bluebird} a promise resolving to the app object
+ * @return {Promise} a promise resolving to the app object
  */
 function loadRoutes( app, dir ) {
 
 	// recursively load routes from .js files under routes/
-	return fs.readdirAsync( dir ).map( ( fname ) => BBPromise.try( () => {
-		let route;
-		const resolvedPath = path.resolve( dir, fname );
-		const isDirectory = fs.statSync( resolvedPath ).isDirectory();
-		if ( isDirectory ) {
-			loadRoutes( app, resolvedPath );
-		} else if ( /\.js$/.test( fname ) ) {
+	// eslint-disable-next-line security/detect-non-literal-fs-filename
+	return fs.promises.readdir( dir ).then( ( files ) => Promise.all(
+		files.map( ( fname ) => BBPromise.try( () => {
+			let route;
+			const resolvedPath = path.resolve( dir, fname );
+			// eslint-disable-next-line security/detect-non-literal-fs-filename
+			const isDirectory = fs.statSync( resolvedPath ).isDirectory();
+			if ( isDirectory ) {
+				loadRoutes( app, resolvedPath );
+			} else if ( /\.js$/.test( fname ) ) {
+				// import the route file
+				// eslint-disable-next-line security/detect-non-literal-require
+				route = require( `${ dir }/${ fname }` );
+				return route( app );
+			}
 			// import the route file
 			// eslint-disable-next-line security/detect-non-literal-require
-			route = require( `${ dir }/${ fname }` );
+			route = require( `${ __dirname }/routes/${ fname }` );
 			return route( app );
-		}
-		// import the route file
-		// eslint-disable-next-line security/detect-non-literal-require
-		route = require( `${ __dirname }/routes/${ fname }` );
-		return route( app );
-	} ).then( ( route ) => {
-		if ( route === undefined ) {
-			return undefined;
-		}
-		// check that the route exports the object we need
-		if ( route.constructor !== Object || !route.path || !route.router ||
+		} ).then( ( route ) => {
+			if ( route === undefined ) {
+				return undefined;
+			}
+			// check that the route exports the object we need
+			if ( route.constructor !== Object || !route.path || !route.router ||
                 !( route.api_version || route.skip_domain ) ) {
-			throw new TypeError( `routes/${ fname } does not export the correct object!` );
-		}
-		// normalise the path to be used as the mount point
-		if ( route.path[ 0 ] !== '/' ) {
-			route.path = `/${ route.path }`;
-		}
-		if ( route.path[ route.path.length - 1 ] !== '/' ) {
-			route.path = `${ route.path }/`;
-		}
-		if ( !route.skip_domain ) {
-			route.path = `/:domain/v${ route.api_version }${ route.path }`;
-		}
-		// wrap the route handlers with Promise.try() blocks
-		sUtil.wrapRouteHandlers( route, app );
-		// all good, use that route
-		app.use( route.path, route.router );
-	} ) ).then( () => {
+				throw new TypeError( `routes/${ fname } does not export the correct object!` );
+			}
+			// normalise the path to be used as the mount point
+			if ( route.path[ 0 ] !== '/' ) {
+				route.path = `/${ route.path }`;
+			}
+			if ( route.path[ route.path.length - 1 ] !== '/' ) {
+				route.path = `${ route.path }/`;
+			}
+			if ( !route.skip_domain ) {
+				route.path = `/:domain/v${ route.api_version }${ route.path }`;
+			}
+			// wrap the route handlers with Promise.try() blocks
+			sUtil.wrapRouteHandlers( route, app );
+			// all good, use that route
+			app.use( route.path, route.router );
+		} ) ) ) ).then( () => {
 		// catch errors
 		sUtil.setErrorHandler( app );
 		// route loading is now complete, return the app object
-		return BBPromise.resolve( app );
+		return Promise.resolve( app );
 	} );
 
 }
@@ -254,7 +258,7 @@ function loadRoutes( app, dir ) {
  * Creates and start the service's web server
  *
  * @param {Application} app the app object to use in the service
- * @return {bluebird} a promise creating the web server
+ * @return {Promise} a promise creating the web server
  */
 function createServer( app ) {
 
@@ -262,7 +266,7 @@ function createServer( app ) {
 	// attaches the app to it, and starts accepting
 	// incoming client requests
 	let server;
-	return new BBPromise( ( resolve ) => {
+	return new Promise( ( resolve ) => {
 		server = http.createServer( app ).listen(
 			app.conf.port,
 			app.conf.interface,

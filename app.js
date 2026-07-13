@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require( 'http' );
-const BBPromise = require( 'bluebird' );
 const express = require( 'express' );
 const compression = require( 'compression' );
 const bodyParser = require( 'body-parser' );
@@ -205,7 +204,8 @@ function loadRoutes( app, dir ) {
 	// recursively load routes from .js files under routes/
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	return fs.promises.readdir( dir ).then( ( files ) => Promise.all(
-		files.map( ( fname ) => BBPromise.try( () => {
+		// eslint-disable-next-line es-x/no-promise-try
+		files.map( ( fname ) => Promise.try( () => {
 			let route;
 			const resolvedPath = path.resolve( dir, fname );
 			// eslint-disable-next-line security/detect-non-literal-fs-filename

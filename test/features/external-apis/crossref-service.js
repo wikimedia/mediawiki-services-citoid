@@ -7,7 +7,7 @@ const assert = require( '../../utils/assert.js' );
 const CrossRefService = require( '../../../lib/external-apis/CrossRefService.js' );
 const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
 const logStream = require( '../../utils/logStream.js' );
-const { issueRequest } = require( '../../../lib/util.js' );
+const { issueRequest } = require( '../../../lib/utils/util.js' );
 
 describe( 'lib/externalAPIs/CrossRefService.js functions: ', () => {
 

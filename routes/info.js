@@ -1,6 +1,6 @@
 'use strict';
 
-const sUtil = require( '../lib/util' );
+const sUtil = require( '../lib/utils/util' );
 
 /**
  * The main router object

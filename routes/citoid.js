@@ -1,6 +1,6 @@
 'use strict';
 
-const sUtil = require( '../lib/util' );
+const sUtil = require( '../lib/utils/util' );
 const CitoidRequest = require( '../lib/CitoidRequest.js' );
 const CitoidService = require( '../lib/CitoidService' );
 

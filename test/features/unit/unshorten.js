@@ -4,7 +4,7 @@ const fs = require( 'fs' );
 const yaml = require( 'js-yaml' );
 
 const assert = require( '../../utils/assert.js' );
-const unshorten = require( '../../.././lib/unshorten.js' );
+const unshorten = require( '../../../lib/utils/unshorten.js' );
 
 const CitoidRequest = require( '../../.././lib/CitoidRequest.js' );
 

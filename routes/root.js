@@ -1,7 +1,7 @@
 'use strict';
 
-const sUtil = require( '../lib/util' );
-const swaggerUi = require( '../lib/swagger-ui' );
+const sUtil = require( '../lib/utils/util' );
+const swaggerUi = require( '../lib/utils/swaggerUI' );
 
 /**
  * The main router object

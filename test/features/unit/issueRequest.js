@@ -3,9 +3,9 @@
 const assert = require( '../../utils/assert.js' );
 const nock = require( 'nock' );
 const { CookieJar } = require( 'tough-cookie' );
-const { issueRequest } = require( '../../../lib/util.js' );
+const { issueRequest } = require( '../../../lib/utils/util.js' );
 
-describe( 'lib/util.js issueRequest', () => {
+describe( 'util/util.js issueRequest', () => {
 
 	afterEach( () => {
 		nock.cleanAll();

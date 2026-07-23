@@ -6,7 +6,7 @@ const logStream = require( '../../utils/logStream' );
 const WaybackMachine = require( '../../../lib/external-apis/WaybackMachine.js' );
 const yaml = require( 'js-yaml' );
 const Logger = require( '../../../node_modules/service-runner/lib/logger.js' );
-const { issueRequest } = require( '../../../lib/util.js' );
+const { issueRequest } = require( '../../../lib/utils/util.js' );
 
 describe( 'availability API :', function () {
 

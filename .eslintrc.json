@@ -21,7 +21,6 @@
 		"jsdoc": {
 			"preferredTypes": {
 				"Application": "Application",
-				"bluebird": "bluebird",
 				"Citation": "Citation",
 				"Request": "Request",
 				"Router": "Router",

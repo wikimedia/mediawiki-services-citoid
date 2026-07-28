@@ -296,7 +296,7 @@ function createServer( app ) {
  * object to it.
  *
  * @param {Object} options
- * @return {bluebird}
+ * @return {Promise}
  */
 module.exports = ( options ) => initApp( options )
 	.then( ( app ) => loadRoutes( app, `${ __dirname }/routes` ) )

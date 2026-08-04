@@ -107,9 +107,9 @@ class TestCitoidRunner extends TestRunner {
 	/**
 	 * Wrapper to query the test server api using the restful pattern
 	 *
-	 * @param  {string} search     search input
-	 * @param  {string} format     requested format
-	 * @param  {string} language   language code
+	 * @param {string} search search input
+	 * @param {string} format requested format
+	 * @param {string} language language code
 	 * @return {Promise}
 	 */
 	query( search, format, language ) {

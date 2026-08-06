@@ -9,17 +9,18 @@ describe( 'lib/utils/hostIsAllowed.js', () => {
 		log: function () {}
 	};
 
-	it( 'fails on invalid URLs', async () => {
-		try {
-			await hostIsAllowed.hostIsAllowed( 'localhost', {}, loggerMock );
-			assert.fail( 'Should throw a TypeError' );
-		} catch ( err ) {
-			assert.equal( err.name, 'TypeError' );
-		}
-	} );
-
 	it( 'checks allowed hosts successfully', async () => {
 		const urlFixtures = [
+			{
+				input: 'nohostname',
+				expected: false,
+				msg: 'blocks if missing hostname'
+			},
+			{
+				input: 'http://www.example.com%20withspace',
+				expected: false,
+				msg: 'blocks invalid hostnames'
+			},
 			{
 				input: 'ftp://123.123.123.123',
 				expected: false,

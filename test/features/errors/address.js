@@ -46,6 +46,13 @@ describe( 'address restrictions', () => {
 			assert.status( err, 400 );
 		} ) );
 
+	it( 'url with space in hostname', () => server.query( 'http://www.example.com withspace', 'mediawiki', 'en' )
+		.then( ( res ) => {
+			assert.fail();
+		}, ( err ) => {
+			assert.status( err, 400 );
+		} ) );
+
 	it( 'acceptable domain, with scheme', () => server.query( 'https://en.wikipedia.org/w/index.php?title=Internet_Assigned_Numbers_Authority&oldid=664999436', 'mediawiki', 'en' )
 		.then( ( res ) => {
 			assert.status( res, 200 );

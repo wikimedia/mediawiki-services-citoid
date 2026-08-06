@@ -27,6 +27,21 @@ describe( 'lib/utils/hostIsAllowed.js', () => {
 				msg: 'blocks unallowed protocol'
 			},
 			{
+				input: 'mailto:name@example.com',
+				expected: false,
+				msg: 'blocks hostname-less mailto'
+			},
+			{
+				input: 'file:///etc/passwd',
+				expected: false,
+				msg: 'blocks hostname-less file'
+			},
+			{
+				input: 'data:text/html;base64',
+				expected: false,
+				msg: 'blocks hostname-less data'
+			},
+			{
 				input: 'http://192.168.0.0',
 				expected: false,
 				msg: 'blocks private IPs'

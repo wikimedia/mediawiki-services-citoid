@@ -48,6 +48,14 @@ describe( 'errors', () => {
 			assert.deepEqual( err.body.error, 'Invalid host supplied' );
 		} ) );
 
+	it( 'mailto: url', () => server.query( 'mailto:name@example.com', 'mediawiki', 'en' )
+		.then( ( res ) => {
+			assert.fail();
+		}, ( err ) => {
+			assert.status( err, 400 );
+			assert.deepEqual( err.body.error, 'Invalid host supplied' );
+		} ) );
+
 	it( 'resource has http errors', () => {
 		const url = 'https://en.wikipedia.org/404';
 		return server.query( url, 'mediawiki', 'en' )

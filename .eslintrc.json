@@ -22,6 +22,7 @@
 			"preferredTypes": {
 				"Application": "Application",
 				"Citation": "Citation",
+				"CitoidRequest": "CitoidRequest",
 				"Request": "Request",
 				"Router": "Router",
 				"ServiceRunner": "ServiceRunner"

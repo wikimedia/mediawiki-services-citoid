@@ -112,7 +112,7 @@ describe( 'lib/Scraper.js functions: ', () => {
 	describe( 'parsing', () => {
 
 		it( 'should scrape meta tag charset content', ( done ) => {
-			const results = scraper.contentTypeFromBody( cheerio.load( fs.readFileSync( 'test/utils/static/metacharset.html' ) ) );
+			const results = scraper.getCharsetFromBody( cheerio.load( fs.readFileSync( 'test/utils/static/metacharset.html' ) ) );
 			if ( results !== 'iso-8859-1' ) {
 				throw new Error( 'Expected to iso-8859-1; got ' + results );
 			}

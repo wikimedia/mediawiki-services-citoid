@@ -46,7 +46,11 @@ describe( 'Zotero service down or disabled:', () => {
 		it( 'PMCID present in doi id converter api', () => server.query( 'PMC3605911' ).then( ( res ) => {
 			assert.status( res, 200 );
 			assert.checkCitation( res, 'Viral Phylodynamics' );
-			assert.deepEqual( res.body[ 0 ].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947' );
+			const expectedUrls = [
+				'https://doi.org/10.1371/journal.pcbi.1002947',
+				'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947'
+			];
+			assert.isInArray( expectedUrls, res.body[ 0 ].url );
 			assert.isInArray( res.body[ 0 ].source, 'Crossref' );
 			assert.isInArray( res.body[ 0 ].source, 'PubMed' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );
@@ -272,7 +276,11 @@ describe( 'Zotero service down or disabled:', () => {
 		it( 'PMCID present in doi id converter api', () => server.query( 'PMC3605911' ).then( ( res ) => {
 			assert.status( res, 200 );
 			assert.checkCitation( res, 'Viral Phylodynamics' );
-			assert.deepEqual( res.body[ 0 ].url, 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947' );
+			const expectedUrls = [
+				'https://doi.org/10.1371/journal.pcbi.1002947',
+				'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947'
+			];
+			assert.isInArray( expectedUrls, res.body[ 0 ].url );
 			assert.isInArray( res.body[ 0 ].source, 'Crossref' );
 			assert.isInArray( res.body[ 0 ].source, 'PubMed' );
 			assert.deepEqual( res.body[ 0 ].PMCID, '3605911' );

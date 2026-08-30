@@ -1,18 +1,50 @@
 'use strict';
 
 const parallel = require( 'mocha.parallel' );
-const assert = require( '../utils/assert.js' );
-const Server = require( '../utils/server.js' );
-const URI = require( 'swagger-router' ).URI;
+const assert = require( '../../utils/assert.js' );
+const Server = require( '../../utils/server.js' );
 const OpenAPISchemaValidator = require( 'openapi-schema-validator' ).default;
 const validator = new OpenAPISchemaValidator( { version: 3 } );
+
+class PathTemplate {
+	constructor( pattern ) {
+		this.segments = pattern.split( '/' ).filter( ( s ) => s !== '' ).map( ( seg ) => {
+			const m = /^\{(\+?)([^}]+)\}$/.exec( seg );
+			return m ? { name: m[ 2 ], reserved: m[ 1 ] === '+' } : seg;
+		} );
+	}
+
+	expand( params ) {
+		params = params || {};
+		return this.segments.map( ( seg ) => typeof seg === 'string' ?
+			seg :
+			String( params[ seg.name ] === undefined ? '' : params[ seg.name ] ) );
+	}
+
+	toString( options ) {
+		const params = ( options && options.params ) || {};
+		let str = '';
+		for ( const seg of this.segments ) {
+			if ( typeof seg === 'string' ) {
+				str += `/${ encodeURIComponent( seg ) }`;
+			} else if ( params[ seg.name ] === undefined ) {
+				return str;
+			} else if ( seg.reserved ) {
+				str += `/${ params[ seg.name ] }`;
+			} else {
+				str += `/${ encodeURIComponent( params[ seg.name ] ) }`;
+			}
+		}
+		return str;
+	}
+}
 
 let spec = null;
 const server = new Server();
 
 function validateExamples( pathStr, defParams, mSpec ) {
 
-	const uri = new URI( pathStr, {}, true );
+	const uri = new PathTemplate( pathStr );
 
 	if ( !mSpec ) {
 		try {
@@ -74,7 +106,7 @@ function constructTests( spec ) {
 			if ( {}.hasOwnProperty.call( p, 'x-monitor' ) && !p[ 'x-monitor' ] ) {
 				return;
 			}
-			const uri = new URI( pathStr, {}, true );
+			const uri = new PathTemplate( pathStr );
 			if ( !p[ 'x-amples' ] ) {
 				ret.push( constructTestCase(
 					pathStr,

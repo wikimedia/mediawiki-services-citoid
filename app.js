@@ -6,7 +6,6 @@ const compression = require( 'compression' );
 const bodyParser = require( 'body-parser' );
 const fs = require( 'fs' );
 const sUtil = require( './lib/utils/util' );
-const apiUtil = require( './lib/utils/apiUtil' );
 const packageInfo = require( './package.json' );
 const yaml = require( 'js-yaml' );
 const addShutdown = require( 'http-shutdown' );
@@ -109,9 +108,6 @@ function initApp( options ) {
 	}
 	// eslint-disable-next-line security/detect-non-literal-regexp
 	app.conf.log_header_whitelist = new RegExp( `^(?:${ app.conf.log_header_whitelist.map( ( item ) => item.trim() ).join( '|' ) })$`, 'i' );
-
-	// set up the request templates for the APIs
-	apiUtil.setupApiTemplates( app );
 
 	// set up the spec
 	if ( !app.conf.spec ) {

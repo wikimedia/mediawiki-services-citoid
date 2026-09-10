@@ -343,6 +343,34 @@ describe( 'util/util.js issueRequest', () => {
 			assert.deepEqual( seen, [ 60000, 1234 ] );
 		} );
 
+		it( 'rejects with 502 on a connection failure', async () => {
+			const base = 'https://example.com';
+			const cause = new Error( 'socket hang up' );
+			cause.code = 'ECONNRESET';
+			nock( base )
+				.get( '/reset' )
+				.replyWithError( cause );
+
+			await assert.fails( issueRequest( { uri: `${ base }/reset` } ), ( err ) => {
+				assert.deepEqual( err.name, 'HTTPError' );
+				assert.deepEqual( err.status, 502 );
+			} );
+		} );
+
+		it( 'rejects with 504 on an undici timeout error', async () => {
+			const base = 'https://example.com';
+			const cause = new Error( 'Headers Timeout Error' );
+			cause.code = 'UND_ERR_HEADERS_TIMEOUT';
+			nock( base )
+				.get( '/headers-timeout' )
+				.replyWithError( cause );
+
+			await assert.fails( issueRequest( { uri: `${ base }/headers-timeout` } ), ( err ) => {
+				assert.deepEqual( err.name, 'HTTPError' );
+				assert.deepEqual( err.status, 504 );
+			} );
+		} );
+
 		it( 'resolves when the response is faster than the timeout', async () => {
 			const base = 'https://example.com';
 			nock( base )

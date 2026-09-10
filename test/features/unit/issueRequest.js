@@ -8,6 +8,7 @@ const { issueRequest } = require( '../../../lib/utils/util.js' );
 describe( 'util/util.js issueRequest', () => {
 
 	afterEach( () => {
+		nock.abortPendingRequests();
 		nock.cleanAll();
 	} );
 
@@ -292,6 +293,68 @@ describe( 'util/util.js issueRequest', () => {
 				}
 			} );
 
+		} );
+
+	} );
+
+	describe( 'timeout', () => {
+
+		it( 'rejects with 504 when the response is slower than the timeout', async () => {
+			const base = 'https://example.com';
+			nock( base )
+				.get( '/slow' )
+				.delay( 500 )
+				.reply( 200, 'Too late' );
+
+			try {
+				await issueRequest( {
+					uri: `${ base }/slow`,
+					timeout: 50
+				} );
+				assert.fail( 'Should have thrown HTTPError' );
+			} catch ( err ) {
+				assert.deepEqual( err.name, 'HTTPError' );
+				assert.deepEqual( err.status, 504 );
+				assert.ok( err.detail.includes( 'timed out' ), 'detail should say it timed out' );
+			}
+		} );
+
+		it( 'uses a 60 second timeout unless one is given', async () => {
+			const base = 'https://example.com';
+			const original = AbortSignal.timeout;
+			const seen = [];
+			AbortSignal.timeout = ( ms ) => {
+				seen.push( ms );
+				return original.call( AbortSignal, ms );
+			};
+			nock( base )
+				.get( '/default' )
+				.reply( 200, 'OK' )
+				.get( '/custom' )
+				.reply( 200, 'OK' );
+
+			try {
+				await issueRequest( { uri: `${ base }/default` } );
+				await issueRequest( { uri: `${ base }/custom`, timeout: 1234 } );
+			} finally {
+				AbortSignal.timeout = original;
+			}
+
+			assert.deepEqual( seen, [ 60000, 1234 ] );
+		} );
+
+		it( 'resolves when the response is faster than the timeout', async () => {
+			const base = 'https://example.com';
+			nock( base )
+				.get( '/fast' )
+				.reply( 200, 'In time' );
+
+			const res = await issueRequest( {
+				uri: `${ base }/fast`,
+				timeout: 5000
+			} );
+			assert.deepEqual( res.status, 200 );
+			assert.deepEqual( res.body, 'In time' );
 		} );
 
 	} );

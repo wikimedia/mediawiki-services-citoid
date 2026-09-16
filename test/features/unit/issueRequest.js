@@ -359,6 +359,75 @@ describe( 'util/util.js issueRequest', () => {
 
 	} );
 
+	describe( 'rate limiting', () => {
+
+		const base = 'https://example.com';
+
+		it( 'retries once after a 429 and returns the second response', async () => {
+			const scope = nock( base )
+				.get( '/limited' )
+				.reply( 429, '', { 'retry-after': '0' } )
+				.get( '/limited' )
+				.reply( 200, 'Second time lucky' );
+
+			const res = await issueRequest( { uri: `${ base }/limited` } );
+			assert.deepEqual( res.status, 200 );
+			assert.deepEqual( res.body, 'Second time lucky' );
+			assert.ok( scope.isDone(), 'makes both requests' );
+		} );
+
+		it( 'gives up after a second 429', async () => {
+			const scope = nock( base )
+				.get( '/limited' )
+				.reply( 429, '', { 'retry-after': '0' } )
+				.get( '/limited' )
+				.reply( 429, '', { 'retry-after': '0' } )
+				.get( '/limited' )
+				.reply( 200, 'Never reached' );
+
+			try {
+				await issueRequest( { uri: `${ base }/limited` } );
+				assert.fail( 'Should have thrown HTTPError' );
+			} catch ( err ) {
+				assert.deepEqual( err.status, 429 );
+				assert.deepEqual( scope.pendingMocks().length, 1, 'makes exactly two requests' );
+			}
+		} );
+
+		it( 'does not retry when retry-after is longer than the cap', async () => {
+			const scope = nock( base )
+				.get( '/limited' )
+				.reply( 429, '', { 'retry-after': '3600' } )
+				.get( '/limited' )
+				.reply( 200, 'Never reached' );
+
+			try {
+				await issueRequest( { uri: `${ base }/limited` } );
+				assert.fail( 'Should have thrown HTTPError' );
+			} catch ( err ) {
+				assert.deepEqual( err.status, 429 );
+				assert.deepEqual( scope.pendingMocks().length, 1, 'makes one request' );
+			}
+		} );
+
+		it( 'does not retry other errors', async () => {
+			const scope = nock( base )
+				.get( '/broken' )
+				.reply( 500, 'Server error' )
+				.get( '/broken' )
+				.reply( 200, 'Never reached' );
+
+			try {
+				await issueRequest( { uri: `${ base }/broken` } );
+				assert.fail( 'Should have thrown HTTPError' );
+			} catch ( err ) {
+				assert.deepEqual( err.status, 500 );
+				assert.deepEqual( scope.pendingMocks().length, 1, 'makes one request' );
+			}
+		} );
+
+	} );
+
 	describe( 'cookie jar handling', () => {
 
 		it( 'sends cookies from jar in request', async () => {

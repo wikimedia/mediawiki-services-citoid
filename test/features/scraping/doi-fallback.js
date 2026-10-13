@@ -15,15 +15,15 @@ describe( 'Uses DOI fallback on unsupported content type', () => {
 
 	function nockDoiFallback() {
 		nock( 'https://www.annualreviews.org' )
-			.head( `/content/journals/${ testDoi }` )
+			.get( `/content/journals/${ testDoi }` )
 			.reply( 200, undefined, { 'Content-Type': 'text/x-python' } );
 
 		nock( 'https://doi.org' )
-			.head( `/${ testDoi }` )
+			.get( `/${ testDoi }` )
 			.reply( 302, undefined, { Location: 'https://www.annualreviews.org/doi/' + testDoi } );
 
 		nock( 'https://www.annualreviews.org' )
-			.head( '/doi/' + testDoi )
+			.get( '/doi/' + testDoi )
 			.reply( 200, undefined, { 'Content-Type': 'text/html' } )
 			.get( '/doi/' + testDoi )
 			.reply( 200, '<!DOCTYPE html><html><head><title>Test Article</title></head></html>',

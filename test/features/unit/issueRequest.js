@@ -295,6 +295,31 @@ describe( 'util/util.js issueRequest', () => {
 
 		} );
 
+		describe( 'skipBody', () => {
+
+			it( 'returns status and headers with an empty body', async () => {
+				nock( 'https://example.com' )
+					.get( '/' )
+					.reply( 200, '<html>', { 'Content-Type': 'text/html' } );
+
+				const res = await issueRequest( { uri: 'https://example.com/', skipBody: true } );
+				assert.deepEqual( res.status, 200 );
+				assert.deepEqual( res.headers[ 'content-type' ], 'text/html' );
+				assert.deepEqual( res.body, '' );
+			} );
+
+			it( 'does not wait for a slow body', async () => {
+				nock( 'https://example.com' )
+					.get( '/' )
+					.delayBody( 500 )
+					.reply( 200, '<html>' );
+
+				const res = await issueRequest( { uri: 'https://example.com/', skipBody: true, timeout: 100 } );
+				assert.deepEqual( res.status, 200 );
+			} );
+
+		} );
+
 	} );
 
 	describe( 'timeout', () => {

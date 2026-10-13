@@ -27,12 +27,12 @@ describe( 'Mock crossref and doi.org failures', () => {
 
 		// Mock the DOI resolver to redirect to a working website
 		nock( 'https://doi.org' )
-			.head( `/${ testDoi }` )
+			.get( `/${ testDoi }` )
 			.reply( 302, undefined, { Location: 'https://example.org/article.html' } );
 
 		// Mock the target website returning HTML with metadata
 		nock( 'https://example.org' )
-			.head( '/article.html' )
+			.get( '/article.html' )
 			.reply( 200, undefined, { 'Content-Type': 'text/html' } )
 			.get( '/article.html' )
 			.reply( 200, `<!DOCTYPE html>
@@ -62,7 +62,7 @@ describe( 'Mock crossref and doi.org failures', () => {
 
 		// Mock the DOI resolver failing
 		nock( 'https://doi.org' )
-			.head( `/${ testDoi }` )
+			.get( `/${ testDoi }` )
 			.reply( 503 );
 
 		// Mock CrossRef API to return valid metadata

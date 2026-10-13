@@ -38,7 +38,7 @@ describe( 'lib/unshorten.js', () => {
 				request: {
 					logger: { log: () => {} },
 					issueRequest: ( opts ) => {
-						captured.push( { uri: opts.uri, timeout: opts.timeout } );
+						captured.push( { uri: opts.uri, timeout: opts.timeout, method: opts.method, skipBody: opts.skipBody } );
 						const headers = ( captured.length === 1 ) ?
 							{ location: 'http://www.example.com/redirected' } : {};
 						return Promise.resolve( { status: 301, headers } );
@@ -55,6 +55,15 @@ describe( 'lib/unshorten.js', () => {
 			assert.deepEqual( captured[ 1 ].timeout, 1234 );
 			assert.deepEqual( captured[ 1 ].uri, 'http://www.example.com/redirected' );
 			assert.deepEqual( citation.resolvedUrl, 'http://www.example.com/redirected' );
+		} );
+
+		it( 'sends GET without reading the body for each request in the redirect chain', async () => {
+			await unshorten( 'http://www.example.com', stubCr, {} );
+			assert.deepEqual( captured.length, 2 );
+			for ( const req of captured ) {
+				assert.deepEqual( req.method, 'get' );
+				assert.deepEqual( req.skipBody, true );
+			}
 		} );
 
 		it( 'leaves timeout undefined when not given', async () => {

@@ -18,7 +18,7 @@ describe( 'redirects', () => {
 		const redirector = () => {
 			const base = 'https://httpbin.org';
 			nock( base )
-				.head( '/redirect-to' )
+				.get( '/redirect-to' )
 				.query( true )
 				.reply( ( uri ) => {
 					redirector(); // call again to enable the recursive behaviour below
@@ -107,9 +107,9 @@ describe( 'redirects', () => {
 
 		it( 'Handles relative filename redirects correctly', () => {
 			nock( base )
-				.head( '/page' )
+				.get( '/page' )
 				.reply( 302, undefined, { Location: 'page.html' } )
-				.head( '/page.html' )
+				.get( '/page.html' )
 				.reply( 200 )
 				.get( '/page.html' )
 				.reply( 200, '<html><head><title>Test Page</title></head></html>' );
@@ -121,9 +121,9 @@ describe( 'redirects', () => {
 
 		it( 'Handles ./ relative redirects correctly', () => {
 			nock( base )
-				.head( '/dir/page' )
+				.get( '/dir/page' )
 				.reply( 302, undefined, { Location: './page.html' } )
-				.head( '/dir/page.html' )
+				.get( '/dir/page.html' )
 				.reply( 200 )
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Same Dir</title></head></html>' );
@@ -135,9 +135,9 @@ describe( 'redirects', () => {
 
 		it( 'Handles ../ parent directory redirects correctly', () => {
 			nock( base )
-				.head( '/dir/subdir/page' )
+				.get( '/dir/subdir/page' )
 				.reply( 302, undefined, { Location: '../page.html' } )
-				.head( '/dir/page.html' )
+				.get( '/dir/page.html' )
 				.reply( 200 )
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Parent Dir</title></head></html>' );
@@ -150,9 +150,9 @@ describe( 'redirects', () => {
 		it( 'Handles capital letters in protocol', () => {
 			const base = 'HTTPS://example.com';
 			nock( base )
-				.head( '/dir/subdir/page' )
+				.get( '/dir/subdir/page' )
 				.reply( 302, undefined, { Location: '../page.html' } )
-				.head( '/dir/page.html' )
+				.get( '/dir/page.html' )
 				.reply( 200 )
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Parent Dir</title></head></html>' );
@@ -164,9 +164,9 @@ describe( 'redirects', () => {
 
 		it( 'Handles subdirectory relative redirects correctly', () => {
 			nock( base )
-				.head( '/dir/page' )
+				.get( '/dir/page' )
 				.reply( 302, undefined, { Location: 'subdir/page.html' } )
-				.head( '/dir/subdir/page.html' )
+				.get( '/dir/subdir/page.html' )
 				.reply( 200 )
 				.get( '/dir/subdir/page.html' )
 				.reply( 200, '<html><head><title>Subdir</title></head></html>' );
@@ -178,9 +178,9 @@ describe( 'redirects', () => {
 
 		it( 'Handles absolute path redirects correctly', () => {
 			nock( base )
-				.head( '/dir/page' )
+				.get( '/dir/page' )
 				.reply( 302, undefined, { Location: '/absolute/path.html' } )
-				.head( '/absolute/path.html' )
+				.get( '/absolute/path.html' )
 				.reply( 200 )
 				.get( '/absolute/path.html' )
 				.reply( 200, '<html><head><title>Absolute Path</title></head></html>' );
@@ -192,11 +192,11 @@ describe( 'redirects', () => {
 
 		it( 'Handles protocol-relative redirects correctly', () => {
 			nock( base )
-				.head( '/page' )
+				.get( '/page' )
 				.reply( 302, undefined, { Location: '//en.wikipedia.com/wiki/Test' } );
 
 			nock( 'https://en.wikipedia.com' )
-				.head( '/wiki/Test' )
+				.get( '/wiki/Test' )
 				.reply( 200 )
 				.get( '/wiki/Test' )
 				.reply( 200, '<html><head><title>Protocol Relative</title></head></html>' );

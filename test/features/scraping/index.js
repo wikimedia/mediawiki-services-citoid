@@ -37,7 +37,7 @@ describe( 'Native scraper:', () => {
 		</html>`;
 
 		nock( 'https://web.archive.org' )
-			.head( archivePath )
+			.get( archivePath )
 			.reply( 200, undefined, { 'Content-Type': 'text/html' } )
 			.get( archivePath )
 			.reply( 200, archiveHtml, { 'Content-Type': 'text/html' } );

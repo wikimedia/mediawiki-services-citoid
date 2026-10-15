@@ -22,7 +22,7 @@
 		"cheerio": "1.2.0",
 		"chrono-node": "2.10.1",
 		"compression": "1.8.2",
-		"content-type": "1.0.5",
+		"content-type": "3.1.1",
 		"express": "5.2.1",
 		"extend": "3.0.2",
 		"html-metadata": "3.0.1",

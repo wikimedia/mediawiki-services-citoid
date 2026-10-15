@@ -119,12 +119,24 @@ paths:
             application/x-bibtex; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/result"
-        404:
-          description: Citation data was not found.
+        400:
+          description: Invalid request, such as an invalid format or malformed URL
           content:
-            application/problem+json:
+            application/json:
               schema:
-                $ref: "#/components/schemas/problem"
+                $ref: "#/components/schemas/error"
+        404:
+          description: Citation data was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        415:
+          description: Identifier pointed to an unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unsupportedMediaType"
       operationId: getCitation
 components:
   schemas:
@@ -141,16 +153,21 @@ components:
           type: string
         url:
           type: string
-    problem:
+    error:
       required:
-        - type
+        - error
       type: object
       properties:
-        type:
+        error:
           type: string
-        title:
+    unsupportedMediaType:
+      required:
+        - error
+        - contentType
+      type: object
+      properties:
+        error:
           type: string
-        detail:
+        contentType:
           type: string
-        instance:
-          type: string
+          description: The media type of the remote document

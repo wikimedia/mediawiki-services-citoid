@@ -17,7 +17,7 @@
 		"node": "24"
 	},
 	"dependencies": {
-		"body-parser": "2.3.0",
+		"body-parser": "2.4.0",
 		"bunyan": "1.8.15",
 		"cheerio": "1.2.0",
 		"chrono-node": "2.10.1",
@@ -35,7 +35,7 @@
 		"striptags": "3.2.0",
 		"swagger-ui-dist": "5.32.15",
 		"tough-cookie": "6.0.2",
-		"undici": "8.10.2",
+		"undici": "8.12.3",
 		"uuid": "14.0.2"
 	},
 	"devDependencies": {

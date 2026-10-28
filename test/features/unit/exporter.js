@@ -12,18 +12,23 @@ describe( 'lib/Exporter.js functions: ', () => {
 
 	describe( 'validation functions: ', () => {
 		describe( 'fixURL: ', () => {
-			let url;
+			const fallbackUrl = 'https://www.example.com';
 
-			it( 'discards url with no host', () => {
-				url = 'http://www.example.com/path/with/host';
-				expected = { url: url };
-				result = exporter.fixURL( url, { url: '/path/without/host' } );
+			it( 'use fallback on url when content url not set', () => {
+				expected = { url: fallbackUrl };
+				result = exporter.fixURL( fallbackUrl, {} );
+				assert.deepEqual( result, expected );
+			} );
+
+			it( 'use fallback on url with no host', () => {
+				expected = { url: fallbackUrl };
+				result = exporter.fixURL( fallbackUrl, { url: '/path/without/host' } );
 				assert.deepEqual( result, expected );
 			} );
 
 			it( 'adds protocol to url when missing', () => {
-				expected = { url: 'http://www.example.com/without/protocol' };
-				result = exporter.fixURL( 'http://www.example.com/with/protocol', { url: 'www.example.com/without/protocol' } );
+				expected = { url: 'https://www.example.com/without/protocol' };
+				result = exporter.fixURL( fallbackUrl, { url: 'www.example.com/without/protocol' } );
 				assert.deepEqual( result, expected );
 			} );
 		} );

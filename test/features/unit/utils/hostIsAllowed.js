@@ -47,6 +47,16 @@ describe( 'lib/utils/hostIsAllowed.js', () => {
 				msg: 'blocks private IPs'
 			},
 			{
+				input: 'http://100.64.0.1',
+				expected: false,
+				msg: 'blocks carrier-grade NAT IPs'
+			},
+			{
+				input: 'http://0.0.0.0',
+				expected: false,
+				msg: 'blocks unspecified IPs'
+			},
+			{
 				input: 'http://test.localhost',
 				expected: false,
 				msg: 'blocks private IPs after resolving'

@@ -110,9 +110,10 @@ class TestCitoidRunner extends TestRunner {
 	 * @param {string} search search input
 	 * @param {string} format requested format
 	 * @param {string} language language code
+	 * @param {Object} [queryParams] optional query string parameters
 	 * @return {Promise}
 	 */
-	query( search, format, language ) {
+	query( search, format, language, queryParams ) {
 
 		if ( !format ) {
 			format = 'mediawiki';
@@ -123,7 +124,11 @@ class TestCitoidRunner extends TestRunner {
 
 		search = encodeURIComponent( search );
 
-		const url = `${ this.config.uri }${ format }/${ search }`;
+		let url = `${ this.config.uri }${ format }/${ search }`;
+
+		if ( queryParams ) {
+			url += `?${ new URLSearchParams( queryParams ).toString() }`;
+		}
 
 		return fetch( url, {
 			headers: {

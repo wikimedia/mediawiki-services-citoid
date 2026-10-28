@@ -109,6 +109,15 @@ paths:
             so provide it if localized content is required.
           schema:
             type: string
+        - name: pdf-support
+          in: query
+          description: |
+            Feature flag to enable basic citation support for PDF URLs.
+            When the query parameter is set to true in the URL, the service returns a
+            Citoid response with basic metadata instead of a 415 error.
+          required: false
+          schema:
+            type: boolean
       responses:
         200:
           description: The citation data in the requested format

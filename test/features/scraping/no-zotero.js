@@ -24,7 +24,7 @@ describe( 'Zotero service down or disabled:', () => {
 		// as they have blocked our UA in the past.
 		it( 'PMID not in doi id converter api', () => {
 			const pmid = '14656957';
-			return server.query( pmid, 'mediawiki', 'en' )
+			return server.query( pmid )
 				.then( ( res ) => {
 					assert.fail();
 				}, ( err ) => {
@@ -254,7 +254,7 @@ describe( 'Zotero service down or disabled:', () => {
 		// as they have blocked our UA in the past.
 		it( 'PMID not in doi id converter api', () => {
 			const pmid = '14656957';
-			return server.query( pmid, 'mediawiki', 'en' )
+			return server.query( pmid )
 				.then( ( res ) => {
 					assert.status( res, 404 );
 				}, ( err ) => {

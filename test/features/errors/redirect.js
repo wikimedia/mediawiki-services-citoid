@@ -35,33 +35,33 @@ describe( 'redirects', () => {
 			nock.cleanAll();
 		} );
 
-		it( 'redirect supported', () => server.query( 'https://httpbin.org/redirect-to?url=http://www.example.com', 'mediawiki', 'en' )
+		it( 'redirect supported', () => server.query( 'https://httpbin.org/redirect-to?url=http://www.example.com' )
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			} ) );
 
-		it( 'redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
+		it( 'redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=http://192.168.1.2' )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );
 
-		it( 'redir-to-redir-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
+		it( 'redir-to-redir-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2' )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
 				assert.status( err, 400 );
 			} ) );
 
-		it( 'follows relative redirects', () => server.query( 'https://httpbin.org/redirect-to?url=/redirect-to?url=http://example.com', 'mediawiki', 'en' )
+		it( 'follows relative redirects', () => server.query( 'https://httpbin.org/redirect-to?url=/redirect-to?url=http://example.com' )
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			}, ( err ) => {
 				assert.fail();
 			} ) );
 
-		it( 'redir-to-redir-to-redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2', 'mediawiki', 'en' )
+		it( 'redir-to-redir-to-redir-to-private', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=http://192.168.1.2' )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -70,7 +70,7 @@ describe( 'redirects', () => {
 
 		it( 'five-redirect-max-by-default-under', () => {
 			const url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
-			return server.query( url, 'mediawiki', 'en' )
+			return server.query( url )
 				.then( ( res ) => {
 					assert.status( res, 200 );
 				}, ( err ) => {
@@ -80,7 +80,7 @@ describe( 'redirects', () => {
 
 		it( 'five-redirect-max-by-default-equal', () => {
 			const url = 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero';
-			return server.query( url, 'mediawiki', 'en' )
+			return server.query( url )
 				.then( ( res ) => {
 					assert.status( res, 200 );
 				}, ( err ) => {
@@ -88,7 +88,7 @@ describe( 'redirects', () => {
 				} );
 		} );
 
-		it( 'five-redirect-max-by-default-over', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero', 'mediawiki', 'en' )
+		it( 'five-redirect-max-by-default-over', () => server.query( 'https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://httpbin.org/redirect-to?url=https://en.wikipedia.org/wiki/Zotero' )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -114,7 +114,7 @@ describe( 'redirects', () => {
 				.get( '/page.html' )
 				.reply( 200, '<html><head><title>Test Page</title></head></html>' );
 
-			return server.query( 'https://example.com/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Test Page' );
 			} );
 		} );
@@ -128,7 +128,7 @@ describe( 'redirects', () => {
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Same Dir</title></head></html>' );
 
-			return server.query( 'https://example.com/dir/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/dir/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Same Dir' );
 			} );
 		} );
@@ -142,7 +142,7 @@ describe( 'redirects', () => {
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Parent Dir</title></head></html>' );
 
-			return server.query( 'https://example.com/dir/subdir/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/dir/subdir/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Parent Dir' );
 			} );
 		} );
@@ -157,7 +157,7 @@ describe( 'redirects', () => {
 				.get( '/dir/page.html' )
 				.reply( 200, '<html><head><title>Parent Dir</title></head></html>' );
 
-			return server.query( 'https://example.com/dir/subdir/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/dir/subdir/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Parent Dir' );
 			} );
 		} );
@@ -171,7 +171,7 @@ describe( 'redirects', () => {
 				.get( '/dir/subdir/page.html' )
 				.reply( 200, '<html><head><title>Subdir</title></head></html>' );
 
-			return server.query( 'https://example.com/dir/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/dir/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Subdir' );
 			} );
 		} );
@@ -185,7 +185,7 @@ describe( 'redirects', () => {
 				.get( '/absolute/path.html' )
 				.reply( 200, '<html><head><title>Absolute Path</title></head></html>' );
 
-			return server.query( 'https://example.com/dir/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/dir/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Absolute Path' );
 			} );
 		} );
@@ -201,7 +201,7 @@ describe( 'redirects', () => {
 				.get( '/wiki/Test' )
 				.reply( 200, '<html><head><title>Protocol Relative</title></head></html>' );
 
-			return server.query( 'https://example.com/page', 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( 'https://example.com/page' ).then( ( res ) => {
 				assert.checkCitation( res, 'Protocol Relative' );
 			} );
 		} );

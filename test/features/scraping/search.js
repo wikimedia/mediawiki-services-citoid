@@ -15,7 +15,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		it( 'spaces in url missing http:// and www', () => {
 			const url = 'example.com/spaces in url';
-			return server.query( url, 'mediawiki', 'en' )
+			return server.query( url )
 				.then( ( res ) => {
 					assert.status( res, 200 );
 					assert.deepEqual( res.body.length, 2 ); // Two from Crossref as url 404s
@@ -23,19 +23,19 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 		} );
 
 		// Uses json as plain text search term; previously gave error
-		it( 'json in search', () => server.query( '{"json":"object"}', 'mediawiki', 'en' )
+		it( 'json in search', () => server.query( '{"json":"object"}' )
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			} ) );
 
 		// Uses search; previously gave error
-		it( 'javascript in search', () => server.query( 'f<script>alert(1);</script>', 'mediawiki', 'en' )
+		it( 'javascript in search', () => server.query( 'f<script>alert(1);</script>' )
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			} ) );
 
 		// Uses search; previously gave error
-		it( 'localhost:1970', () => server.query( 'localhost:1970', 'mediawiki', 'en' )
+		it( 'localhost:1970', () => server.query( 'localhost:1970' )
 			.then( ( res ) => {
 				assert.status( res, 200 );
 			}, ( err, res ) => {
@@ -98,7 +98,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		it( 'should extract URL from citation template with pipes', () => {
 			const citationTemplate = '<ref>{{cite web |url=http://www.example.com |access-date=January 22, 2022}}</ref>';
-			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( citationTemplate ).then( ( res ) => {
 				assert.status( res, 200 );
 				assert.deepEqual( res.body.length, 3 ); // One from url, two from Crossref
 			} );
@@ -106,7 +106,7 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		it( 'should only get open search results as url cannot be extracted', () => {
 			const citationTemplate = '<ref>{{cite+web+|url=http://www.example.com+|access-date=January+22,+2022}}</ref>';
-			return server.query( citationTemplate, 'mediawiki', 'en' ).then( ( res ) => {
+			return server.query( citationTemplate ).then( ( res ) => {
 				assert.status( res, 200 );
 				assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 			} );

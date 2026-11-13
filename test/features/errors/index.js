@@ -40,7 +40,7 @@ describe( 'errors', () => {
 		} );
 	} );
 
-	it( 'bad domain', () => server.query( 'example./com', 'mediawiki', 'en' )
+	it( 'bad domain', () => server.query( 'example./com' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
@@ -48,7 +48,7 @@ describe( 'errors', () => {
 			assert.deepEqual( err.body.error, 'Invalid host supplied' );
 		} ) );
 
-	it( 'mailto: url', () => server.query( 'mailto:name@example.com', 'mediawiki', 'en' )
+	it( 'mailto: url', () => server.query( 'mailto:name@example.com' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
@@ -58,7 +58,7 @@ describe( 'errors', () => {
 
 	it( 'resource has http errors', () => {
 		const url = 'https://en.wikipedia.org/404';
-		return server.query( url, 'mediawiki', 'en' )
+		return server.query( url )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -69,7 +69,7 @@ describe( 'errors', () => {
 
 	it( 'unknown doi', () => {
 		const doi = '10.1000/thisdoidoesntexist';
-		return server.query( doi, 'mediawiki', 'en' )
+		return server.query( doi )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -80,7 +80,7 @@ describe( 'errors', () => {
 
 	it( 'doi url with single quote', () => {
 		const doi = 'http://DOI.org/10.1007/11926078_68\'';
-		return server.query( doi, 'mediawiki', 'en' )
+		return server.query( doi )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -91,7 +91,7 @@ describe( 'errors', () => {
 
 	it( 'doi url with double quote', () => {
 		const doi = 'http://DOI.org/10.1007/11926078_68"';
-		return server.query( doi, 'mediawiki', 'en' )
+		return server.query( doi )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -102,7 +102,7 @@ describe( 'errors', () => {
 
 	it( 'doi with single quote', () => {
 		const doi = '10.1007/11926078_68\'';
-		return server.query( doi, 'mediawiki', 'en' )
+		return server.query( doi )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -113,7 +113,7 @@ describe( 'errors', () => {
 
 	it( 'PDF contentType unsupported', () => {
 		const url = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Coloring_page_for_Wikipedia_Day_2019_in_NYC.pdf';
-		return server.query( url, 'mediawiki', 'en' )
+		return server.query( url )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -125,7 +125,7 @@ describe( 'errors', () => {
 
 	it( 'JSON contentType unsupported', () => {
 		const url = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/5/query?where=STATE=\'34\'&outFields=NAME,STATE,PLACE,AREALAND,AREAWATER,LSADC,CENTLAT,CENTLON&orderByFields=PLACE&returnGeometry=false&returnTrueCurves=false&f=json';
-		return server.query( url, 'mediawiki', 'en' )
+		return server.query( url )
 			.then( ( res ) => {
 				assert.status( res, 415 );
 			}, ( err ) => {
@@ -137,7 +137,7 @@ describe( 'errors', () => {
 
 	it.skip( 'bad pmid', () => {
 		const pmid = '99999999';
-		return server.query( pmid, 'mediawiki', 'en' )
+		return server.query( pmid )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -147,7 +147,7 @@ describe( 'errors', () => {
 
 	it.skip( 'bad pmcid', () => {
 		const pmcid = 'PMC9999999';
-		return server.query( pmcid, 'mediawiki', 'en' )
+		return server.query( pmcid )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {

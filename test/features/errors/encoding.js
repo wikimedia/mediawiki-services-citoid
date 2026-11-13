@@ -20,7 +20,7 @@ describe( 'encoding', () => {
 				'Invalid format requested f%3Cscript%3Ealert(1)%3B%3C' );
 		} ) );
 
-	it( 'javascript in doi', () => server.query( '10.1000/f<script>alert(1);</script>', 'mediawiki', 'en' )
+	it( 'javascript in doi', () => server.query( '10.1000/f<script>alert(1);</script>' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
@@ -41,7 +41,7 @@ describe( 'encoding', () => {
 
 	it( 'spaces in fully qualified url', () => {
 		const url = 'http://www.example.com/spaces in url';
-		return server.query( url, 'mediawiki', 'en' )
+		return server.query( url )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {
@@ -52,7 +52,7 @@ describe( 'encoding', () => {
 
 	it( 'spaces in url missing http://', () => {
 		const url = 'www.example.com/spaces in url';
-		return server.query( url, 'mediawiki', 'en' )
+		return server.query( url )
 			.then( ( res ) => {
 				assert.fail();
 			}, ( err ) => {

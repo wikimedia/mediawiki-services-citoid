@@ -71,7 +71,7 @@ describe( 'ISBN tests:', function () {
 
 		it( 'invalid ISBN', () => {
 			const isbn = '9780596519798';
-			return server.query( isbn, 'mediawiki', 'en' )
+			return server.query( isbn )
 				.then( ( res ) => {
 					assert.status( res, 404 );
 				}, ( err ) => {

@@ -85,7 +85,7 @@ describe( 'uses zotero', () => {
 
 		it( 'PDF url unsupported', () => {
 			const url = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Coloring_page_for_Wikipedia_Day_2019_in_NYC.pdf';
-			return server.query( url, 'mediawiki', 'en' )
+			return server.query( url )
 				.then( ( res ) => {
 					assert.fail();
 				}, ( err ) => {

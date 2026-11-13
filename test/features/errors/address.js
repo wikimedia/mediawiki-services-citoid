@@ -11,54 +11,54 @@ describe( 'address restrictions', () => {
 
 	after( () => server.stop() );
 
-	it( 'http://localhost:1970', () => server.query( 'http://localhost:1970', 'mediawiki', 'en' )
+	it( 'http://localhost:1970', () => server.query( 'http://localhost:1970' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err, res ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( 'http://127.0.0.1:1970', () => server.query( 'http://127.0.0.1:1970', 'mediawiki', 'en' )
+	it( 'http://127.0.0.1:1970', () => server.query( 'http://127.0.0.1:1970' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( 'non-existing', () => server.query( 'http://foobarbaz.example.com/', 'mediawiki', 'en' )
+	it( 'non-existing', () => server.query( 'http://foobarbaz.example.com/' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( '10.0.0.5', () => server.query( 'http://10.0.0.5/', 'mediawiki', 'en' )
+	it( '10.0.0.5', () => server.query( 'http://10.0.0.5/' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( 'private ip', () => server.query( 'http://192.168.1.2', 'mediawiki', 'en' )
+	it( 'private ip', () => server.query( 'http://192.168.1.2' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( 'url with space in hostname', () => server.query( 'http://www.example.com withspace', 'mediawiki', 'en' )
+	it( 'url with space in hostname', () => server.query( 'http://www.example.com withspace' )
 		.then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
 			assert.status( err, 400 );
 		} ) );
 
-	it( 'acceptable domain, with scheme', () => server.query( 'https://en.wikipedia.org/w/index.php?title=Internet_Assigned_Numbers_Authority&oldid=664999436', 'mediawiki', 'en' )
+	it( 'acceptable domain, with scheme', () => server.query( 'https://en.wikipedia.org/w/index.php?title=Internet_Assigned_Numbers_Authority&oldid=664999436' )
 		.then( ( res ) => {
 			assert.status( res, 200 );
 		} ) );
 
-	it( 'acceptable domain, without scheme', () => server.query( 'en.wikipedia.org/w/index.php?title=Internet_Assigned_Numbers_Authority&oldid=664999436', 'mediawiki', 'en' )
+	it( 'acceptable domain, without scheme', () => server.query( 'en.wikipedia.org/w/index.php?title=Internet_Assigned_Numbers_Authority&oldid=664999436' )
 		.then( ( res ) => {
 			assert.status( res, 200 );
 		} ) );

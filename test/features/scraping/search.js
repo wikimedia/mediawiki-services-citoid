@@ -2,6 +2,7 @@
 
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
+const { setTimeout: wait } = require( 'timers/promises' );
 
 describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. title or citation', () => {
 
@@ -12,6 +13,8 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 		before( () => server.start( { zotero: false } ) );
 
 		after( () => server.stop() );
+
+		beforeEach( () => wait( 1100 ) );
 
 		it( 'spaces in url missing http:// and www', () => {
 			const url = 'example.com/spaces in url';

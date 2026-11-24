@@ -2,6 +2,7 @@
 
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
+const nock = require( 'nock' );
 
 describe( 'errors', () => {
 
@@ -10,6 +11,16 @@ describe( 'errors', () => {
 	before( () => server.start() );
 
 	after( () => server.stop() );
+
+	beforeEach( () => {
+		nock( 'https://api.crossref.org' )
+			.persist()
+			.get( /.*/ )
+			.query( true )
+			.reply( 404 );
+	} );
+
+	afterEach( () => nock.cleanAll() );
 
 	describe( 'deprecated api: ', () => {
 		it( 'format only', () => fetch( `${ server.config.uri }api?format=mediawiki` )

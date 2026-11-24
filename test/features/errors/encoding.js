@@ -2,6 +2,7 @@
 
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
+const nock = require( 'nock' );
 
 describe( 'encoding', () => {
 
@@ -10,6 +11,16 @@ describe( 'encoding', () => {
 	before( () => server.start() );
 
 	after( () => server.stop() );
+
+	beforeEach( () => {
+		nock( 'https://api.crossref.org' )
+			.persist()
+			.get( /.*/ )
+			.query( true )
+			.reply( 404 );
+	} );
+
+	afterEach( () => nock.cleanAll() );
 
 	it( 'javascript in format', () => server.query( 'http://www.example.com', 'f<script>alert(1);</script>', 'en' )
 		.then( ( res ) => {

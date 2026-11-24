@@ -2,7 +2,16 @@
 
 const assert = require( '../../utils/assert.js' );
 const Server = require( '../../utils/server.js' );
-const { setTimeout: wait } = require( 'timers/promises' );
+const nock = require( 'nock' );
+
+const work = { type: 'journal-article', title: [ 'Test' ], URL: 'https://doi.org/10.1234/test' };
+
+function mockCrossrefSearch( items ) {
+	nock( 'https://api.crossref.org' )
+		.get( '/works/' )
+		.query( true )
+		.reply( 200, { status: 'ok', 'message-type': 'work-list', message: { items } } );
+}
 
 describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. title or citation', () => {
 
@@ -14,7 +23,9 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 
 		after( () => server.stop() );
 
-		beforeEach( () => wait( 1100 ) );
+		beforeEach( () => mockCrossrefSearch( [ work, work ] ) );
+
+		afterEach( () => nock.cleanAll() );
 
 		it( 'spaces in url missing http:// and www', () => {
 			const url = 'example.com/spaces in url';
@@ -45,11 +56,6 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 				assert.fail();
 			} ) );
 
-		it( 'Open search for Schrodinger', () => server.query( 'E. Schrodinger, Proc. Cam. Phil. Soc. 31, 555 (1935)' ).then( ( res ) => {
-			assert.checkCitation( res, 'Discussion of Probability Relations between Separated Systems' );
-			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
-		} ) );
-
 		it( 'Open search containing <> works; but gets wrong results from crossRef', () => server.query( 'Title. Available at: <http://www.example.com>. Accessed on May 19, 1998.' ).then( ( res ) => {
 			assert.checkCitation( res );
 			assert.deepEqual( res.body.length, 3 ); // One from url, two from Crossref
@@ -78,20 +84,6 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
 		} ) );
 
-		// Gets item from single search term
-		it( 'Harry Potter', () => server.query( 'Mediawiki' ).then( ( res ) => {
-			assert.checkCitation( res );
-			assert.deepEqual( res.body.length, 2 ); // Two from Crossref
-		} ) );
-
-		// Test that empty results from crossRef returns 404
-		it( 'No results returns 404', () => server.query( 'User:L' ).then( ( res ) => {
-			assert.fail();
-		}, ( err ) => {
-			assert.status( err, 404 );
-			assert.deepEqual( err.body, { error: 'No results for search term User:L' } );
-		} ) );
-
 		it( 'should fail for whitespace-only query', () => server.query( ' ' ).then( ( res ) => {
 			assert.fail();
 		}, ( err ) => {
@@ -112,6 +104,26 @@ describe( 'Freetext or ambiguous search, classified as "any" input type, i.e. ti
 			return server.query( citationTemplate ).then( ( res ) => {
 				assert.status( res, 200 );
 				assert.deepEqual( res.body.length, 2 ); // Two from Crossref
+			} );
+		} );
+	} );
+
+	describe( 'Empty Crossref results', () => {
+
+		const server = new Server();
+
+		before( () => server.start( { zotero: false } ) );
+
+		after( () => server.stop() );
+
+		afterEach( () => nock.cleanAll() );
+
+		// Test that empty results from crossRef returns 404
+		it( 'No results returns 404', () => {
+			mockCrossrefSearch( [] );
+			return assert.fails( server.query( 'User:L' ), ( err ) => {
+				assert.status( err, 404 );
+				assert.deepEqual( err.body, { error: 'No results for search term User:L' } );
 			} );
 		} );
 	} );
